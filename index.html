@@ -706,6 +706,71 @@ body.cinematic #ck-return{animation:ck-return-pulse 4s ease infinite 2s}
   position:absolute;bottom:95px;right:clamp(50px,6%,78px);
   z-index:9;width:60px;height:60px;pointer-events:none;
 }
+
+/* ═══ ÉCRAN PRÉNOM ═══ */
+#name-screen{
+  position:fixed;inset:0;z-index:900;background:#000;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
+}
+#name-screen.hidden{opacity:0;pointer-events:none;transition:opacity .5s}
+#name-eyebrow{font-family:var(--display);font-size:9px;font-weight:500;letter-spacing:5px;
+  text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:-8px}
+#name-title{font-family:var(--display);font-size:clamp(22px,4vw,36px);font-weight:700;
+  color:#fff;letter-spacing:-1px;text-align:center;line-height:1.2}
+#name-input-wrap{position:relative;width:min(340px,80vw)}
+#name-input{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.15);
+  border-radius:12px;padding:14px 50px 14px 20px;
+  font-family:var(--display);font-size:18px;font-weight:500;color:#fff;
+  outline:none;transition:border-color .3s,box-shadow .3s;letter-spacing:-.3px;
+}
+#name-input::placeholder{color:rgba(255,255,255,.2);font-weight:300}
+#name-input:focus{border-color:rgba(255,61,143,.5);box-shadow:0 0 0 3px rgba(255,61,143,.1)}
+#name-submit{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  width:34px;height:34px;border-radius:8px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;align-items:center;justify-content:center;
+  opacity:.3;transition:opacity .2s;
+}
+#name-input:valid ~ #name-submit,
+#name-submit.ready{opacity:1}
+#name-submit svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2}
+#name-hint{font-size:10px;color:rgba(255,255,255,.2);letter-spacing:1px;text-align:center;margin-top:-8px}
+
+/* ═══ HUD SCAN ═══ */
+#hud-scan{
+  position:absolute;z-index:12;pointer-events:none;
+  opacity:0;transition:opacity .2s;
+}
+#hud-scan.active{opacity:1}
+.hud-ring{
+  position:absolute;border-radius:50%;
+  border:1.5px solid rgba(34,211,238,.7);
+  animation:hud-spin 1.5s linear infinite;
+  box-shadow:0 0 8px rgba(34,211,238,.3),inset 0 0 8px rgba(34,211,238,.1);
+}
+.hud-ring-2{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(34,211,238,.3);
+  animation:hud-spin 2.5s linear infinite reverse;
+}
+@keyframes hud-spin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.hud-data{
+  position:absolute;left:calc(50% + 28px);top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:2px;
+}
+.hud-line{
+  font-family:var(--display);font-size:8px;font-weight:500;letter-spacing:1.5px;
+  color:rgba(34,211,238,.8);text-transform:uppercase;white-space:nowrap;
+  animation:hud-appear .1s ease forwards;opacity:0;
+}
+@keyframes hud-appear{to{opacity:1}}
+.hud-progress{
+  position:absolute;left:50%;top:50%;
+  width:2px;height:2px;background:rgba(34,211,238,.9);border-radius:50%;
+  box-shadow:0 0 6px rgba(34,211,238,.8);
+}
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -763,7 +828,24 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8l-4 4 4 4M16 12H8"/></svg>
   Cockpit
 </div>
-<div id="nasa-seq">
+<div id="name-screen">
+  <div id="name-eyebrow">Mission Devoleads · Briefing</div>
+  <div id="name-title">Avant de décoller —<br>comment vous appelez-vous ?</div>
+  <div id="name-input-wrap">
+    <input id="name-input" type="text" placeholder="Votre prénom" minlength="1" autocomplete="off" spellcheck="false"/>
+    <button id="name-submit" onclick="submitName()">
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+  <div id="name-hint">Appuyez sur Entrée pour décoller</div>
+</div>
+<div id="hud-scan">
+  <div class="hud-ring" id="hud-r1"></div>
+  <div class="hud-ring-2" id="hud-r2"></div>
+  <div class="hud-data" id="hud-data"></div>
+  <div class="hud-progress"></div>
+</div>
+<div id="nasa-seq" style="display:none">
   <canvas id="nasa-particles"></canvas>
   <div id="nasa-label">Initialisation système</div>
   <div id="nasa-countdown">3</div>
@@ -1666,6 +1748,7 @@ window.go=function(idx){
   const prev=cur; cur=idx;
   const dir = idx > prev ? 1 : -1; // 1=forward, -1=backward
   if(window.soundSlide) soundSlide(dir);
+  haptic([15]);
   ui();
 
   // Flash lumineux
@@ -1706,6 +1789,7 @@ window.go=function(idx){
 }
 
 let ckRenderer,ckScene,ckCamera,ckRaycaster,ckMouse,ckPlanetMeshes=[],ckPlanets=[],ckFrame=0;
+let ckWrap=null,ckW=900,ckH=560;
 let ckJoyTargetX=0,ckJoyTargetY=0,ckJoyCurrX=0,ckJoyCurrY=0;
 let ckMouseNormX=0,ckMouseNormY=0;
 let ckBuilt=false, ckWarping=false, ckActive=0;
@@ -1767,7 +1851,9 @@ function buildCockpit(){
   if(ckBuilt)return;ckBuilt=true;
 
   const wrap=document.getElementById('cockpit-wrap');
+  ckWrap=wrap;
   const W=wrap.offsetWidth||900, H=wrap.offsetHeight||560;
+  ckW=W; ckH=H;
 
   // Renderer
   ckRenderer=new THREE.WebGLRenderer({canvas:document.getElementById('ck-three'),antialias:true,alpha:true});
@@ -1854,17 +1940,36 @@ function buildCockpit(){
       document.getElementById('ck-tt-sub').textContent=pd.sub;
       tt.style.opacity='1';hint.style.opacity='0';
       wrap.style.cursor='none';
-      wrap._hovered=pd.id;
-      // Illuminer la planète survolée
+      // Illuminer la planète
       hits[0].object.material.emissiveIntensity=.35;
       hits[0].object.scale.setScalar(1.12);
+      // HUD scan si nouvelle planète
+      if(wrap._hovered!==pd.id){
+        if(!wrap._hudTimer) clearTimeout(wrap._hudTimer);
+        wrap._hudTimer=setTimeout(()=>{
+          // Projeter coords 3D→2D pour positionner le HUD
+          const pos3=new THREE.Vector3(...pd.pos);
+          pos3.project(ckCamera);
+          const bRect=wrap.getBoundingClientRect();
+          const sx=(pos3.x*.5+.5)*ckW;
+          const sy=(-(pos3.y)*.5+.5)*ckH;
+          if(window.showHUD) showHUD(pd.id,sx,sy,pd.size*24);
+        },600);
+      }
+      wrap._hovered=pd.id;
     } else {
       tt.style.opacity='0';hint.style.opacity='1';
+      if(wrap._hovered!==null&&window.hideHUD) hideHUD();
+      if(wrap._hudTimer){clearTimeout(wrap._hudTimer);wrap._hudTimer=null;}
       wrap._hovered=null;
     }
   });
   portClick.addEventListener('click',()=>{
-    if(wrap._hovered!=null) ckWarpTo(wrap._hovered);
+    if(wrap._hovered!=null){
+      haptic([20,10,80]);
+      if(window.hideHUD) hideHUD();
+      ckWarpTo(wrap._hovered);
+    }
   });
   portClick.addEventListener('mouseleave',()=>{
     document.getElementById('ck-tt').style.opacity='0';
@@ -1933,17 +2038,22 @@ function ckAnimate(){
   if(ckPlanets&&ckPlanets.length) ckPlanets.forEach(({mesh,pd})=>{
     mesh.rotation.y+=pd.speed;
     const _b=mesh.userData.base;if(!ckWarping&&_b) mesh.position.y=_b[1]+Math.sin(ckFrame*.007+pd.id*.8)*.1;
-    // Pulse active planet
+    // Pulse + time-based scale
+    const timeBonus = typeof slideTimeSpent!=='undefined'
+      ? Math.min(.3, (slideTimeSpent[pd.id]||0)/60*.3) : 0;
     if(pd.id===ckActive){
-      const pulse=1+Math.sin(ckFrame*.06)*.06;
+      const pulse=1+timeBonus+Math.sin(ckFrame*.06)*.06;
       mesh.scale.setScalar(pulse);
-      if(mesh.material) mesh.material.emissive&&mesh.material.emissive.setHex(
-        parseInt(pd.color.replace('#',''),16)
-      );
-      if(mesh.material) mesh.material.emissiveIntensity=.12+Math.sin(ckFrame*.06)*.06;
+      if(mesh.material){
+        mesh.material.emissive&&mesh.material.emissive.setHex(parseInt(pd.color.replace('#',''),16));
+        mesh.material.emissiveIntensity=.15+timeBonus*.5+Math.sin(ckFrame*.06)*.05;
+      }
+    } else if(ckWrap&&ckWrap._hovered===pd.id){
+      // Keep hover scale managed by raycaster block
     } else {
-      mesh.scale.setScalar(1);
-      if(mesh.material&&mesh.material.emissiveIntensity!==undefined) mesh.material.emissiveIntensity=0;
+      mesh.scale.setScalar(1+timeBonus*.5);
+      if(mesh.material&&mesh.material.emissiveIntensity!==undefined)
+        mesh.material.emissiveIntensity=timeBonus*.2;
     }
   });
   if(!ckWarping){
@@ -2029,6 +2139,7 @@ function ckWarpTo(id){
   const tDur=1150;
   setTimeout(()=>{
     if(window.soundLand) soundLand();
+    haptic([80]);
     flashEl.style.opacity='1';
     setTimeout(()=>flashEl.style.opacity='0',220);
     window.closeUniverse();
@@ -2346,13 +2457,13 @@ function animHands(warpActive){
 
 
 // ════ SÉQUENCE NASA ════
-;(function(){
+window.startNASA=function(){
   // Skip si déjà vue
   if(sessionStorage.getItem('nasa-done')){
-    const s=document.getElementById('nasa-seq');
-    if(s){s.style.display='none';}
     return;
   }
+  const s=document.getElementById('nasa-seq');
+  if(s){s.style.display='flex';}
 
   const seq=document.getElementById('nasa-seq');
   const num=document.getElementById('nasa-countdown');
@@ -2424,7 +2535,8 @@ function animHands(warpActive){
   }
 
   // Séquence timeline
-  const labels=['Initialisation système','Vérification propulseurs','Mise en orbite…','Décollage'];
+  const pName=window._getPilotName?window._getPilotName():'Pilote';
+  const labels=['Initialisation système','Vérification propulseurs',`${pName}, mise en orbite…`,'Décollage'];
   let step=0;
 
   // Progress bar
@@ -2442,6 +2554,7 @@ function animHands(warpActive){
       num.textContent=3-step;
       flashNum();
       beep(step===0?440:step===1?550:880,.18,.12);
+      haptic([20]);
     } else {
       num.textContent='🚀';
       num.style.fontSize='clamp(60px,10vw,100px)';
@@ -2479,7 +2592,7 @@ function animHands(warpActive){
       sessionStorage.setItem('nasa-done','1');
     },800);
   }
-})();
+};
 
 
 // ════ MODE CINÉMATIQUE ════
@@ -2508,6 +2621,184 @@ document.addEventListener('touchend',e=>{
     if(dx<0) window.next(); else window.prev();
   }
 },{passive:true});
+
+
+// ════ PRÉNOM + PERSONNALISATION ════
+;(function(){
+  let pilotName = sessionStorage.getItem('dv-pilot-name')||'';
+
+  function applyName(name){
+    if(!name) return;
+    pilotName = name;
+    // Cover h1
+    const h1 = document.querySelector('#s1 h1');
+    if(h1) h1.innerHTML = `L'agenda de <span class="g">${name}.</span><br><span class="g">Saturé de RDV.</span>`;
+    // Nav title
+    const title = document.querySelector('title');
+    if(title) title.textContent = `Devoleads — Mission ${name}`;
+    // Cockpit intro text
+    const intro = document.getElementById('ck-intro-text');
+    if(intro) intro.textContent = `${name}, bienvenue à bord`;
+    // NASA label final
+    window._pilotName = name;
+    // Cockpit title
+    const ckTitle = document.getElementById('uni-title');
+    if(ckTitle) ckTitle.textContent = `Cockpit · Mission ${name}`;
+  }
+
+  window.submitName = function(){
+    const inp = document.getElementById('name-input');
+    const name = (inp ? inp.value.trim() : '') || 'Pilote';
+    if(!name || name.length < 1) return;
+    sessionStorage.setItem('dv-pilot-name', name);
+    applyName(name);
+    haptic([20, 10, 30]);
+    const screen = document.getElementById('name-screen');
+    if(screen){
+      screen.classList.add('hidden');
+      // Lancer NASA après le fade-out du name-screen
+      setTimeout(()=>{
+        screen.style.display='none';
+        if(window.startNASA) startNASA();
+      }, 500);
+    } else {
+      if(window.startNASA) startNASA();
+    }
+  };
+
+  // Enter key
+  document.addEventListener('keydown', e=>{
+    const inp = document.getElementById('name-input');
+    if(inp && document.activeElement === inp && e.key === 'Enter'){
+      e.preventDefault(); window.submitName();
+    }
+  });
+
+  // Input ready state
+  const inp2 = document.getElementById('name-input');
+  if(inp2){
+    inp2.addEventListener('input', ()=>{
+      const btn = document.getElementById('name-submit');
+      if(btn) btn.classList.toggle('ready', inp2.value.trim().length > 0);
+    });
+    // Focus auto
+    setTimeout(()=>{ if(inp2) inp2.focus(); }, 400);
+  }
+
+  // Si nom déjà connu en session → skip name-screen + lancer NASA si pas vue
+  if(pilotName){
+    const screen = document.getElementById('name-screen');
+    if(screen) screen.style.display = 'none';
+    applyName(pilotName);
+    // Lancer NASA si pas encore vue
+    setTimeout(()=>{ if(window.startNASA) startNASA(); }, 100);
+  } else {
+    // Focus sur l'input après un court délai
+    setTimeout(()=>{
+      const inp = document.getElementById('name-input');
+      if(inp) inp.focus();
+    }, 300);
+  }
+
+  // Patch NASA labels avec le prénom
+  const origTick = window._nasaTick;
+  window._getPilotName = ()=> pilotName || 'Pilote';
+})();
+
+// ════ HAPTIQUE ════
+function haptic(pattern){
+  try{
+    if(navigator.vibrate) navigator.vibrate(pattern || [20]);
+  }catch(e){}
+}
+
+// ════ HUD SCAN ════
+;(function(){
+  let hudTimer = null, hudActive = false;
+  const scan = document.getElementById('hud-scan');
+  const r1 = document.getElementById('hud-r1');
+  const r2 = document.getElementById('hud-r2');
+  const dataEl = document.getElementById('hud-data');
+  if(!scan) return;
+
+  // Données fictives par planète
+  const HUD_DATA = [
+    ['COORDONNÉES 04.7 · -12.3', 'CHARGE RDV +800%', 'ZONE PRIORITAIRE'],
+    ['COORDONNÉES -18.4 · 06.1', 'PIPELINE ACTIF', 'CONVERSION ×8.3'],
+    ['COORDONNÉES 22.1 · -08.7', 'VITESSE 14J', 'EFFICACITÉ MAX'],
+    ['COORDONNÉES -05.9 · 19.2', 'BUDGET OPTIMISÉ', 'ROI GARANTI'],
+    ['COORDONNÉES 14.3 · 11.8', 'FONDATEURS DIRECTS', 'ZÉRO JUNIOR'],
+    ['COORDONNÉES -21.6 · -04.5', 'VIDÉO B2B +30%', 'HUMANISATION'],
+    ['COORDONNÉES 08.7 · -17.3', 'IA ACTIVE', 'PERSONNALISATION ×8'],
+    ['COORDONNÉES -11.2 · 14.6', 'DÉMARRAGE 14J', 'SLOT DISPONIBLE'],
+  ];
+
+  window.showHUD = function(planetId, screenX, screenY, size){
+    if(!scan) return;
+    const s = size * 1.8;
+    scan.style.left = screenX + 'px';
+    scan.style.top = screenY + 'px';
+    // Size rings
+    if(r1) {
+      r1.style.width = s+'px'; r1.style.height = s+'px';
+      r1.style.marginLeft = (-s/2)+'px'; r1.style.marginTop = (-s/2)+'px';
+    }
+    if(r2){
+      const s2 = s*1.3;
+      r2.style.width = s2+'px'; r2.style.height = s2+'px';
+      r2.style.marginLeft = (-s2/2)+'px'; r2.style.marginTop = (-s2/2)+'px';
+    }
+    // Data lines avec stagger
+    const lines = HUD_DATA[planetId] || HUD_DATA[0];
+    if(dataEl){
+      dataEl.innerHTML = '';
+      lines.forEach((txt, i)=>{
+        const d = document.createElement('div');
+        d.className = 'hud-line';
+        d.style.animationDelay = (i*120)+'ms';
+        d.textContent = txt;
+        dataEl.appendChild(d);
+      });
+    }
+    scan.classList.add('active');
+    hudActive = true;
+    // Son scan
+    try{
+      const ac = new(window.AudioContext||window.webkitAudioContext)();
+      const o = ac.createOscillator(); o.type='sine';
+      o.frequency.setValueAtTime(1200, ac.currentTime);
+      o.frequency.exponentialRampToValueAtTime(400, ac.currentTime+.3);
+      const g = ac.createGain(); g.gain.setValueAtTime(.06, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ac.currentTime+.35);
+      o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+.35);
+    }catch(e){}
+    haptic([15, 5, 15]);
+  };
+
+  window.hideHUD = function(){
+    if(scan) scan.classList.remove('active');
+    hudActive = false;
+  };
+})();
+
+
+// ════ UNIVERS RÉACTIF — planète grossit avec le temps passé ════
+let slideTimeStart = Date.now();
+let slideTimeSpent = new Array(8).fill(0);
+
+function trackSlideTime(){
+  const now = Date.now();
+  const spent = (now - slideTimeStart) / 1000;
+  if(cur >= 0 && cur < 8) slideTimeSpent[cur] += spent;
+  slideTimeStart = now;
+}
+
+// Patch go() pour tracker le temps
+const _origGo = window.go;
+window.go = function(idx){
+  trackSlideTime();
+  return _origGo(idx);
+};
 
 window.prev=function(){go(cur-1)}
 window.next=function(){go(cur+1)}
