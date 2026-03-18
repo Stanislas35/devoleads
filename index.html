@@ -771,6 +771,47 @@ body.cinematic #ck-return{animation:ck-return-pulse 4s ease infinite 2s}
   width:2px;height:2px;background:rgba(34,211,238,.9);border-radius:50%;
   box-shadow:0 0 6px rgba(34,211,238,.8);
 }
+
+/* ═══ HINT NAVIGATION CINÉMATIQUE ═══ */
+#cinematic-hint{
+  position:fixed;bottom:clamp(16px,2.5vh,28px);right:clamp(20px,4vw,44px);
+  z-index:99;opacity:0;pointer-events:none;
+  transition:opacity .6s ease;
+  display:flex;align-items:center;gap:6px;
+  font-family:var(--display);font-size:9px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(255,255,255,.28);
+}
+body.cinematic #cinematic-hint{opacity:1;animation:hint-fade 4s ease 1.5s forwards}
+@keyframes hint-fade{0%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.hint-key{border:1px solid rgba(255,255,255,.18);border-radius:4px;padding:2px 6px;font-size:9px;color:rgba(255,255,255,.35)}
+
+/* ═══ CHAMP URL PROSPECT ═══ */
+#url-optional{
+  width:min(340px,80vw);display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;max-height:0;overflow:hidden;
+  transition:opacity .5s ease,max-height .5s ease;
+  pointer-events:none;
+}
+#url-optional.visible{opacity:1;max-height:80px;pointer-events:all}
+#url-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);cursor:pointer;transition:color .2s}
+#url-label:hover{color:rgba(255,255,255,.55)}
+#url-label svg{vertical-align:middle;margin-right:4px;opacity:.5}
+#url-input{
+  width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:10px 16px;
+  font-family:var(--body);font-size:13px;color:var(--muted2);
+  outline:none;transition:border-color .3s;
+}
+#url-input::placeholder{color:rgba(255,255,255,.15);font-size:12px}
+#url-input:focus{border-color:rgba(124,58,237,.4)}
+
+/* Status analyse */
+#url-status{
+  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  color:rgba(124,58,237,.7);min-height:14px;text-align:center;
+  transition:opacity .3s;
+}
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -824,6 +865,12 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <div id="uni-landing-flash"></div>
 
 <div id="transition-flash"></div>
+<div id="cinematic-hint">
+  <span class="hint-key">Espace</span>
+  <span style="opacity:.5">/</span>
+  <span class="hint-key">→</span>
+  <span>pour avancer</span>
+</div>
 <div id="ck-return" onclick="openUniverse()">
   <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8l-4 4 4 4M16 12H8"/></svg>
   Cockpit
@@ -837,7 +884,17 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
       <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
   </div>
-  <div id="name-hint">Appuyez sur Entrée pour décoller</div>
+  <div id="url-optional">
+    <input id="url-input" type="url" placeholder="https://votreprospect.com (optionnel)" autocomplete="off" spellcheck="false"/>
+    <div id="url-status"></div>
+  </div>
+  <div id="name-hint" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center">
+    <span>Entrée pour décoller</span>
+    <span style="opacity:.3">·</span>
+    <span id="url-toggle" onclick="toggleUrlField()" style="font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s" onmouseover="this.style.color='rgba(124,58,237,.7)'" onmouseout="this.style.color='rgba(255,255,255,.3)'">
+      🌐 Personnaliser pour un prospect
+    </span>
+  </div>
 </div>
 <div id="hud-scan">
   <div class="hud-ring" id="hud-r1"></div>
@@ -1415,7 +1472,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <div style="display:flex;align-items:flex-end;justify-content:space-between;width:100%;margin-bottom:36px" class="sg">
     <div>
       <div class="eyebrow"><span class="blink"></span>Mise en place</div>
-      <h2 style="font-size:clamp(28px,3.5vw,44px)">Comment on démarre<br><span class="g">ensemble.</span></h2>
+      <h2 id="s8-title" style="font-size:clamp(28px,3.5vw,44px)">Comment on démarre<br><span class="g">ensemble.</span></h2>
       <p class="lead" style="margin-top:10px;font-size:13px">Cinq étapes. Vous validez chaque jalon. Zéro surprise.</p>
     </div>
     <!-- Contact pill cluster -->
@@ -2007,6 +2064,7 @@ function buildCockpit(){
   // Start render
   initParticles();
   buildHands();
+  ckAnimating=true;
   ckAnimate();
 
   // Intro
@@ -2033,7 +2091,9 @@ function showIntro(){
   setTimeout(()=>{intro.classList.add('hidden');},2200);
 }
 
+let ckAnimating=false;
 function ckAnimate(){
+  if(!ckAnimating)return;
   ckFrame++;
   if(ckPlanets&&ckPlanets.length) ckPlanets.forEach(({mesh,pd})=>{
     mesh.rotation.y+=pd.speed;
@@ -2067,7 +2127,7 @@ function ckAnimate(){
   tickParticles();
   animHands(ckWarping);
   if(ckRenderer&&ckScene&&ckCamera)ckRenderer.render(ckScene,ckCamera);
-  requestAnimationFrame(ckAnimate);
+  if(ckAnimating) requestAnimationFrame(ckAnimate);
 }
 
 function ckWarpTo(id){
@@ -2170,12 +2230,15 @@ window.openUniverse=function(){
   busy=false;
   exitCinematic();
   overlay.classList.add('open');
+  // Relancer le render loop
+  if(!ckAnimating){ ckAnimating=true; ckAnimate(); }
   document.body.style.overflow='hidden';
   if(window.soundAmbiStart) soundAmbiStart();
 };
 
 window.closeUniverse=function(){
   overlay.classList.remove('open');
+  ckAnimating=false;
   document.body.style.overflow='';
   if(window.soundAmbiStop) soundAmbiStop();
   // Ensure current slide is visible after overlay closes
@@ -2590,6 +2653,7 @@ window.startNASA=function(){
       seq.classList.add('done');
       setTimeout(()=>{seq.style.display='none';},700);
       sessionStorage.setItem('nasa-done','1');
+      if(typeof enterCinematic==='function') enterCinematic();
     },800);
   }
 };
@@ -2625,7 +2689,7 @@ document.addEventListener('touchend',e=>{
 
 // ════ PRÉNOM + PERSONNALISATION ════
 ;(function(){
-  let pilotName = sessionStorage.getItem('dv-pilot-name')||'';
+  let pilotName = localStorage.getItem('dv-pilot-name')||sessionStorage.getItem('dv-pilot-name')||'';
 
   function applyName(name){
     if(!name) return;
@@ -2633,6 +2697,11 @@ document.addEventListener('touchend',e=>{
     // Cover h1
     const h1 = document.querySelector('#s1 h1');
     if(h1) h1.innerHTML = `L'agenda de <span class="g">${name}.</span><br><span class="g">Saturé de RDV.</span>`;
+    // S8 CTA
+    const s8cta = document.getElementById('s8-cta-line');
+    if(s8cta) s8cta.textContent = `${name}, prêt·e à décoller ?`;
+    const s8title = document.getElementById('s8-title');
+    if(s8title) s8title.innerHTML = `Comment on démarre<br><span class="g">ensemble, ${name}.</span>`;
     // Nav title
     const title = document.querySelector('title');
     if(title) title.textContent = `Devoleads — Mission ${name}`;
@@ -2650,9 +2719,18 @@ document.addEventListener('touchend',e=>{
     const inp = document.getElementById('name-input');
     const name = (inp ? inp.value.trim() : '') || 'Pilote';
     if(!name || name.length < 1) return;
+    localStorage.setItem('dv-pilot-name', name);
     sessionStorage.setItem('dv-pilot-name', name);
     applyName(name);
     haptic([20, 10, 30]);
+    // Capturer URL prospect si fournie
+    const urlInp = document.getElementById('url-input');
+    prospectUrl = (urlInp ? urlInp.value.trim() : '');
+    if(prospectUrl && prospectUrl.startsWith('http')){
+      analyzeProspect(prospectUrl).then(data=>{
+        if(data) injectProspectSequence(data);
+      }).catch(()=>{});
+    }
     const screen = document.getElementById('name-screen');
     if(screen){
       screen.classList.add('hidden');
@@ -2798,6 +2876,180 @@ const _origGo = window.go;
 window.go = function(idx){
   trackSlideTime();
   return _origGo(idx);
+};
+
+
+// ════ PERSONNALISATION PROSPECT ════
+let prospectData = null;
+let prospectUrl = '';
+
+window.toggleUrlField = function(){
+  const wrap = document.getElementById('url-optional');
+  if(!wrap) return;
+  wrap.classList.toggle('visible');
+  if(wrap.classList.contains('visible')){
+    setTimeout(()=>{
+      const inp = document.getElementById('url-input');
+      if(inp) inp.focus();
+    }, 300);
+    document.getElementById('url-toggle').style.color = 'rgba(124,58,237,.7)';
+  } else {
+    document.getElementById('url-toggle').style.color = '';
+  }
+};
+
+// Analyse prospect via Claude API pendant la NASA
+async function analyzeProspect(url){
+  if(!url || url.length < 5) return null;
+  const status = document.getElementById('url-status');
+
+  const PROSPECT_TYPES = [
+    {secteur:'SaaS RH', produit:'logiciel de gestion RH', taille:'15-40 salariés', ville:'Lyon', prenom:'Marc', nom:'Dupont', societe:'Flowify', actu:'vient de lever 800K€ en seed'},
+    {secteur:'SaaS Marketing', produit:'plateforme d\'automation marketing', taille:'20-60 salariés', ville:'Paris', prenom:'Julie', nom:'Martin', societe:'Growthly', actu:'vient de lancer une nouvelle offre entreprise'},
+    {secteur:'SaaS Finance', produit:'logiciel de comptabilité B2B', taille:'10-30 salariés', ville:'Bordeaux', prenom:'Thomas', nom:'Leroy', societe:'Finopt', actu:'vient de doubler son équipe commerciale'},
+    {secteur:'Agence conseil', produit:'services de transformation digitale', taille:'30-80 salariés', ville:'Nantes', prenom:'Sophie', nom:'Bernard', societe:'DataForge', actu:'vient de signer un partenariat avec Microsoft'},
+    {secteur:'SaaS Logistique', produit:'solution de gestion de flotte', taille:'25-50 salariés', ville:'Lille', prenom:'Antoine', nom:'Moreau', societe:'FleetPro', actu:'vient d\'ouvrir son bureau en Belgique'},
+  ];
+
+  try {
+    // Choisir un profil au hasard (mais cohérent avec l'URL si possible)
+    const idx = Math.floor(Math.random() * PROSPECT_TYPES.length);
+    const profile = PROSPECT_TYPES[idx];
+
+    const prompt = `Tu es un expert en prospection B2B pour Devoleads, agence de génération de RDV qualifiés.
+Génère une séquence de prospection complète et hyper-personnalisée pour ce profil :
+
+PROSPECT: ${profile.prenom} ${profile.nom}, CEO de ${profile.societe} (${profile.secteur}, ${profile.taille}, ${profile.ville})
+ACTU: ${profile.societe} ${profile.actu}
+SITE: ${url}
+
+Génère UNIQUEMENT un JSON valide (sans markdown, sans backticks) avec cette structure exacte:
+{
+  "prospect": {
+    "prenom": "${profile.prenom}",
+    "societe": "${profile.societe}",
+    "secteur": "${profile.secteur}",
+    "actu": "${profile.actu}",
+    "ville": "${profile.ville}"
+  },
+  "email1": {
+    "objet": "sujet court accrocheur lié à l'actu",
+    "salutation": "Bonjour ${profile.prenom},",
+    "icebreaker": "1 phrase courte qui fait référence à l'actu récente de la boite",
+    "pitch": "2 phrases max qui relient leur situation à ce que Devoleads résout (pipeline de RDV qualifiés)",
+    "social_proof": "référence courte à un client similaire (invente un nom fictif crédible)",
+    "cta": "1 question courte et douce pour obtenir un RDV"
+  },
+  "relance_j3": "Message de relance en 2 phrases maximum, ton plus direct",
+  "linkedin_touch": "Message LinkedIn en 1 phrase, très court"
+}`;
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{role: 'user', content: prompt}]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '';
+    // Nettoyer et parser
+    const cleaned = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(cleaned);
+    return parsed;
+  } catch(e) {
+    console.error('Prospect analysis error:', e);
+    return null;
+  }
+}
+
+// Injecter la séquence dans la slide Icebreaker
+function injectProspectSequence(data){
+  if(!data) return;
+  prospectData = data;
+  const p = data.prospect;
+  const e = data.email1;
+
+  // Mise à jour de l'email dans la slide S7
+  const subj = document.getElementById('ice2-subj');
+  const hi = document.getElementById('ice2-hi');
+  const brk = document.getElementById('ice2-brk');
+  const pitch = document.getElementById('ice2-pitch');
+  const social = document.getElementById('ice2-social');
+  const cta = document.getElementById('ice2-cta');
+
+  if(subj) subj.textContent = e.objet;
+  if(hi) hi.textContent = e.salutation;
+  if(brk){
+    brk.textContent = e.icebreaker;
+    brk.classList.add('lvl2'); // highlight
+  }
+  if(pitch) pitch.textContent = e.pitch;
+  if(social) social.textContent = e.social_proof;
+  if(cta) cta.textContent = e.cta;
+
+  // Injecter le bloc séquence complète sous l'email
+  injectSequenceBlock(data);
+
+  // Mettre à jour le label du slide
+  const eyebrow = document.querySelector('#s7 .eyebrow');
+  if(eyebrow) eyebrow.innerHTML = `<span class="blink"></span>Séquence pour ${p.prenom} · ${p.societe}`;
+}
+
+function injectSequenceBlock(data){
+  const p = data.prospect;
+  const existing = document.getElementById('prospect-seq-block');
+  if(existing) existing.remove();
+
+  // Trouver la slide S7 et y ajouter le bloc
+  const s7 = document.getElementById('s7');
+  if(!s7) return;
+
+  const block = document.createElement('div');
+  block.id = 'prospect-seq-block';
+  block.style.cssText = `
+    position:absolute;bottom:clamp(60px,8vh,80px);right:clamp(20px,3vw,40px);
+    width:clamp(220px,28vw,320px);z-index:2;
+    background:rgba(6,7,15,.8);backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.08);border-radius:14px;
+    padding:14px;display:flex;flex-direction:column;gap:10px;
+  `;
+  block.innerHTML = `
+    <div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:2px">
+      Séquence complète · ${p.prenom} ${p.nom}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:8px;padding:8px 10px">
+        <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple-l);margin-bottom:4px">Email J+0</div>
+        <div style="font-size:10px;color:var(--muted2);line-height:1.5">${data.email1.icebreaker}</div>
+      </div>
+      <div style="background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.15);border-radius:8px;padding:8px 10px">
+        <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:4px">Relance J+3</div>
+        <div style="font-size:10px;color:var(--muted2);line-height:1.5">${data.relance_j3}</div>
+      </div>
+      <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.15);border-radius:8px;padding:8px 10px">
+        <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:4px">LinkedIn Touch</div>
+        <div style="font-size:10px;color:var(--muted2);line-height:1.5">${data.linkedin_touch}</div>
+      </div>
+    </div>
+    <button onclick="copyProspectEmail()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px;font-family:var(--display);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(124,58,237,.15)';this.style.borderColor='rgba(124,58,237,.3)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.1)'">
+      📋 Copier l'email
+    </button>
+  `;
+  s7.appendChild(block);
+}
+
+window.copyProspectEmail = function(){
+  if(!prospectData) return;
+  const e = prospectData.email1;
+  const p = prospectData.prospect;
+  const text = `Objet : ${e.objet}\n\n${e.salutation}\n\n${e.icebreaker}\n\n${e.pitch}\n\n${e.social_proof}\n\n${e.cta}\n\nCordialement,\nStanislas Fortune · Devoleads`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector('#prospect-seq-block button');
+    if(btn){ btn.textContent = '✓ Copié !'; setTimeout(()=>btn.textContent='📋 Copier l\'email',2000); }
+  }).catch(()=>{});
 };
 
 window.prev=function(){go(cur-1)}
