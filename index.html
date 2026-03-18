@@ -642,6 +642,70 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
 #rdv-val{font-family:var(--display);font-size:11px;font-weight:600;
   color:var(--white);letter-spacing:.5px}
 #rdv-lbl{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+
+/* ═══ MODE CINÉMATIQUE ═══ */
+body.cinematic #nav,
+body.cinematic .arr,
+body.cinematic #pg,
+body.cinematic #bar,
+body.cinematic #uni-btn,
+body.cinematic #rdv-counter,
+body.cinematic #dots{
+  opacity:0 !important;
+  pointer-events:none !important;
+  transition:opacity .6s ease !important;
+}
+body.cinematic .slide.active{
+  padding:clamp(20px,4vh,40px) clamp(20px,4vw,60px) !important;
+}
+#ck-return{
+  position:fixed;bottom:clamp(16px,2.5vh,28px);left:50%;transform:translateX(-50%);
+  z-index:150;opacity:0;pointer-events:none;
+  transition:opacity .8s ease 1s;
+  display:flex;align-items:center;gap:7px;
+  background:rgba(6,7,15,.6);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.1);border-radius:100px;
+  padding:7px 16px 7px 12px;cursor:pointer;
+  font-family:var(--display);font-size:9px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);
+}
+#ck-return:hover{color:rgba(255,255,255,.9);border-color:rgba(255,61,143,.35)}
+#ck-return svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5}
+body.cinematic #ck-return{opacity:1;pointer-events:all}
+@keyframes ck-return-pulse{0%,100%{box-shadow:none}60%{box-shadow:0 0 0 6px rgba(255,61,143,0)}}
+body.cinematic #ck-return{animation:ck-return-pulse 4s ease infinite 2s}
+
+/* ═══ SÉQUENCE NASA ═══ */
+#nasa-seq{
+  position:fixed;inset:0;z-index:800;background:#000;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;
+  pointer-events:all;
+}
+#nasa-seq.done{opacity:0;pointer-events:none;transition:opacity .6s ease}
+#nasa-countdown{
+  font-family:var(--display);font-size:clamp(80px,14vw,140px);font-weight:800;
+  letter-spacing:-6px;color:#fff;line-height:1;
+  text-shadow:0 0 60px rgba(255,61,143,.6),0 0 120px rgba(124,58,237,.4);
+  transition:transform .15s,opacity .15s;
+}
+#nasa-countdown.flash{transform:scale(1.08);opacity:.7}
+#nasa-label{
+  font-family:var(--display);font-size:11px;font-weight:500;
+  letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.35);
+}
+#nasa-bar{
+  width:200px;height:1px;background:rgba(255,255,255,.08);
+  border-radius:1px;margin-top:8px;overflow:hidden;
+}
+#nasa-bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--pink));transition:width .1s linear}
+#nasa-particles{position:absolute;inset:0;pointer-events:none}
+
+/* ═══ JOYSTICK DYNAMIQUE ═══ */
+#ck-joystick-visual{
+  position:absolute;bottom:95px;right:clamp(50px,6%,78px);
+  z-index:9;width:60px;height:60px;pointer-events:none;
+}
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -695,6 +759,16 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <div id="uni-landing-flash"></div>
 
 <div id="transition-flash"></div>
+<div id="ck-return" onclick="openUniverse()">
+  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8l-4 4 4 4M16 12H8"/></svg>
+  Cockpit
+</div>
+<div id="nasa-seq">
+  <canvas id="nasa-particles"></canvas>
+  <div id="nasa-label">Initialisation système</div>
+  <div id="nasa-countdown">3</div>
+  <div id="nasa-bar"><div id="nasa-bar-fill"></div></div>
+</div>
 <div id="rdv-counter"><div id="rdv-pulse"></div><div id="rdv-val">0</div><div id="rdv-lbl">RDV ce mois</div></div>
 <div id="cur"></div>
 <div id="cur-r"></div>
@@ -1632,6 +1706,8 @@ window.go=function(idx){
 }
 
 let ckRenderer,ckScene,ckCamera,ckRaycaster,ckMouse,ckPlanetMeshes=[],ckPlanets=[],ckFrame=0;
+let ckJoyTargetX=0,ckJoyTargetY=0,ckJoyCurrX=0,ckJoyCurrY=0;
+let ckMouseNormX=0,ckMouseNormY=0;
 let ckBuilt=false, ckWarping=false, ckActive=0;
 
 // ════════════════════════════════════════════════
@@ -1749,6 +1825,9 @@ function buildCockpit(){
   // Porthole click zone interactions
   const portClick=document.getElementById('ck-porthole-click');
   portClick.addEventListener('mousemove',e=>{
+    const r2=wrap.getBoundingClientRect();
+    ckMouseNormX=((e.clientX-r2.left)/W-.5)*2;
+    ckMouseNormY=((e.clientY-r2.top)/H-.5)*2;
     const r=wrap.getBoundingClientRect();
     const x=e.clientX-r.left,y=e.clientY-r.top;
     document.getElementById('ck-cur').style.cssText+=`;left:${x}px;top:${y}px`;
@@ -1776,6 +1855,9 @@ function buildCockpit(){
       tt.style.opacity='1';hint.style.opacity='0';
       wrap.style.cursor='none';
       wrap._hovered=pd.id;
+      // Illuminer la planète survolée
+      hits[0].object.material.emissiveIntensity=.35;
+      hits[0].object.scale.setScalar(1.12);
     } else {
       tt.style.opacity='0';hint.style.opacity='1';
       wrap._hovered=null;
@@ -1865,8 +1947,11 @@ function ckAnimate(){
     }
   });
   if(!ckWarping){
-    ckCamera.position.x=Math.sin(ckFrame*.003)*.25;
-    ckCamera.position.y=Math.cos(ckFrame*.0025)*.18;
+    // Camera bob + mouse influence
+    const targetCX=ckMouseNormX*.4+Math.sin(ckFrame*.003)*.2;
+    const targetCY=-ckMouseNormY*.25+Math.cos(ckFrame*.0025)*.15;
+    ckCamera.position.x+=(targetCX-ckCamera.position.x)*.04;
+    ckCamera.position.y+=(targetCY-ckCamera.position.y)*.04;
     ckCamera.lookAt(0,0,0);
   }
   tickParticles();
@@ -1950,8 +2035,8 @@ function ckWarpTo(id){
     setTimeout(()=>{
       // Force navigation — bypass busy/same-slide guards
       busy=false;
+      enterCinematic();
       if(id===cur){
-        // Same slide — just ensure it's visible
         const s=slides[cur];
         s.style.opacity='';
         s.classList.remove('out','out-left','out-right');
@@ -1972,6 +2057,7 @@ window.openUniverse=function(){
   }
   // Reset busy state before opening
   busy=false;
+  exitCinematic();
   overlay.classList.add('open');
   document.body.style.overflow='hidden';
   if(window.soundAmbiStart) soundAmbiStart();
@@ -2204,26 +2290,224 @@ function buildHands(){
   }
   ckScene._hands={lh:hand(-1),rh:hand(1)};
   ckScene.add(ckScene._hands.lh);ckScene.add(ckScene._hands.rh);
-  const joy=new THREE.Mesh(new THREE.CylinderGeometry(.06,.08,.6,8),new THREE.MeshStandardMaterial({color:0x0c1020,roughness:.95,metalness:.3}));
-  joy.position.set(0,-3.6,2.8);ckScene.add(joy);
-  const jTop=new THREE.Mesh(new THREE.SphereGeometry(.1,8,8),new THREE.MeshStandardMaterial({color:0x1c2440,roughness:.7,metalness:.4}));
-  jTop.position.set(0,-3.08,2.8);ckScene.add(jTop);
+  // Joystick articulé
+  const joyBase=new THREE.Mesh(new THREE.CylinderGeometry(.12,.14,.1,10),new THREE.MeshStandardMaterial({color:0x080c18,roughness:.9,metalness:.3}));
+  joyBase.position.set(0,-3.85,2.6);ckScene.add(joyBase);
+  const joyGroup=new THREE.Group();joyGroup.position.set(0,-3.7,2.6);ckScene.add(joyGroup);
+  const joyStick=new THREE.Mesh(new THREE.CylinderGeometry(.045,.065,.55,8),new THREE.MeshStandardMaterial({color:0x0c1020,roughness:.95,metalness:.35}));
+  joyStick.position.set(0,.28,0);joyGroup.add(joyStick);
+  const jTop=new THREE.Mesh(new THREE.SphereGeometry(.11,10,10),new THREE.MeshStandardMaterial({color:0x1c2848,roughness:.6,metalness:.5,emissive:new THREE.Color(0x3355aa),emissiveIntensity:.15}));
+  jTop.position.set(0,.58,0);joyGroup.add(jTop);
+  // Bouton rouge sur le joystick
+  const jBtn=new THREE.Mesh(new THREE.SphereGeometry(.04,8,8),new THREE.MeshStandardMaterial({color:0xff2244,roughness:.4,metalness:.2,emissive:new THREE.Color(0xff0000),emissiveIntensity:.3}));
+  jBtn.position.set(.08,.65,0);joyGroup.add(jBtn);
+  ckScene._joyGroup=joyGroup;
   ckScene._joy=jTop;
 }
 function animHands(warpActive){
   if(!ckScene||!ckScene._hands)return;
   const{lh,rh}=ckScene._hands;
+
+  // Joystick suit la souris avec inertie (lerp)
+  if(ckScene._joyGroup){
+    const lerp=.06;
+    if(warpActive){
+      ckJoyTargetX=.4; ckJoyTargetY=0;
+    } else {
+      ckJoyTargetX=ckMouseNormY*.35;  // tilt avant/arrière
+      ckJoyTargetY=ckMouseNormX*.35;  // tilt gauche/droite
+    }
+    ckJoyCurrX+=(ckJoyTargetX-ckJoyCurrX)*lerp;
+    ckJoyCurrY+=(ckJoyTargetY-ckJoyCurrY)*lerp;
+    ckScene._joyGroup.rotation.x=ckJoyCurrX;
+    ckScene._joyGroup.rotation.z=-ckJoyCurrY;
+    // Bouton rouge pulse si warp
+    if(ckScene._joyGroup.children[2]&&ckScene._joyGroup.children[2].material){
+      ckScene._joyGroup.children[2].material.emissiveIntensity=
+        warpActive?.8+Math.sin(ckFrame*.2)*.2:.3;
+    }
+  }
+
   if(warpActive){
     lh.position.z=2.8;rh.position.z=2.8;
     lh.rotation.x=-.7;rh.rotation.x=-.7;
+    // Mains vers le joystick au warp
+    lh.rotation.z=-.1;rh.rotation.z=.1;
   } else {
     lh.position.z=3+Math.sin(ckFrame*.02)*.04;
     rh.position.z=3+Math.cos(ckFrame*.018)*.04;
-    lh.rotation.x=-.5+Math.sin(ckFrame*.015)*.02;
-    rh.rotation.x=-.5+Math.cos(ckFrame*.015)*.02;
+    lh.rotation.x=-.5+Math.sin(ckFrame*.015)*.02+ckJoyCurrX*.3;
+    rh.rotation.x=-.5+Math.cos(ckFrame*.015)*.02+ckJoyCurrX*.3;
+    lh.rotation.z=-.08+ckJoyCurrY*.15;
+    rh.rotation.z=.08+ckJoyCurrY*.15;
   }
 }
 
+
+
+// ════ SÉQUENCE NASA ════
+;(function(){
+  // Skip si déjà vue
+  if(sessionStorage.getItem('nasa-done')){
+    const s=document.getElementById('nasa-seq');
+    if(s){s.style.display='none';}
+    return;
+  }
+
+  const seq=document.getElementById('nasa-seq');
+  const num=document.getElementById('nasa-countdown');
+  const lbl=document.getElementById('nasa-label');
+  const fill=document.getElementById('nasa-bar-fill');
+  const pc=document.getElementById('nasa-particles');
+  if(!seq||!num) return;
+
+  // Starfield NASA
+  const W=window.innerWidth,H=window.innerHeight;
+  pc.width=W;pc.height=H;
+  const ctx=pc.getContext('2d');
+  const stars=Array.from({length:300},()=>({
+    x:Math.random()*W,y:Math.random()*H,
+    r:.1+Math.random()*1.4,a:Math.random()*.9,
+    vx:0,vy:0,warp:false
+  }));
+  let warpMode=false,nasaFrame=0;
+  function drawNasaBg(){
+    ctx.clearRect(0,0,W,H);
+    nasaFrame++;
+    stars.forEach(s=>{
+      if(warpMode){
+        // Étoiles s'étirent vers le centre
+        const dx=s.x-W/2,dy=s.y-H/2;
+        const len=Math.sqrt(dx*dx+dy*dy)||1;
+        const stretch=18+nasaFrame*.4;
+        ctx.globalAlpha=s.a*.9;
+        ctx.strokeStyle='rgba(200,220,255,'+s.a+')';
+        ctx.lineWidth=s.r*1.5;
+        ctx.beginPath();
+        ctx.moveTo(s.x,s.y);
+        ctx.lineTo(s.x+dx/len*stretch,s.y+dy/len*stretch);
+        ctx.stroke();
+        // Accélérer vers l'extérieur
+        s.x+=dx/len*1.8;s.y+=dy/len*1.8;
+        if(s.x<0||s.x>W||s.y<0||s.y>H){
+          s.x=W/2+(Math.random()-.5)*20;
+          s.y=H/2+(Math.random()-.5)*20;
+        }
+      } else {
+        ctx.globalAlpha=s.a*(.4+.6*Math.sin(nasaFrame*.02+s.r*3));
+        ctx.fillStyle='#fff';
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+      }
+    });
+    ctx.globalAlpha=1;ctx.lineWidth=1;
+    if(!seq.classList.contains('done')) requestAnimationFrame(drawNasaBg);
+  }
+  drawNasaBg();
+
+  // Sons compte à rebours
+  function beep(freq,dur,vol){
+    try{
+      const ctx2=new(window.AudioContext||window.webkitAudioContext)();
+      const o=ctx2.createOscillator();
+      const g=ctx2.createGain();
+      o.type='sine';o.frequency.value=freq;
+      g.gain.setValueAtTime(vol||.15,ctx2.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,ctx2.currentTime+dur);
+      o.connect(g);g.connect(ctx2.destination);
+      o.start();o.stop(ctx2.currentTime+dur);
+    }catch(e){}
+  }
+
+  function flashNum(){
+    num.classList.add('flash');
+    setTimeout(()=>num.classList.remove('flash'),150);
+  }
+
+  // Séquence timeline
+  const labels=['Initialisation système','Vérification propulseurs','Mise en orbite…','Décollage'];
+  let step=0;
+
+  // Progress bar
+  let prog=0;
+  const barInt=setInterval(()=>{
+    prog=Math.min(100,prog+.8);
+    fill.style.width=prog+'%';
+  },30);
+
+  // Compte à rebours
+  function tick(){
+    if(step>=4) return;
+    lbl.textContent=labels[step]||'';
+    if(step<3){
+      num.textContent=3-step;
+      flashNum();
+      beep(step===0?440:step===1?550:880,.18,.12);
+    } else {
+      num.textContent='🚀';
+      num.style.fontSize='clamp(60px,10vw,100px)';
+      beep(220,.08,.2);setTimeout(()=>beep(440,.06,.15),80);setTimeout(()=>beep(880,.04,.1),160);
+    }
+    step++;
+    if(step<4) setTimeout(tick,1100);
+    else setTimeout(launch,900);
+  }
+  setTimeout(tick,400);
+
+  function launch(){
+    // Warp speed !
+    warpMode=true;
+    clearInterval(barInt);
+    fill.style.width='100%';
+    fill.style.transition='none';
+    // Son de lancement
+    try{
+      const ctx3=new(window.AudioContext||window.webkitAudioContext)();
+      const buf=ctx3.createBuffer(1,ctx3.sampleRate*.5,ctx3.sampleRate);
+      const d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(1-i/d.length)*.8;
+      const src=ctx3.createBufferSource();src.buffer=buf;
+      const f=ctx3.createBiquadFilter();f.type='bandpass';f.frequency.value=120;
+      f.frequency.exponentialRampToValueAtTime(1200,ctx3.currentTime+.4);
+      const g=ctx3.createGain();g.gain.setValueAtTime(.4,ctx3.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,ctx3.currentTime+.5);
+      src.connect(f);f.connect(g);g.connect(ctx3.destination);src.start();
+    }catch(e){}
+
+    setTimeout(()=>{
+      seq.classList.add('done');
+      setTimeout(()=>{seq.style.display='none';},700);
+      sessionStorage.setItem('nasa-done','1');
+    },800);
+  }
+})();
+
+
+// ════ MODE CINÉMATIQUE ════
+let cinematicMode=false;
+
+function enterCinematic(){
+  cinematicMode=true;
+  document.body.classList.add('cinematic');
+}
+
+function exitCinematic(){
+  cinematicMode=false;
+  document.body.classList.remove('cinematic');
+}
+
+// Swipe touch support
+let touchStartX=0,touchStartY=0;
+document.addEventListener('touchstart',e=>{
+  touchStartX=e.changedTouches[0].screenX;
+  touchStartY=e.changedTouches[0].screenY;
+},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].screenX-touchStartX;
+  const dy=e.changedTouches[0].screenY-touchStartY;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50){
+    if(dx<0) window.next(); else window.prev();
+  }
+},{passive:true});
 
 window.prev=function(){go(cur-1)}
 window.next=function(){go(cur+1)}
