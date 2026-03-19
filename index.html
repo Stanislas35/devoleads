@@ -3394,6 +3394,9 @@ window.toggleCkPov=function(){
 function stopVoix(){}
 
 ;(function(){
+const overlay  = document.getElementById('uni-overlay');
+const flashEl  = document.getElementById('ck-warp');
+
 window.openUniverse=function(){
   buildCockpit();
   // Sync to current slide
