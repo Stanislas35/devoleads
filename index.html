@@ -1023,6 +1023,78 @@ html.light #rdv-val{color:var(--purple)}
 #narration-mute:hover{background:rgba(255,255,255,.14)}
 #narration-mute svg{width:11px;height:11px;stroke:rgba(255,255,255,.45);fill:none;stroke-width:1.8}
 #narration-mute.muted svg{stroke:rgba(255,100,100,.6)}
+
+/* ═══ SCÈNE CINÉMATIQUE 15s ═══ */
+#cine-scene{
+  position:fixed;inset:0;z-index:810;
+  background:#000;overflow:hidden;
+  image-rendering:pixelated;
+}
+#cine-stars{position:absolute;inset:0;z-index:0}
+#cine-svg{position:absolute;inset:0;width:100%;height:100%;z-index:2}
+#cine-ground{
+  position:absolute;bottom:0;left:0;right:0;height:80px;z-index:1;
+  background:#04050f;border-top:1px solid rgba(100,120,255,.15);
+}
+/* Ligne de scan CRT */
+#cine-scene::after{
+  content:'';position:absolute;inset:0;z-index:50;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.06) 3px,rgba(0,0,0,.06) 4px);
+}
+/* Montagne pixelisée */
+#cine-mountains{
+  position:absolute;bottom:78px;left:0;right:0;height:140px;z-index:1;
+}
+
+/* Pad lights blink */
+@keyframes cs-pad-blink{0%,100%{opacity:1}50%{opacity:.15}}
+/* Window glow pulse */
+@keyframes cs-win-pulse{0%,100%{opacity:.55}50%{opacity:.25}}
+/* HUD scanline */
+@keyframes cs-hud-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+/* Flame flicker */
+@keyframes cs-flame{0%,100%{transform:scaleY(1)scaleX(1)}40%{transform:scaleY(1.1)scaleX(.9)}70%{transform:scaleY(.93)scaleX(1.07)}}
+/* Shake */
+@keyframes cs-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+/* Smoke drift */
+@keyframes cs-smoke-drift{
+  0%{transform:translate(0,0)scale(1);opacity:.5}
+  100%{transform:translate(-20px,-60px)scale(2.5);opacity:0}
+}
+@keyframes cs-smoke-drift2{
+  0%{transform:translate(0,0)scale(1);opacity:.4}
+  100%{transform:translate(25px,-70px)scale(3);opacity:0}
+}
+@keyframes cs-smoke-drift3{
+  0%{transform:translate(0,0)scale(1);opacity:.35}
+  100%{transform:translate(-8px,-80px)scale(3.5);opacity:0}
+}
+.cs-puff1{animation:cs-smoke-drift 2.2s ease-out infinite .2s}
+.cs-puff2{animation:cs-smoke-drift2 2.8s ease-out infinite .6s}
+.cs-puff3{animation:cs-smoke-drift3 3.4s ease-out infinite 1s}
+
+/* Loading */
+#cine-loading{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:20;text-align:center;opacity:0;transition:opacity .4s;pointer-events:none;
+}
+#cine-loading.show{opacity:1}
+#cine-loading-bar{
+  width:220px;height:2px;background:rgba(100,120,255,.12);border-radius:1px;margin:0 auto 8px;
+}
+#cine-loading-fill{
+  height:100%;width:0%;border-radius:1px;
+  background:linear-gradient(90deg,#7c3aed,#ff3d8f);transition:width .3s linear;
+}
+#cine-loading-text{
+  font-family:var(--display);font-size:8px;letter-spacing:3px;
+  text-transform:uppercase;color:rgba(100,120,255,.4);
+}
+#cine-flash{
+  position:absolute;inset:0;z-index:30;background:#fff;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+#cine-flash.fire{opacity:1}
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -1213,6 +1285,258 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <div id="nasa-countdown">3</div>
   <div id="nasa-bar"><div id="nasa-bar-fill"></div></div>
 </div>
+
+<!-- ═══ SCÈNE CINÉMATIQUE EMBARQUEMENT 15s ═══ -->
+<div id="cine-scene" style="display:none">
+  <canvas id="cine-stars"></canvas>
+  <div id="cine-mountains">
+    <svg width="100%" height="140" viewBox="0 0 1200 140" preserveAspectRatio="none">
+      <polygon points="0,140 0,80 60,60 120,80 180,40 260,70 320,30 400,65 460,20 540,55 600,10 660,50 720,25 800,60 860,35 940,70 1000,40 1080,75 1140,50 1200,80 1200,140" fill="#05081a"/>
+      <polygon points="0,140 0,100 80,75 160,95 240,65 320,88 400,55 480,82 560,60 640,90 720,70 800,95 880,72 960,98 1040,78 1120,100 1200,85 1200,140" fill="#060a1e" opacity=".8"/>
+    </svg>
+  </div>
+  <div id="cine-ground"></div>
+
+  <svg id="cine-svg" viewBox="0 0 1200 680" preserveAspectRatio="xMidYMid slice" shape-rendering="crispEdges">
+    <defs>
+      <!-- Pixel grid filter pour look 8-bit -->
+      <filter id="pixelate">
+        <feFlood x="4" y="4" height="2" width="2"/>
+        <feComposite width="10" height="10"/>
+        <feTile result="a"/>
+        <feComposite in="SourceGraphic" in2="a" operator="in"/>
+        <feMorphology operator="dilate" radius="2"/>
+      </filter>
+    </defs>
+
+    <!-- ── RAMPE DE LANCEMENT ── -->
+    <!-- Base en béton -->
+    <rect x="460" y="570" width="280" height="20" fill="#0d1228"/>
+    <rect x="460" y="570" width="280" height="2" fill="rgba(100,120,255,.25)"/>
+    <!-- Détails béton pixel -->
+    <rect x="480" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
+    <rect x="520" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
+    <rect x="660" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
+    <rect x="700" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
+    <!-- Lumières rampe -->
+    <rect id="cs-l1" x="468" y="566" width="6" height="6" fill="#ff3d8f"/>
+    <rect id="cs-l2" x="490" y="566" width="6" height="6" fill="#ff3d8f" opacity=".6"/>
+    <rect id="cs-l3" x="704" y="566" width="6" height="6" fill="#ff3d8f" opacity=".6"/>
+    <rect id="cs-l4" x="726" y="566" width="6" height="6" fill="#ff3d8f"/>
+
+    <!-- ── STRUCTURE SUPPORT / BRAS ── -->
+    <g id="cs-scaffold" opacity="1">
+      <!-- Tour principale -->
+      <rect x="742" y="260" width="16" height="312" fill="#0c1122" stroke="rgba(100,120,255,.2)" stroke-width="1"/>
+      <!-- Bras horizontal -->
+      <rect x="620" y="268" width="138" height="10" fill="#0c1122" stroke="rgba(100,120,255,.15)" stroke-width="1"/>
+      <!-- Plateforme d'accès -->
+      <rect x="618" y="278" width="24" height="8" fill="#111830" stroke="rgba(100,120,255,.2)" stroke-width="1"/>
+      <!-- Échelle (pixel art) -->
+      <rect x="618" y="286" width="4" height="220" fill="#0c1122" stroke="rgba(100,120,255,.18)" stroke-width="1"/>
+      <rect x="636" y="286" width="4" height="220" fill="#0c1122" stroke="rgba(100,120,255,.18)" stroke-width="1"/>
+      <!-- Barreaux -->
+      <rect x="618" y="300" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="320" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="340" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="360" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="380" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="400" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="420" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="440" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="460" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="480" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="500" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <!-- Lumière tour -->
+      <rect x="746" y="265" width="8" height="8" fill="#ff3d8f" opacity=".7" id="cs-tower-light"/>
+    </g>
+
+    <!-- ── FUSÉE DEVOLEADS (pixel art) ── -->
+    <g id="cs-rocket">
+      <!-- Nozzle pixel art -->
+      <rect x="556" y="552" width="8" height="20" fill="#0d1228"/>
+      <rect x="564" y="556" width="8" height="16" fill="#0d1228"/>
+      <rect x="572" y="560" width="16" height="12" fill="#0d1228"/>
+      <rect x="588" y="564" width="8" height="8" fill="#0d1228"/>
+      <rect x="596" y="556" width="8" height="16" fill="#0d1228"/>
+      <rect x="604" y="552" width="8" height="20" fill="#0d1228"/>
+
+      <!-- Corps principal -->
+      <rect x="548" y="180" width="72" height="380" fill="#0a0e1e"/>
+      <!-- Contours corps -->
+      <rect x="548" y="180" width="2" height="380" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="180" width="2" height="380" fill="rgba(100,120,255,.2)"/>
+
+      <!-- Détails fuselage pixel -->
+      <rect x="552" y="220" width="64" height="4" fill="rgba(100,120,255,.08)"/>
+      <rect x="552" y="280" width="64" height="4" fill="rgba(100,120,255,.06)"/>
+      <rect x="552" y="340" width="64" height="4" fill="rgba(100,120,255,.06)"/>
+
+      <!-- BANDE ROSE DEVOLEADS (signature) -->
+      <rect x="548" y="440" width="72" height="14" fill="#ff3d8f" opacity=".8"/>
+      <rect x="548" y="454" width="72" height="7" fill="#7c3aed" opacity=".7"/>
+      <!-- Bande couleur prospect (dynamique) -->
+      <rect id="cs-prospect-band" x="548" y="420" width="72" height="6" fill="#ff3d8f" opacity="0"/>
+
+      <!-- Nose cone pixel art (escalier) -->
+      <rect x="548" y="160" width="72" height="20" fill="#0d1228"/>
+      <rect x="554" y="140" width="60" height="20" fill="#0d1228"/>
+      <rect x="562" y="120" width="44" height="20" fill="#0d1228"/>
+      <rect x="570" y="100" width="28" height="20" fill="#0d1228"/>
+      <rect x="576" y="80" width="16" height="20" fill="#0d1228"/>
+      <rect x="580" y="60" width="8" height="20" fill="#0d1228"/>
+      <rect x="582" y="44" width="4" height="16" fill="#0d1228"/>
+
+      <!-- Hublot pixel art -->
+      <rect x="572" y="248" width="24" height="24" fill="#060c1c" id="cs-window-outer"/>
+      <rect x="576" y="252" width="16" height="16" id="cs-window" fill="#060c1c"/>
+      <rect x="578" y="254" width="6" height="6" fill="rgba(100,180,255,.15)"/>
+      <rect x="586" y="260" width="4" height="4" fill="rgba(100,180,255,.1)"/>
+      <!-- Contour hublot -->
+      <rect x="572" y="248" width="24" height="2" fill="rgba(100,180,255,.35)"/>
+      <rect x="572" y="270" width="24" height="2" fill="rgba(100,180,255,.35)"/>
+      <rect x="572" y="248" width="2" height="24" fill="rgba(100,180,255,.35)"/>
+      <rect x="594" y="248" width="2" height="24" fill="rgba(100,180,255,.35)"/>
+
+      <!-- DEVOLEADS texte pixel -->
+      <text x="584" y="390" fill="rgba(100,120,255,.35)" font-size="7" font-weight="700" letter-spacing="2" text-anchor="middle" font-family="monospace">DL</text>
+
+      <!-- Ailerons pixel art gauche -->
+      <rect x="524" y="510" width="24" height="8" fill="#0c1020"/>
+      <rect x="530" y="500" width="18" height="10" fill="#0c1020"/>
+      <rect x="536" y="488" width="12" height="12" fill="#0c1020"/>
+      <rect x="542" y="476" width="6" height="12" fill="#0c1020"/>
+      <!-- Ailerons droite -->
+      <rect x="620" y="510" width="24" height="8" fill="#0c1020"/>
+      <rect x="620" y="500" width="18" height="10" fill="#0c1020"/>
+      <rect x="620" y="488" width="12" height="12" fill="#0c1020"/>
+      <rect x="620" y="476" width="6" height="12" fill="#0c1020"/>
+
+      <!-- Flammes pixel art (cachées) -->
+      <g id="cs-flames" opacity="0">
+        <rect x="572" y="572" width="24" height="24" fill="#ff6b00"/>
+        <rect x="566" y="580" width="12" height="20" fill="#ff8800"/>
+        <rect x="590" y="580" width="12" height="20" fill="#ff8800"/>
+        <rect x="576" y="576" width="16" height="32" fill="#ffaa00"/>
+        <rect x="580" y="580" width="8" height="40" fill="#ffdd44"/>
+        <rect x="582" y="584" width="4" height="32" fill="#fff"/>
+        <rect x="562" y="576" width="8" height="12" fill="#ff4400" opacity=".7"/>
+        <rect x="598" y="576" width="8" height="12" fill="#ff4400" opacity=".7"/>
+        <rect x="558" y="580" width="6" height="8" fill="#ff2200" opacity=".5"/>
+        <rect x="604" y="580" width="6" height="8" fill="#ff2200" opacity=".5"/>
+      </g>
+    </g>
+
+    <!-- ── ASTRONAUTE PIXEL ART 8-BIT ── -->
+    <g id="cs-astro" transform="translate(160,490)" opacity="1">
+      <!-- Jambes (2 frames alternés via JS) -->
+      <!-- Frame repos -->
+      <g id="cs-astro-legs">
+        <rect x="8" y="36" width="8" height="12" fill="#c8ccd8" rx="1"/>
+        <rect x="18" y="36" width="8" height="12" fill="#c8ccd8" rx="1"/>
+        <!-- Pieds -->
+        <rect x="6" y="46" width="10" height="4" fill="#a0a4b0"/>
+        <rect x="18" y="46" width="10" height="4" fill="#a0a4b0"/>
+      </g>
+      <!-- Corps combinaison (blanc cassé) -->
+      <rect x="6" y="18" width="22" height="20" fill="#e8ecf4" rx="2"/>
+      <!-- Contour corps -->
+      <rect x="6" y="18" width="22" height="2" fill="#c0c8d8"/>
+      <rect x="6" y="18" width="2" height="20" fill="#c0c8d8"/>
+      <rect x="26" y="18" width="2" height="20" fill="#c0c8d8"/>
+      <!-- Poches pixel -->
+      <rect x="8" y="24" width="6" height="5" fill="#d0d4e0"/>
+      <rect x="20" y="24" width="6" height="5" fill="#d0d4e0"/>
+      <!-- Bandes Devoleads sur corps -->
+      <rect x="6" y="33" width="22" height="3" fill="#7c3aed" opacity=".7"/>
+      <!-- Bras gauche -->
+      <rect x="-2" y="20" width="8" height="12" fill="#e8ecf4" rx="1"/>
+      <rect x="-2" y="20" width="2" height="12" fill="#c0c8d8"/>
+      <rect x="4" y="30" width="6" height="4" fill="#c8ccd8"/>
+      <!-- Bras droit -->
+      <rect x="28" y="20" width="8" height="12" fill="#e8ecf4" rx="1"/>
+      <rect x="34" y="20" width="2" height="12" fill="#c0c8d8"/>
+      <rect x="28" y="30" width="6" height="4" fill="#c8ccd8"/>
+      <!-- Casque (rond pixel) -->
+      <rect x="8" y="4"  width="18" height="2" fill="#e8ecf4"/>
+      <rect x="6" y="6"  width="22" height="2" fill="#e8ecf4"/>
+      <rect x="4" y="8"  width="26" height="2" fill="#e8ecf4"/>
+      <rect x="4" y="10" width="26" height="8" fill="#e8ecf4"/>
+      <rect x="6" y="18" width="22" height="2" fill="#e8ecf4"/>
+      <!-- Contour casque -->
+      <rect x="8" y="2"  width="18" height="2" fill="#c0c8d8"/>
+      <rect x="4" y="4"  width="4" height="4" fill="#c0c8d8"/>
+      <rect x="26" y="4" width="4" height="4" fill="#c0c8d8"/>
+      <rect x="2" y="8"  width="2" height="10" fill="#c0c8d8"/>
+      <rect x="30" y="8" width="2" height="10" fill="#c0c8d8"/>
+      <!-- Visière pixel (couleur prospect) -->
+      <rect id="cs-visor" x="8" y="8" width="18" height="10" fill="#ff3d8f" opacity=".85"/>
+      <!-- Reflet visière -->
+      <rect x="10" y="9" width="6" height="3" fill="rgba(255,255,255,.5)"/>
+      <rect x="10" y="13" width="4" height="2" fill="rgba(255,255,255,.2)"/>
+      <!-- Badge entreprise (bras droit) -->
+      <rect id="cs-badge-rect" x="28" y="22" width="8" height="5" fill="#ff3d8f" opacity=".7"/>
+      <!-- Réservoir dos (pixel) -->
+      <rect x="6" y="20" width="4" height="14" fill="#d0d8e8"/>
+    </g>
+
+    <!-- ── HUD MISSION ── -->
+    <g id="cs-hud" opacity="0">
+      <!-- Frame HUD -->
+      <rect x="100" y="28" width="1000" height="62" rx="4" fill="rgba(4,6,20,.85)" stroke="rgba(100,120,255,.25)" stroke-width="1"/>
+      <!-- Coins HUD pixel -->
+      <rect x="100" y="28" width="8" height="2" fill="rgba(100,120,255,.5)"/>
+      <rect x="100" y="28" width="2" height="8" fill="rgba(100,120,255,.5)"/>
+      <rect x="1092" y="28" width="8" height="2" fill="rgba(100,120,255,.5)"/>
+      <rect x="1098" y="28" width="2" height="8" fill="rgba(100,120,255,.5)"/>
+      <rect x="100" y="88" width="8" height="2" fill="rgba(100,120,255,.5)"/>
+      <rect x="100" y="82" width="2" height="8" fill="rgba(100,120,255,.5)"/>
+      <rect x="1092" y="88" width="8" height="2" fill="rgba(100,120,255,.5)"/>
+      <rect x="1098" y="82" width="2" height="8" fill="rgba(100,120,255,.5)"/>
+      <!-- Texte HUD -->
+      <text x="600" y="52" fill="rgba(100,120,255,.45)" font-size="9" font-weight="600" letter-spacing="5" text-anchor="middle" font-family="monospace">MISSION DEVOLEADS</text>
+      <text id="cs-hud-pilot" x="600" y="72" fill="rgba(255,255,255,.75)" font-size="11" font-weight="700" letter-spacing="3" text-anchor="middle" font-family="monospace">PILOTE : –</text>
+      <!-- Indicateurs latéraux -->
+      <rect x="116" y="44" width="6" height="6" fill="#4ade80" id="cs-status-dot1"/>
+      <text x="128" y="50" fill="rgba(74,222,128,.6)" font-size="7" letter-spacing="2" font-family="monospace">SYSTÈMES OK</text>
+      <rect x="116" y="58" width="6" height="6" fill="#ff3d8f" id="cs-status-dot2"/>
+      <text x="128" y="64" fill="rgba(255,61,143,.5)" font-size="7" letter-spacing="2" font-family="monospace">PROPULSION PRÊTE</text>
+      <!-- Timer -->
+      <text id="cs-timer" x="1080" y="52" fill="rgba(100,120,255,.4)" font-size="9" letter-spacing="2" text-anchor="end" font-family="monospace">T-15</text>
+      <text id="cs-phase" x="1080" y="68" fill="rgba(255,255,255,.35)" font-size="7" letter-spacing="2" text-anchor="end" font-family="monospace">EMBARQUEMENT</text>
+    </g>
+
+    <!-- ── STATUS BAS ── -->
+    <g id="cs-status" opacity="0">
+      <rect x="400" y="630" width="400" height="28" rx="3" fill="rgba(4,6,20,.7)" stroke="rgba(100,120,255,.15)" stroke-width="1"/>
+      <text id="cs-status-txt" x="600" y="649" fill="rgba(100,120,255,.5)" font-size="9" letter-spacing="3" text-anchor="middle" font-family="monospace">INITIALISATION</text>
+    </g>
+
+    <!-- ── FUMÉE ── -->
+    <g id="cs-smoke" opacity="0">
+      <rect class="cs-puff1" x="554" y="570" width="60" height="40" rx="20" fill="rgba(60,80,160,.18)"/>
+      <rect class="cs-puff2" x="570" y="575" width="80" height="35" rx="18" fill="rgba(40,60,140,.14)"/>
+      <rect class="cs-puff3" x="540" y="578" width="100" height="30" rx="15" fill="rgba(80,100,180,.1)"/>
+    </g>
+
+    <!-- ── GRILLE SOL TARMAC ── -->
+    <g opacity=".3">
+      <line x1="0" y1="590" x2="1200" y2="590" stroke="rgba(100,120,255,.12)" stroke-width="1"/>
+      <line x1="0" y1="610" x2="1200" y2="610" stroke="rgba(100,120,255,.08)" stroke-width="1"/>
+      <line x1="200" y1="570" x2="200" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
+      <line x1="400" y1="570" x2="400" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
+      <line x1="800" y1="570" x2="800" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
+      <line x1="1000" y1="570" x2="1000" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
+    </g>
+  </svg>
+
+  <div id="cine-loading">
+    <div id="cine-loading-bar"><div id="cine-loading-fill"></div></div>
+    <div id="cine-loading-text">Personnalisation en cours…</div>
+  </div>
+  <div id="cine-flash"></div>
+</div>
+
 <div id="rdv-counter"><div id="rdv-pulse"></div><div id="rdv-val">0</div><div id="rdv-lbl">RDV ce mois</div></div>
 <div id="cur"></div>
 <div id="cur-r"></div>
@@ -2178,14 +2502,14 @@ async function generateAllNarrations(pilotName, prospect){
   const hasProspect = !!(p && p.societe);
 
   const slideContext = [
-    {idx:0, slide:"Cover / Introduction", focus:"accueil et promesse principale"},
-    {idx:1, slide:"Services", focus:"ce que Devoleads fait concrètement"},
-    {idx:2, slide:"Process", focus:"les 14 jours jusqu'au premier lead"},
-    {idx:3, slide:"Formules & tarifs", focus:"les 3 offres et leurs garanties"},
-    {idx:4, slide:"Équipe", focus:"qui sont Stanislas et son équipe"},
-    {idx:5, slide:"Vidéo prospection", focus:"pourquoi la vidéo change tout"},
-    {idx:6, slide:"AI Icebreaker", focus:"la personnalisation IA de Devoleads"},
-    {idx:7, slide:"Mise en place / Contact", focus:"comment démarrer ensemble"},
+    {idx:0, slide:"Cover", focus:"capter l'attention, promettre des RDV qualifiés, donner confiance"},
+    {idx:1, slide:"Services", focus:"Cold Email + LinkedIn + Vidéo + IA, scraping multi-sources, scoring automatique"},
+    {idx:2, slide:"Process", focus:"onboarding 14 jours, ICP + copywriting + lancement + optimisation continue"},
+    {idx:3, slide:"Formules", focus:"Silver 800€/10RDV, Gold 1200€/20RDV, Platinum 1800€/30RDV, garantie remboursement"},
+    {idx:4, slide:"Équipe", focus:"Stanislas fondateur ex-B2B, Amélie copywriting, équipe de 5 experts"},
+    {idx:5, slide:"Vidéo prospection", focus:"vidéo personnalisée multiplie réponses ×4, Loom humanise la prospection"},
+    {idx:6, slide:"AI Icebreaker", focus:"Claude analyse chaque prospect, génère séquence ultra-personnalisée en 30s"},
+    {idx:7, slide:"Contact", focus:"session stratégique gratuite 30min, démarrage sous 14 jours"},
   ];
 
   const prospectCtx = hasProspect
@@ -2199,9 +2523,13 @@ Tu dois écrire 8 narrations — une par slide du pitch deck — qui apparaissen
 Règles strictes :
 - 1 à 2 phrases max par narration, jamais plus
 - Ton humain et conversationnel, jamais corporatif
-- ${hasProspect ? `Intégrer naturellement "${pilotName}" et "${p.societe}" dans AU MOINS 4 slides` : `Utiliser "${pilotName}" dans 3 slides au minimum`}
-- Chaque narration doit apporter une info ou une réflexion utile — jamais juste paraphraser le titre
-- Style : comme si tu murmurais un conseil à l'oreille du prospect
+- ${hasProspect
+    ? `Utiliser "${pilotName}" dans les slides 0, 3, 7. Mentionner "${p.societe}" ou "${p.secteur}" dans les slides 1, 2, 6.`
+    : `Utiliser "${pilotName}" dans les slides 0, 3, 5, 7 — jamais "vous" générique.`}
+- Chaque narration apporte une info concrète liée au focus de la slide — jamais paraphraser le titre
+- Rendre la narration slide 0 chaleureuse et directe : accueillir ${pilotName} par son prénom
+- Style : ton de conseiller senior qui connaît le dossier, pas de vendeur
+- Ne jamais commencer par "Bonjour" ou "Bienvenue" sauf slide 0
 
 Slides :
 ${slideContext.map(s => `${s.idx}. ${s.slide} (focus : ${s.focus})`).join('\n')}
@@ -2267,21 +2595,31 @@ function getVoixFr(){
 
 function speakNarration(text){
   if(!voixReady || !voixEnabled || !text) return;
-  // Arrêter si déjà en train de parler
   stopVoix();
-  // Délai pour laisser le streaming visuel démarrer
   setTimeout(()=>{
     if(!voixEnabled) return;
     const utt = new SpeechSynthesisUtterance(text);
     const voice = getVoixFr();
     if(voice) utt.voice = voice;
     utt.lang = 'fr-FR';
-    utt.rate = 0.92;     // légèrement plus lent que la normale — plus naturel
+    utt.rate = 0.88;   // plus posé pour bien comprendre
     utt.pitch = 1.0;
-    utt.volume = 0.82;
+    utt.volume = 0.85;
+    // Nettoyer la ref à la fin
+    utt.onend = ()=>{ voixUtterance = null; };
+    utt.onerror = ()=>{ voixUtterance = null; };
     voixUtterance = utt;
     speechSynthesis.speak(utt);
-  }, 400);
+
+    // Chrome keepalive — speechSynthesis s'arrête après ~14s sur Chrome desktop
+    // On relance si la synthèse est en pause (bug Chrome)
+    const keepAlive = setInterval(()=>{
+      if(!voixUtterance){ clearInterval(keepAlive); return; }
+      if(speechSynthesis.paused){ speechSynthesis.resume(); }
+    }, 5000);
+    utt.onend = ()=>{ voixUtterance=null; clearInterval(keepAlive); };
+    utt.onerror = ()=>{ voixUtterance=null; clearInterval(keepAlive); };
+  }, 350);
 }
 
 function stopVoix(){
@@ -2390,7 +2728,7 @@ function showNarration(slideIdx){
       cursor.style.display = 'none';
       progress.style.transition = 'none';
       progress.style.width = '0%';
-      stopVoix();
+      // La voix continue jusqu'à la fin naturelle — ne pas couper ici
     }, 500);
   }, displayDuration);
 
@@ -2454,6 +2792,10 @@ window.go=function(idx){
     if(cur===7) startSetup(); // S8 Mise en place = index 7
     // Narration personnalisée
     if(typeof showNarration==='function') setTimeout(()=>showNarration(cur), 600);
+    // S7 : si prospectData déjà disponible → forcer affichage personnalisé
+    if(cur===6 && prospectData && typeof injectProspectSequence==='function'){
+      injectProspectSequence(prospectData);
+    }
     // S7 : générer séquence fictive si pas encore faite ET pas d'URL en cours
     if(cur===6 && !prospectData && !prospectUrl && typeof analyzeProspect==='function'){
       const DUMMY = [
@@ -3306,6 +3648,398 @@ function animHands(warpActive){
 
 
 // ════ SÉQUENCE NASA ════
+
+// ════ SCÈNE CINÉMATIQUE 15s — PIXEL ART ════
+function startCinematicScene(onComplete){
+  const scene = document.getElementById('cine-scene');
+  if(!scene){ if(onComplete) onComplete(); return; }
+
+  // ── Données prospect
+  const pName  = window._getPilotName ? window._getPilotName() : 'Pilote';
+  const pData  = (typeof prospectData!=='undefined' && prospectData) ? prospectData.prospect : null;
+  const pColor = (pData && pData.couleur_hex) ? pData.couleur_hex : '#ff3d8f';
+  const pColorB= (pData && pData.couleur_hex) ? pData.couleur_hex : '#7c3aed';
+  const pSoc   = pData ? (pData.societe||'') : '';
+
+  // ── Appliquer couleurs prospect sur la scène
+  const els = {
+    visor:  document.getElementById('cs-visor'),
+    badge:  document.getElementById('cs-badge-rect'),
+    band:   document.getElementById('cs-prospect-band'),
+    window: document.getElementById('cs-window'),
+  };
+  if(els.visor)  els.visor.setAttribute('fill', pColor);
+  if(els.badge){ els.badge.setAttribute('fill', pColor); els.badge.setAttribute('opacity','.75'); }
+  if(els.band){  els.band.setAttribute('fill',  pColor); els.band.setAttribute('opacity','.7'); }
+
+  // ── HUD pilot text
+  const hudEl = document.getElementById('cs-hud-pilot');
+  if(hudEl) hudEl.textContent = pSoc
+    ? `PILOTE : ${pName.toUpperCase()} · MISSION ${pSoc.toUpperCase()}`
+    : `PILOTE : ${pName.toUpperCase()} · MISSION DEVOLEADS`;
+
+  // ── Afficher la scène
+  scene.style.display = 'block';
+  scene.style.opacity = '0';
+  scene.style.transition = 'opacity 1s ease';
+  requestAnimationFrame(()=> requestAnimationFrame(()=> scene.style.opacity = '1'));
+
+  // ── Starfield canvas
+  const cv = document.getElementById('cine-stars');
+  const W = window.innerWidth, H = window.innerHeight;
+  cv.width = W; cv.height = H;
+  const sCtx = cv.getContext('2d');
+  const stars = Array.from({length:220},()=>({
+    x:Math.random()*W, y:Math.random()*H*.72,
+    r:.5+Math.random()*1.5, a:.1+Math.random()*.8,
+    tw:Math.random()*Math.PI*2, spd:.008+Math.random()*.015
+  }));
+  let cFrame=0, cRunning=true;
+  function drawStars(){
+    if(!cRunning) return;
+    sCtx.clearRect(0,0,W,H);
+    cFrame++;
+    stars.forEach(s=>{
+      sCtx.globalAlpha = s.a*(.35+.65*Math.sin(cFrame*s.spd+s.tw));
+      sCtx.fillStyle = '#fff';
+      sCtx.fillRect(Math.round(s.x), Math.round(s.y), Math.ceil(s.r), Math.ceil(s.r));
+    });
+    sCtx.globalAlpha=1;
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  // ── Timer HUD
+  let timerVal=16;
+  const timerEl = document.getElementById('cs-timer');
+  const timerInt = setInterval(()=>{
+    timerVal--;
+    if(timerEl) timerEl.textContent = `T-${Math.max(0,timerVal)}`;
+    if(timerVal<=0) clearInterval(timerInt);
+  },1000);
+
+  // ── Audio engine
+  let aCtx;
+  try{ aCtx = new(window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  let droneNodes=null;
+
+  function snd(type){
+    if(!aCtx) return;
+    const t = aCtx.currentTime;
+    try{
+      if(type==='drone'){
+        const o1=aCtx.createOscillator(), o2=aCtx.createOscillator(), o3=aCtx.createOscillator();
+        o1.type='sawtooth'; o1.frequency.value=34;
+        o2.type='sine';     o2.frequency.value=68.2;
+        o3.type='sine';     o3.frequency.value=102.5;
+        const lfo=aCtx.createOscillator(); lfo.frequency.value=.14;
+        const lfoG=aCtx.createGain();      lfoG.gain.value=1.2;
+        lfo.connect(lfoG); lfoG.connect(o1.frequency);
+        const filt=aCtx.createBiquadFilter(); filt.type='lowpass'; filt.frequency.value=340; filt.Q.value=2.2;
+        const g=aCtx.createGain(); g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.018,t+3);
+        o1.connect(filt); o2.connect(filt); o3.connect(filt); filt.connect(g); g.connect(aCtx.destination);
+        o1.start(); o2.start(); o3.start(); lfo.start();
+        droneNodes={o1,o2,o3,lfo,g};
+      }
+      if(type==='step'){
+        const buf=aCtx.createBuffer(1,aCtx.sampleRate*.035,aCtx.sampleRate);
+        const d=buf.getChannelData(0);
+        for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3)*.3;
+        const src=aCtx.createBufferSource(); src.buffer=buf;
+        const f=aCtx.createBiquadFilter(); f.type='bandpass'; f.frequency.value=700; f.Q.value=1.8;
+        const g=aCtx.createGain(); g.gain.value=.45;
+        src.connect(f); f.connect(g); g.connect(aCtx.destination); src.start();
+      }
+      if(type==='hatch'){
+        [0,.07,.16,.28].forEach((delay,i)=>{
+          const o=aCtx.createOscillator(); o.type='sine';
+          o.frequency.setValueAtTime(380-i*70,t+delay);
+          o.frequency.exponentialRampToValueAtTime(160-i*25,t+delay+.15);
+          const g=aCtx.createGain(); g.gain.setValueAtTime(.14,t+delay); g.gain.exponentialRampToValueAtTime(.001,t+delay+.18);
+          o.connect(g); g.connect(aCtx.destination); o.start(t+delay); o.stop(t+delay+.2);
+        });
+      }
+      if(type==='pressurize'){
+        const buf=aCtx.createBuffer(1,aCtx.sampleRate*.8,aCtx.sampleRate);
+        const d=buf.getChannelData(0);
+        for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,1.2)*.28;
+        const src=aCtx.createBufferSource(); src.buffer=buf;
+        const f=aCtx.createBiquadFilter(); f.type='lowpass';
+        f.frequency.setValueAtTime(900,t); f.frequency.exponentialRampToValueAtTime(140,t+.8);
+        const g=aCtx.createGain(); g.gain.setValueAtTime(.4,t); g.gain.exponentialRampToValueAtTime(.001,t+.85);
+        src.connect(f); f.connect(g); g.connect(aCtx.destination); src.start();
+      }
+      if(type==='countdown'){
+        const freq=[880,880,880,1320][window._cineCountStep%4||0];
+        const o=aCtx.createOscillator(); o.type='square'; o.frequency.value=freq;
+        const g=aCtx.createGain(); g.gain.setValueAtTime(.08,t); g.gain.exponentialRampToValueAtTime(.001,t+.12);
+        o.connect(g); g.connect(aCtx.destination); o.start(t); o.stop(t+.14);
+      }
+      if(type==='ignition'){
+        // Grondement grave + souffle
+        const buf=aCtx.createBuffer(1,aCtx.sampleRate*2,aCtx.sampleRate);
+        const d=buf.getChannelData(0);
+        for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(Math.min(1,i/aCtx.sampleRate*.8))*.5;
+        const src=aCtx.createBufferSource(); src.buffer=buf;
+        const f=aCtx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=180;
+        const g=aCtx.createGain(); g.gain.setValueAtTime(.001,t); g.gain.exponentialRampToValueAtTime(.7,t+.6); g.gain.linearRampToValueAtTime(.001,t+2);
+        src.connect(f); f.connect(g); g.connect(aCtx.destination); src.start();
+        // Oscillateur sub
+        const sub=aCtx.createOscillator(); sub.type='sawtooth'; sub.frequency.value=38;
+        const sg=aCtx.createGain(); sg.gain.setValueAtTime(.001,t); sg.gain.exponentialRampToValueAtTime(.15,t+.4); sg.gain.linearRampToValueAtTime(.001,t+2);
+        sub.connect(sg); sg.connect(aCtx.destination); sub.start(t); sub.stop(t+2);
+      }
+      if(type==='crescendo'){
+        // Montée synthé épique
+        [0, .15, .3, .55, .85].forEach((delay,i)=>{
+          const freq = [80,120,160,240,380][i];
+          const o=aCtx.createOscillator(); o.type='sine'; o.frequency.value=freq;
+          const g=aCtx.createGain(); g.gain.setValueAtTime(0,t+delay); g.gain.linearRampToValueAtTime(.12-i*.015,t+delay+.5); g.gain.linearRampToValueAtTime(.001,t+delay+1.8);
+          o.connect(g); g.connect(aCtx.destination); o.start(t+delay); o.stop(t+delay+2);
+        });
+        // Bruit de souffle montant
+        const buf2=aCtx.createBuffer(1,aCtx.sampleRate*2,aCtx.sampleRate);
+        const d2=buf2.getChannelData(0);
+        for(let i=0;i<d2.length;i++) d2[i]=(Math.random()*2-1)*(i/d2.length)*.35;
+        const src2=aCtx.createBufferSource(); src2.buffer=buf2;
+        const f2=aCtx.createBiquadFilter(); f2.type='highpass'; f2.frequency.value=800;
+        const g2=aCtx.createGain(); g2.gain.setValueAtTime(0,t); g2.gain.linearRampToValueAtTime(.25,t+1.5); g2.gain.linearRampToValueAtTime(.001,t+2.2);
+        src2.connect(f2); f2.connect(g2); g2.connect(aCtx.destination); src2.start();
+      }
+      if(type==='warp-boom'){
+        const o=aCtx.createOscillator(); o.type='sine'; o.frequency.setValueAtTime(220,t); o.frequency.exponentialRampToValueAtTime(40,t+.8);
+        const g=aCtx.createGain(); g.gain.setValueAtTime(.35,t); g.gain.exponentialRampToValueAtTime(.001,t+.9);
+        o.connect(g); g.connect(aCtx.destination); o.start(t); o.stop(t+1);
+      }
+    }catch(e){}
+  }
+
+  // ── Utilitaires DOM/SVG
+  const T = (fn,ms) => setTimeout(fn,ms);
+  const astro    = document.getElementById('cs-astro');
+  const rocket   = document.getElementById('cs-rocket');
+  const flames   = document.getElementById('cs-flames');
+  const smoke    = document.getElementById('cs-smoke');
+  const scaffold = document.getElementById('cs-scaffold');
+  const hud      = document.getElementById('cs-hud');
+  const status   = document.getElementById('cs-status');
+  const stTxt    = document.getElementById('cs-status-txt');
+  const phaseEl  = document.getElementById('cs-phase');
+  const flash    = document.getElementById('cs-flash');
+  const loading  = document.getElementById('cine-loading');
+  const lFill    = document.getElementById('cine-loading-fill');
+
+  function setStatus(txt, phase){
+    if(stTxt) stTxt.textContent = txt;
+    if(phaseEl && phase) phaseEl.textContent = phase;
+  }
+  function svgFade(el, to, dur=400){
+    if(!el) return;
+    const from = parseFloat(el.getAttribute('opacity')||0);
+    const start = performance.now();
+    function step(now){
+      const p = Math.min(1,(now-start)/dur);
+      el.setAttribute('opacity', from+(to-from)*p);
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ── Loading bar si prospect en cours
+  if(pSoc){
+    if(loading) loading.classList.add('show');
+    let lp=0;
+    const lInt=setInterval(()=>{ lp=Math.min(90,lp+2); if(lFill) lFill.style.width=lp+'%'; if(lp>=90) clearInterval(lInt); },100);
+    window._cineLoadInt=lInt;
+  }
+
+  // ══════════════════════════════════════
+  // TIMELINE 15 SECONDES
+  // ══════════════════════════════════════
+
+  // t=0 : Drone + HUD
+  snd('drone');
+  T(()=>{
+    svgFade(hud,1,800);
+    svgFade(status,1,600);
+    setStatus('SYSTÈMES NOMINAUX · PILOTE EN APPROCHE','PRÉ-EMBARQUEMENT');
+    // Pad lights blink
+    ['cs-l1','cs-l2','cs-l3','cs-l4'].forEach((id,i)=>{
+      const el=document.getElementById(id);
+      if(el){ el.style.animation=`cs-pad-blink ${.8+i*.1}s step-end infinite ${i*.2}s`; }
+    });
+  },600);
+
+  // t=1.2s : Astronaute démarre la marche
+  T(()=>{
+    setStatus(`PILOTE ${pName.toUpperCase()} · APPROCHE RAMPE DE LANCEMENT`,'MARCHE APPROCHE');
+    // Marche pixel art : translateX de 160 → 588 (pied de l'échelle)
+    // SVG viewBox 1200×680, le sol est à Y=490 en transform
+    let px=160, stepN=0, walkRunning=true;
+    window._cineWalkInt = setInterval(()=>{
+      if(!walkRunning) return;
+      px += 4.2;
+      stepN++;
+      // Bob pixel (2 pixels up/down)
+      const by = stepN%4<2 ? 0 : -2;
+      if(astro) astro.setAttribute('transform',`translate(${Math.round(px)},${490+by})`);
+      // Jambes alternance (gauche/droite)
+      const legs = document.getElementById('cs-astro-legs');
+      if(legs && stepN%6===0) snd('step');
+      if(px>=580){ walkRunning=false; clearInterval(window._cineWalkInt); }
+    },45);
+  },1200);
+
+  // t=5.5s : Stop marche + pause au pied de l'échelle
+  T(()=>{
+    if(window._cineWalkInt) clearInterval(window._cineWalkInt);
+    if(astro) astro.setAttribute('transform','translate(580,490)');
+    setStatus(`CONFIRMATION EMBARQUEMENT · VÉRIFICATION SYSTÈME`,'PAUSE PIED ECHELLE');
+    snd('countdown'); window._cineCountStep=1;
+  },5500);
+
+  // t=6.5s : Commence à grimper
+  T(()=>{
+    setStatus(`${pName.toUpperCase()} · MONTÉE EN COURS`,'ESCALADE');
+    let py=490, climbN=0;
+    window._cineClimbInt = setInterval(()=>{
+      py -= 3.2;
+      climbN++;
+      const bx = climbN%6<3 ? 0 : 2; // oscillation latérale
+      if(astro) astro.setAttribute('transform',`translate(${620+bx},${Math.round(py)})`);
+      if(climbN%5===0) snd('step');
+      if(py<=288){ clearInterval(window._cineClimbInt); }
+    },55);
+  },5500);
+
+  // t=10.5s : Entrée dans la capsule
+  T(()=>{
+    if(window._cineClimbInt) clearInterval(window._cineClimbInt);
+    setStatus('CAPSULE VERROUILLÉE · COMBINAISON PRESSURISÉE','EMBARQUEMENT');
+    // Fondu astronaute
+    svgFade(astro,0,500);
+    // Scaffold se rétracte
+    T(()=>svgFade(scaffold,0,600),400);
+    // Hublot s'allume
+    T(()=>{
+      snd('hatch');
+      const w=document.getElementById('cs-window');
+      if(w){
+        w.setAttribute('fill',pColor);
+        // Pulse hublot 4 fois
+        let hp=0;
+        const hInt=setInterval(()=>{
+          hp++;
+          w.setAttribute('opacity', hp%2===0?'.6':'.2');
+          if(hp>=8){ clearInterval(hInt); w.setAttribute('opacity','.5'); }
+        },350);
+      }
+      // Bande couleur prospect apparaît
+      const band=document.getElementById('cs-prospect-band');
+      if(band){ band.setAttribute('opacity','.75'); }
+      // Loading bar complète
+      if(window._cineLoadInt) clearInterval(window._cineLoadInt);
+      if(lFill){ lFill.style.width='100%'; }
+      T(()=>{ if(loading) loading.classList.remove('show'); },500);
+    },500);
+    // Pressurisation
+    T(()=>snd('pressurize'),700);
+    // Countdown final dans le HUD
+    let cd=5;
+    const cdEl=document.getElementById('cs-timer');
+    const cdInt=setInterval(()=>{
+      cd--;
+      if(cdEl) cdEl.textContent=`T-${cd}`;
+      snd('countdown'); window._cineCountStep=cd;
+      if(cd<=0) clearInterval(cdInt);
+    },1000);
+  },10500);
+
+  // t=11.5s : Fumée pré-allumage
+  T(()=>{
+    setStatus('PRÉ-IGNITION · ALLUMAGE SÉQUENCE ACTIVE','PRÉ-ALLUMAGE');
+    svgFade(smoke,1,600);
+    // Pad lights passent au rouge vif
+    ['cs-l1','cs-l2','cs-l3','cs-l4'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){ el.setAttribute('fill','#ff0044'); el.style.animation='cs-pad-blink .35s step-end infinite'; }
+    });
+  },11500);
+
+  // t=12.5s : IGNITION
+  T(()=>{
+    setStatus('IGNITION · DÉCOLLAGE IMMINENT','IGNITION');
+    snd('ignition');
+    svgFade(flames,1,200);
+    // Tremblement de la scène
+    let sh=0;
+    const shInt=setInterval(()=>{
+      sh++;
+      const v=Math.round((Math.random()-.5)*5);
+      scene.style.transform=`translateX(${v}px)`;
+      if(sh>30){ clearInterval(shInt); scene.style.transform=''; }
+    },35);
+  },12500);
+
+  // t=13.5s : Montée en puissance + crescendo
+  T(()=>{
+    setStatus('🚀 DÉCOLLAGE · BONNE MISSION','DÉCOLLAGE');
+    snd('crescendo');
+    // Fusée décolle — animation rAF (CSS transition ne marche pas sur <g> SVG)
+    if(rocket){
+      let ry=0, rScale=1;
+      const rStart=performance.now();
+      function animRocket(now){
+        const prog=Math.min(1,(now-rStart)/2500);
+        // Easing cubic-bezier(.3,0,.1,1) approché
+        const e=prog<.5?4*prog*prog*prog:1-Math.pow(-2*prog+2,3)/2;
+        ry=-820*e;
+        rocket.setAttribute('transform',`translate(0,${Math.round(ry)})`);
+        if(prog<1) requestAnimationFrame(animRocket);
+      }
+      requestAnimationFrame(animRocket);
+    }
+    // Flammes grandissent — rAF aussi
+    if(flames){
+      let fs=1;
+      const fStart=performance.now();
+      function animFlames(now){
+        const prog=Math.min(1,(now-fStart)/300);
+        fs=1+prog*.8;
+        flames.setAttribute('transform',`scale(${fs.toFixed(2)}) translate(${Math.round(-96*(fs-1)/fs)},${Math.round(-50*(fs-1)/fs)})`);
+        if(prog<1) requestAnimationFrame(animFlames);
+      }
+      requestAnimationFrame(animFlames);
+    }
+    // Drône fade out
+    if(droneNodes){
+      try{
+        droneNodes.g.gain.linearRampToValueAtTime(0,aCtx.currentTime+1.5);
+        setTimeout(()=>{ try{droneNodes.o1.stop();droneNodes.o2.stop();droneNodes.o3.stop();droneNodes.lfo.stop();}catch(e){} },1600);
+      }catch(e){}
+    }
+  },13500);
+
+  // t=15.0s : Flash blanc + boom warp
+  T(()=>{
+    snd('warp-boom');
+    const fl=document.getElementById('cine-flash');
+    if(fl){ fl.style.transition='opacity .25s'; fl.style.opacity='1'; }
+  },15000);
+
+  // t=15.5s : Fermeture + callback
+  T(()=>{
+    cRunning=false;
+    clearInterval(timerInt);
+    scene.style.transition='opacity .6s';
+    scene.style.opacity='0';
+    T(()=>{
+      scene.style.display='none';
+      if(onComplete) onComplete();
+    },600);
+  },15500);
+}
+
 window.startNASA=function(){
   // Skip si déjà vue
   if(sessionStorage.getItem('nasa-done')){
@@ -3416,34 +4150,28 @@ window.startNASA=function(){
   setTimeout(tick,400);
 
   function launch(){
-    // Warp speed !
+    // Warp speed + fade NASA → scène cinématique
     warpMode=true;
     clearInterval(barInt);
     fill.style.width='100%';
     fill.style.transition='none';
-    // Son de lancement
-    try{
-      const ctx3=new(window.AudioContext||window.webkitAudioContext)();
-      const buf=ctx3.createBuffer(1,ctx3.sampleRate*.5,ctx3.sampleRate);
-      const d=buf.getChannelData(0);
-      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(1-i/d.length)*.8;
-      const src=ctx3.createBufferSource();src.buffer=buf;
-      const f=ctx3.createBiquadFilter();f.type='bandpass';f.frequency.value=120;
-      f.frequency.exponentialRampToValueAtTime(1200,ctx3.currentTime+.4);
-      const g=ctx3.createGain();g.gain.setValueAtTime(.4,ctx3.currentTime);
-      g.gain.exponentialRampToValueAtTime(.001,ctx3.currentTime+.5);
-      src.connect(f);f.connect(g);g.connect(ctx3.destination);src.start();
-    }catch(e){}
 
+    // Fondu sortie NASA
     setTimeout(()=>{
       seq.classList.add('done');
-      setTimeout(()=>{seq.style.display='none';},700);
-      sessionStorage.setItem('nasa-done','1');
-      if(typeof enterCinematic==='function') enterCinematic();
-      // Générer les narrations en background
-      const _pn = window._getPilotName ? window._getPilotName() : 'Pilote';
-      if(typeof initNarrations==='function') initNarrations(_pn);
-    },800);
+      setTimeout(()=>{ seq.style.display='none'; },600);
+
+      // Lancer la scène cinématique
+      startCinematicScene(()=>{
+        // Appelé quand la scène se termine (~9.5s plus tard)
+        sessionStorage.setItem('nasa-done','1');
+        if(typeof enterCinematic==='function') enterCinematic();
+        const _pn = window._getPilotName ? window._getPilotName() : 'Pilote';
+        if(typeof initNarrations==='function' && !prospectUrl){
+          initNarrations(_pn);
+        }
+      });
+    },500);
   }
 };
 
@@ -3805,6 +4533,7 @@ async function analyzeProspect(url, forcedProfile){
 function injectProspectSequence(data){
   if(!data) return;
   prospectData = data;
+  console.log('[Devoleads] Prospect reçu:', data.prospect?.prenom, data.prospect?.societe, 'couleur:', data.prospect?.couleur_hex);
   const p = data.prospect;
   const e = data.email1;
 
@@ -3829,34 +4558,83 @@ function injectProspectSequence(data){
   // Injecter le bloc séquence complète sous l'email
   injectSequenceBlock(data);
 
-  // Appliquer le thème prospect au cockpit si disponible
+  // ── Appliquer le thème couleur au cockpit ──
   if(typeof applyCockpitTheme==='function' && data.prospect){
     applyCockpitTheme(data.prospect);
   }
-  // Regénérer les narrations avec le contexte prospect
+
+  // ── Mettre à jour le titre de l'overlay cockpit si ouvert ──
+  const _ckTitle = document.getElementById('uni-title');
+  if(_ckTitle && data.prospect && data.prospect.societe){
+    _ckTitle.textContent = 'Cockpit · ' + data.prospect.societe;
+  }
+
+  // ── Mettre à jour les panneaux prospect dans le cockpit ──
+  if(data.prospect){
+    const _p = data.prospect;
+    const _show = id => { const el=document.getElementById(id); if(el) el.style.display='block'; };
+    const _set  = (id, val) => { const el=document.getElementById(id); if(el&&val) el.textContent=val; };
+    _show('ck-prospect-block');    _set('ck-p-name',    (_p.prenom||'')+(_p.nom?' '+_p.nom:''));
+    _show('ck-prospect-societe-block'); _set('ck-p-societe', _p.societe);
+    _show('ck-prospect-secteur-block'); _set('ck-p-secteur', _p.secteur);
+    if(_p.actu){ _show('ck-prospect-actu-block'); _set('ck-p-actu', _p.actu); }
+    const _logo = document.getElementById('ck-prospect-logo');
+    if(_logo && _p.societe){ _logo.textContent = _p.societe; _logo.style.display='block'; }
+  }
+
+  // ── Générer/regénérer les narrations avec le VRAI contexte prospect ──
+  // À ce stade prospectData est set (ligne 1 de cette fonction)
+  // donc initNarrations va lire prospectData.prospect correctement
   const _pn2 = window._getPilotName ? window._getPilotName() : 'Pilote';
   if(typeof initNarrations==='function'){
-    narrationTexts = null; // reset pour forcer la regénération
-    initNarrations(_pn2);
+    narrationTexts = null; // reset pour forcer régénération
+    initNarrations(_pn2);  // prospectData est maintenant disponible ✓
   }
-  // Forcer le slider sur niveau max pour afficher la séquence IA
-  const slider = document.getElementById('ice2-slider');
-  if(slider){
-    slider.value = 100;
-    // Déclencher applyLevel(2) pour que la séquence apparaisse dans l'email
-    if(typeof applyLevel==='function'){
-      currentLvl = -1; // reset pour forcer le refresh
-      applyLevel(2, true);
-    }
-    // Remettre fill
-    const fill = document.getElementById('ice2-fill');
-    if(fill) fill.style.width='100%';
-    const pct = document.getElementById('ice2-pct');
-    if(pct) pct.textContent='100%';
-  }
-  // Mettre à jour le label du slide
-  const eyebrow = document.querySelector('#s7 .eyebrow');
-  if(eyebrow) eyebrow.innerHTML = `<span class="blink"></span>Séquence IA · ${p.prenom} · ${p.societe}`;
+  // ── Injecter directement dans l'email S7 (bypass applyLevel guard) ──
+  const _subj  = document.getElementById('ice2-subj');
+  const _hi    = document.getElementById('ice2-hi');
+  const _brk   = document.getElementById('ice2-brk');
+  const _pitch = document.getElementById('ice2-pitch');
+  const _soc   = document.getElementById('ice2-social');
+  const _cta   = document.getElementById('ice2-cta');
+
+  if(e.objet   && _subj)  _subj.textContent  = e.objet;
+  if(e.salutation && _hi) _hi.textContent    = e.salutation;
+  if(e.icebreaker && _brk){ _brk.textContent = e.icebreaker; _brk.className='ice2-tok ice2-highlight lvl2'; }
+  if(e.pitch   && _pitch) _pitch.textContent = e.pitch;
+  if(e.social_proof && _soc) _soc.textContent= e.social_proof;
+  if(e.cta     && _cta)   _cta.textContent   = e.cta;
+
+  // Badge IA
+  const _badge = document.getElementById('ice-badge');
+  if(_badge){ _badge.textContent='IA · '+(p.societe||'Prospect'); _badge.style.background='rgba(34,211,238,.1)'; _badge.style.color='var(--cyan)'; }
+  const _emailBorder = document.querySelector('.ice-email2');
+  if(_emailBorder) _emailBorder.style.borderColor='rgba(34,211,238,.3)';
+
+  // Stats
+  ['ist2-v0','ist2-v1','ist2-v2'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.textContent = ['x8.0','100%','Sur-mesure'][i];
+    el.style.color = 'var(--cyan)';
+  });
+  const _bar=document.getElementById('ist2-bar'); if(_bar) _bar.style.width='100%';
+
+  // Slider visuel
+  const _fill=document.getElementById('ice2-fill'); if(_fill) _fill.style.width='100%';
+  const _pct=document.getElementById('ice2-pct');   if(_pct)  _pct.textContent='100%';
+  const _slider=document.getElementById('ice2-slider'); if(_slider) _slider.value=100;
+
+  // Forcer currentLvl = 2 pour cohérence UI
+  if(typeof currentLvl!=='undefined') currentLvl = 2;
+  // Level badges
+  for(let i=0;i<3;i++){ const el=document.getElementById('lb'+i); if(el) el.classList.toggle('active',i===2); }
+  // Checklist
+  for(let i=0;i<6;i++){ const el=document.getElementById('chg'+i); if(el) el.className='ice2-chg on'+(i<4?' p':''); }
+
+  // Eyebrow slide
+  const _eyebrow = document.querySelector('#s7 .eyebrow');
+  if(_eyebrow) _eyebrow.innerHTML = '<span class="blink"></span>Séquence IA · '+p.prenom+' · '+p.societe;
 }
 
 function injectSequenceBlock(data){
