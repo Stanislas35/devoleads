@@ -1955,6 +1955,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
       <div class="pl">Copywriting inclus</div>
       <div class="pl">Reporting hebdomadaire</div>
       <div class="gar"><strong>Garantie</strong> — Moins de 30 RDV ? On continue gratuitement.</div>
+      <a href="mailto:stanislas@devoleads.com?subject=Int%C3%A9ress%C3%A9%20par%20la%20formule%20Silver%20%E2%80%94%2010%20RDV%2Fmois" class="pc-cta-btn" style="display:block;margin-top:12px;background:#a78bfa;color:#000;font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;border-radius:8px;padding:8px 0;text-decoration:none;opacity:.9">Choisir Silver →</a>
     </div>
     <div class="pc feat">
       <span class="pp">🪐</span>
@@ -1967,6 +1968,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
       <div class="pl">AI Icebreaker + Scoring</div>
       <div class="pl">Account manager dédié</div>
       <div class="gar"><strong>Garantie</strong> — Moins de 60 RDV ? On continue gratuitement.</div>
+      <a href="mailto:stanislas@devoleads.com?subject=Intéressé%20par%20la%20formule%20Gold%20—%2020%20RDV/mois" class="pc-cta-btn" style="display:block;margin-top:12px;background:#fbbf24;color:#000;font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;border-radius:8px;padding:8px 0;text-decoration:none;opacity:.9">Choisir Gold →</a>
     </div>
     <div class="pc">
       <span class="pp">🌍</span>
@@ -1979,6 +1981,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
       <div class="pl">Multi-domaines + Vidéo</div>
       <div class="pl">Intégration CRM complète</div>
       <div class="gar"><strong>Garantie</strong> — Moins de 120 RDV ? On continue gratuitement.</div>
+      <a href="mailto:stanislas@devoleads.com?subject=Intéressé%20par%20la%20formule%20Platinum%20—%2040%20RDV/mois" class="pc-cta-btn" style="display:block;margin-top:12px;background:#22d3ee;color:#000;font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;border-radius:8px;padding:8px 0;text-decoration:none;opacity:.9">Choisir Platinum →</a>
     </div>
   </div>
 </div>
@@ -2398,6 +2401,13 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
     <div>
       <div class="eyebrow"><span class="blink"></span>Mise en place</div>
       <h2 id="s8-title" style="font-size:clamp(28px,3.5vw,44px)">Comment on démarre<br><span class="g">ensemble.</span></h2>
+      <a href="https://calendly.com/devoleads/30min" target="_blank" rel="noopener"
+         style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:linear-gradient(135deg,#7c3aed,#ff3d8f);color:#fff;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:100px;padding:10px 22px;text-decoration:none;box-shadow:0 0 24px rgba(124,58,237,.4);transition:all .2s"
+         onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 36px rgba(255,61,143,.5)'"
+         onmouseout="this.style.transform='';this.style.boxShadow='0 0 24px rgba(124,58,237,.4)'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Réserver une session stratégique gratuite →
+      </a>
       <p class="lead" style="margin-top:10px;font-size:13px">Cinq étapes. Vous validez chaque jalon. Zéro surprise.</p>
     </div>
     <!-- Contact pill cluster -->
@@ -2802,6 +2812,67 @@ const PDATA=[
   {id:7,label:'Contact',  sub:'Démarrons ensemble',          c1:'#902020',c2:'#601010',size:1.0,pos:[-3,2.2,-5],  ring:false,speed:.011,tilt:.18, color:'#f87171'},
 ];
 
+function hexToRgb(hex){
+  if(!hex) return '124,58,237';
+  const h = hex.trim().replace(/^#/,'').toLowerCase();
+  if(h.length===3) return [
+    parseInt(h[0]+h[0],16),
+    parseInt(h[1]+h[1],16),
+    parseInt(h[2]+h[2],16)
+  ].join(',');
+  if(h.length!==6) return '124,58,237';
+  return [
+    parseInt(h.slice(0,2),16),
+    parseInt(h.slice(2,4),16),
+    parseInt(h.slice(4,6),16)
+  ].join(',');
+}
+
+function applyCockpitTheme(prospect){
+  const hex = (prospect && prospect.couleur_hex) ? prospect.couleur_hex : '#ff3d8f';
+  const rgb = hexToRgb(hex);
+  const overlay = document.getElementById('uni-overlay');
+  if(overlay){
+    overlay.style.setProperty('--ck-accent', rgb);
+    overlay.style.setProperty('--ck-accent-hex', hex);
+  }
+  // Planète Icebreaker (id 6) → couleur prospect
+  if(typeof ckPlanetMeshes!=='undefined' && ckPlanetMeshes[6] && ckPlanetMeshes[6].material){
+    ckPlanetMeshes[6].material.emissive.set(hex);
+  }
+  // Watermark hublot
+  const pnEl = document.getElementById('ck-porthole-name');
+  if(pnEl && prospect && prospect.societe){
+    pnEl.textContent = prospect.societe.toUpperCase();
+    pnEl.classList.add('visible');
+  }
+  // Pilote visor dans la salle
+  const visor = document.getElementById('ck-pilot-visor');
+  if(visor) visor.setAttribute('fill', hex);
+  // Panneaux cockpit
+  if(prospect){
+    const fields = {
+      'ck-p-name':    (prospect.prenom||'') + ' ' + (prospect.nom||''),
+      'ck-p-societe': prospect.societe || '',
+      'ck-p-secteur': prospect.secteur || '',
+      'ck-p-actu':    prospect.actu    || '',
+    };
+    Object.entries(fields).forEach(([id, val])=>{
+      const el = document.getElementById(id);
+      if(el && val) el.textContent = val;
+    });
+  }
+}
+
+function updateCockpitDest(slideIdx){
+  if(typeof PDATA==='undefined') return;
+  const pd = PDATA[slideIdx];
+  if(!pd) return;
+  const destEl = document.getElementById('ck-hud-dest');
+  if(destEl) destEl.textContent = pd.label.toUpperCase() + ' — ' + pd.sub;
+}
+
+
 function buildCockpit(){
   if(ckBuilt)return;ckBuilt=true;
   const wrap=document.getElementById('cockpit-wrap');
@@ -2910,6 +2981,7 @@ function buildCockpit(){
   buildRoomPlanets();
   buildPortholeStars();
   startRadarAnim();
+  startRoomIdle();
 
   // Les planètes Three.js continuent de tourner (pour les fonctions existantes)
   ckAnimating=true;
@@ -3178,15 +3250,31 @@ function ckRoomWarpTo(id){
   const visor = document.getElementById('ck-pilot-visor');
   if(visor) visor.setAttribute('fill', pd.color);
 
-  // Flash + fermeture
+  // Effet warp — étoiles s'étirent
   const warp = document.getElementById('ck-warp');
-  if(warp){ warp.style.opacity='.6'; setTimeout(()=>warp.style.opacity='0',200); }
+  if(warp){ warp.style.opacity='.8'; setTimeout(()=>warp.style.opacity='0',400); }
+
+  // Étoiles s'étirent dans le hublot
+  const stars = document.querySelectorAll('#ck-porthole-stars circle');
+  stars.forEach(s => {
+    s.style.transition = 'transform 0.4s ease-in, opacity 0.4s';
+    const dx = (Math.random() - 0.5) * 40;
+    const dy = (Math.random() - 0.5) * 30;
+    s.style.transform = `translate(${dx}px,${dy}px) scaleX(3)`;
+    s.style.opacity = '0';
+  });
 
   setTimeout(()=>{
+    // Reset étoiles
+    stars.forEach(s => {
+      s.style.transition = 'none';
+      s.style.transform = '';
+      s.style.opacity = '';
+    });
     if(destEl){ destEl.textContent='CHOISISSEZ VOTRE DESTINATION'; destEl.classList.remove('active'); }
     window.closeUniverse();
     setTimeout(()=>{ if(typeof go==='function') go(id); }, 200);
-  }, 500);
+  }, 450);
 }
 
 // Animation radar SVG
@@ -3211,6 +3299,57 @@ function startRadarAnim(){
     });
   }, 25);
 }
+
+
+// ════ ANIMATIONS IDLE — salle de contrôle ════
+function startRoomIdle(){
+  // Clignotement instruments colorés
+  const btns = document.querySelectorAll('#ck-ctrl-btns circle');
+  btns.forEach((btn, i) => {
+    setInterval(()=>{
+      const on = Math.random() > 0.3;
+      btn.setAttribute('opacity', on ? (.6 + Math.random()*.4).toFixed(2) : '.15');
+    }, 800 + i * 120);
+  });
+
+  // Barres du graphe gauche oscillent
+  const bars = document.querySelectorAll('#ck-room-svg rect[fill^="rgba(255,61,143"]');
+  // Compteur données en live — texte qui change
+  let dataFrame = 0;
+  setInterval(()=>{
+    dataFrame++;
+    // Faire varier les valeurs des jauges (simuler données live)
+    const statEl = document.getElementById('ck-hud-dest');
+    // Pulse léger sur le cercle de status
+    const statusCircle = document.querySelector('#ck-room-svg circle[stroke="#4ade80"]');
+    if(statusCircle){
+      const offset = 44 + Math.sin(dataFrame * 0.05) * 8;
+      statusCircle.setAttribute('stroke-dasharray', `${132-offset} 176`);
+      statusCircle.setAttribute('stroke-dashoffset', offset);
+    }
+  }, 50);
+
+  // Étoiles hublot scintillent
+  const stars = document.querySelectorAll('#ck-porthole-stars circle');
+  stars.forEach((s, i) => {
+    setInterval(()=>{
+      const base = parseFloat(s.getAttribute('opacity')) || 0.4;
+      const twinkle = (base * (0.4 + Math.random() * 0.6)).toFixed(2);
+      s.setAttribute('opacity', twinkle);
+    }, 600 + i * 80 + Math.random() * 400);
+  });
+
+  // Points radar pulsent légèrement
+  ['radar-p1','radar-p2','radar-p3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    setInterval(()=>{
+      const r = 1.5 + Math.random();
+      el.setAttribute('r', r.toFixed(1));
+    }, 1200 + i * 400);
+  });
+}
+
 
 // Étoiles dans le hublot SVG
 function buildPortholeStars(){
@@ -3275,6 +3414,8 @@ window.openUniverse=function(){
   overlay.classList.add('open');
   // Relancer le render loop
   if(!ckAnimating){ ckAnimating=true; ckAnimate(); }
+  // Réactiver le renderer si besoin
+  // (ckAnimate boucle lui-même via rAF)
   // Sync planète active avec slide courante
   ckActive = cur;
   document.body.style.overflow='hidden';
@@ -3284,6 +3425,8 @@ window.openUniverse=function(){
 window.closeUniverse=function(){
   overlay.classList.remove('open');
   ckAnimating=false;
+  // Stopper le renderer Three.js pour économiser le GPU
+  if(ckRenderer) ckRenderer.setAnimationLoop(null);
   document.body.style.overflow='';
   if(window.soundAmbiStop) soundAmbiStop();
   // Ensure current slide is visible after overlay closes
@@ -3370,7 +3513,21 @@ overlay.addEventListener('click',e=>{if(e.target===overlay)window.closeUniverse(
     return { master, sub, h1, h2, noise, lfo };
   }
 
-  window.soundAmbiStart = function(){
+  
+window.toggleAmbi = function(){
+  const btn = document.getElementById('ck-vol-btn');
+  if(window._ambiMuted){
+    window._ambiMuted = false;
+    if(window.soundAmbiStart) soundAmbiStart();
+    if(btn){ btn.textContent='♪'; btn.style.color='rgba(255,255,255,.4)'; }
+  } else {
+    window._ambiMuted = true;
+    if(window.soundAmbiStop) soundAmbiStop();
+    if(btn){ btn.textContent='♪̶'; btn.style.color='rgba(255,80,80,.5)'; }
+  }
+};
+
+window.soundAmbiStart = function(){
     if(_ambiRunning) return;
     _ambiRunning = true;
     try{
@@ -4573,11 +4730,11 @@ window.toggleUrlField = function(){}; // plus utilisé
 // Analyse prospect via Claude API pendant la NASA
 async function analyzeProspect(url, forcedProfile){
   const DUMMY_PROFILES = [
-    {secteur:'SaaS RH',produit:'logiciel de gestion RH',taille:'15-40 salaries',ville:'Lyon',prenom:'Marc',nom:'Dupont',societe:'Flowify',actu:'vient de lever 800K en seed'},
-    {secteur:'SaaS Marketing',produit:'plateforme automation marketing',taille:'20-60 salaries',ville:'Paris',prenom:'Julie',nom:'Martin',societe:'Growthly',actu:'vient de lancer son offre Enterprise'},
-    {secteur:'Agence conseil',produit:'transformation digitale B2B',taille:'30-80 salaries',ville:'Nantes',prenom:'Sophie',nom:'Bernard',societe:'DataForge',actu:'vient de signer un partenariat avec Microsoft'},
-    {secteur:'SaaS Finance',produit:'comptabilite B2B',taille:'10-30 salaries',ville:'Bordeaux',prenom:'Thomas',nom:'Leroy',societe:'Finopt',actu:'vient de doubler son equipe commerciale'},
-    {secteur:'SaaS Logistique',produit:'gestion de flotte',taille:'25-50 salaries',ville:'Lille',prenom:'Antoine',nom:'Moreau',societe:'FleetPro',actu:"vient d'ouvrir son bureau en Belgique"},
+    {secteur:'SaaS RH',produit:'logiciel de gestion RH',taille:'15-40 salaries',ville:'Lyon',prenom:'Marc',nom:'Dupont',societe:'Flowify',actu:'vient de lever 800K en seed',couleur_hex:'#10b981'},
+    {secteur:'SaaS Marketing',produit:'plateforme automation marketing',taille:'20-60 salaries',ville:'Paris',prenom:'Julie',nom:'Martin',societe:'Growthly',actu:'vient de lancer son offre Enterprise',couleur_hex:'#3b82f6'},
+    {secteur:'Agence conseil',produit:'transformation digitale B2B',taille:'30-80 salaries',ville:'Nantes',prenom:'Sophie',nom:'Bernard',societe:'DataForge',actu:'vient de signer un partenariat avec Microsoft',couleur_hex:'#f59e0b'},
+    {secteur:'SaaS Finance',produit:'comptabilite B2B',taille:'10-30 salaries',ville:'Bordeaux',prenom:'Thomas',nom:'Leroy',societe:'Finopt',actu:'vient de doubler son equipe commerciale',couleur_hex:'#ec4899'},
+    {secteur:'SaaS Logistique',produit:'gestion de flotte',taille:'25-50 salaries',ville:'Lille',prenom:'Antoine',nom:'Moreau',societe:'FleetPro',actu:"vient d'ouvrir son bureau en Belgique",couleur_hex:'#8b5cf6'},
   ];
 
   const hasRealUrl = !!(url && url.startsWith('http') && url !== 'https://exemple.com');
@@ -4818,6 +4975,65 @@ window.toggleLiveMode = function(){
   requestAnimationFrame(()=>{ toast.style.opacity='1'; });
   setTimeout(()=>{ toast.style.opacity='0'; setTimeout(()=>toast.remove(),400); }, 2200);
 };
+
+// ════ TRACKING ENGAGEMENT ════
+;(function(){
+  const SESSION_KEY = 'dv-session-' + Date.now();
+  const PILOT = window._getPilotName ? window._getPilotName() : 'Anonyme';
+  const startTime = Date.now();
+  const visited = new Set();
+
+  function sendEvent(type, data){
+    // Webhook Make/Zapier — remplacer l'URL par la vraie
+    const WEBHOOK = ''; // ex: https://hook.eu1.make.com/XXXXX
+    if(!WEBHOOK) return; // désactivé si pas d'URL
+    try{
+      navigator.sendBeacon(WEBHOOK, JSON.stringify({
+        event: type,
+        pilot: PILOT,
+        url: location.href,
+        time: new Date().toISOString(),
+        ...data
+      }));
+    } catch(e){}
+  }
+
+  // Ouverture du deck
+  sendEvent('deck_open', { pilot: PILOT });
+
+  // Tracker chaque changement de slide
+  const _origGo2 = window.go;
+  window.go = function(idx){
+    visited.add(idx);
+    if(visited.size === 1) {
+      // Premier slide visité après le cover
+      sendEvent('engagement', {
+        pilot: PILOT,
+        first_slide: idx,
+        slide_name: typeof SLIDE_NAMES!=='undefined' ? SLIDE_NAMES[idx] : idx
+      });
+    }
+    if(idx === 7) {
+      // A atteint la slide Contact
+      sendEvent('reached_contact', {
+        pilot: PILOT,
+        slides_seen: visited.size,
+        time_spent: Math.round((Date.now()-startTime)/1000) + 's'
+      });
+    }
+    return _origGo2(idx);
+  };
+
+  // Fermeture
+  window.addEventListener('beforeunload', ()=>{
+    sendEvent('deck_close', {
+      pilot: PILOT,
+      slides_seen: visited.size,
+      total_time: Math.round((Date.now()-startTime)/1000) + 's'
+    });
+  });
+})();
+
 
 window.prev=function(){go(cur-1)}
 window.next=function(){go(cur+1)}
