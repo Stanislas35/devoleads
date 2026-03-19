@@ -789,9 +789,9 @@ body.cinematic #cinematic-hint{opacity:1;animation:hint-fade 4s ease 1.5s forwar
 /* ═══ CHAMP URL PROSPECT ═══ */
 #url-optional{
   width:min(340px,80vw);display:flex;flex-direction:column;align-items:center;gap:8px;
-  opacity:0;max-height:0;overflow:hidden;
+  opacity:1;max-height:80px;overflow:hidden;
   transition:opacity .5s ease,max-height .5s ease;
-  pointer-events:none;
+  pointer-events:all;
 }
 #url-optional.visible{opacity:1;max-height:80px;pointer-events:all}
 #url-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);cursor:pointer;transition:color .2s}
@@ -1011,6 +1011,122 @@ body.live-mode #cur-d{
   background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.03) 3px,rgba(0,0,0,.03) 4px);
   pointer-events:none;z-index:10;
 }
+
+/* ═══ TRANSITION PLANÈTE ═══ */
+#planet-transition {
+  position:fixed;inset:0;z-index:450;
+  pointer-events:none;overflow:hidden;
+  display:none;
+}
+#planet-transition canvas {
+  position:absolute;inset:0;width:100%;height:100%;
+}
+
+/* Slide sortante emportée par la planète */
+.slide.planet-out-right {
+  animation: planet-sweep-right .7s cubic-bezier(.4,0,.8,.6) forwards;
+}
+.slide.planet-out-left {
+  animation: planet-sweep-left .7s cubic-bezier(.4,0,.8,.6) forwards;
+}
+.slide.planet-in-right {
+  animation: planet-arrive-right .65s cubic-bezier(.16,1,.3,1) forwards;
+}
+.slide.planet-in-left {
+  animation: planet-arrive-left .65s cubic-bezier(.16,1,.3,1) forwards;
+}
+
+@keyframes planet-sweep-right {
+  0%   { transform:translateX(0)     scale(1)    opacity:1; }
+  40%  { transform:translateX(8%)    scale(.96)  opacity:.6; }
+  100% { transform:translateX(110%)  scale(.85)  opacity:0; }
+}
+@keyframes planet-sweep-left {
+  0%   { transform:translateX(0)     scale(1)    opacity:1; }
+  40%  { transform:translateX(-8%)   scale(.96)  opacity:.6; }
+  100% { transform:translateX(-110%) scale(.85)  opacity:0; }
+}
+@keyframes planet-arrive-right {
+  0%   { transform:translateX(-60%) scale(.88) opacity:0; }
+  30%  { opacity:.7; }
+  100% { transform:translateX(0)    scale(1)   opacity:1; }
+}
+@keyframes planet-arrive-left {
+  0%   { transform:translateX(60%)  scale(.88) opacity:0; }
+  30%  { opacity:.7; }
+  100% { transform:translateX(0)    scale(1)   opacity:1; }
+}
+
+/* ═══ WARP JUMP TRANSITION ═══ */
+#warp-canvas {
+  position:fixed;inset:0;z-index:450;
+  pointer-events:none;
+  opacity:0;
+  display:none;
+}
+
+/* Slide aspirée vers le centre */
+@keyframes warp-suck {
+  0%   { transform:scale(1) translateZ(0);          opacity:1; filter:blur(0px); }
+  60%  { transform:scale(.92) translateZ(0);         opacity:.7; filter:blur(2px); }
+  100% { transform:scale(.04) translateZ(0);         opacity:0; filter:blur(12px); }
+}
+/* Nouvelle slide jaillit de l'hyperespace */
+@keyframes warp-emerge {
+  0%   { transform:scale(.06) translateZ(0); opacity:0; filter:blur(14px); }
+  40%  { opacity:.8; filter:blur(3px); }
+  80%  { transform:scale(1.03);             opacity:1; filter:blur(.5px); }
+  100% { transform:scale(1)   translateZ(0); opacity:1; filter:blur(0px); }
+}
+.slide.warp-out {
+  animation: warp-suck .45s cubic-bezier(.4,0,1,1) forwards;
+  transform-origin: center center;
+  position:absolute;inset:0;z-index:2;
+}
+.slide.warp-in {
+  animation: warp-emerge .55s cubic-bezier(.16,1,.3,1) forwards;
+  transform-origin: center center;
+  position:absolute;inset:0;z-index:3;
+}
+
+/* ═══ VIDEO SLIDE MOCKUP ═══ */
+.vid-stat-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.vid-stat-num {
+  font-family:var(--display);
+  font-size:32px;
+  font-weight:800;
+  letter-spacing:-1.5px;
+  min-width:64px;
+  line-height:1;
+}
+.vid-stat-label {
+  font-size:13px;
+  font-weight:600;
+  color:var(--white);
+}
+.vid-stat-sub {
+  font-size:10.5px;
+  color:var(--muted);
+  margin-top:2px;
+}
+/* Animation écran vidéo */
+@keyframes vid-scan {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 0% 100%; }
+}
+@keyframes vid-person-bob {
+  0%,100% { transform:translateX(-50%) translateY(0); }
+  50%     { transform:translateX(-50%) translateY(-4px); }
+}
+#vid-person { animation: vid-person-bob 2s ease-in-out infinite; }
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -1266,6 +1382,8 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <div id="uni-landing-flash"></div>
 
 <div id="transition-flash"></div>
+<canvas id="warp-canvas"></canvas>
+<div id="planet-transition"><canvas id="planet-cv"></canvas></div>
 <div id="cinematic-hint">
   <span class="hint-key">Espace</span>
   <span style="opacity:.5">/</span>
@@ -1292,7 +1410,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <div id="name-hint" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center">
     <span>Entrée pour décoller</span>
     <span style="opacity:.3">·</span>
-    <span id="url-toggle" onclick="toggleUrlField()" style="font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s" onmouseover="this.style.color='rgba(124,58,237,.7)'" onmouseout="this.style.color='rgba(255,255,255,.3)'">
+    <span id="url-toggle" onclick="toggleUrlField()" style="display:none" style="font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s" onmouseover="this.style.color='rgba(124,58,237,.7)'" onmouseout="this.style.color='rgba(255,255,255,.3)'">
       🌐 Personnaliser pour un prospect
     </span>
   </div>
@@ -1495,274 +1613,127 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 </div>
 
 <!-- S5 TEAM -->
-<div class="slide" id="s5" style="flex-direction:row;padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);align-items:stretch">
-  <div class="orb" style="width:300px;height:300px;background:var(--purple);top:40px;left:-60px;opacity:.1;animation-delay:-4s"></div>
+<div class="slide" id="s5" style="flex-direction:row;padding:clamp(60px,7vh,90px) 0 clamp(40px,5vh,70px);align-items:center">
+  <div class="orb" style="width:400px;height:400px;background:var(--purple);top:-80px;left:-80px;opacity:.09;animation-delay:-4s"></div>
+  <div class="orb" style="width:300px;height:300px;background:var(--pink);bottom:-60px;right:-40px;opacity:.07;animation-delay:-9s"></div>
 
-  <!-- LEFT: headline fort -->
-  <div class="sg" style="width:40%;padding:0 clamp(16px,2.5vw,36px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:14px;flex-shrink:0">
-    <div class="eyebrow">L'équipe</div>
-    <h2 style="font-size:clamp(36px,4.8vw,62px)">Fondateurs.<br>Pas des<br><span class="g">juniors.</span></h2>
-    <p class="lead" style="font-size:13px">Vous parlez directement aux créateurs du système. Pas d'intermédiaire, pas de perte en ligne.</p>
-  </div>
-
-  <!-- Separator -->
-  <div style="width:1px;background:rgba(255,255,255,.06);align-self:stretch;margin:20px 0;flex-shrink:0"></div>
-
-  <!-- RIGHT: stats + témoignages -->
-  <div class="sg" style="flex:1;padding:0 clamp(30px,5vw,90px) 0 clamp(16px,2vw,40px);display:flex;flex-direction:column;justify-content:center;gap:10px">
-    <div style="display:flex;flex-direction:column;gap:9px">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
-        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--pink);letter-spacing:-1.5px;min-width:56px">×8.3</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--white)">ROI moyen</div><div style="font-size:10.5px;color:var(--muted)">sur 90 jours d'engagement</div></div>
+  <!-- GAUCHE : Titre + citations -->
+  <div class="sg" style="width:44%;padding:0 clamp(16px,2.5vw,36px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:20px;flex-shrink:0">
+    <div>
+      <div class="eyebrow">L'équipe fondatrice</div>
+      <h2 style="font-size:clamp(32px,4.2vw,56px);margin-top:8px">Fondateurs.<br>Pas des<br><span class="g">juniors.</span></h2>
+      <p class="lead" style="font-size:13px;margin-top:12px">Vous parlez directement aux créateurs du système. Pas d'intermédiaire, pas de perte en ligne.</p>
+    </div>
+    <!-- 3 stats clés -->
+    <div style="display:flex;gap:10px">
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;text-align:center">
+        <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--pink);letter-spacing:-1px">×8.3</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:.5px">ROI MOYEN</div>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
-        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--purple-l);letter-spacing:-1.5px;min-width:56px">+150</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--white)">CEOs clients actifs</div><div style="font-size:10.5px;color:var(--muted)">en 2024, tous secteurs</div></div>
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;text-align:center">
+        <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--purple-l);letter-spacing:-1px">+150</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:.5px">CLIENTS CEO</div>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
-        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--cyan);letter-spacing:-1.5px;min-width:56px">30%</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--white)">Taux de réponse</div><div style="font-size:10.5px;color:var(--muted)">vs 2% marché</div></div>
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;text-align:center">
+        <div style="font-family:var(--display);font-size:22px;font-weight:800;color:var(--cyan);letter-spacing:-1px">30%</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:3px;letter-spacing:.5px">TBX RÉPONSE</div>
       </div>
     </div>
-    <div id="team-grid" style="display:none"></div>
+  </div>
+
+  <!-- Séparateur -->
+  <div style="width:1px;background:rgba(255,255,255,.06);align-self:stretch;margin:20px 0;flex-shrink:0"></div>
+
+  <!-- DROITE : Cartes fondateurs -->
+  <div class="sg" style="flex:1;padding:0 clamp(30px,5vw,80px) 0 clamp(16px,2vw,36px);display:flex;flex-direction:column;gap:14px;justify-content:center">
+    <div id="team-grid" style="display:flex;flex-direction:column;gap:14px"></div>
   </div>
 </div>
 
 <!-- S6 PROSPECTION VIDEO -->
-<div class="slide" id="s6">
-  <div class="orb" style="width:450px;height:450px;background:var(--pink);top:-120px;right:-100px;opacity:.1;animation-delay:-5s"></div>
-  <div class="orb" style="width:300px;height:300px;background:var(--purple);bottom:-80px;left:-60px;opacity:.09;animation-delay:-11s"></div>
+<div class="slide" id="s6" style="flex-direction:row;padding:clamp(60px,7vh,90px) 0 clamp(40px,5vh,70px);align-items:center;gap:0">
+  <div class="orb" style="width:500px;height:500px;background:var(--pink);top:-150px;right:-120px;opacity:.07;animation-delay:-5s"></div>
+  <div class="orb" style="width:300px;height:300px;background:var(--purple);bottom:-80px;left:-40px;opacity:.06;animation-delay:-11s"></div>
 
-  <!-- Header -->
-  <div class="sg" style="text-align:center;margin-bottom:28px;display:flex;flex-direction:column;align-items:center;z-index:1">
-    <div class="eyebrow"><span class="blink"></span>Service additionnel</div>
-    <h2>Prospection <span class="g">en Vidéo.</span></h2>
-    <p class="lead" style="margin:8px auto 0;text-align:center;font-size:13px">Humaniser la prospection avec des formats video personnalisés.<br>Cliquez sur une carte pour voir l'aperçu.</p>
+  <!-- GAUCHE : Titre + stats -->
+  <div class="sg" style="width:36%;padding:0 clamp(16px,2vw,32px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:18px;flex-shrink:0">
+    <div>
+      <div class="eyebrow"><span class="blink"></span>Service additionnel</div>
+      <h2 style="margin-top:8px;font-size:clamp(28px,3.5vw,48px)">Prospection<br><span class="g">en Vidéo.</span></h2>
+      <p class="lead" style="font-size:13px;margin-top:10px">Un message humain, personnalisé, en 58 secondes.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="vid-stat-card" id="vsc1" style="opacity:0;transform:translateX(-16px);transition:opacity .5s,transform .5s">
+        <div class="vid-stat-num" style="color:var(--pink)">×4</div>
+        <div><div class="vid-stat-label">Taux de réponse</div><div class="vid-stat-sub">vs email texte classique</div></div>
+      </div>
+      <div class="vid-stat-card" id="vsc2" style="opacity:0;transform:translateX(-16px);transition:opacity .5s .15s,transform .5s .15s">
+        <div class="vid-stat-num" style="color:var(--purple-l)">94%</div>
+        <div><div class="vid-stat-label">Taux de visionnage</div><div class="vid-stat-sub">jusqu'au bout du message</div></div>
+      </div>
+      <div class="vid-stat-card" id="vsc3" style="opacity:0;transform:translateX(-16px);transition:opacity .5s .3s,transform .5s .3s">
+        <div class="vid-stat-num" style="color:var(--cyan)">58s</div>
+        <div><div class="vid-stat-label">Durée optimale</div><div class="vid-stat-sub">personnalisée par prospect</div></div>
+      </div>
+    </div>
   </div>
 
-  <!-- 3 interactive cards -->
-  <div class="vg3 sg">
+  <!-- Séparateur -->
+  <div style="width:1px;background:rgba(255,255,255,.06);align-self:stretch;margin:20px 0;flex-shrink:0"></div>
 
-    <!-- CARD 1: GIF email -->
-    <div class="vpcard" id="vpc0" onclick="selectVpc(0)">
-      <div class="vpcard-inner">
-        <!-- Front -->
-        <div class="vpcard-face vpcard-front">
-          <div class="vpc-preview vpc-gif-preview">
-            <!-- Email mockup with animated GIF -->
-            <div class="vpc-email-mock">
-              <div class="vpc-em-bar">
-                <div class="vpc-em-dot"></div><div class="vpc-em-dot"></div><div class="vpc-em-dot"></div>
-                <div style="flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;margin-left:8px"></div>
-              </div>
-              <div class="vpc-em-body">
-                <div class="vpc-em-line" style="width:55%;opacity:.4"></div>
-                <div class="vpc-em-line" style="width:70%;opacity:.3;margin-top:4px"></div>
-                <div class="vpc-gif-box">
-                  <div class="vpc-gif-person"></div>
-                  <div class="vpc-gif-bars">
-                    <div class="vpc-gif-bar" style="--d:0s;--h:60%"></div>
-                    <div class="vpc-gif-bar" style="--d:.12s;--h:85%"></div>
-                    <div class="vpc-gif-bar" style="--d:.24s;--h:45%"></div>
-                    <div class="vpc-gif-bar" style="--d:.36s;--h:75%"></div>
-                    <div class="vpc-gif-bar" style="--d:.08s;--h:55%"></div>
-                  </div>
-                  <div class="vpc-gif-label">GIF · Click to play</div>
-                </div>
-                <div class="vpc-em-line" style="width:80%;opacity:.2;margin-top:6px"></div>
-                <div class="vpc-em-line" style="width:45%;opacity:.15;margin-top:3px"></div>
-              </div>
-            </div>
-            <div class="vpc-tag" style="background:rgba(255,107,53,.15);border-color:rgba(255,107,53,.3);color:var(--orange)">GIF animé</div>
-          </div>
-          <div class="vpc-info">
-            <div class="vpc-num" style="color:var(--orange)">01</div>
-            <div class="vpc-title">GIF dans les mails</div>
-            <div class="vpc-desc">Un GIF animé personnalisé intégré dans vos séquences email. Capte l'attention avant même la lecture.</div>
-            <div class="vpc-cta">Voir l'aperçu <span>→</span></div>
+  <!-- DROITE : MacBook avec démo animée -->
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:0 clamp(20px,3vw,60px)">
+    <div style="position:relative;width:min(520px,95%)">
+
+      <!-- Écran -->
+      <div style="background:#0d0d1a;border-radius:12px 12px 0 0;border:2px solid rgba(255,255,255,.12);border-bottom:none;padding:8px 8px 0;box-shadow:0 -4px 40px rgba(0,0,0,.5),0 0 60px rgba(124,58,237,.06)">
+
+        <!-- Barre navigateur -->
+        <div style="background:rgba(0,0,0,.6);border-radius:5px 5px 0 0;padding:6px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05)">
+          <div style="width:8px;height:8px;border-radius:50%;background:#ff5f57;flex-shrink:0"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#febc2e;flex-shrink:0"></div>
+          <div style="width:8px;height:8px;border-radius:50%;background:#28c840;flex-shrink:0"></div>
+          <div style="flex:1;background:rgba(255,255,255,.06);border-radius:4px;padding:3px 10px;margin:0 8px;text-align:center">
+            <span style="font-size:9px;color:rgba(255,255,255,.25);font-family:monospace">devoleads.io · démo vidéo</span>
           </div>
         </div>
-        <!-- Back / expanded -->
-        <div class="vpcard-face vpcard-back">
-          <div class="vpb-title" style="color:var(--orange)">GIF dans les mails</div>
-          <div class="vpc-email-full">
-            <div class="vef-hdr">
-              <div style="font-size:9px;color:rgba(255,255,255,.3)">De : <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4a393e2b242339262b390a2e2f3c25262f2b2e39642c38">[email&#160;protected]</a></div>
-              <div style="font-size:10px;color:rgba(255,255,255,.6);font-weight:500;margin-top:2px">Objet : Une question rapide — en vidéo</div>
-            </div>
-            <div class="vef-body">
-              <div class="vef-txt">Bonjour,<br><br>J'ai créé une courte vidéo pour vous — moins de 60 secondes ↓</div>
-              <div class="vpc-gif-large">
-                <div class="vgl-person"></div>
-                <div class="vgl-bars">
-                  <div class="vgl-bar" style="--d:0s"></div>
-                  <div class="vgl-bar" style="--d:.1s"></div>
-                  <div class="vgl-bar" style="--d:.2s"></div>
-                  <div class="vgl-bar" style="--d:.3s"></div>
-                  <div class="vgl-bar" style="--d:.15s"></div>
-                  <div class="vgl-bar" style="--d:.05s"></div>
-                </div>
-                <div class="vgl-overlay">
-                  <div class="vgl-play"><svg viewBox="0 0 24 24" width="16" fill="white"><polygon points="5 3 19 12 5 21"/></svg></div>
-                  <div class="vgl-dur">0:47</div>
-                </div>
-              </div>
-              <div class="vef-txt" style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.4)">Disponible 20 min cette semaine ?</div>
-            </div>
+
+        <!-- Zone écran = canvas démo animée -->
+        <div style="position:relative;background:#060610;aspect-ratio:16/9;overflow:hidden">
+          <canvas id="demo-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+
+          <!-- Overlay format actuel -->
+          <div id="demo-format-tag" style="
+            position:absolute;top:10px;left:10px;
+            background:rgba(0,0,0,.65);backdrop-filter:blur(8px);
+            border-radius:6px;padding:4px 10px;
+            border:1px solid rgba(255,255,255,.1);
+            font-size:10px;font-weight:600;letter-spacing:1px;
+            color:#fff;font-family:monospace;
+            transition:opacity .3s;
+          ">GIF EMAIL</div>
+
+          <!-- Barre progression -->
+          <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.08)">
+            <div id="demo-progress" style="height:100%;background:linear-gradient(90deg,var(--pink),var(--purple-l));width:0%;transition:width .1s linear"></div>
           </div>
-          <div class="vpb-stats">
-            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--orange)">+42%</div><div class="vpb-sl">Taux d'ouverture</div></div>
-            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--orange)">+3x</div><div class="vpb-sl">Clics vs texte</div></div>
+
+          <!-- Indicateurs formats -->
+          <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px">
+            <div id="demo-dot-0" style="width:6px;height:6px;border-radius:50%;background:var(--orange);opacity:1;transition:opacity .3s"></div>
+            <div id="demo-dot-1" style="width:6px;height:6px;border-radius:50%;background:var(--pink);opacity:.3;transition:opacity .3s"></div>
+            <div id="demo-dot-2" style="width:6px;height:6px;border-radius:50%;background:var(--purple-l);opacity:.3;transition:opacity .3s"></div>
           </div>
-          <div class="vpb-close" onclick="selectVpc(-1);event.stopPropagation()">Fermer ×</div>
         </div>
       </div>
-    </div>
 
-    <!-- CARD 2: Face caméra -->
-    <div class="vpcard" id="vpc1" onclick="selectVpc(1)">
-      <div class="vpcard-inner">
-        <div class="vpcard-face vpcard-front">
-          <div class="vpc-preview vpc-cam-preview">
-            <div class="vpc-player">
-              <div class="vpc-player-face">
-                <div class="vpc-face-circle">
-                  <div class="vpc-face-inner"></div>
-                </div>
-                <div class="vpc-face-wave">
-                  <div class="vpc-fw-bar" style="--d:0s"></div>
-                  <div class="vpc-fw-bar" style="--d:.08s"></div>
-                  <div class="vpc-fw-bar" style="--d:.16s"></div>
-                  <div class="vpc-fw-bar" style="--d:.24s"></div>
-                  <div class="vpc-fw-bar" style="--d:.32s"></div>
-                </div>
-              </div>
-              <div class="vpc-player-overlay">
-                <div class="vpc-play-btn" style="background:var(--pink)">
-                  <svg viewBox="0 0 24 24" width="14" fill="white"><polygon points="5 3 19 12 5 21"/></svg>
-                </div>
-              </div>
-              <div class="vpc-personname" style="font-size:7px;color:rgba(255,255,255,.6);font-style:italic">Un message humain, pas un template</div>
-              <div class="vpc-timeline">
-                <div class="vpc-tl-fill" style="background:var(--pink)"></div>
-              </div>
-            </div>
-            <div class="vpc-tag" style="background:rgba(255,61,143,.15);border-color:rgba(255,61,143,.3);color:var(--pink)">Face caméra</div>
-          </div>
-          <div class="vpc-info">
-            <div class="vpc-num" style="color:var(--pink)">02</div>
-            <div class="vpc-title">Vidéo face caméra</div>
-            <div class="vpc-desc">Votre commercial à l'écran, salutation personnalisée, script rédigé par nos copywriters.</div>
-            <div class="vpc-cta">Voir l'aperçu <span>→</span></div>
-          </div>
-        </div>
-        <div class="vpcard-face vpcard-back">
-          <div class="vpb-title" style="color:var(--pink)">Vidéo face caméra</div>
-          <div class="vpc-email-full">
-            <div class="vef-hdr">
-              <div style="font-size:9px;color:rgba(255,255,255,.3)">De : <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="017275606f68726d6072416564776e6d646065722f6773">[email&#160;protected]</a></div>
-              <div style="font-size:10px;color:rgba(255,255,255,.6);font-weight:500;margin-top:2px">Objet : J'ai enregistré quelque chose pour vous</div>
-            </div>
-            <div class="vef-body">
-              <div class="vef-txt">Bonjour,<br><br>Plutôt qu'un email de plus, j'ai préféré vous enregistrer une courte vidéo. 60 secondes, pas de script corporate ↓</div>
-              <div class="vpc-gif-large" style="background:rgba(255,61,143,.06);border-color:rgba(255,61,143,.15);height:68px">
-                <div class="vlp-vid-face" style="flex-shrink:0">
-                  <div class="vlp-face-c" style="width:20px;height:20px"></div>
-                  <div class="vlp-face-body" style="width:16px;height:12px"></div>
-                </div>
-                <div class="vgl-bars" style="flex:1;margin:0 8px">
-                  <div class="vgl-bar" style="--d:0s;background:var(--pink)"></div>
-                  <div class="vgl-bar" style="--d:.1s;background:var(--pink)"></div>
-                  <div class="vgl-bar" style="--d:.2s;background:var(--pink)"></div>
-                  <div class="vgl-bar" style="--d:.3s;background:var(--pink)"></div>
-                  <div class="vgl-bar" style="--d:.15s;background:var(--pink)"></div>
-                </div>
-                <div class="vgl-overlay">
-                  <div class="vgl-play" style="background:rgba(255,61,143,.8)"><svg viewBox="0 0 24 24" width="14" fill="white"><polygon points="5 3 19 12 5 21"/></svg></div>
-                  <div class="vgl-dur">1:02</div>
-                </div>
-              </div>
-              <div class="vef-txt" style="margin-top:6px;font-size:10px;color:rgba(255,255,255,.35)">20 minutes suffisent pour voir si c'est pertinent pour vous.</div>
-            </div>
-          </div>
-          <div class="vpb-stats">
-            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--pink)">+68%</div><div class="vpb-sl">Taux de réponse</div></div>
-            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--pink)">x5</div><div class="vpb-sl">vs email texte</div></div>
-          </div>
-          <div class="vpb-close" onclick="selectVpc(-1);event.stopPropagation()">Fermer ×</div>
-        </div>
+      <!-- Base MacBook -->
+      <div style="background:linear-gradient(180deg,#252535,#181828);height:12px;border-radius:0 0 3px 3px;border:2px solid rgba(255,255,255,.1);border-top:1px solid rgba(255,255,255,.05)">
+        <div style="width:50px;height:3px;background:rgba(0,0,0,.4);border-radius:0 0 3px 3px;margin:0 auto"></div>
       </div>
+      <div style="background:linear-gradient(180deg,#1e1e2e,#141424);height:5px;width:90%;margin:0 auto;border-radius:0 0 16px 16px;border:1px solid rgba(255,255,255,.07);border-top:none;box-shadow:0 16px 50px rgba(0,0,0,.6),0 0 60px rgba(124,58,237,.04)"></div>
+      <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(124,58,237,.12),transparent);width:75%;margin:3px auto 0;filter:blur(2px)"></div>
     </div>
-
-    <!-- CARD 3: Landing page -->
-    <div class="vpcard" id="vpc2" onclick="selectVpc(2)">
-      <div class="vpcard-inner">
-        <div class="vpcard-face vpcard-front">
-          <div class="vpc-preview vpc-lp-preview">
-            <div class="vpc-lp-mini">
-              <div class="vlpm-bar">
-                <div style="width:40px;height:5px;background:var(--purple);border-radius:2px;opacity:.7"></div>
-                <div style="display:flex;gap:4px">
-                  <div style="width:18px;height:4px;background:rgba(255,255,255,.15);border-radius:1px"></div>
-                  <div style="width:18px;height:4px;background:rgba(255,255,255,.15);border-radius:1px"></div>
-                </div>
-              </div>
-              <div class="vlpm-hero" style="background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(167,139,250,.1))">
-                <div class="vlpm-h-title"></div>
-                <div class="vlpm-h-sub"></div>
-                <div class="vlpm-video">
-                  <svg viewBox="0 0 24 24" width="20" fill="rgba(167,139,250,.8)"><polygon points="5 3 19 12 5 21"/></svg>
-                </div>
-              </div>
-              <div class="vlpm-body">
-                <div class="vlpm-line"></div>
-                <div class="vlpm-line" style="width:70%"></div>
-                <div class="vlpm-btn" style="background:var(--purple)"></div>
-              </div>
-            </div>
-            <div class="vpc-tag" style="background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.3);color:var(--purple-l)">Landing page</div>
-          </div>
-          <div class="vpc-info">
-            <div class="vpc-num" style="color:var(--purple-l)">03</div>
-            <div class="vpc-title">Landing page vidéo</div>
-            <div class="vpc-desc">Page aux couleurs de votre client avec vidéo hébergée, copywriting et prise de RDV intégrée.</div>
-            <div class="vpc-cta">Voir l'aperçu <span>→</span></div>
-          </div>
-        </div>
-        <div class="vpcard-face vpcard-back">
-          <div class="vpb-title" style="color:var(--purple-l)">Landing page vidéo</div>
-          <div class="vpc-lp-mock purple">
-            <div class="vlp-hdr" style="border-color:rgba(124,58,237,.3)">
-              <div class="vlp-logo" style="background:rgba(124,58,237,.3)"></div>
-              <div style="font-size:8px;color:rgba(255,255,255,.4)">Charte graphique de votre client</div>
-            </div>
-            <div class="vlp-video">
-              <div class="vlp-vid-inner promo">
-                <div class="vlp-promo-content">
-                  <div style="font-size:8px;font-weight:700;color:var(--purple-l);letter-spacing:1px;text-transform:uppercase">Aux couleurs de</div>
-                  <div style="font-size:10px;font-weight:600;color:white;margin:2px 0">Votre client</div>
-                </div>
-                <div class="vlp-vid-play" style="border-color:var(--purple-l)">
-                  <svg viewBox="0 0 24 24" width="18" fill="var(--purple-l)"><polygon points="5 3 19 12 5 21"/></svg>
-                </div>
-              </div>
-            </div>
-            <div class="vlp-cta" style="background:var(--purple)">Réserver un créneau →</div>
-            <div style="display:flex;justify-content:center;gap:16px;margin-top:6px">
-              <div class="vlp-slot">Lundi 11h</div>
-              <div class="vlp-slot">Mercredi 15h</div>
-              <div class="vlp-slot">Vendredi 9h</div>
-            </div>
-          </div>
-          <div class="vpb-stats">
-            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--purple-l)">+85%</div><div class="vpb-sl">Conversion RDV</div></div>
-            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--purple-l)">x7</div><div class="vpb-sl">vs lien Calendly brut</div></div>
-          </div>
-          <div class="vpb-close" onclick="selectVpc(-1);event.stopPropagation()">Fermer ×</div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
@@ -2200,50 +2171,200 @@ function ui(){
 }
 ui();
 
+// ══ WARP JUMP ENGINE ══════════════════════════════
+(function(){
+  const cv = document.getElementById('warp-canvas');
+  if(!cv) return;
+
+  let running = false;
+
+  window.warpJump = function(dir, onDone){
+    if(running){ onDone(); return; }
+    running = true;
+
+    const W = window.innerWidth, H = window.innerHeight;
+    cv.width = W; cv.height = H;
+    cv.style.display = 'block';
+
+    const ctx = cv.getContext('2d');
+    const CX = W/2, CY = H/2;
+    const TOTAL_DUR = 580; // ms
+    const start = performance.now();
+
+    // Générer les étoiles warp
+    const stars = Array.from({length: 260}, () => {
+      const angle = Math.random() * Math.PI * 2;
+      const dist  = 30 + Math.random() * Math.max(W,H) * .65;
+      return {
+        angle,
+        dist,
+        x: CX + Math.cos(angle) * dist,
+        y: CY + Math.sin(angle) * dist,
+        r: .5 + Math.random() * 1.5,
+        speed: .6 + Math.random() * 1.4,
+        hue: Math.random() < .6 ? 220 : (Math.random() < .5 ? 280 : 180),
+      };
+    });
+
+    function draw(now){
+      const elapsed = now - start;
+      const t = Math.min(1, elapsed / TOTAL_DUR);
+
+      ctx.clearRect(0,0,W,H);
+
+      // Phase 1 (0→.4) : étoiles s'étirent, fond noircit
+      // Phase 2 (.4→.7) : flash blanc central + tunnel
+      // Phase 3 (.7→1) : étoiles se rétractent, fond revient
+
+      // Fond espace
+      const bgAlpha = t < .4
+        ? t / .4 * .85
+        : t < .7
+          ? .85
+          : .85 * (1 - (t-.7)/.3);
+      ctx.fillStyle = `rgba(1,2,12,${bgAlpha})`;
+      ctx.fillRect(0,0,W,H);
+
+      // Étoiles qui s'étirent
+      stars.forEach(s => {
+        let stretchFactor, alpha, headDist;
+
+        if(t < .45){
+          // Accélération — étoiles s'allongent vers l'extérieur
+          const p = t / .45;
+          const ep = p*p*p; // ease in cubique
+          stretchFactor = 1 + ep * 28 * s.speed;
+          alpha = .3 + ep * .7;
+          headDist = s.dist * (1 + ep * .4);
+        } else if(t < .7){
+          // Pic warp — lignes maximales
+          stretchFactor = 30 * s.speed;
+          alpha = 1;
+          headDist = s.dist * 1.4;
+        } else {
+          // Décélération
+          const p = (t - .7) / .3;
+          const ep = 1 - Math.pow(1-p, 3);
+          stretchFactor = 30 * s.speed * (1 - ep * .95);
+          alpha = 1 - ep * .9;
+          headDist = s.dist * (1.4 - ep * .5);
+        }
+
+        const hx = CX + Math.cos(s.angle) * headDist;
+        const hy = CY + Math.sin(s.angle) * headDist;
+        const len = stretchFactor * s.r * 18;
+        const tx = hx - Math.cos(s.angle) * len;
+        const ty = hy - Math.sin(s.angle) * len;
+
+        const grad = ctx.createLinearGradient(tx, ty, hx, hy);
+        grad.addColorStop(0, `hsla(${s.hue},100%,80%,0)`);
+        grad.addColorStop(.5, `hsla(${s.hue},100%,90%,${alpha*.5})`);
+        grad.addColorStop(1, `hsla(${s.hue},100%,100%,${alpha})`);
+
+        ctx.beginPath();
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = s.r * Math.min(3, 1 + stretchFactor*.04);
+        ctx.moveTo(tx, ty);
+        ctx.lineTo(hx, hy);
+        ctx.stroke();
+      });
+
+      // Tunnel central (vortex)
+      if(t > .25 && t < .85){
+        const tp = t < .55
+          ? (t - .25) / .3
+          : t < .7 ? 1 : 1 - (t-.7)/.15;
+        const tunnelAlpha = Math.sin(tp * Math.PI) * .9;
+        const maxR = Math.min(W,H) * .45;
+
+        for(let ring = 8; ring > 0; ring--){
+          const rp = ring / 8;
+          const radius = rp * maxR * (.3 + tp * .7);
+          const ringAlpha = tunnelAlpha * (1 - rp) * .6;
+          const hue = 220 + rp * 60;
+          ctx.beginPath();
+          ctx.strokeStyle = `hsla(${hue},100%,75%,${ringAlpha})`;
+          ctx.lineWidth = 1.5;
+          ctx.arc(CX, CY, radius, 0, Math.PI*2);
+          ctx.stroke();
+        }
+
+        // Flash core blanc/violet
+        const coreR = maxR * .12 * tp;
+        const core = ctx.createRadialGradient(CX,CY,0,CX,CY,coreR*3);
+        core.addColorStop(0,   `rgba(255,255,255,${tunnelAlpha*.9})`);
+        core.addColorStop(.25, `rgba(180,120,255,${tunnelAlpha*.6})`);
+        core.addColorStop(.6,  `rgba(100,60,200,${tunnelAlpha*.25})`);
+        core.addColorStop(1,   'transparent');
+        ctx.fillStyle = core;
+        ctx.beginPath();
+        ctx.arc(CX, CY, coreR*3, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      // Flash de sortie
+      if(t > .82){
+        const fp = (t - .82) / .18;
+        cv.style.opacity = String(1 - fp);
+      } else {
+        cv.style.opacity = '1';
+      }
+
+      if(t < 1){
+        requestAnimationFrame(draw);
+      } else {
+        ctx.clearRect(0,0,W,H);
+        cv.style.display = 'none';
+        cv.style.opacity = '1';
+        running = false;
+        onDone();
+      }
+    }
+
+    requestAnimationFrame(draw);
+  };
+})();
+
 window.go=function(idx){
   if(busy||idx===cur||idx<0||idx>=TOTAL) return;
   busy=true;
   const prev=cur; cur=idx;
-  const dir = idx > prev ? 1 : -1; // 1=forward, -1=backward
+  const dir = idx > prev ? 1 : -1;
   if(window.soundSlide) soundSlide(dir);
   haptic([15]);
   ui();
-
-  // Flash lumineux
-  const fl=document.getElementById('transition-flash');
-  if(fl){fl.classList.remove('fire');fl.offsetHeight;fl.classList.add('fire');}
 
   // Tick counter
   const pnEl=document.getElementById('pn');
   if(pnEl){pnEl.classList.remove('tick');pnEl.offsetHeight;pnEl.classList.add('tick');}
 
-  // Slide sortante
-  const outClass = dir>0 ? 'out-left' : 'out-right';
-  slides[prev].classList.remove('ein-right','ein-left');
-  slides[prev].classList.add('out', outClass);
+  // Slide sortante — aspirée vers le centre
+  slides[prev].classList.remove('ein-right','ein-left','warp-in');
+  slides[prev].classList.add('warp-out');
   setTimeout(()=>{
-    slides[prev].classList.remove('out',outClass,'active');
+    slides[prev].classList.remove('warp-out','active');
     slides[prev].style.opacity=0;
-  },420);
+  },440);
 
-  // Slide entrante
+  // Warp canvas démarre immédiatement
+  if(window.warpJump) warpJump(dir, ()=>{});
+
+  // Slide entrante jaillit depuis le centre (~pic du warp)
   setTimeout(()=>{
-    const inClass = dir>0 ? 'ein-right' : 'ein-left';
     slides[cur].style.opacity='';
-    slides[cur].classList.remove('out','out-left','out-right','ein-right','ein-left');
-    slides[cur].classList.add('active', inClass);
+    slides[cur].classList.remove('out','out-left','out-right','ein-right','ein-left','warp-out',
+      'planet-out-left','planet-out-right','planet-in-right','planet-in-left');
+    slides[cur].classList.add('active','warp-in');
     slides[cur].querySelectorAll('.sg').forEach(sg=>{
       sg.querySelectorAll(':scope>*').forEach(c=>{
-        c.style.animation='none';
-        c.offsetHeight;
-        c.style.animation='';
+        c.style.animation='none'; c.offsetHeight; c.style.animation='';
       });
     });
     if(cur===2) startMotion(); else stopMotion();
     setSlideAmbiance(cur);
     if(cur===5) startSetup();
-    setTimeout(()=>{busy=false},700);
-  },380);
+    setTimeout(()=>{ busy=false; },600);
+  },290);
 }
 
 let ckRenderer,ckScene,ckCamera,ckRaycaster,ckMouse,ckPlanetMeshes=[],ckPlanets=[],ckFrame=0;
@@ -2257,7 +2378,7 @@ let ckBuilt=false, ckWarping=false, ckActive=0;
 // ════════════════════════════════════════════════
 ;(function(){
 
-const PDATA=[
+const PDATA=window.PDATA=[
   {id:0,label:'Cover',      sub:'Votre agenda saturé de RDV', c1:'#cc1f6a',c2:'#7c1040',size:1.9,pos:[0,.6,4.5],  ring:false,speed:.008,tilt:.2,  color:'#ff3d8f'},
   {id:1,label:'Services',   sub:'De la data à la signature',  c1:'#4a1e9e',c2:'#2d1060',size:1.1,pos:[-4.8,1.2,1],ring:false,speed:.012,tilt:.15, color:'#7c3aed'},
   {id:2,label:'Process',    sub:'14 jours, premier lead',      c1:'#b84010',c2:'#7c2800',size:1.0,pos:[4.2,-.4,.5],ring:false,speed:.015,tilt:.3,  color:'#ff6b35'},
@@ -2781,7 +2902,10 @@ const SLIDE_AMBIANCE = [
   ['rgba(248,113,113,.82)','rgba(167,139,250,.72)'],
 ];
 
-function setSlideAmbiance(idx){}
+function setSlideAmbiance(idx){  // Vidéo slide
+  if(idx===5) setTimeout(initVideoSlide,300);
+  else resetVideoSlide();
+}
 
 ;(function(){
   const BASE=623, RATE=1/72;
@@ -2922,10 +3046,7 @@ function animHands(warpActive){
 
 // ════ SÉQUENCE NASA ════
 window.startNASA=function(){
-  // Skip si déjà vue
-  if(sessionStorage.getItem('nasa-done')){
-    return;
-  }
+  // Test mode — toujours jouer la NASA
   const s=document.getElementById('nasa-seq');
   if(s){s.style.display='flex';}
 
@@ -3053,7 +3174,7 @@ window.startNASA=function(){
     setTimeout(()=>{
       seq.classList.add('done');
       setTimeout(()=>{seq.style.display='none';},700);
-      sessionStorage.setItem('nasa-done','1');
+      // sessionStorage.setItem('nasa-done','1'); // désactivé pour tests
       if(typeof startCinematicScene==='function'){
         startCinematicScene(()=>{
           if(typeof enterCinematic==='function') enterCinematic();
@@ -3173,20 +3294,11 @@ document.addEventListener('touchend',e=>{
     setTimeout(()=>{ if(inp2) inp2.focus(); }, 400);
   }
 
-  // Si nom déjà connu en session → skip name-screen + lancer NASA si pas vue
-  if(pilotName){
-    const screen = document.getElementById('name-screen');
-    if(screen) screen.style.display = 'none';
-    applyName(pilotName);
-    // Lancer NASA si pas encore vue
-    setTimeout(()=>{ if(window.startNASA) startNASA(); }, 100);
-  } else {
-    // Focus sur l'input après un court délai
-    setTimeout(()=>{
-      const inp = document.getElementById('name-input');
-      if(inp) inp.focus();
-    }, 300);
-  }
+  // Focus sur l'input
+  setTimeout(()=>{
+    const inp = document.getElementById('name-input');
+    if(inp) inp.focus();
+  }, 300);
 
   // Patch NASA labels avec le prénom
   const origTick = window._nasaTick;
@@ -3513,8 +3625,8 @@ function applyCockpitTheme(prospect){
 }
 
 function updateCockpitDest(slideIdx){
-  if(typeof PDATA==='undefined') return;
-  const pd = PDATA[slideIdx];
+  if(typeof window.PDATA==='undefined'||!window.PDATA) return;
+  const pd = window.PDATA[slideIdx];
   if(!pd) return;
   const destEl = document.getElementById('ck-hud-dest');
   if(destEl) destEl.textContent = pd.label.toUpperCase() + ' — ' + pd.sub;
@@ -3620,6 +3732,53 @@ function buildRoomPlanets(){
 
     container.appendChild(btn);
   });
+}
+
+function ckWarpTo(id){ ckRoomWarpTo(id); }
+
+function ckRoomWarpTo(id){
+  if(id === ckActive) return;
+  ckActive = id;
+  const pd = window.PDATA[id];
+
+  // Mettre à jour visuel actif
+  document.querySelectorAll('.ck-planet-btn').forEach((btn,i) => {
+    btn.classList.toggle('active', i === id);
+  });
+
+  // HUD destination
+  const destEl = document.getElementById('ck-hud-dest');
+  if(destEl){ destEl.textContent = `→ ${pd.label.toUpperCase()}`; destEl.classList.add('active'); }
+
+  // Couleur accent pilote = couleur planète
+  const visor = document.getElementById('ck-pilot-visor');
+  if(visor) visor.setAttribute('fill', pd.color);
+
+  // Effet warp — étoiles s'étirent
+  const warp = document.getElementById('ck-warp');
+  if(warp){ warp.style.opacity='.8'; setTimeout(()=>warp.style.opacity='0',400); }
+
+  // Étoiles s'étirent dans le hublot
+  const stars = document.querySelectorAll('#ck-porthole-stars circle');
+  stars.forEach(s => {
+    s.style.transition = 'transform 0.4s ease-in, opacity 0.4s';
+    const dx = (Math.random() - 0.5) * 40;
+    const dy = (Math.random() - 0.5) * 30;
+    s.style.transform = `translate(${dx}px,${dy}px) scaleX(3)`;
+    s.style.opacity = '0';
+  });
+
+  setTimeout(()=>{
+    // Reset étoiles
+    stars.forEach(s => {
+      s.style.transition = 'none';
+      s.style.transform = '';
+      s.style.opacity = '';
+    });
+    if(destEl){ destEl.textContent='CHOISISSEZ VOTRE DESTINATION'; destEl.classList.remove('active'); }
+    window.closeUniverse();
+    setTimeout(()=>{ if(typeof go==='function') go(id); }, 200);
+  }, 450);
 }
 
 // ═══ CINÉMATIQUE ASTRONAUTE ═══
@@ -4250,6 +4409,457 @@ window.toggleLiveMode = function(){
 })();
 
 
+
+// ── Animation slide vidéo (s6)
+function initVideoSlide(){
+  // Stats en cascade
+  ['vsc1','vsc2','vsc3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){ el.style.opacity='1'; el.style.transform='translateX(0)'; }
+  });
+
+  // Nom prospect dans le tag
+  const nameTag=document.getElementById('vid-name-tag');
+  const nameEl=document.getElementById('vid-prospect-name');
+  if(nameEl && typeof prospectData!=='undefined' && prospectData && prospectData.prospect){
+    nameEl.textContent=`${prospectData.prospect.prenom||'Marc'} · ${prospectData.prospect.societe||'Votre entreprise'}`;
+  }
+  if(nameTag) setTimeout(()=>{ nameTag.style.opacity='1'; },400);
+
+  // Barre de progression vidéo (58 secondes simulées en 8s)
+  const bar=document.getElementById('vid-progress-bar');
+  const timeEl=document.getElementById('vid-time');
+  let prog=0; const dur=8000; const start=performance.now();
+  const vidInt=setInterval(()=>{
+    const t=Math.min(1,(performance.now()-start)/dur);
+    prog=t*100;
+    if(bar) bar.style.width=prog+'%';
+    const secs=Math.round(t*58);
+    if(timeEl) timeEl.textContent=`0:${String(secs).padStart(2,'0')} / 0:58`;
+    // Changer la couleur de fond pour simuler le contenu vidéo
+    const bg=document.getElementById('vid-bg');
+    if(bg){
+      const hue=220+t*60;
+      bg.style.background=`linear-gradient(135deg,hsl(${hue},60%,8%) 0%,hsl(${hue+20},50%,12%) 40%,hsl(${hue-10},70%,10%) 100%)`;
+    }
+    if(t>=1){
+      clearInterval(vidInt);
+      // Notification de réponse
+      const notif=document.getElementById('vid-notif');
+      if(nameTag) nameTag.style.opacity='0';
+      setTimeout(()=>{
+        if(notif){ notif.style.opacity='1'; notif.style.transform='translateY(0)'; }
+      },500);
+      // Re-loop après 3s
+      setTimeout(()=>{
+        if(notif){ notif.style.opacity='0'; notif.style.transform='translateY(-8px)'; }
+        setTimeout(()=>{ initVideoSlide(); },600);
+      },3500);
+    }
+  },50);
+}
+
+function resetVideoSlide(){
+  ['vsc1','vsc2','vsc3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){ el.style.opacity='0'; el.style.transform='translateX(-16px)'; }
+  });
+  const bar=document.getElementById('vid-progress-bar');
+  if(bar) bar.style.width='0%';
+  const nameTag=document.getElementById('vid-name-tag');
+  if(nameTag) nameTag.style.opacity='0';
+  const notif=document.getElementById('vid-notif');
+  if(notif){ notif.style.opacity='0'; notif.style.transform='translateY(-8px)'; }
+}
+
+// ══ DÉMO MAC — animation canvas 3 formats ══════
+let demoAnimRunning = false;
+let demoAnimFrame  = null;
+
+function initVideoSlide(){
+  // Stats
+  ['vsc1','vsc2','vsc3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){ el.style.opacity='1'; el.style.transform='translateX(0)'; }
+  });
+  startDemoCanvas();
+}
+
+function resetVideoSlide(){
+  ['vsc1','vsc2','vsc3'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){ el.style.opacity='0'; el.style.transform='translateX(-16px)'; }
+  });
+  stopDemoCanvas();
+}
+
+function stopDemoCanvas(){
+  demoAnimRunning = false;
+  if(demoAnimFrame){ cancelAnimationFrame(demoAnimFrame); demoAnimFrame=null; }
+  const cv = document.getElementById('demo-canvas');
+  if(cv){ const ctx=cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height); }
+}
+
+function startDemoCanvas(){
+  stopDemoCanvas();
+  const cv = document.getElementById('demo-canvas');
+  if(!cv) return;
+
+  const rect = cv.getBoundingClientRect();
+  cv.width  = rect.width  || 480;
+  cv.height = rect.height || 270;
+  const W=cv.width, H=cv.height;
+  const ctx = cv.getContext('2d');
+
+  demoAnimRunning = true;
+  const startT = performance.now();
+
+  // 3 formats × ~5s chacun = ~15s total puis loop
+  const FORMATS = [
+    { name:'GIF EMAIL',    color:'#ff6b35', tag:'demo-dot-0', label:'GIF EMAIL',      draw: drawGifEmail },
+    { name:'FACE CAMÉRA',  color:'#ff3d8f', tag:'demo-dot-1', label:'FACE CAMÉRA',    draw: drawFaceCamera },
+    { name:'ÉCRAN PARTAGÉ',color:'#a78bfa', tag:'demo-dot-2', label:'ÉCRAN PARTAGÉ',  draw: drawScreenShare },
+  ];
+  const DUR_EACH = 5000; // ms par format
+  const TOTAL_DUR = DUR_EACH * FORMATS.length;
+
+  // Étoiles fond
+  const stars = Array.from({length:60},()=>({
+    x:Math.random()*W, y:Math.random()*H,
+    r:Math.random()<.1?1.5:.8, a:.1+Math.random()*.6,
+    tw:Math.random()*Math.PI*2, spd:.01+Math.random()*.02
+  }));
+
+  let frame=0;
+
+  // ── Format 1 : GIF Email ──────────────────────
+  function drawGifEmail(ctx,W,H,t,p){
+    // p = 0→1 sur la durée du format
+
+    // Fond email client
+    ctx.fillStyle='#0a0c18';
+    ctx.fillRect(0,0,W,H);
+
+    // Fenêtre email
+    const ex=W*.1, ey=H*.08, ew=W*.8, eh=H*.84;
+    ctx.fillStyle='#0e1020';
+    ctx.strokeStyle='rgba(100,120,255,.2)';
+    ctx.lineWidth=1;
+    roundRect(ctx,ex,ey,ew,eh,6,true,true);
+
+    // Barre titre email
+    ctx.fillStyle='#080a16';
+    roundRect(ctx,ex,ey,ew,24,{tl:6,tr:6},true,false);
+    ctx.fillStyle='rgba(255,255,255,.15)';
+    ctx.font='bold 8px monospace';
+    ctx.fillText('Nouveau message — Boîte de réception',ex+10,ey+15);
+
+    // Corps email
+    const lines = [
+      {w:.45,o:.35,y:0}, {w:.6,o:.25,y:1.3},
+      {w:.3,o:.2,y:2.6}, {w:.5,o:.18,y:3.9},
+    ];
+    lines.forEach(l=>{
+      ctx.fillStyle=`rgba(255,255,255,${l.o})`;
+      roundRect(ctx,ex+10,ey+36+l.y*12,ew*l.w,6,2,true,false);
+    });
+
+    // Zone GIF (s'anime)
+    const gx=ex+10, gy=ey+90, gw=ew-20, gh=H*.42;
+    ctx.fillStyle='#060810';
+    ctx.strokeStyle='rgba(255,107,53,.25)';
+    roundRect(ctx,gx,gy,gw,gh,6,true,true);
+
+    // Silhouette dans le GIF
+    const personX=gx+gw*.35, personY=gy+gh*.15;
+    const headR=gh*.12;
+    // Tête
+    ctx.fillStyle='#e8d4b8';
+    ctx.beginPath(); ctx.arc(personX,personY,headR,0,Math.PI*2); ctx.fill();
+    // Corps
+    ctx.fillStyle='#1a2744';
+    ctx.beginPath();
+    ctx.moveTo(personX-headR*.8,personY+headR);
+    ctx.lineTo(personX+headR*.8,personY+headR);
+    ctx.lineTo(personX+headR*.6,personY+gh*.6);
+    ctx.lineTo(personX-headR*.6,personY+gh*.6);
+    ctx.closePath(); ctx.fill();
+    // Bras animé
+    const armAngle=Math.sin(t*.003)*0.4;
+    ctx.strokeStyle='#1a2744'; ctx.lineWidth=headR*.5;
+    ctx.beginPath();
+    ctx.moveTo(personX-headR*.8,personY+headR*1.5);
+    ctx.lineTo(personX-headR*.8+Math.cos(armAngle+.5)*headR*1.4,personY+headR*1.5+Math.sin(armAngle+.5)*headR*1.4);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(personX+headR*.8,personY+headR*1.5);
+    ctx.lineTo(personX+headR*.8+Math.cos(-armAngle+2.5)*headR*1.4,personY+headR*1.5+Math.sin(-armAngle+2.5)*headR*1.4);
+    ctx.stroke();
+
+    // Barres équaliseur (talking)
+    const bx=gx+gw*.62, by=gy+gh*.5;
+    const barsH=[.5,.8,.4,.9,.6,.7,.3,.85];
+    barsH.forEach((h,i)=>{
+      const bh=(h+Math.sin(t*.006+i)*0.3)*gh*.35;
+      ctx.fillStyle=`rgba(255,107,53,${.4+h*.5})`;
+      ctx.fillRect(bx+i*8,by-bh,5,bh);
+    });
+
+    // Label GIF
+    ctx.fillStyle='rgba(255,107,53,.8)';
+    ctx.font='bold 9px monospace';
+    ctx.fillText('▶ GIF · Click to play',gx+8,gy+gh-8);
+
+    // Tag orange
+    drawTag(ctx,W-80,H-26,'GIF animé','rgba(255,107,53,.15)','rgba(255,107,53,.4)','#ff6b35');
+
+    // Cursor blink
+    if(Math.floor(t*.002)%2===0){
+      ctx.fillStyle='rgba(255,255,255,.6)';
+      ctx.fillRect(ex+10+ew*.45+2,ey+36,1.5,8);
+    }
+  }
+
+  // ── Format 2 : Face caméra ───────────────────
+  function drawFaceCamera(ctx,W,H,t,p){
+    // Fond sombre type Loom/Vidyard
+    ctx.fillStyle='#08060e';
+    ctx.fillRect(0,0,W,H);
+
+    // Cadre vidéo principal
+    const vx=W*.05,vy=H*.05,vw=W*.9,vh=H*.78;
+    const grad=ctx.createLinearGradient(vx,vy,vx,vy+vh);
+    grad.addColorStop(0,'#12102a'); grad.addColorStop(1,'#080618');
+    ctx.fillStyle=grad;
+    ctx.strokeStyle='rgba(255,61,143,.2)';
+    ctx.lineWidth=1.5;
+    roundRect(ctx,vx,vy,vw,vh,8,true,true);
+
+    // Silhouette présentateur (plus grande)
+    const cx=vx+vw*.5, cy=vy+vh*.42;
+    const headR=vh*.16;
+    // Lueur
+    const glow=ctx.createRadialGradient(cx,cy,0,cx,cy,headR*4);
+    glow.addColorStop(0,'rgba(255,61,143,.08)'); glow.addColorStop(1,'transparent');
+    ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(cx,cy,headR*4,0,Math.PI*2); ctx.fill();
+    // Tête
+    ctx.fillStyle='#e8d4b8';
+    ctx.beginPath(); ctx.arc(cx,cy-headR*.2,headR,0,Math.PI*2); ctx.fill();
+    // Cou
+    ctx.fillStyle='#d4bea0';
+    ctx.fillRect(cx-headR*.25,cy+headR*.7,headR*.5,headR*.4);
+    // Épaules/corps
+    ctx.fillStyle='#1a2a4a';
+    ctx.beginPath();
+    ctx.moveTo(cx-headR*2,vy+vh);
+    ctx.quadraticCurveTo(cx-headR*1.2,cy+headR*1.2,cx-headR*.4,cy+headR*1.1);
+    ctx.lineTo(cx+headR*.4,cy+headR*1.1);
+    ctx.quadraticCurveTo(cx+headR*1.2,cy+headR*1.2,cx+headR*2,vy+vh);
+    ctx.closePath(); ctx.fill();
+    // Cravate Devoleads
+    ctx.fillStyle='#ff3d8f'; ctx.globalAlpha=.7;
+    ctx.fillRect(cx-headR*.08,cy+headR*1.12,headR*.16,headR*.9);
+    ctx.globalAlpha=1;
+    // Yeux (blink)
+    const blink=Math.sin(t*.0015)*Math.sin(t*.0023);
+    const eyeH=blink>0.97?1:headR*.12;
+    ctx.fillStyle='#2a1a3a';
+    ctx.fillRect(cx-headR*.35,cy-headR*.12-eyeH/2,headR*.22,eyeH);
+    ctx.fillRect(cx+headR*.13,cy-headR*.12-eyeH/2,headR*.22,eyeH);
+    // Bouche animée (parle)
+    const mouthH=Math.abs(Math.sin(t*.008))*headR*.12+headR*.04;
+    ctx.strokeStyle='#8a6a5a'; ctx.lineWidth=headR*.08;
+    ctx.beginPath();
+    ctx.arc(cx,cy+headR*.35,headR*.18,-0.2,Math.PI+.2);
+    ctx.stroke();
+
+    // Barre de progression vidéo
+    const barY=vy+vh+12;
+    ctx.fillStyle='rgba(255,255,255,.08)';
+    roundRect(ctx,vx,barY,vw,4,2,true,false);
+    ctx.fillStyle='var(--pink,#ff3d8f)';
+    const barFill=ctx.createLinearGradient(vx,barY,vx+vw,barY);
+    barFill.addColorStop(0,'#ff3d8f'); barFill.addColorStop(1,'#7c3aed');
+    ctx.fillStyle=barFill;
+    roundRect(ctx,vx,barY,vw*p,4,2,true,false);
+    // Curseur barre
+    ctx.fillStyle='#fff';
+    ctx.beginPath(); ctx.arc(vx+vw*p,barY+2,5,0,Math.PI*2); ctx.fill();
+
+    // Contrôles
+    ctx.fillStyle='rgba(255,255,255,.5)';
+    ctx.font='10px monospace';
+    const sec=Math.floor(p*58);
+    ctx.fillText(`0:${String(sec).padStart(2,'0')} / 0:58`,vx+2,barY+18);
+
+    // Badge nom
+    ctx.fillStyle='rgba(0,0,0,.6)';
+    roundRect(ctx,vx+4,vy+vh-22,120,16,4,true,false);
+    ctx.fillStyle='rgba(255,255,255,.7)'; ctx.font='8px sans-serif';
+    ctx.fillText('Stanislas · Devoleads',vx+10,vy+vh-12);
+
+    // Tag
+    drawTag(ctx,W-90,H-26,'Face caméra','rgba(255,61,143,.12)','rgba(255,61,143,.35)','#ff3d8f');
+  }
+
+  // ── Format 3 : Écran partagé ─────────────────
+  function drawScreenShare(ctx,W,H,t,p){
+    // Fond
+    ctx.fillStyle='#06080f';
+    ctx.fillRect(0,0,W,H);
+
+    // Fenêtre principale (dashboard prospect)
+    const wx=W*.04, wy=H*.04, ww=W*.68, wh=H*.88;
+    ctx.fillStyle='#0c0e1e';
+    ctx.strokeStyle='rgba(100,130,255,.18)';
+    ctx.lineWidth=1;
+    roundRect(ctx,wx,wy,ww,wh,6,true,true);
+    // Header dashboard
+    ctx.fillStyle='#080a18';
+    roundRect(ctx,wx,wy,ww,22,{tl:6,tr:6},true,false);
+    ctx.fillStyle='rgba(255,255,255,.12)'; ctx.font='8px monospace';
+    ctx.fillText('● Votre CRM — pipeline Q1 2025',wx+8,wy+14);
+
+    // Graphique barres animé
+    const bx=wx+16,by=wy+40,bw=ww-32,bh=wh*.44;
+    const barsData=[.55,.75,.4,.88,.62,.78,.5,.92,.68];
+    const barW=(bw/barsData.length)*.7;
+    const barGap=(bw/barsData.length);
+    barsData.forEach((h,i)=>{
+      const curH=Math.min(h,(p*barsData.length-i)*.8+.1)*bh;
+      const x=bx+i*barGap;
+      const barGrad=ctx.createLinearGradient(x,by+bh-curH,x,by+bh);
+      barGrad.addColorStop(0,'rgba(124,58,237,.9)');
+      barGrad.addColorStop(1,'rgba(124,58,237,.3)');
+      ctx.fillStyle=barGrad;
+      roundRect(ctx,x,by+bh-curH,barW,curH,{tl:2,tr:2},true,false);
+      // Label axe
+      ctx.fillStyle='rgba(255,255,255,.2)'; ctx.font='7px sans-serif';
+      ctx.fillText('S'+i,x+barW/2-4,by+bh+10);
+    });
+
+    // Stats mini
+    const stats=[
+      {label:'Leads',val:'142',col:'#a78bfa'},
+      {label:'RDV',  val:'38', col:'#ff3d8f'},
+      {label:'Signés',val:'12',col:'#4ade80'},
+    ];
+    stats.forEach((s,i)=>{
+      const sx=wx+16+i*(ww/3-8), sy=wy+wh*.56;
+      ctx.fillStyle='rgba(255,255,255,.04)';
+      ctx.strokeStyle=`${s.col}40`; ctx.lineWidth=1;
+      roundRect(ctx,sx,sy,ww/3-18,40,4,true,true);
+      ctx.fillStyle=s.col; ctx.font='bold 14px sans-serif';
+      ctx.fillText(s.val,sx+10,sy+22);
+      ctx.fillStyle='rgba(255,255,255,.3)'; ctx.font='7px sans-serif';
+      ctx.fillText(s.label,sx+10,sy+34);
+    });
+
+    // Mini webcam (présentateur en coin)
+    const cx2=wx+ww-70, cy2=wy+wh-70;
+    ctx.fillStyle='#0a0c1a';
+    ctx.strokeStyle='rgba(255,61,143,.5)';
+    ctx.lineWidth=2;
+    roundRect(ctx,cx2,cy2,60,50,6,true,true);
+    // Silhouette mini
+    const mhR=8;
+    ctx.fillStyle='#e8d4b8';
+    ctx.beginPath(); ctx.arc(cx2+30,cy2+14,mhR,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#1a2a4a';
+    ctx.fillRect(cx2+16,cy2+22,28,22);
+    // Indicateur micro actif
+    ctx.fillStyle=`rgba(255,61,143,${.5+Math.sin(t*.01)*.4})`;
+    ctx.beginPath(); ctx.arc(cx2+8,cy2+8,4,0,Math.PI*2); ctx.fill();
+
+    // Curseur souris animé
+    const mouseX=wx+ww*.3+Math.sin(t*.0015)*ww*.15;
+    const mouseY=wy+wh*.5+Math.cos(t*.001)*wh*.1;
+    ctx.fillStyle='rgba(255,255,255,.9)';
+    ctx.beginPath();
+    ctx.moveTo(mouseX,mouseY);
+    ctx.lineTo(mouseX+8,mouseY+14);
+    ctx.lineTo(mouseX+4,mouseY+12);
+    ctx.lineTo(mouseX+6,mouseY+18);
+    ctx.lineTo(mouseX+4,mouseY+18);
+    ctx.lineTo(mouseX+2,mouseY+12);
+    ctx.lineTo(mouseX-1,mouseY+15);
+    ctx.closePath(); ctx.fill();
+
+    // Tag
+    drawTag(ctx,W-100,H-26,'Écran partagé','rgba(124,58,237,.12)','rgba(124,58,237,.35)','#a78bfa');
+  }
+
+  // ── Helpers ───────────────────────────────────
+  function roundRect(ctx,x,y,w,h,r,fill,stroke){
+    if(typeof r==='number') r={tl:r,tr:r,br:r,bl:r};
+    else { r={tl:0,tr:0,br:0,bl:0,...r}; }
+    ctx.beginPath();
+    ctx.moveTo(x+r.tl,y);
+    ctx.lineTo(x+w-r.tr,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r.tr);
+    ctx.lineTo(x+w,y+h-r.br); ctx.quadraticCurveTo(x+w,y+h,x+w-r.br,y+h);
+    ctx.lineTo(x+r.bl,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r.bl);
+    ctx.lineTo(x,y+r.tl); ctx.quadraticCurveTo(x,y,x+r.tl,y);
+    ctx.closePath();
+    if(fill) ctx.fill();
+    if(stroke) ctx.stroke();
+  }
+  function drawTag(ctx,x,y,text,bg,border,col){
+    ctx.save();
+    ctx.fillStyle=bg;
+    ctx.strokeStyle=border; ctx.lineWidth=1;
+    const tw=ctx.measureText(text).width+16;
+    roundRect(ctx,x,y-10,tw,16,4,true,true);
+    ctx.fillStyle=col; ctx.font='bold 8px monospace';
+    ctx.fillText(text,x+8,y+1);
+    ctx.restore();
+  }
+
+  // ── Boucle principale ─────────────────────────
+  function loop(ts){
+    if(!demoAnimRunning) return;
+    frame++;
+    const elapsed=(ts-startT)%TOTAL_DUR;
+    const fmtIdx=Math.floor(elapsed/DUR_EACH);
+    const fmtP=(elapsed%DUR_EACH)/DUR_EACH;
+
+    ctx.clearRect(0,0,W,H);
+
+    // Fond étoiles
+    stars.forEach(s=>{
+      ctx.globalAlpha=s.a*(.3+.7*Math.sin(frame*s.spd+s.tw));
+      ctx.fillStyle='#fff';
+      ctx.fillRect(Math.round(s.x),Math.round(s.y),s.r,s.r);
+    });
+    ctx.globalAlpha=1;
+
+    // Transition douce entre formats
+    const transZone=.08;
+    let alpha=1;
+    if(fmtP<transZone) alpha=fmtP/transZone;
+    else if(fmtP>1-transZone) alpha=(1-fmtP)/transZone;
+    ctx.globalAlpha=alpha;
+
+    // Dessiner le format actuel
+    FORMATS[fmtIdx].draw(ctx,W,H,ts-startT,fmtP);
+    ctx.globalAlpha=1;
+
+    // Mise à jour UI
+    const prog=document.getElementById('demo-progress');
+    if(prog) prog.style.width=((elapsed/TOTAL_DUR)*100)+'%';
+
+    const tag=document.getElementById('demo-format-tag');
+    if(tag) tag.textContent=FORMATS[fmtIdx].label;
+
+    // Dots
+    FORMATS.forEach((_,i)=>{
+      const dot=document.getElementById('demo-dot-'+i);
+      if(dot) dot.style.opacity=i===fmtIdx?'1':'.25';
+    });
+
+    demoAnimFrame=requestAnimationFrame(loop);
+  }
+  demoAnimFrame=requestAnimationFrame(loop);
+}
 </script>
 <div id="cine-scene" style="display:none">
   <canvas id="cine-stars"></canvas>
