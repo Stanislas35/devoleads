@@ -635,6 +635,11 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
   border:1px solid rgba(255,255,255,.08);border-radius:100px;
   padding:5px 14px 5px 10px;pointer-events:none;
   opacity:0;transition:opacity 1s ease 2s;
+  white-space:nowrap;
+}
+/* En mode cinématique, le rdv-counter reste mais ck-return le remplace visuellement */
+body.cinematic #rdv-counter{
+  opacity:0!important;
 }
 #rdv-counter.show{opacity:1}
 #rdv-pulse{width:5px;height:5px;border-radius:50%;background:var(--pink);
@@ -2873,7 +2878,11 @@ document.addEventListener('touchend',e=>{
 
 // ════ PRÉNOM + PERSONNALISATION ════
 ;(function(){
-  let pilotName = sessionStorage.getItem('dv-pilot-name')||'';
+  // Nettoyer la session à chaque chargement → expérience fraîche
+  sessionStorage.removeItem('dv-pilot-name');
+  sessionStorage.removeItem('nasa-done');
+  sessionStorage.removeItem('ck-intro-shown');
+  let pilotName = '';
 
   function applyName(name){
     if(!name) return;
@@ -2977,26 +2986,18 @@ document.addEventListener('touchend',e=>{
     setTimeout(()=>{ if(inp2) inp2.focus(); }, 400);
   }
 
-  // Si nom déjà connu → skip name-screen
-  if(pilotName){
-    const screen = document.getElementById('name-screen');
-    if(screen) screen.style.display = 'none';
-    applyName(pilotName);
-    const nasaDone = sessionStorage.getItem('nasa-done');
-    if(nasaDone){
-      // NASA déjà vue → mode cinématique direct sans NASA
-      setTimeout(()=>{ if(typeof enterCinematic==='function') enterCinematic(); }, 200);
-    } else {
-      // Première fois → lancer NASA
-      setTimeout(()=>{ if(window.startNASA) startNASA(); }, 100);
-    }
-  } else {
-    // Focus sur l'input après un court délai
-    setTimeout(()=>{
-      const inp = document.getElementById('name-input');
-      if(inp) inp.focus();
-    }, 300);
-  }
+  // Toujours afficher l'écran prénom à chaque ouverture de session
+  // (on ne skip jamais, même si le prénom est en sessionStorage)
+  const screen = document.getElementById('name-screen');
+  if(screen) screen.style.display = 'flex';
+  // Focus auto sur le champ prénom
+  setTimeout(()=>{
+    const inp = document.getElementById('name-input');
+    if(inp){ inp.value=''; inp.focus(); }
+    // Vider aussi l'URL
+    const urlInp = document.getElementById('url-input');
+    if(urlInp) urlInp.value='';
+  }, 300);
 
   // Patch NASA labels avec le prénom
   const origTick = window._nasaTick;
