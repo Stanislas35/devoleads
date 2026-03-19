@@ -494,74 +494,135 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
 #uni-overlay{
   position:fixed;inset:0;z-index:500;
   background:#02030a;
-  display:flex;align-items:center;justify-content:center;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  grid-template-columns:1fr;
   opacity:0;pointer-events:none;
   transition:opacity .5s cubic-bezier(.16,1,.3,1);
+  --ck-accent:80,120,255;
+  --ck-accent-hex:#5078ff;
 }
 #uni-overlay.open{opacity:1;pointer-events:all}
 
+/* Barre top */
+#ck-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px;border-bottom:1px solid rgba(var(--ck-accent),.1);
+  z-index:20;position:relative;
+}
+#uni-title{
+  font-family:var(--display);font-size:10px;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25);
+}
 #uni-close{
-  position:absolute;top:24px;right:32px;z-index:20;
-  font-family:var(--display);font-size:11px;font-weight:500;
-  letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);
+  font-family:var(--display);font-size:10px;font-weight:500;
+  letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);
   cursor:pointer;transition:color .2s;background:none;border:none;
   display:flex;align-items:center;gap:7px;
 }
 #uni-close:hover{color:rgba(255,255,255,.8)}
-#uni-close svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none}
+#uni-close svg{width:13px;height:13px;stroke:currentColor;stroke-width:1.5;fill:none}
 
-#uni-title{
-  position:absolute;top:26px;left:50%;transform:translateX(-50%);z-index:20;
-  font-family:var(--display);font-size:10px;font-weight:600;
-  letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.2);
-  pointer-events:none;
+/* Layout principal — 3 colonnes */
+#ck-main{
+  display:grid;
+  grid-template-columns:clamp(140px,16vw,200px) 1fr clamp(140px,16vw,200px);
+  gap:0;height:100%;overflow:hidden;
 }
 
-/* Cockpit wrapper */
+/* Panneaux latéraux */
+.ck-panel-side{
+  display:flex;flex-direction:column;gap:10px;
+  padding:16px 14px;
+  border-right:1px solid rgba(var(--ck-accent),.08);
+  background:rgba(2,3,12,.6);
+  overflow:hidden;
+}
+#ck-panel-right{border-right:none;border-left:1px solid rgba(var(--ck-accent),.08)}
+.ck-pblock{
+  background:rgba(var(--ck-accent),.04);
+  border:1px solid rgba(var(--ck-accent),.1);
+  border-radius:8px;padding:10px 12px;flex-shrink:0;
+}
+.ck-pblock.accent{
+  background:rgba(var(--ck-accent),.08);
+  border-color:rgba(var(--ck-accent),.2);
+}
+.ck-plabel{font-size:7px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:5px}
+.ck-pval{font-size:13px;font-weight:700;color:rgba(255,255,255,.82);line-height:1.2}
+.ck-pval.sm{font-size:11px}
+.ck-psep{height:1px;background:rgba(var(--ck-accent),.08);margin:4px 0}
+/* Prospect logo watermark dans le panneau */
+#ck-prospect-logo{
+  font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  color:rgba(var(--ck-accent),.4);text-align:center;padding:8px 0;
+  border-top:1px solid rgba(var(--ck-accent),.08);margin-top:auto;
+}
+
+/* Zone centrale — canvas + hublot + dash */
 #cockpit-wrap{
-  position:relative;width:min(960px,96vw);height:min(600px,85vh);
-  background:#02030a;border-radius:18px;overflow:hidden;
+  position:relative;width:100%;height:100%;
+  background:#02030a;overflow:hidden;
 }
 #ck-three{position:absolute;inset:0;z-index:1}
 
-/* Hublot */
+/* Hublot — plus grand, prend toute la largeur centrale */
 #ck-porthole{
-  position:absolute;top:16px;left:50%;transform:translateX(-50%);
-  width:min(500px,72vw);height:min(340px,48vw);
+  position:absolute;
+  top:clamp(8px,2vh,18px);
+  left:50%;transform:translateX(-50%);
+  width:clamp(340px,86%,680px);
+  height:clamp(220px,58%,460px);
   border-radius:50%;z-index:6;pointer-events:none;
   box-shadow:
-    0 0 0 8px #0a0d18,
-    0 0 0 16px #101420,
-    0 0 0 18px rgba(100,150,255,.1),
-    inset 0 0 80px rgba(0,0,0,.9);
+    0 0 0 10px #0a0d18,
+    0 0 0 20px #0d1020,
+    0 0 0 22px rgba(var(--ck-accent),.12),
+    0 0 60px rgba(var(--ck-accent),.05),
+    inset 0 0 100px rgba(0,0,0,.85);
+  transition:box-shadow .8s ease;
 }
 #ck-porthole::after{
   content:'';position:absolute;inset:0;border-radius:50%;
-  background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 42%,rgba(80,120,255,.04) 100%);
+  background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 40%,rgba(var(--ck-accent),.04) 100%);
+}
+/* Watermark prospect dans le hublot */
+#ck-porthole-name{
+  position:absolute;
+  top:clamp(8px,2vh,18px);left:50%;transform:translateX(-50%);
+  z-index:8;pointer-events:none;
+  font-family:var(--display);font-size:clamp(9px,1.2vw,13px);
+  font-weight:700;letter-spacing:4px;text-transform:uppercase;
+  color:rgba(var(--ck-accent),.18);
+  transition:color .8s ease;
+  white-space:nowrap;
 }
 #ck-porthole-click{
-  position:absolute;top:16px;left:50%;transform:translateX(-50%);
-  width:min(500px,72vw);height:min(340px,48vw);
+  position:absolute;
+  top:clamp(8px,2vh,18px);left:50%;transform:translateX(-50%);
+  width:clamp(340px,86%,680px);height:clamp(220px,58%,460px);
   border-radius:50%;z-index:5;overflow:hidden;cursor:none;
 }
 
 /* Dashboard */
 #ck-dash{
-  position:absolute;bottom:0;left:0;right:0;height:190px;z-index:7;
-  background:linear-gradient(180deg,#03040c 0%,#080c1c 45%,#060810 100%);
-  border-top:1px solid rgba(80,120,255,.1);
+  position:absolute;bottom:0;left:0;right:0;
+  height:clamp(140px,22%,190px);z-index:7;
+  background:linear-gradient(180deg,transparent 0%,#03040d 20%,#070b1a 55%,#060810 100%);
+  border-top:1px solid rgba(var(--ck-accent),.08);
 }
 #ck-dash-curve{
-  position:absolute;top:-24px;left:-3%;width:106%;height:52px;
-  background:#04050e;border-radius:50% 50% 0 0/100% 100% 0 0;
-  border-top:1px solid rgba(80,120,255,.07);
+  position:absolute;top:-28px;left:-3%;width:106%;height:56px;
+  background:#03040d;border-radius:50% 50% 0 0/100% 100% 0 0;
+  border-top:1px solid rgba(var(--ck-accent),.06);
 }
 .ck-inst{
   position:absolute;border-radius:50%;
   background:radial-gradient(circle at 35% 30%,#141928,#070a14);
-  border:1px solid rgba(80,120,255,.14);
+  border:1px solid rgba(var(--ck-accent),.18);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:inset 0 2px 8px rgba(0,0,0,.7),0 0 12px rgba(80,120,255,.05);
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.7),0 0 12px rgba(var(--ck-accent),.06);
+  transition:border-color .8s,box-shadow .8s;
 }
 .ck-iv{font-size:12px;font-weight:700;line-height:1}
 .ck-il{font-size:6px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:3px}
@@ -589,7 +650,7 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
 .ck-nd.active .ck-nl{color:rgba(255,255,255,.85)}
 
 /* Tooltip */
-#ck-tt{position:absolute;z-index:15;pointer-events:none;opacity:0;transition:opacity .25s;text-align:center;top:min(372px,63%);left:50%;transform:translateX(-50%)}
+#ck-tt{position:absolute;z-index:15;pointer-events:none;opacity:0;transition:opacity .25s;text-align:center;bottom:clamp(196px,29%,224px);left:50%;transform:translateX(-50%)}
 #ck-tt-name{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
 #ck-tt-sub{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px}
 
@@ -609,7 +670,7 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
   background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.025) 3px,rgba(0,0,0,.025) 4px)}
 
 /* Hint */
-#ck-hint{position:absolute;top:min(374px,64%);left:50%;transform:translateX(-50%);z-index:15;pointer-events:none;
+#ck-hint{position:absolute;bottom:clamp(200px,30%,230px);left:50%;transform:translateX(-50%);z-index:15;pointer-events:none;
   font-size:8px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18);white-space:nowrap}
 
 /* Landing flash */
@@ -914,35 +975,105 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <button id="uni-btn" onclick="openUniverse()" title="Ouvrir le cockpit"><span>🚀</span><span class="btn-label">Cockpit</span></button>
 
 <div id="uni-overlay">
-  <div id="uni-title">Cockpit · Devoleads</div>
-  <button id="uni-close" onclick="closeUniverse()">
-    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    Fermer
-  </button>
-  <div id="cockpit-wrap">
-    <canvas id="ck-three"></canvas>
-    <div id="ck-porthole"></div>
-    <div id="ck-porthole-click"></div>
-    <div id="ck-warp"></div>
-    <div id="ck-scan"></div>
-    <div id="ck-cur"></div>
-    <div id="ck-tt"><div id="ck-tt-name"></div><div id="ck-tt-sub"></div></div>
-    <div id="ck-hint">Survolez une planète · cliquez pour voyager</div>
-    <div id="ck-dash">
-      <div id="ck-dash-curve"></div>
-      <div class="ck-inst" style="width:54px;height:54px;left:min(168px,18%);top:28px"><div class="ck-iv" style="color:#22d3ee">×8.3</div><div class="ck-il">ROI</div></div>
-      <div class="ck-inst" style="width:44px;height:44px;left:min(234px,25%);top:46px"><div class="ck-iv" style="color:#4ade80;font-size:9px">14j</div><div class="ck-il">Launch</div></div>
-      <div class="ck-inst" style="width:44px;height:44px;right:min(234px,25%);top:46px"><div class="ck-iv" style="color:#ff3d8f;font-size:9px">8-15</div><div class="ck-il">RDV/mois</div></div>
-      <div class="ck-inst" style="width:54px;height:54px;right:min(168px,18%);top:28px"><div class="ck-iv" style="color:#a78bfa">+150</div><div class="ck-il">CEOs</div></div>
-      <div id="ck-launch" style="position:absolute;bottom:clamp(20px,3vh,34px);left:clamp(50px,6%,78px)" title="Warp speed">🚀</div>
-      <div id="ck-joy"><div class="ck-js"><div class="ck-jt"></div></div><div class="ck-jb"></div></div>
-      <div id="ck-nav"></div>
-    </div>
-    <div id="ck-intro">
-      <div id="ck-intro-text">Cockpit Devoleads</div>
-      <div id="ck-intro-sub">Choisissez votre destination</div>
-    </div>
+  <!-- Barre top -->
+  <div id="ck-topbar">
+    <div id="uni-title">Cockpit · Devoleads</div>
+    <button id="uni-close" onclick="closeUniverse()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Fermer
+    </button>
   </div>
+
+  <!-- Layout 3 colonnes -->
+  <div id="ck-main">
+
+    <!-- PANNEAU GAUCHE — Stats Devoleads -->
+    <div class="ck-panel-side" id="ck-panel-left">
+      <div class="ck-pblock accent">
+        <div class="ck-plabel">RDV qualifiés</div>
+        <div class="ck-pval" id="ck-stat-rdv" style="color:var(--ck-accent-hex)">8–15<span style="font-size:9px;opacity:.5">/mois</span></div>
+      </div>
+      <div class="ck-pblock">
+        <div class="ck-plabel">Lancement</div>
+        <div class="ck-pval" id="ck-stat-launch" style="color:#4ade80">&lt;14j</div>
+      </div>
+      <div class="ck-pblock">
+        <div class="ck-plabel">ROI moyen</div>
+        <div class="ck-pval" id="ck-stat-roi" style="color:#22d3ee">×8.3</div>
+      </div>
+      <div class="ck-pblock">
+        <div class="ck-plabel">Clients actifs</div>
+        <div class="ck-pval" id="ck-stat-clients">+150<span style="font-size:9px;opacity:.5"> CEOs</span></div>
+      </div>
+      <div class="ck-psep"></div>
+      <div class="ck-pblock">
+        <div class="ck-plabel">Délivrabilité</div>
+        <div class="ck-pval" style="color:#a78bfa">94%</div>
+      </div>
+      <div id="ck-prospect-logo"></div>
+    </div>
+
+    <!-- CENTRE — Canvas + hublot + dash -->
+    <div id="cockpit-wrap">
+      <canvas id="ck-three"></canvas>
+      <div id="ck-porthole"></div>
+      <div id="ck-porthole-name"></div>
+      <div id="ck-porthole-click"></div>
+      <div id="ck-warp"></div>
+      <div id="ck-scan"></div>
+      <div id="ck-cur"></div>
+      <div id="ck-tt"><div id="ck-tt-name"></div><div id="ck-tt-sub"></div></div>
+      <div id="ck-hint">Survolez une planète · cliquez pour voyager</div>
+      <div id="ck-dash">
+        <div id="ck-dash-curve"></div>
+        <div class="ck-inst" style="width:54px;height:54px;left:min(168px,18%);top:28px"><div class="ck-iv" style="color:#22d3ee">×8.3</div><div class="ck-il">ROI</div></div>
+        <div class="ck-inst" style="width:44px;height:44px;left:min(234px,25%);top:46px"><div class="ck-iv" style="color:#4ade80;font-size:9px">14j</div><div class="ck-il">Launch</div></div>
+        <div class="ck-inst" style="width:44px;height:44px;right:min(234px,25%);top:46px"><div class="ck-iv" style="color:#ff3d8f;font-size:9px">8-15</div><div class="ck-il">RDV/mois</div></div>
+        <div class="ck-inst" style="width:54px;height:54px;right:min(168px,18%);top:28px"><div class="ck-iv" style="color:#a78bfa">+150</div><div class="ck-il">CEOs</div></div>
+        <div id="ck-launch" style="position:absolute;bottom:clamp(20px,3vh,34px);left:clamp(50px,6%,78px)" title="Warp speed">🚀</div>
+        <div id="ck-joy"><div class="ck-js"><div class="ck-jt"></div></div><div class="ck-jb"></div></div>
+        <div id="ck-nav"></div>
+      </div>
+      <div id="ck-intro">
+        <div id="ck-intro-text">Cockpit Devoleads</div>
+        <div id="ck-intro-sub">Choisissez votre destination</div>
+      </div>
+    </div>
+
+    <!-- PANNEAU DROIT — Infos slide / prospect -->
+    <div class="ck-panel-side" id="ck-panel-right">
+      <div class="ck-pblock accent">
+        <div class="ck-plabel">Destination active</div>
+        <div class="ck-pval sm" id="ck-dest-name">–</div>
+      </div>
+      <div class="ck-pblock" id="ck-prospect-block" style="display:none">
+        <div class="ck-plabel">Prospect</div>
+        <div class="ck-pval sm" id="ck-p-name">–</div>
+      </div>
+      <div class="ck-pblock" id="ck-prospect-societe-block" style="display:none">
+        <div class="ck-plabel">Entreprise</div>
+        <div class="ck-pval sm" id="ck-p-societe">–</div>
+      </div>
+      <div class="ck-pblock" id="ck-prospect-secteur-block" style="display:none">
+        <div class="ck-plabel">Secteur</div>
+        <div class="ck-pval sm" id="ck-p-secteur">–</div>
+      </div>
+      <div class="ck-pblock" id="ck-prospect-actu-block" style="display:none">
+        <div class="ck-plabel">Actu</div>
+        <div class="ck-pval sm" id="ck-p-actu" style="font-size:9px;line-height:1.4;opacity:.8">–</div>
+      </div>
+      <div class="ck-psep"></div>
+      <div class="ck-pblock">
+        <div class="ck-plabel">Slides visitées</div>
+        <div class="ck-pval" id="ck-visited-count">0</div>
+      </div>
+      <div class="ck-pblock">
+        <div class="ck-plabel">Mission</div>
+        <div class="ck-pval sm" id="ck-mission-status" style="color:#4ade80">En cours</div>
+      </div>
+    </div>
+
+  </div><!-- #ck-main -->
 </div>
 <div id="uni-landing-flash"></div>
 
@@ -2072,7 +2203,7 @@ function buildCockpit(){
   // Lights
   ckScene.add(new THREE.AmbientLight(0x111133,1.3));
   const sun=new THREE.PointLight(0xfff8ee,3.5,120);sun.position.set(-14,10,18);ckScene.add(sun);
-  const rim=new THREE.PointLight(0x3355ff,1.8,80);rim.position.set(16,-6,6);ckScene.add(rim);
+  const rim=new THREE.PointLight(0x3355ff,1.8,80);rim.position.set(16,-6,6);rim._isRim=true;ckScene.add(rim);
 
   // Stars
   const sg=new THREE.BufferGeometry();
@@ -2374,6 +2505,99 @@ function ckWarpTo(id){
   },tDur);
 }
 
+
+// ════ COCKPIT THEMING ════
+function hexToRgb(hex){
+  if(!hex) return '80,120,255'; // fallback bleu
+  hex = hex.trim().toLowerCase().replace(/^#/,'');
+  if(hex.length===3) hex=hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+  if(hex.length!==6||!/^[0-9a-f]{6}$/.test(hex)) return '80,120,255';
+  const r=parseInt(hex.slice(0,2),16);
+  const g=parseInt(hex.slice(2,4),16);
+  const b=parseInt(hex.slice(4,6),16);
+  return r+','+g+','+b;
+}
+
+function applyCockpitTheme(prospect){
+  const ov = document.getElementById('uni-overlay');
+  if(!ov) return;
+  const hex = (prospect && prospect.couleur_hex) ? prospect.couleur_hex : '#5078ff';
+  const rgb = hexToRgb(hex);
+  ov.style.setProperty('--ck-accent', rgb);
+  ov.style.setProperty('--ck-accent-hex', hex);
+
+  // Teinter les planètes Three.js avec la couleur prospect
+  if(prospect && ckPlanetMeshes && ckPlanetMeshes.length > 0){
+    // Planète cible (S7 = index 6) prend la couleur du prospect
+    const targetPlanet = ckPlanetMeshes[6];
+    if(targetPlanet && targetPlanet.material){
+      const col = new THREE.Color(hex);
+      targetPlanet.material.emissive = col;
+      targetPlanet.material.emissiveIntensity = .25;
+      // Mettre à jour PDATA couleur
+      if(ckPlanets[6] && ckPlanets[6].pd){
+        ckPlanets[6].pd.color = hex;
+        ckPlanets[6].pd.c1 = hex;
+      }
+    }
+    // Rim light prend aussi la couleur
+    if(ckScene){
+      ckScene.traverse(obj=>{
+        if(obj.isPointLight && obj._isRim){
+          obj.color.set(hex);
+        }
+      });
+    }
+  }
+
+  // Mettre à jour le watermark dans le hublot
+  const portholeNameEl = document.getElementById('ck-porthole-name');
+  if(portholeNameEl){
+    if(prospect && prospect.societe){
+      portholeNameEl.textContent = prospect.societe;
+      portholeNameEl.style.color = `rgba(${rgb},.22)`;
+    } else {
+      portholeNameEl.textContent = '';
+    }
+  }
+
+  // Mettre à jour les panneaux latéraux
+  if(prospect){
+    const p = prospect;
+    // Panneau gauche — stats standard (on pourrait surcharger ici si besoin)
+    const logoEl = document.getElementById('ck-prospect-logo');
+    if(logoEl) { logoEl.textContent = p.societe || ''; logoEl.style.display = p.societe ? 'block' : 'none'; }
+
+    // Panneau droit — infos prospect
+    const show = id => { const el=document.getElementById(id); if(el) el.style.display='block'; };
+    const set = (id, val) => { const el=document.getElementById(id); if(el && val) el.textContent=val; };
+    show('ck-prospect-block'); set('ck-p-name', p.prenom + (p.nom ? ' ' + p.nom : ''));
+    show('ck-prospect-societe-block'); set('ck-p-societe', p.societe);
+    show('ck-prospect-secteur-block'); set('ck-p-secteur', p.secteur);
+    if(p.actu){ show('ck-prospect-actu-block'); set('ck-p-actu', p.actu); }
+
+    // Titre overlay
+    const title = document.getElementById('uni-title');
+    if(title) title.textContent = 'Cockpit · ' + (p.societe || 'Devoleads');
+
+    // Stat RDV avec couleur prospect
+    const rdvEl = document.getElementById('ck-stat-rdv');
+    if(rdvEl) rdvEl.style.color = hex;
+  }
+}
+
+// Mettre à jour le panneau droit — destination active
+function updateCockpitDest(slideIdx){
+  const names = ['Présentation','Services','Process','Formules','Équipe','Vidéo','Icebreaker','Contact'];
+  const el = document.getElementById('ck-dest-name');
+  if(el) el.textContent = names[slideIdx] || '–';
+  // Compteur slides visitées
+  if(!window._ckVisited) window._ckVisited = new Set();
+  window._ckVisited.add(slideIdx);
+  const cnt = document.getElementById('ck-visited-count');
+  if(cnt) cnt.textContent = window._ckVisited.size;
+}
+
 window.openUniverse=function(){
   buildCockpit();
   // Sync to current slide
@@ -2381,6 +2605,13 @@ window.openUniverse=function(){
     document.querySelectorAll('.ck-nd').forEach((d,i)=>d.classList.toggle('active',i===cur));
     ckActive=cur;
   }
+  // Appliquer le thème prospect si disponible
+  if(typeof applyCockpitTheme==='function'){
+    const pd = (typeof prospectData!=='undefined') ? prospectData : null;
+    applyCockpitTheme(pd ? pd.prospect : null);
+  }
+  // Mettre à jour destination
+  if(typeof updateCockpitDest==='function') updateCockpitDest(cur);
   // Reset busy state before opening
   busy=false;
   exitCinematic();
@@ -2516,17 +2747,39 @@ overlay.addEventListener('click',e=>{if(e.target===overlay)window.closeUniverse(
     }catch(e){}
   };
 
-  // Son ambiant univers — bourdonnement cosmique subtil
+  // Son ambiant cockpit — drone grave pressurisé + vibrato
   window.soundAmbiStart=function(){
     try{
+      if(window._ambiNodes) return; // déjà actif
       const ctx=getCtx();
-      const osc1=ctx.createOscillator();osc1.type='sine';osc1.frequency.value=42;
-      const osc2=ctx.createOscillator();osc2.type='sine';osc2.frequency.value=67.3;
-      const g=ctx.createGain();g.gain.setValueAtTime(0,ctx.currentTime);
-      g.gain.linearRampToValueAtTime(.035,ctx.currentTime+1.2);
-      osc1.connect(g);osc2.connect(g);g.connect(ctx.destination);
-      osc1.start();osc2.start();
-      window._ambiNodes={osc1,osc2,g};
+      const t=ctx.currentTime;
+
+      // Drone grave principal
+      const osc1=ctx.createOscillator();osc1.type='sawtooth';osc1.frequency.value=28;
+      // Harmonique médium
+      const osc2=ctx.createOscillator();osc2.type='sine';osc2.frequency.value=56.1;
+      // Harmonique haute subtile
+      const osc3=ctx.createOscillator();osc3.type='sine';osc3.frequency.value=84.4;
+      // LFO vibrato lent
+      const lfo=ctx.createOscillator();lfo.type='sine';lfo.frequency.value=.18;
+      const lfoGain=ctx.createGain();lfoGain.gain.value=.8;
+      lfo.connect(lfoGain);lfoGain.connect(osc1.frequency);
+
+      // Filtre passe-bas pour chaleur
+      const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=320;filt.Q.value=2.2;
+
+      // Gain master avec fade-in progressif
+      const g=ctx.createGain();g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(.018,t+2.5);
+      // Micro-variations de volume pour impression de vie
+      const lfo2=ctx.createOscillator();lfo2.type='sine';lfo2.frequency.value=.07;
+      const lfo2g=ctx.createGain();lfo2g.gain.value=.004;
+      lfo2.connect(lfo2g);lfo2g.connect(g.gain);
+
+      osc1.connect(filt);osc2.connect(filt);osc3.connect(filt);
+      filt.connect(g);g.connect(ctx.destination);
+      osc1.start();osc2.start();osc3.start();lfo.start();lfo2.start();
+      window._ambiNodes={osc1,osc2,osc3,lfo,lfo2,g,filt};
     }catch(e){}
   };
 
@@ -2534,9 +2787,11 @@ overlay.addEventListener('click',e=>{if(e.target===overlay)window.closeUniverse(
     try{
       if(!window._ambiNodes)return;
       const ctx=getCtx();
-      const {osc1,osc2,g}=window._ambiNodes;
-      g.gain.linearRampToValueAtTime(0,ctx.currentTime+.8);
-      setTimeout(()=>{try{osc1.stop();osc2.stop();}catch(e){}},900);
+      const n=window._ambiNodes;
+      n.g.gain.linearRampToValueAtTime(0,ctx.currentTime+1.2);
+      setTimeout(()=>{
+        try{n.osc1.stop();n.osc2.stop();n.osc3.stop();n.lfo.stop();n.lfo2.stop();}catch(e){}
+      },1300);
       window._ambiNodes=null;
     }catch(e){}
   };
@@ -3131,7 +3386,7 @@ async function analyzeProspect(url, forcedProfile){
       + 'Identifie : nom entreprise, secteur, produit, CEO probable, ville, une actu recente ou notable. '
       + 'Si tu ne trouves pas de CEO, utilise un prenom courant. '
       + 'Reponds UNIQUEMENT avec un JSON valide, sans backticks, sans markdown : '
-      + '{"prospect":{"prenom":"...","nom":"...","societe":"...","secteur":"...","actu":"...","ville":"..."},'
+      + '{"prospect":{"prenom":"...","nom":"...","societe":"...","secteur":"...","actu":"...","ville":"...","couleur_hex":"couleur_primaire_du_site_en_hex_ex_#7c3aed"},'
       + '"email1":{"objet":"...","salutation":"Bonjour [prenom],","icebreaker":"1 phrase referant a l actu ou au produit","pitch":"2 phrases : probleme probable + Devoleads = pipeline RDV B2B","social_proof":"client fictif similaire","cta":"question courte pour un RDV 20min"},'
       + '"relance_j3":"2 phrases directes",'
       + '"linkedin_touch":"1 phrase courte"}';
@@ -3143,7 +3398,7 @@ async function analyzeProspect(url, forcedProfile){
       + 'Actu : ' + profile.societe + ' ' + profile.actu + '. '
       + 'Les messages doivent etre naturels, sans jargon creux. '
       + 'Reponds UNIQUEMENT avec un JSON valide, sans backticks : '
-      + '{"prospect":{"prenom":"' + profile.prenom + '","nom":"' + profile.nom + '","societe":"' + profile.societe + '","secteur":"' + profile.secteur + '","actu":"' + profile.actu + '","ville":"' + profile.ville + '"},'
+      + '{"prospect":{"prenom":"' + profile.prenom + '","nom":"' + profile.nom + '","societe":"' + profile.societe + '","secteur":"' + profile.secteur + '","actu":"' + profile.actu + '","ville":"' + profile.ville + '","couleur_hex":"#7c3aed"},'
       + '"email1":{"objet":"sujet accrocheur lie a l actu","salutation":"Bonjour ' + profile.prenom + ',","icebreaker":"phrase referant naturellement a l actu","pitch":"2 phrases : situation + Devoleads","social_proof":"client fictif similaire","cta":"disponible 20 min ?"},'
       + '"relance_j3":"2 phrases directes",'
       + '"linkedin_touch":"1 phrase tres courte"}';
@@ -3209,6 +3464,10 @@ function injectProspectSequence(data){
   // Injecter le bloc séquence complète sous l'email
   injectSequenceBlock(data);
 
+  // Appliquer le thème prospect au cockpit si disponible
+  if(typeof applyCockpitTheme==='function' && data.prospect){
+    applyCockpitTheme(data.prospect);
+  }
   // Forcer le slider sur niveau max pour afficher la séquence IA
   const slider = document.getElementById('ice2-slider');
   if(slider){
