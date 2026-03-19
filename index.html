@@ -112,7 +112,7 @@ html.light #theme-toggle .ico-sun{display:block}
 .arr svg{width:16px;height:16px;stroke:var(--muted2);stroke-width:1.5;fill:none}
 
 #bar{position:fixed;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--pink),var(--orange),var(--cyan));transition:width .8s cubic-bezier(.16,1,.3,1);z-index:100;box-shadow:0 0 8px rgba(255,61,143,.4)}
-#pg{position:fixed;bottom:clamp(18px,2.5vh,26px);right:clamp(20px,4vw,44px);font-size:11px;color:var(--muted);letter-spacing:2px;z-index:100;font-family:var(--display);background:rgba(6,7,15,.6);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:100px;padding:5px 14px}
+#pg{position:fixed;bottom:clamp(14px,2vh,22px);right:clamp(20px,4vw,44px);font-size:11px;color:var(--muted);letter-spacing:2px;z-index:100;font-family:var(--display);background:rgba(6,7,15,.6);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:100px;padding:5px 14px}
 #pg b{color:var(--white);font-weight:500}
 
 #deck{position:relative;z-index:10;width:100vw;height:100vh}
@@ -120,33 +120,29 @@ html.light #theme-toggle .ico-sun{display:block}
 .slide.active{opacity:1;pointer-events:all}
 .slide.out{pointer-events:none}
 
-/* Direction-aware transitions — cinématiques */
-.slide.ein-right{animation:ein-right .75s cubic-bezier(.16,1,.3,1) forwards}
-.slide.ein-left{animation:ein-left .75s cubic-bezier(.16,1,.3,1) forwards}
-.slide.out-left{animation:out-left .38s cubic-bezier(.55,0,1,.8) forwards}
-.slide.out-right{animation:out-right .38s cubic-bezier(.55,0,1,.8) forwards}
+/* Direction-aware transitions */
+.slide.ein-right{animation:ein-right .7s cubic-bezier(.16,1,.3,1) forwards}
+.slide.ein-left{animation:ein-left .7s cubic-bezier(.16,1,.3,1) forwards}
+.slide.out-left{animation:out-left .42s cubic-bezier(.4,0,1,1) forwards}
+.slide.out-right{animation:out-right .42s cubic-bezier(.4,0,1,1) forwards}
 
 @keyframes ein-right{
-  0%  {opacity:0;transform:translateX(70px) scale(.94) rotateY(-4deg) rotateZ(.3deg)}
-  15% {opacity:.4}
-  55% {opacity:1}
+  0%{opacity:0;transform:translateX(60px) scale(.96) rotateY(-3deg)}
+  60%{opacity:1}
   100%{opacity:1;transform:none}
 }
 @keyframes ein-left{
-  0%  {opacity:0;transform:translateX(-70px) scale(.94) rotateY(4deg) rotateZ(-.3deg)}
-  15% {opacity:.4}
-  55% {opacity:1}
+  0%{opacity:0;transform:translateX(-60px) scale(.96) rotateY(3deg)}
+  60%{opacity:1}
   100%{opacity:1;transform:none}
 }
 @keyframes out-left{
-  0%  {opacity:1;transform:none}
-  40% {opacity:.5}
-  100%{opacity:0;transform:translateX(-55px) scale(.95) rotateY(2.5deg) rotateZ(.15deg)}
+  0%{opacity:1;transform:none}
+  100%{opacity:0;transform:translateX(-40px) scale(.97) rotateY(2deg)}
 }
 @keyframes out-right{
-  0%  {opacity:1;transform:none}
-  40% {opacity:.5}
-  100%{opacity:0;transform:translateX(55px) scale(.95) rotateY(-2.5deg) rotateZ(-.15deg)}
+  0%{opacity:1;transform:none}
+  100%{opacity:0;transform:translateX(40px) scale(.97) rotateY(-2deg)}
 }
 
 /* Staggered children — plus rapide, plus dramatique */
@@ -164,33 +160,18 @@ html.light #theme-toggle .ico-sun{display:block}
   100%{opacity:1;transform:none}
 }
 
-/* Flash de transition — cinématique */
+/* Flash de transition — ligne lumineuse verticale */
 #transition-flash{
   position:fixed;inset:0;z-index:50;pointer-events:none;
-  opacity:0;transform:translateX(-100%);
-  /* Halo lumineux de scan */
-  background:linear-gradient(90deg,
-    transparent 30%,
-    rgba(124,58,237,.1) 42%,
-    rgba(124,58,237,.22) 48%,
-    rgba(255,61,143,.18) 52%,
-    rgba(255,61,143,.08) 58%,
-    transparent 70%
-  );
+  background:linear-gradient(90deg,transparent 40%,rgba(124,58,237,.18) 50%,rgba(255,61,143,.12) 55%,transparent 65%);
+  opacity:0;
+  transform:translateX(-100%);
 }
-#transition-flash.fire{animation:flash-sweep .48s cubic-bezier(.4,0,.15,1) forwards}
-#transition-flash.fire-back{animation:flash-sweep-back .48s cubic-bezier(.4,0,.15,1) forwards}
+#transition-flash.fire{animation:flash-sweep .5s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes flash-sweep{
-  0%  {opacity:0;transform:translateX(-110%)}
-  25% {opacity:1}
-  75% {opacity:.8}
-  100%{opacity:0;transform:translateX(210%)}
-}
-@keyframes flash-sweep-back{
-  0%  {opacity:0;transform:translateX(110%)}
-  25% {opacity:1}
-  75% {opacity:.8}
-  100%{opacity:0;transform:translateX(-210%)}
+  0%{opacity:0;transform:translateX(-100%)}
+  40%{opacity:1}
+  100%{opacity:0;transform:translateX(200%)}
 }
 
 /* Compteur de slide animé */
@@ -496,7 +477,7 @@ html.light .vpc-lp-mock{background:#f0f2f8;border-color:rgba(0,0,0,.08)}
 
 /* ═══════ COCKPIT 3D OVERLAY ═══════ */
 #uni-btn{
-  position:fixed;bottom:clamp(18px,2.5vh,26px);left:clamp(20px,4vw,44px);z-index:200;
+  position:fixed;bottom:clamp(16px,2.5vh,28px);left:clamp(20px,4vw,44px);z-index:200;
   display:flex;align-items:center;gap:8px;
   padding:9px 16px 9px 12px;border-radius:100px;
   border:1px solid rgba(255,255,255,.14);
@@ -513,140 +494,74 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
 #uni-overlay{
   position:fixed;inset:0;z-index:500;
   background:#02030a;
-  display:grid;
-  grid-template-rows:auto 1fr;
-  grid-template-columns:1fr;
+  display:flex;align-items:center;justify-content:center;
   opacity:0;pointer-events:none;
   transition:opacity .5s cubic-bezier(.16,1,.3,1);
-  --ck-accent:80,120,255;
-  --ck-accent-hex:#5078ff;
 }
 #uni-overlay.open{opacity:1;pointer-events:all}
 
-/* Barre top */
-#ck-topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 28px;border-bottom:1px solid rgba(var(--ck-accent),.1);
-  z-index:20;position:relative;
-}
-#uni-title{
-  font-family:var(--display);font-size:10px;font-weight:600;
-  letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.25);
-}
 #uni-close{
-  font-family:var(--display);font-size:10px;font-weight:500;
-  letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);
+  position:absolute;top:24px;right:32px;z-index:20;
+  font-family:var(--display);font-size:11px;font-weight:500;
+  letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);
   cursor:pointer;transition:color .2s;background:none;border:none;
   display:flex;align-items:center;gap:7px;
 }
 #uni-close:hover{color:rgba(255,255,255,.8)}
-#uni-close svg{width:13px;height:13px;stroke:currentColor;stroke-width:1.5;fill:none}
+#uni-close svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.5;fill:none}
 
-/* Layout principal — 3 colonnes */
-#ck-main{
-  display:grid;
-  grid-template-columns:clamp(140px,16vw,200px) 1fr clamp(140px,16vw,200px);
-  gap:0;height:100%;overflow:hidden;
-}
-
-/* Panneaux latéraux */
-.ck-panel-side{
-  display:flex;flex-direction:column;gap:10px;
-  padding:16px 14px;
-  border-right:1px solid rgba(var(--ck-accent),.08);
-  background:rgba(2,3,12,.6);
-  overflow-y:auto;overflow-x:hidden;
-  scrollbar-width:none;
-}
-.ck-panel-side::-webkit-scrollbar{display:none}
-#ck-panel-right{border-right:none;border-left:1px solid rgba(var(--ck-accent),.08)}
-.ck-pblock{
-  background:rgba(var(--ck-accent),.04);
-  border:1px solid rgba(var(--ck-accent),.1);
-  border-radius:8px;padding:10px 12px;flex-shrink:0;
-}
-.ck-pblock.accent{
-  background:rgba(var(--ck-accent),.08);
-  border-color:rgba(var(--ck-accent),.2);
-}
-.ck-plabel{font-size:7px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:5px}
-.ck-pval{font-size:13px;font-weight:700;color:rgba(255,255,255,.82);line-height:1.2}
-.ck-pval.sm{font-size:11px}
-.ck-psep{height:1px;background:rgba(var(--ck-accent),.08);margin:4px 0}
-/* Prospect logo watermark dans le panneau */
-#ck-prospect-logo{
-  font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
-  color:rgba(var(--ck-accent),.4);text-align:center;padding:8px 0;
-  border-top:1px solid rgba(var(--ck-accent),.08);
-  margin-top:auto;flex-shrink:0;
+#uni-title{
+  position:absolute;top:26px;left:50%;transform:translateX(-50%);z-index:20;
+  font-family:var(--display);font-size:10px;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.2);
+  pointer-events:none;
 }
 
-/* Zone centrale — canvas + hublot + dash */
+/* Cockpit wrapper */
 #cockpit-wrap{
-  position:relative;width:100%;height:100%;
-  background:#02030a;overflow:hidden;
+  position:relative;width:min(960px,96vw);height:min(600px,85vh);
+  background:#02030a;border-radius:18px;overflow:hidden;
 }
 #ck-three{position:absolute;inset:0;z-index:1}
 
-/* Hublot — plus grand, prend toute la largeur centrale */
+/* Hublot */
 #ck-porthole{
-  position:absolute;
-  top:clamp(8px,2vh,18px);
-  left:50%;transform:translateX(-50%);
-  width:clamp(340px,86%,680px);
-  height:clamp(220px,58%,460px);
+  position:absolute;top:16px;left:50%;transform:translateX(-50%);
+  width:min(500px,72vw);height:min(340px,48vw);
   border-radius:50%;z-index:6;pointer-events:none;
   box-shadow:
-    0 0 0 10px #0a0d18,
-    0 0 0 20px #0d1020,
-    0 0 0 22px rgba(var(--ck-accent),.12),
-    0 0 60px rgba(var(--ck-accent),.05),
-    inset 0 0 100px rgba(0,0,0,.85);
-  transition:box-shadow .8s ease;
+    0 0 0 8px #0a0d18,
+    0 0 0 16px #101420,
+    0 0 0 18px rgba(100,150,255,.1),
+    inset 0 0 80px rgba(0,0,0,.9);
 }
 #ck-porthole::after{
   content:'';position:absolute;inset:0;border-radius:50%;
-  background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 40%,rgba(var(--ck-accent),.04) 100%);
+  background:linear-gradient(135deg,rgba(255,255,255,.07) 0%,transparent 42%,rgba(80,120,255,.04) 100%);
 }
-/* Watermark prospect dans le hublot */
-#ck-porthole-name{
-  position:absolute;
-  top:calc(clamp(8px,2vh,18px) + clamp(220px,58%,460px)*.48);
-  left:50%;transform:translate(-50%,-50%);
-  z-index:8;pointer-events:none;
-  font-family:var(--display);font-size:clamp(8px,1.1vw,12px);
-  font-weight:700;letter-spacing:4px;text-transform:uppercase;
-  color:rgba(var(--ck-accent),.16);
-  transition:color .8s ease, opacity .8s ease;
-  white-space:nowrap;opacity:0;
-}
-#ck-porthole-name.visible{opacity:1}
 #ck-porthole-click{
-  position:absolute;
-  top:clamp(8px,2vh,18px);left:50%;transform:translateX(-50%);
-  width:clamp(340px,86%,680px);height:clamp(220px,58%,460px);
+  position:absolute;top:16px;left:50%;transform:translateX(-50%);
+  width:min(500px,72vw);height:min(340px,48vw);
   border-radius:50%;z-index:5;overflow:hidden;cursor:none;
 }
 
 /* Dashboard */
 #ck-dash{
-  position:absolute;bottom:0;left:0;right:0;
-  height:clamp(140px,22%,190px);z-index:7;
-  background:linear-gradient(180deg,transparent 0%,#03040d 20%,#070b1a 55%,#060810 100%);
-  border-top:1px solid rgba(var(--ck-accent),.08);
+  position:absolute;bottom:0;left:0;right:0;height:190px;z-index:7;
+  background:linear-gradient(180deg,#03040c 0%,#080c1c 45%,#060810 100%);
+  border-top:1px solid rgba(80,120,255,.1);
 }
 #ck-dash-curve{
-  position:absolute;top:-28px;left:-3%;width:106%;height:56px;
-  background:#03040d;border-radius:50% 50% 0 0/100% 100% 0 0;
-  border-top:1px solid rgba(var(--ck-accent),.06);
+  position:absolute;top:-24px;left:-3%;width:106%;height:52px;
+  background:#04050e;border-radius:50% 50% 0 0/100% 100% 0 0;
+  border-top:1px solid rgba(80,120,255,.07);
 }
 .ck-inst{
   position:absolute;border-radius:50%;
   background:radial-gradient(circle at 35% 30%,#141928,#070a14);
-  border:1px solid rgba(var(--ck-accent),.18);
+  border:1px solid rgba(80,120,255,.14);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:inset 0 2px 8px rgba(0,0,0,.7),0 0 12px rgba(var(--ck-accent),.06);
-  transition:border-color .8s,box-shadow .8s;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.7),0 0 12px rgba(80,120,255,.05);
 }
 .ck-iv{font-size:12px;font-weight:700;line-height:1}
 .ck-il{font-size:6px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:3px}
@@ -674,7 +589,7 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
 .ck-nd.active .ck-nl{color:rgba(255,255,255,.85)}
 
 /* Tooltip */
-#ck-tt{position:absolute;z-index:15;pointer-events:none;opacity:0;transition:opacity .25s;text-align:center;bottom:clamp(196px,29%,224px);left:50%;transform:translateX(-50%)}
+#ck-tt{position:absolute;z-index:15;pointer-events:none;opacity:0;transition:opacity .25s;text-align:center;top:min(372px,63%);left:50%;transform:translateX(-50%)}
 #ck-tt-name{font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:2px}
 #ck-tt-sub{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px}
 
@@ -694,7 +609,7 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
   background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.025) 3px,rgba(0,0,0,.025) 4px)}
 
 /* Hint */
-#ck-hint{position:absolute;bottom:clamp(200px,30%,230px);left:50%;transform:translateX(-50%);z-index:15;pointer-events:none;
+#ck-hint{position:absolute;top:min(374px,64%);left:50%;transform:translateX(-50%);z-index:15;pointer-events:none;
   font-size:8px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.18);white-space:nowrap}
 
 /* Landing flash */
@@ -714,17 +629,12 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
 
 /* ═══ RDV COUNTER ═══ */
 #rdv-counter{
-  position:fixed;bottom:clamp(18px,2.5vh,26px);left:50%;transform:translateX(-50%);
+  position:fixed;bottom:clamp(14px,2vh,22px);left:50%;transform:translateX(-50%);
   z-index:100;display:flex;align-items:center;gap:8px;
   background:rgba(6,7,15,.7);backdrop-filter:blur(12px);
   border:1px solid rgba(255,255,255,.08);border-radius:100px;
   padding:5px 14px 5px 10px;pointer-events:none;
   opacity:0;transition:opacity 1s ease 2s;
-  white-space:nowrap;
-}
-/* En mode cinématique, le rdv-counter reste mais ck-return le remplace visuellement */
-body.cinematic #rdv-counter{
-  opacity:0!important;
 }
 #rdv-counter.show{opacity:1}
 #rdv-pulse{width:5px;height:5px;border-radius:50%;background:var(--pink);
@@ -739,16 +649,17 @@ body.cinematic .arr,
 body.cinematic #pg,
 body.cinematic #bar,
 body.cinematic #uni-btn,
+body.cinematic #rdv-counter,
 body.cinematic #dots{
   opacity:0 !important;
   pointer-events:none !important;
-  transition:none !important;
+  transition:opacity .6s ease !important;
 }
 body.cinematic .slide.active{
   padding:clamp(20px,4vh,40px) clamp(20px,4vw,60px) !important;
 }
 #ck-return{
-  position:fixed;bottom:clamp(18px,2.5vh,26px);left:50%;transform:translateX(-50%);
+  position:fixed;bottom:clamp(16px,2.5vh,28px);left:50%;transform:translateX(-50%);
   z-index:150;opacity:0;pointer-events:none;
   transition:opacity .8s ease 1s;
   display:flex;align-items:center;gap:7px;
@@ -799,33 +710,22 @@ body.cinematic #ck-return{animation:ck-return-pulse 4s ease infinite 2s}
 /* ═══ ÉCRAN PRÉNOM ═══ */
 #name-screen{
   position:fixed;inset:0;z-index:900;background:#000;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
 }
 #name-screen.hidden{opacity:0;pointer-events:none;transition:opacity .5s}
 #name-eyebrow{font-family:var(--display);font-size:9px;font-weight:500;letter-spacing:5px;
-  text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:-4px}
+  text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:-8px}
 #name-title{font-family:var(--display);font-size:clamp(22px,4vw,36px);font-weight:700;
   color:#fff;letter-spacing:-1px;text-align:center;line-height:1.2}
-#name-fields{
-  display:flex;flex-direction:column;gap:0;
-  width:min(380px,88vw);
-  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.13);
-  border-radius:16px;overflow:hidden;
-  transition:border-color .3s,box-shadow .3s;
-}
-#name-fields:focus-within{
-  border-color:rgba(255,61,143,.35);
-  box-shadow:0 0 0 3px rgba(255,61,143,.07);
-}
-#name-fields-sep{height:1px;background:rgba(255,255,255,.08)}
-#name-input-wrap{position:relative;width:100%}
+#name-input-wrap{position:relative;width:min(340px,80vw)}
 #name-input{
-  width:100%;background:transparent;border:none;
-  padding:16px 54px 16px 20px;
+  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.15);
+  border-radius:12px;padding:14px 50px 14px 20px;
   font-family:var(--display);font-size:18px;font-weight:500;color:#fff;
-  outline:none;letter-spacing:-.3px;
+  outline:none;transition:border-color .3s,box-shadow .3s;letter-spacing:-.3px;
 }
-#name-input::placeholder{color:rgba(255,255,255,.2);font-weight:300;font-size:16px}
+#name-input::placeholder{color:rgba(255,255,255,.2);font-weight:300}
+#name-input:focus{border-color:rgba(255,61,143,.5);box-shadow:0 0 0 3px rgba(255,61,143,.1)}
 #name-submit{
   position:absolute;right:10px;top:50%;transform:translateY(-50%);
   width:34px;height:34px;border-radius:8px;border:none;cursor:pointer;
@@ -836,7 +736,7 @@ body.cinematic #ck-return{animation:ck-return-pulse 4s ease infinite 2s}
 #name-input:valid ~ #name-submit,
 #name-submit.ready{opacity:1}
 #name-submit svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:2}
-#name-hint{font-size:10px;color:rgba(255,255,255,.18);letter-spacing:1px;text-align:center}
+#name-hint{font-size:10px;color:rgba(255,255,255,.2);letter-spacing:1px;text-align:center;margin-top:-8px}
 
 /* ═══ HUD SCAN ═══ */
 #hud-scan{
@@ -874,7 +774,7 @@ body.cinematic #ck-return{animation:ck-return-pulse 4s ease infinite 2s}
 
 /* ═══ HINT NAVIGATION CINÉMATIQUE ═══ */
 #cinematic-hint{
-  position:fixed;bottom:clamp(60px,7vh,76px);right:clamp(20px,4vw,44px);
+  position:fixed;bottom:clamp(16px,2.5vh,28px);right:clamp(20px,4vw,44px);
   z-index:99;opacity:0;pointer-events:none;
   transition:opacity .6s ease;
   display:flex;align-items:center;gap:6px;
@@ -886,101 +786,50 @@ body.cinematic #cinematic-hint{opacity:1;animation:hint-fade 4s ease 1.5s forwar
 @keyframes hint-fade{0%{opacity:1}80%{opacity:1}100%{opacity:0}}
 .hint-key{border:1px solid rgba(255,255,255,.18);border-radius:4px;padding:2px 6px;font-size:9px;color:rgba(255,255,255,.35)}
 
-/* ═══ CHAMP URL PROSPECT — visible par défaut dans le card ═══ */
+/* ═══ CHAMP URL PROSPECT ═══ */
 #url-optional{
-  width:100%;display:flex;flex-direction:column;gap:0;
+  width:min(340px,80vw);display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;max-height:0;overflow:hidden;
+  transition:opacity .5s ease,max-height .5s ease;
+  pointer-events:none;
 }
-#url-label-row{
-  display:flex;align-items:center;gap:6px;
-  padding:8px 20px 6px;
-  font-size:9px;letter-spacing:2px;text-transform:uppercase;
-  color:rgba(255,255,255,.22);
-  border-top:none;
-}
-#url-label-row svg{opacity:.4;flex-shrink:0}
+#url-optional.visible{opacity:1;max-height:80px;pointer-events:all}
+#url-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);cursor:pointer;transition:color .2s}
+#url-label:hover{color:rgba(255,255,255,.55)}
+#url-label svg{vertical-align:middle;margin-right:4px;opacity:.5}
 #url-input{
-  width:100%;background:transparent;border:none;
-  padding:8px 20px 14px;
+  width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;padding:10px 16px;
   font-family:var(--body);font-size:13px;color:var(--muted2);
-  outline:none;
+  outline:none;transition:border-color .3s;
 }
-#url-input::placeholder{color:rgba(255,255,255,.18);font-size:12px}
+#url-input::placeholder{color:rgba(255,255,255,.15);font-size:12px}
+#url-input:focus{border-color:rgba(124,58,237,.4)}
 
 /* Status analyse */
 #url-status{
   font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
   color:rgba(124,58,237,.7);min-height:14px;text-align:center;
-  transition:opacity .3s;padding-top:2px;
+  transition:opacity .3s;
 }
 
-/* ═══ CINEMATIC TRANSITIONS ═══ */
-body.cinematic .slide.ein-right,
-body.cinematic .slide.ein-left{
-  animation:cine-in .55s cubic-bezier(.16,1,.3,1) forwards!important
+/* ═══ TRANSITIONS DIRECTIONNELLES ═══ */
+@keyframes flash-sweep{
+  0%  {opacity:0;transform:translateX(-110%)}
+  25% {opacity:1}
+  75% {opacity:.8}
+  100%{opacity:0;transform:translateX(210%)}
 }
-body.cinematic .slide.out-left,
-body.cinematic .slide.out-right{
-  animation:cine-out .35s cubic-bezier(.4,0,1,1) forwards!important
-}
-@keyframes cine-in{
-  0%{opacity:0;transform:scale(.975)}
-  100%{opacity:1;transform:scale(1)}
-}
-@keyframes cine-out{
-  0%{opacity:1;transform:scale(1)}
-  100%{opacity:0;transform:scale(1.025)}
-}
-body.cinematic .slide.active .sg>*{
-  animation-name:fup-cine;
-}
-@keyframes fup-cine{
-  0%{opacity:0;transform:translateY(14px)}
-  100%{opacity:1;transform:none}
+@keyframes flash-sweep-back{
+  0%  {opacity:0;transform:translateX(110%)}
+  25% {opacity:1}
+  75% {opacity:.8}
+  100%{opacity:0;transform:translateX(-210%)}
 }
 
-/* ═══ RESPONSIVE ═══ */
-@media(max-width:1100px){
-  .g3{
-    display:flex;flex-direction:row;
-    overflow-x:auto;scroll-snap-type:x mandatory;
-    scrollbar-width:none;-ms-overflow-style:none;
-    padding-bottom:8px;gap:12px;
-    max-width:100%;
-  }
-  .g3::-webkit-scrollbar{display:none}
-  .g3 .pc{
-    flex:0 0 clamp(220px,72vw,320px);
-    scroll-snap-align:center;
-  }
-}
-@media(max-width:900px){
-  #setup-steps{
-    display:flex!important;flex-direction:row;
-    overflow-x:auto;scroll-snap-type:x mandatory;
-    scrollbar-width:none;-ms-overflow-style:none;
-    padding-bottom:8px;
-  }
-  #setup-steps::-webkit-scrollbar{display:none}
-  #setup-steps .setup-step{
-    flex:0 0 clamp(180px,70vw,280px);
-    scroll-snap-align:start;
-  }
-  #prospect-seq-block{
-    position:relative!important;bottom:auto!important;right:auto!important;
-    width:100%!important;margin-top:12px;
-  }
-}
+/* Compteur de slide animé */
 
-@keyframes cta-pulse{
-  0%,100%{box-shadow:0 0 50px rgba(255,61,143,.3),0 0 100px rgba(124,58,237,.15)}
-  50%{box-shadow:0 0 70px rgba(255,61,143,.45),0 0 130px rgba(124,58,237,.25)}
-}
-
-html.light .orb{opacity:.04!important}
-html.light #rdv-counter{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.12)}
-html.light #rdv-val{color:var(--purple)}
-
-/* ═══ SCÈNE CINÉMATIQUE 15s ═══ */
+/* ═══ SCÈNE CINÉMATIQUE ═══ */
 #cine-scene{
   position:fixed;inset:0;z-index:810;
   background:#000;overflow:hidden;
@@ -1053,42 +902,12 @@ html.light #rdv-val{color:var(--purple)}
 }
 #cine-flash.fire{opacity:1}
 
-/* ═══ MODE POV COCKPIT ═══ */
-#ck-pov-vignette{
-  position:absolute;inset:0;z-index:8;pointer-events:none;
-  background:radial-gradient(ellipse 88% 72% at 50% 50%,transparent 52%,rgba(0,0,0,.92) 100%);
-  opacity:0;transition:opacity .6s ease;
-}
-body.ck-pov #ck-pov-vignette{opacity:1}
-/* Reflet casque */
-body.ck-pov #ck-pov-vignette::after{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse 35% 25% at 28% 22%,rgba(255,255,255,.035) 0%,transparent 60%);
-}
-/* Scanlines légères en POV */
-body.ck-pov #ck-pov-vignette::before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px);
-}
-#ck-pov-hud{
-  position:absolute;top:14px;left:0;right:0;z-index:9;
-  display:flex;justify-content:space-between;padding:0 24px;
-  pointer-events:none;opacity:0;transition:opacity .5s ease;
-  font-family:monospace;font-size:8px;letter-spacing:2px;
-  color:rgba(80,220,80,.6);text-shadow:0 0 8px rgba(80,220,80,.3);
-}
-body.ck-pov #ck-pov-hud{opacity:1}
-#ck-pov-toggle{
-  position:absolute;top:10px;left:12px;z-index:16;
-  background:rgba(6,7,15,.7);border:1px solid rgba(100,120,255,.2);
-  border-radius:6px;padding:5px 10px;cursor:pointer;
-  font-family:var(--display);font-size:9px;font-weight:500;
-  letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);
-  display:flex;align-items:center;gap:6px;transition:all .2s;
-}
-#ck-pov-toggle:hover{color:rgba(255,255,255,.75);border-color:rgba(100,120,255,.4)}
-body.ck-pov #ck-pov-toggle{color:rgba(100,220,100,.6);border-color:rgba(100,220,100,.3);background:rgba(6,15,7,.75)}
 
+/* ═══ SALLE DE CONTRÔLE ═══ */
+#ck-room{position:absolute;inset:0;z-index:1;background:#020408;overflow:hidden;}
+#ck-room-svg{display:block;width:100%;height:100%}
+
+/* ═══ MODE PRÉSENTATION LIVE ═══ */
 /* ═══ MODE PRÉSENTATION LIVE ═══ */
 #live-badge{
   display:none;
@@ -1212,55 +1031,16 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <button id="uni-btn" onclick="openUniverse()" title="Ouvrir le cockpit"><span>🚀</span><span class="btn-label">Cockpit</span></button>
 
 <div id="uni-overlay">
-  <!-- Barre top -->
-  <div id="ck-topbar">
-    <div id="uni-title">Cockpit · Devoleads</div>
-    <button id="uni-close" onclick="closeUniverse()">
-      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      Fermer
-    </button>
-  </div>
-
-  <!-- Layout 3 colonnes -->
-  <div id="ck-main">
-
-    <!-- PANNEAU GAUCHE — Stats Devoleads -->
-    <div class="ck-panel-side" id="ck-panel-left">
-      <div class="ck-pblock accent">
-        <div class="ck-plabel">RDV qualifiés</div>
-        <div class="ck-pval" id="ck-stat-rdv" style="color:var(--ck-accent-hex)">8–15<span style="font-size:9px;opacity:.5">/mois</span></div>
-      </div>
-      <div class="ck-pblock">
-        <div class="ck-plabel">Lancement</div>
-        <div class="ck-pval" id="ck-stat-launch" style="color:#4ade80">&lt;14j</div>
-      </div>
-      <div class="ck-pblock">
-        <div class="ck-plabel">ROI moyen</div>
-        <div class="ck-pval" id="ck-stat-roi" style="color:#22d3ee">×8.3</div>
-      </div>
-      <div class="ck-pblock">
-        <div class="ck-plabel">Clients actifs</div>
-        <div class="ck-pval" id="ck-stat-clients">+150<span style="font-size:9px;opacity:.5"> CEOs</span></div>
-      </div>
-      <div class="ck-psep"></div>
-      <div class="ck-pblock">
-        <div class="ck-plabel">Délivrabilité</div>
-        <div class="ck-pval" style="color:#a78bfa">94%</div>
-      </div>
-      <div id="ck-prospect-logo"></div>
-    </div>
-
-    <!-- CENTRE — Salle de contrôle SVG -->
-    <div id="cockpit-wrap">
-      <!-- Canvas Three.js conservé mais caché — utilisé pour calculs internes -->
+  <div id="uni-title">Cockpit · Devoleads</div>
+  <button id="uni-close" onclick="closeUniverse()">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    Fermer
+  </button>
+  <div id="cockpit-wrap">
       <canvas id="ck-three" style="display:none"></canvas>
-      <!-- Overlays système -->
-      <div id="ck-warp"></div>
-      <div id="ck-scan"></div>
-      <div id="ck-cur"></div>
+      <div id="ck-warp"></div><div id="ck-scan"></div><div id="ck-cur"></div>
       <div id="ck-tt"><div id="ck-tt-name"></div><div id="ck-tt-sub"></div></div>
       <div id="ck-hint" style="display:none"></div>
-      <!-- SALLE DE CONTRÔLE SVG -->
       <div id="ck-room">
         <svg id="ck-room-svg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
           <defs>
@@ -1481,56 +1261,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
         <!-- Navigation slides -->
         <div id="ck-nav"></div>
       </div>
-      <div id="ck-dash">
-        <div id="ck-dash-curve"></div>
-        <div class="ck-inst" style="width:54px;height:54px;left:min(168px,18%);top:28px"><div class="ck-iv" style="color:#22d3ee">×8.3</div><div class="ck-il">ROI</div></div>
-        <div class="ck-inst" style="width:44px;height:44px;left:min(234px,25%);top:46px"><div class="ck-iv" style="color:#4ade80;font-size:9px">14j</div><div class="ck-il">Launch</div></div>
-        <div class="ck-inst" style="width:44px;height:44px;right:min(234px,25%);top:46px"><div class="ck-iv" style="color:#ff3d8f;font-size:9px">8-15</div><div class="ck-il">RDV/mois</div></div>
-        <div class="ck-inst" style="width:54px;height:54px;right:min(168px,18%);top:28px"><div class="ck-iv" style="color:#a78bfa">+150</div><div class="ck-il">CEOs</div></div>
-        <div id="ck-launch" style="position:absolute;bottom:clamp(20px,3vh,34px);left:clamp(50px,6%,78px)" title="Warp speed">🚀</div>
-        <div id="ck-joy"><div class="ck-js"><div class="ck-jt"></div></div><div class="ck-jb"></div></div>
-        <div id="ck-nav"></div>
-      </div>
-      <div id="ck-intro">
-        <div id="ck-intro-text">Cockpit Devoleads</div>
-        <div id="ck-intro-sub">Choisissez votre destination</div>
-      </div>
     </div>
-
-    <!-- PANNEAU DROIT — Infos slide / prospect -->
-    <div class="ck-panel-side" id="ck-panel-right">
-      <div class="ck-pblock accent">
-        <div class="ck-plabel">Destination active</div>
-        <div class="ck-pval sm" id="ck-dest-name">–</div>
-      </div>
-      <div class="ck-pblock" id="ck-prospect-block" style="display:none">
-        <div class="ck-plabel">Prospect</div>
-        <div class="ck-pval sm" id="ck-p-name">–</div>
-      </div>
-      <div class="ck-pblock" id="ck-prospect-societe-block" style="display:none">
-        <div class="ck-plabel">Entreprise</div>
-        <div class="ck-pval sm" id="ck-p-societe">–</div>
-      </div>
-      <div class="ck-pblock" id="ck-prospect-secteur-block" style="display:none">
-        <div class="ck-plabel">Secteur</div>
-        <div class="ck-pval sm" id="ck-p-secteur">–</div>
-      </div>
-      <div class="ck-pblock" id="ck-prospect-actu-block" style="display:none">
-        <div class="ck-plabel">Actu</div>
-        <div class="ck-pval sm" id="ck-p-actu" style="font-size:9px;line-height:1.4;opacity:.8">–</div>
-      </div>
-      <div class="ck-psep"></div>
-      <div class="ck-pblock">
-        <div class="ck-plabel">Slides visitées</div>
-        <div class="ck-pval" id="ck-visited-count">0</div>
-      </div>
-      <div class="ck-pblock">
-        <div class="ck-plabel">Mission</div>
-        <div class="ck-pval sm" id="ck-mission-status" style="color:#4ade80">En cours</div>
-      </div>
-    </div>
-
-  </div><!-- #ck-main -->
 </div>
 <div id="uni-landing-flash"></div>
 
@@ -1545,259 +1276,39 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8l-4 4 4 4M16 12H8"/></svg>
   Cockpit
 </div>
-
-
-<!-- ═══ SCÈNE CINÉMATIQUE EMBARQUEMENT 15s ═══ -->
-<div id="cine-scene" style="display:none">
-  <canvas id="cine-stars"></canvas>
-  <div id="cine-mountains">
-    <svg width="100%" height="140" viewBox="0 0 1200 140" preserveAspectRatio="none">
-      <polygon points="0,140 0,80 60,60 120,80 180,40 260,70 320,30 400,65 460,20 540,55 600,10 660,50 720,25 800,60 860,35 940,70 1000,40 1080,75 1140,50 1200,80 1200,140" fill="#05081a"/>
-      <polygon points="0,140 0,100 80,75 160,95 240,65 320,88 400,55 480,82 560,60 640,90 720,70 800,95 880,72 960,98 1040,78 1120,100 1200,85 1200,140" fill="#060a1e" opacity=".8"/>
-    </svg>
+<div id="name-screen">
+  <div id="name-eyebrow">Mission Devoleads · Briefing</div>
+  <div id="name-title">Avant de décoller —<br>comment vous appelez-vous ?</div>
+  <div id="name-input-wrap">
+    <input id="name-input" type="text" placeholder="Votre prénom" minlength="1" autocomplete="off" spellcheck="false"/>
+    <button id="name-submit" onclick="submitName()">
+      <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
   </div>
-  <div id="cine-ground"></div>
-
-  <svg id="cine-svg" viewBox="0 0 1200 680" preserveAspectRatio="xMidYMin slice" shape-rendering="crispEdges">
-    <defs>
-      <!-- Pixel grid filter pour look 8-bit -->
-      <filter id="pixelate">
-        <feFlood x="4" y="4" height="2" width="2"/>
-        <feComposite width="10" height="10"/>
-        <feTile result="a"/>
-        <feComposite in="SourceGraphic" in2="a" operator="in"/>
-        <feMorphology operator="dilate" radius="2"/>
-      </filter>
-    </defs>
-
-    <!-- ── RAMPE DE LANCEMENT ── -->
-    <!-- Base en béton -->
-    <rect x="460" y="570" width="280" height="20" fill="#0d1228"/>
-    <rect x="460" y="570" width="280" height="2" fill="rgba(100,120,255,.25)"/>
-    <!-- Détails béton pixel -->
-    <rect x="480" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
-    <rect x="520" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
-    <rect x="660" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
-    <rect x="700" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
-    <!-- Lumières rampe -->
-    <rect id="cs-l1" x="468" y="566" width="6" height="6" fill="#ff3d8f"/>
-    <rect id="cs-l2" x="490" y="566" width="6" height="6" fill="#ff3d8f" opacity=".6"/>
-    <rect id="cs-l3" x="704" y="566" width="6" height="6" fill="#ff3d8f" opacity=".6"/>
-    <rect id="cs-l4" x="726" y="566" width="6" height="6" fill="#ff3d8f"/>
-
-    <!-- ── STRUCTURE SUPPORT / BRAS ── -->
-    <g id="cs-scaffold" opacity="1">
-      <!-- Tour principale -->
-      <rect x="742" y="260" width="16" height="312" fill="#0c1122" stroke="rgba(100,120,255,.2)" stroke-width="1"/>
-      <!-- Bras horizontal -->
-      <rect x="620" y="268" width="138" height="10" fill="#0c1122" stroke="rgba(100,120,255,.15)" stroke-width="1"/>
-      <!-- Plateforme d'accès -->
-      <rect x="618" y="278" width="24" height="8" fill="#111830" stroke="rgba(100,120,255,.2)" stroke-width="1"/>
-      <!-- Échelle (pixel art) -->
-      <rect x="618" y="286" width="4" height="220" fill="#0c1122" stroke="rgba(100,120,255,.18)" stroke-width="1"/>
-      <rect x="636" y="286" width="4" height="220" fill="#0c1122" stroke="rgba(100,120,255,.18)" stroke-width="1"/>
-      <!-- Barreaux -->
-      <rect x="618" y="300" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="320" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="340" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="360" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="380" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="400" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="420" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="440" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="460" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="480" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="500" width="22" height="3" fill="rgba(100,120,255,.2)"/>
-      <!-- Lumière tour -->
-      <rect x="746" y="265" width="8" height="8" fill="#ff3d8f" opacity=".7" id="cs-tower-light"/>
-    </g>
-
-    <!-- ── FUSÉE DEVOLEADS (pixel art) ── -->
-    <g id="cs-rocket">
-      <!-- Nozzle pixel art -->
-      <rect x="556" y="552" width="8" height="20" fill="#0d1228"/>
-      <rect x="564" y="556" width="8" height="16" fill="#0d1228"/>
-      <rect x="572" y="560" width="16" height="12" fill="#0d1228"/>
-      <rect x="588" y="564" width="8" height="8" fill="#0d1228"/>
-      <rect x="596" y="556" width="8" height="16" fill="#0d1228"/>
-      <rect x="604" y="552" width="8" height="20" fill="#0d1228"/>
-
-      <!-- Corps principal -->
-      <rect x="548" y="180" width="72" height="380" fill="#0a0e1e"/>
-      <!-- Contours corps -->
-      <rect x="548" y="180" width="2" height="380" fill="rgba(100,120,255,.2)"/>
-      <rect x="618" y="180" width="2" height="380" fill="rgba(100,120,255,.2)"/>
-
-      <!-- Détails fuselage pixel -->
-      <rect x="552" y="220" width="64" height="4" fill="rgba(100,120,255,.08)"/>
-      <rect x="552" y="280" width="64" height="4" fill="rgba(100,120,255,.06)"/>
-      <rect x="552" y="340" width="64" height="4" fill="rgba(100,120,255,.06)"/>
-
-      <!-- BANDE ROSE DEVOLEADS (signature) -->
-      <rect x="548" y="440" width="72" height="14" fill="#ff3d8f" opacity=".8"/>
-      <rect x="548" y="454" width="72" height="7" fill="#7c3aed" opacity=".7"/>
-      <!-- Bande couleur prospect (dynamique) -->
-      <rect id="cs-prospect-band" x="548" y="420" width="72" height="6" fill="#ff3d8f" opacity="0"/>
-
-      <!-- Nose cone pixel art (escalier) -->
-      <rect x="548" y="160" width="72" height="20" fill="#0d1228"/>
-      <rect x="554" y="140" width="60" height="20" fill="#0d1228"/>
-      <rect x="562" y="120" width="44" height="20" fill="#0d1228"/>
-      <rect x="570" y="100" width="28" height="20" fill="#0d1228"/>
-      <rect x="576" y="80" width="16" height="20" fill="#0d1228"/>
-      <rect x="580" y="60" width="8" height="20" fill="#0d1228"/>
-      <rect x="582" y="44" width="4" height="16" fill="#0d1228"/>
-
-      <!-- Hublot pixel art -->
-      <rect x="572" y="248" width="24" height="24" fill="#060c1c" id="cs-window-outer"/>
-      <rect x="576" y="252" width="16" height="16" id="cs-window" fill="#060c1c"/>
-      <rect x="578" y="254" width="6" height="6" fill="rgba(100,180,255,.15)"/>
-      <rect x="586" y="260" width="4" height="4" fill="rgba(100,180,255,.1)"/>
-      <!-- Contour hublot -->
-      <rect x="572" y="248" width="24" height="2" fill="rgba(100,180,255,.35)"/>
-      <rect x="572" y="270" width="24" height="2" fill="rgba(100,180,255,.35)"/>
-      <rect x="572" y="248" width="2" height="24" fill="rgba(100,180,255,.35)"/>
-      <rect x="594" y="248" width="2" height="24" fill="rgba(100,180,255,.35)"/>
-
-      <!-- DEVOLEADS texte pixel -->
-      <text x="584" y="390" fill="rgba(100,120,255,.35)" font-size="7" font-weight="700" letter-spacing="2" text-anchor="middle" font-family="monospace">DL</text>
-
-      <!-- Ailerons pixel art gauche -->
-      <rect x="524" y="510" width="24" height="8" fill="#0c1020"/>
-      <rect x="530" y="500" width="18" height="10" fill="#0c1020"/>
-      <rect x="536" y="488" width="12" height="12" fill="#0c1020"/>
-      <rect x="542" y="476" width="6" height="12" fill="#0c1020"/>
-      <!-- Ailerons droite -->
-      <rect x="620" y="510" width="24" height="8" fill="#0c1020"/>
-      <rect x="620" y="500" width="18" height="10" fill="#0c1020"/>
-      <rect x="620" y="488" width="12" height="12" fill="#0c1020"/>
-      <rect x="620" y="476" width="6" height="12" fill="#0c1020"/>
-
-      <!-- Flammes pixel art (cachées) -->
-      <g id="cs-flames" opacity="0">
-        <rect x="572" y="572" width="24" height="24" fill="#ff6b00"/>
-        <rect x="566" y="580" width="12" height="20" fill="#ff8800"/>
-        <rect x="590" y="580" width="12" height="20" fill="#ff8800"/>
-        <rect x="576" y="576" width="16" height="32" fill="#ffaa00"/>
-        <rect x="580" y="580" width="8" height="40" fill="#ffdd44"/>
-        <rect x="582" y="584" width="4" height="32" fill="#fff"/>
-        <rect x="562" y="576" width="8" height="12" fill="#ff4400" opacity=".7"/>
-        <rect x="598" y="576" width="8" height="12" fill="#ff4400" opacity=".7"/>
-        <rect x="558" y="580" width="6" height="8" fill="#ff2200" opacity=".5"/>
-        <rect x="604" y="580" width="6" height="8" fill="#ff2200" opacity=".5"/>
-      </g>
-    </g>
-
-    <!-- ── ASTRONAUTE PIXEL ART 8-BIT ── -->
-    <g id="cs-astro" transform="translate(160,490)" opacity="1">
-      <!-- Jambes (2 frames alternés via JS) -->
-      <!-- Frame repos -->
-      <g id="cs-astro-legs">
-        <rect x="8" y="36" width="8" height="12" fill="#c8ccd8" rx="1"/>
-        <rect x="18" y="36" width="8" height="12" fill="#c8ccd8" rx="1"/>
-        <!-- Pieds -->
-        <rect x="6" y="46" width="10" height="4" fill="#a0a4b0"/>
-        <rect x="18" y="46" width="10" height="4" fill="#a0a4b0"/>
-      </g>
-      <!-- Corps combinaison (blanc cassé) -->
-      <rect x="6" y="18" width="22" height="20" fill="#e8ecf4" rx="2"/>
-      <!-- Contour corps -->
-      <rect x="6" y="18" width="22" height="2" fill="#c0c8d8"/>
-      <rect x="6" y="18" width="2" height="20" fill="#c0c8d8"/>
-      <rect x="26" y="18" width="2" height="20" fill="#c0c8d8"/>
-      <!-- Poches pixel -->
-      <rect x="8" y="24" width="6" height="5" fill="#d0d4e0"/>
-      <rect x="20" y="24" width="6" height="5" fill="#d0d4e0"/>
-      <!-- Bandes Devoleads sur corps -->
-      <rect x="6" y="33" width="22" height="3" fill="#7c3aed" opacity=".7"/>
-      <!-- Bras gauche -->
-      <rect x="-2" y="20" width="8" height="12" fill="#e8ecf4" rx="1"/>
-      <rect x="-2" y="20" width="2" height="12" fill="#c0c8d8"/>
-      <rect x="4" y="30" width="6" height="4" fill="#c8ccd8"/>
-      <!-- Bras droit -->
-      <rect x="28" y="20" width="8" height="12" fill="#e8ecf4" rx="1"/>
-      <rect x="34" y="20" width="2" height="12" fill="#c0c8d8"/>
-      <rect x="28" y="30" width="6" height="4" fill="#c8ccd8"/>
-      <!-- Casque (rond pixel) -->
-      <rect x="8" y="4"  width="18" height="2" fill="#e8ecf4"/>
-      <rect x="6" y="6"  width="22" height="2" fill="#e8ecf4"/>
-      <rect x="4" y="8"  width="26" height="2" fill="#e8ecf4"/>
-      <rect x="4" y="10" width="26" height="8" fill="#e8ecf4"/>
-      <rect x="6" y="18" width="22" height="2" fill="#e8ecf4"/>
-      <!-- Contour casque -->
-      <rect x="8" y="2"  width="18" height="2" fill="#c0c8d8"/>
-      <rect x="4" y="4"  width="4" height="4" fill="#c0c8d8"/>
-      <rect x="26" y="4" width="4" height="4" fill="#c0c8d8"/>
-      <rect x="2" y="8"  width="2" height="10" fill="#c0c8d8"/>
-      <rect x="30" y="8" width="2" height="10" fill="#c0c8d8"/>
-      <!-- Visière pixel (couleur prospect) -->
-      <rect id="cs-visor" x="8" y="8" width="18" height="10" fill="#ff3d8f" opacity=".85"/>
-      <!-- Reflet visière -->
-      <rect x="10" y="9" width="6" height="3" fill="rgba(255,255,255,.5)"/>
-      <rect x="10" y="13" width="4" height="2" fill="rgba(255,255,255,.2)"/>
-      <!-- Badge entreprise (bras droit) -->
-      <rect id="cs-badge-rect" x="28" y="22" width="8" height="5" fill="#ff3d8f" opacity=".7"/>
-      <!-- Réservoir dos (pixel) -->
-      <rect x="6" y="20" width="4" height="14" fill="#d0d8e8"/>
-    </g>
-
-    <!-- ── HUD MISSION ── -->
-    <g id="cs-hud" opacity="0">
-      <!-- Frame HUD -->
-      <rect x="100" y="60" width="1000" height="62" rx="4" fill="rgba(4,6,20,.85)" stroke="rgba(100,120,255,.25)" stroke-width="1"/>
-      <!-- Coins HUD pixel -->
-      <rect x="100" y="60" width="8" height="2" fill="rgba(100,120,255,.5)"/>
-      <rect x="100" y="60" width="2" height="8" fill="rgba(100,120,255,.5)"/>
-      <rect x="1092" y="60" width="8" height="2" fill="rgba(100,120,255,.5)"/>
-      <rect x="1098" y="60" width="2" height="8" fill="rgba(100,120,255,.5)"/>
-      <rect x="100" y="120" width="8" height="2" fill="rgba(100,120,255,.5)"/>
-      <rect x="100" y="114" width="2" height="8" fill="rgba(100,120,255,.5)"/>
-      <rect x="1092" y="120" width="8" height="2" fill="rgba(100,120,255,.5)"/>
-      <rect x="1098" y="114" width="2" height="8" fill="rgba(100,120,255,.5)"/>
-      <!-- Texte HUD -->
-      <text x="600" y="84" fill="rgba(100,120,255,.45)" font-size="9" font-weight="600" letter-spacing="5" text-anchor="middle" font-family="monospace">MISSION DEVOLEADS</text>
-      <text id="cs-hud-pilot" x="600" y="104" fill="rgba(255,255,255,.75)" font-size="11" font-weight="700" letter-spacing="3" text-anchor="middle" font-family="monospace">PILOTE : –</text>
-      <!-- Indicateurs latéraux -->
-      <rect x="116" y="76" width="6" height="6" fill="#4ade80" id="cs-status-dot1"/>
-      <text x="128" y="82" fill="rgba(74,222,128,.6)" font-size="7" letter-spacing="2" font-family="monospace">SYSTÈMES OK</text>
-      <rect x="116" y="90" width="6" height="6" fill="#ff3d8f" id="cs-status-dot2"/>
-      <text x="128" y="96" fill="rgba(255,61,143,.5)" font-size="7" letter-spacing="2" font-family="monospace">PROPULSION PRÊTE</text>
-      <!-- Timer -->
-      <text id="cs-timer" x="1080" y="84" fill="rgba(100,120,255,.4)" font-size="9" letter-spacing="2" text-anchor="end" font-family="monospace">T-15</text>
-      <text id="cs-phase" x="1080" y="100" fill="rgba(255,255,255,.35)" font-size="7" letter-spacing="2" text-anchor="end" font-family="monospace">EMBARQUEMENT</text>
-    </g>
-
-    <!-- ── STATUS BAS ── -->
-    <g id="cs-status" opacity="0">
-      <rect x="400" y="600" width="400" height="28" rx="3" fill="rgba(4,6,20,.7)" stroke="rgba(100,120,255,.15)" stroke-width="1"/>
-      <text id="cs-status-txt" x="600" y="619" fill="rgba(100,120,255,.5)" font-size="9" letter-spacing="3" text-anchor="middle" font-family="monospace">INITIALISATION</text>
-    </g>
-
-    <!-- ── FUMÉE ── -->
-    <g id="cs-smoke" opacity="0">
-      <rect class="cs-puff1" x="554" y="570" width="60" height="40" rx="20" fill="rgba(60,80,160,.18)"/>
-      <rect class="cs-puff2" x="570" y="575" width="80" height="35" rx="18" fill="rgba(40,60,140,.14)"/>
-      <rect class="cs-puff3" x="540" y="578" width="100" height="30" rx="15" fill="rgba(80,100,180,.1)"/>
-    </g>
-
-    <!-- ── GRILLE SOL TARMAC ── -->
-    <g opacity=".3">
-      <line x1="0" y1="590" x2="1200" y2="590" stroke="rgba(100,120,255,.12)" stroke-width="1"/>
-      <line x1="0" y1="610" x2="1200" y2="610" stroke="rgba(100,120,255,.08)" stroke-width="1"/>
-      <line x1="200" y1="570" x2="200" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
-      <line x1="400" y1="570" x2="400" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
-      <line x1="800" y1="570" x2="800" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
-      <line x1="1000" y1="570" x2="1000" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
-    </g>
-  </svg>
-
-  <div id="cine-loading">
-    <div id="cine-loading-bar"><div id="cine-loading-fill"></div></div>
-    <div id="cine-loading-text">Personnalisation en cours…</div>
+  <div id="url-optional">
+    <input id="url-input" type="url" placeholder="https://votreprospect.com (optionnel)" autocomplete="off" spellcheck="false"/>
+    <div id="url-status"></div>
   </div>
-  <div id="cine-flash"></div>
+  <div id="name-hint" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center">
+    <span>Entrée pour décoller</span>
+    <span style="opacity:.3">·</span>
+    <span id="url-toggle" onclick="toggleUrlField()" style="font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:color .2s" onmouseover="this.style.color='rgba(124,58,237,.7)'" onmouseout="this.style.color='rgba(255,255,255,.3)'">
+      🌐 Personnaliser pour un prospect
+    </span>
+  </div>
 </div>
-
+<div id="hud-scan">
+  <div class="hud-ring" id="hud-r1"></div>
+  <div class="hud-ring-2" id="hud-r2"></div>
+  <div class="hud-data" id="hud-data"></div>
+  <div class="hud-progress"></div>
+</div>
+<div id="nasa-seq" style="display:none">
+  <canvas id="nasa-particles"></canvas>
+  <div id="nasa-label">Initialisation système</div>
+  <div id="nasa-countdown">3</div>
+  <div id="nasa-bar"><div id="nasa-bar-fill"></div></div>
+</div>
 <div id="rdv-counter"><div id="rdv-pulse"></div><div id="rdv-val">0</div><div id="rdv-lbl">RDV ce mois</div></div>
 <div id="cur"></div>
 <div id="cur-r"></div>
@@ -1955,7 +1466,6 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
       <div class="pl">Copywriting inclus</div>
       <div class="pl">Reporting hebdomadaire</div>
       <div class="gar"><strong>Garantie</strong> — Moins de 30 RDV ? On continue gratuitement.</div>
-      <a href="mailto:stanislas@devoleads.com?subject=Int%C3%A9ress%C3%A9%20par%20la%20formule%20Silver%20%E2%80%94%2010%20RDV%2Fmois" class="pc-cta-btn" style="display:block;margin-top:12px;background:#a78bfa;color:#000;font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;border-radius:8px;padding:8px 0;text-decoration:none;opacity:.9">Choisir Silver →</a>
     </div>
     <div class="pc feat">
       <span class="pp">🪐</span>
@@ -1968,7 +1478,6 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
       <div class="pl">AI Icebreaker + Scoring</div>
       <div class="pl">Account manager dédié</div>
       <div class="gar"><strong>Garantie</strong> — Moins de 60 RDV ? On continue gratuitement.</div>
-      <a href="mailto:stanislas@devoleads.com?subject=Intéressé%20par%20la%20formule%20Gold%20—%2020%20RDV/mois" class="pc-cta-btn" style="display:block;margin-top:12px;background:#fbbf24;color:#000;font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;border-radius:8px;padding:8px 0;text-decoration:none;opacity:.9">Choisir Gold →</a>
     </div>
     <div class="pc">
       <span class="pp">🌍</span>
@@ -1981,7 +1490,6 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
       <div class="pl">Multi-domaines + Vidéo</div>
       <div class="pl">Intégration CRM complète</div>
       <div class="gar"><strong>Garantie</strong> — Moins de 120 RDV ? On continue gratuitement.</div>
-      <a href="mailto:stanislas@devoleads.com?subject=Intéressé%20par%20la%20formule%20Platinum%20—%2040%20RDV/mois" class="pc-cta-btn" style="display:block;margin-top:12px;background:#22d3ee;color:#000;font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;text-align:center;border-radius:8px;padding:8px 0;text-decoration:none;opacity:.9">Choisir Platinum →</a>
     </div>
   </div>
 </div>
@@ -2000,55 +1508,20 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <!-- Separator -->
   <div style="width:1px;background:rgba(255,255,255,.06);align-self:stretch;margin:20px 0;flex-shrink:0"></div>
 
-  <!-- RIGHT: cartes fondateurs avec vraies photos -->
-  <div class="sg" style="flex:1;padding:0 clamp(24px,4vw,72px) 0 clamp(16px,2vw,36px);display:flex;flex-direction:column;justify-content:center;gap:16px">
-    <!-- Stanislas -->
-    <div id="card-stanislas" style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px 22px;display:flex;gap:20px;align-items:flex-start;position:relative;overflow:hidden">
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,.07) 0%,transparent 60%);pointer-events:none"></div>
-      <div style="flex-shrink:0;width:72px;height:72px;border-radius:14px;overflow:hidden;border:2px solid rgba(124,58,237,.3);box-shadow:0 0 20px rgba(124,58,237,.2)">
-        <img id="s5-photo-stanislas" style="width:100%;height:100%;object-fit:cover;object-position:center top" alt="Stanislas Fortune">
+  <!-- RIGHT: stats + témoignages -->
+  <div class="sg" style="flex:1;padding:0 clamp(30px,5vw,90px) 0 clamp(16px,2vw,40px);display:flex;flex-direction:column;justify-content:center;gap:10px">
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
+        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--pink);letter-spacing:-1.5px;min-width:56px">×8.3</div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--white)">ROI moyen</div><div style="font-size:10.5px;color:var(--muted)">sur 90 jours d'engagement</div></div>
       </div>
-      <div style="min-width:0;flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-          <div class="tn">Stanislas Fortune</div>
-          <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple-l);background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.2);border-radius:100px;padding:2px 7px">Co-Founder · Growth</div>
-        </div>
-        <div class="tq" style="font-size:11.5px">"L'automatisation sans stratégie, c'est juste spammer plus vite. On construit de vraies conversations."</div>
-        <div style="display:flex;gap:12px;margin-top:10px">
-          <div style="font-size:10px;color:var(--muted2)">Ex B2B SaaS · <span style="color:var(--purple-l)">×8.3 ROI moyen</span></div>
-        </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
+        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--purple-l);letter-spacing:-1.5px;min-width:56px">+150</div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--white)">CEOs clients actifs</div><div style="font-size:10.5px;color:var(--muted)">en 2024, tous secteurs</div></div>
       </div>
-    </div>
-    <!-- Amélie -->
-    <div id="card-amelie" style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px 22px;display:flex;gap:20px;align-items:flex-start;position:relative;overflow:hidden">
-      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,61,143,.07) 0%,transparent 60%);pointer-events:none"></div>
-      <div style="flex-shrink:0;width:72px;height:72px;border-radius:14px;overflow:hidden;border:2px solid rgba(255,61,143,.3);box-shadow:0 0 20px rgba(255,61,143,.2)">
-        <img id="s5-photo-amelie" style="width:100%;height:100%;object-fit:cover;object-position:center top" alt="Amélie Anquetil">
-      </div>
-      <div style="min-width:0;flex:1">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-          <div class="tn">Amélie Anquetil</div>
-          <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--pink);background:rgba(255,61,143,.1);border:1px solid rgba(255,61,143,.18);border-radius:100px;padding:2px 7px">Co-Founder · Ops</div>
-        </div>
-        <div class="tq" style="font-size:11.5px">"Notre obsession : transformer le chaos commercial en croissance prédictible et mesurable."</div>
-        <div style="display:flex;gap:12px;margin-top:10px">
-          <div style="font-size:10px;color:var(--muted2)">Copywriting · Ops · <span style="color:var(--pink)">30% taux de réponse</span></div>
-        </div>
-      </div>
-    </div>
-    <!-- Stat bar -->
-    <div style="display:flex;gap:8px;margin-top:2px">
-      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center">
-        <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--pink);letter-spacing:-1px">+150</div>
-        <div style="font-size:9px;color:var(--muted);margin-top:1px">CEOs clients</div>
-      </div>
-      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center">
-        <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--cyan);letter-spacing:-1px">14j</div>
-        <div style="font-size:9px;color:var(--muted);margin-top:1px">Lancement</div>
-      </div>
-      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center">
-        <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--purple-l);letter-spacing:-1px">×8.3</div>
-        <div style="font-size:9px;color:var(--muted);margin-top:1px">ROI moyen</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
+        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--cyan);letter-spacing:-1.5px;min-width:56px">30%</div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--white)">Taux de réponse</div><div style="font-size:10.5px;color:var(--muted)">vs 2% marché</div></div>
       </div>
     </div>
     <div id="team-grid" style="display:none"></div>
@@ -2401,13 +1874,6 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
     <div>
       <div class="eyebrow"><span class="blink"></span>Mise en place</div>
       <h2 id="s8-title" style="font-size:clamp(28px,3.5vw,44px)">Comment on démarre<br><span class="g">ensemble.</span></h2>
-      <a href="https://calendly.com/devoleads/30min" target="_blank" rel="noopener"
-         style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:linear-gradient(135deg,#7c3aed,#ff3d8f);color:#fff;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-radius:100px;padding:10px 22px;text-decoration:none;box-shadow:0 0 24px rgba(124,58,237,.4);transition:all .2s"
-         onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 36px rgba(255,61,143,.5)'"
-         onmouseout="this.style.transform='';this.style.boxShadow='0 0 24px rgba(124,58,237,.4)'">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Réserver une session stratégique gratuite →
-      </a>
       <p class="lead" style="margin-top:10px;font-size:13px">Cinq étapes. Vous validez chaque jalon. Zéro surprise.</p>
     </div>
     <!-- Contact pill cluster -->
@@ -2482,11 +1948,6 @@ const SLIDE_NAMES= ['Présentation','Services','Process','Formules','L\'équipe'
 
 // Init assets
 document.getElementById('logo-el').src = 'data:image/png;base64,' + LOGO_B64;
-// Injecter photos fondateurs S5
-const ps = document.getElementById('s5-photo-stanislas');
-const pa = document.getElementById('s5-photo-amelie');
-if(ps) ps.src = 'data:image/jpeg;base64,' + STANIS_B64;
-if(pa) pa.src = 'data:image/jpeg;base64,' + AMELIE_B64;
 document.getElementById('team-grid').innerHTML = `
   <div class="tc">
     <img src="data:image/jpeg;base64,${STANIS_B64}" alt="Stanislas Fortune">
@@ -2619,55 +2080,6 @@ let currentLvl = -1;
 function applyLevel(li, animated) {
   if (li === currentLvl) return;
   currentLvl = li;
-  // Si une séquence Claude est disponible, l'injecter sur lvl 2
-  if(li === 2 && typeof prospectData !== 'undefined' && prospectData){
-    const e = prospectData.email1;
-    const p = prospectData.prospect;
-    const LClaud = {
-      badge: 'IA · ' + (p.societe||'Prospect'),
-      badgeBg: 'rgba(34,211,238,.1)', badgeCol: 'var(--cyan)',
-      emailBorder: 'rgba(34,211,238,.3)',
-      subj: e.objet||L2[2].subj,
-      hi: e.salutation||L2[2].hi,
-      brk: e.icebreaker||L2[2].brk,
-      brkClass: 'lvl2',
-      pitch: e.pitch||L2[2].pitch,
-      social: e.social_proof||L2[2].social,
-      cta: e.cta||L2[2].cta,
-      mult: 'x8.0', multCol:'var(--cyan)', pers:'100%', persCol:'var(--cyan)',
-      sentiment:'Sur-mesure', sentCol:'var(--cyan)', barW:'100%',
-      statBorder:'rgba(34,211,238,.2)',
-      chgsOn:[0,1,2,3,4,5], chgsPurple:[]
-    };
-    const L = LClaud;
-    // Apply avec ce L custom
-    const badgeEl = document.getElementById('ice-badge');
-    if(badgeEl){badgeEl.textContent=L.badge;badgeEl.style.background=L.badgeBg;badgeEl.style.color=L.badgeCol;}
-    const emailEl = document.querySelector('.ice-email2');
-    if(emailEl) emailEl.style.borderColor=L.emailBorder;
-    const subjEl = document.getElementById('ice2-subj');
-    if(subjEl) subjEl.textContent=L.subj;
-    const tokens={'ice2-hi':L.hi,'ice2-brk':L.brk,'ice2-pitch':L.pitch,'ice2-social':L.social,'ice2-cta':L.cta};
-    Object.entries(tokens).forEach(([id,txt],i)=>{
-      const el=document.getElementById(id);
-      if(!el) return;
-      el.style.opacity='0';
-      setTimeout(()=>{el.textContent=txt;el.style.opacity='1';if(id==='ice2-brk')el.className='ice2-tok ice2-highlight lvl2';},80+i*60);
-    });
-    document.getElementById('ice2-fill').style.width='100%';
-    document.getElementById('ice2-pct').textContent='100%';
-    document.getElementById('ist2-v0').textContent=L.mult;document.getElementById('ist2-v0').style.color=L.multCol;
-    document.getElementById('ist2-v1').textContent=L.pers;document.getElementById('ist2-v1').style.color=L.persCol;
-    document.getElementById('ist2-v2').textContent=L.sentiment;document.getElementById('ist2-v2').style.color=L.sentCol;
-    document.getElementById('ist2-bar').style.width=L.barW;
-    ['ist2-0','ist2-1','ist2-2'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.borderColor=L.statBorder;});
-    for(let i=0;i<6;i++){const el=document.getElementById('chg'+i);if(el)el.className='ice2-chg on'+(i<4?' p':'');}
-    for(let i=0;i<3;i++){const el=document.getElementById('lb'+i);if(el)el.classList.toggle('active',i===li);}
-    // Mettre à jour l'eyebrow
-    const eyebrow=document.querySelector('#s7 .eyebrow');
-    if(eyebrow&&p) eyebrow.innerHTML='<span class="blink"></span>Séquence IA · '+p.prenom+' · '+p.societe;
-    return;
-  }
   const L = L2[li];
 
   // Badge
@@ -2788,104 +2200,124 @@ function ui(){
 }
 ui();
 
+window.go=function(idx){
+  if(busy||idx===cur||idx<0||idx>=TOTAL) return;
+  busy=true;
+  const prev=cur; cur=idx;
+  const dir = idx > prev ? 1 : -1; // 1=forward, -1=backward
+  if(window.soundSlide) soundSlide(dir);
+  haptic([15]);
+  ui();
 
-// ════════════════════════════════════════════════
-//  COCKPIT 3D — Three.js + Salle de contrôle
-// ════════════════════════════════════════════════
-let ckRenderer,ckScene,ckCamera,ckRaycaster,ckMouse;
-let ckPlanetMeshes=[],ckPlanets=[],ckFrame=0;
+  // Flash lumineux
+  const fl=document.getElementById('transition-flash');
+  if(fl){fl.classList.remove('fire');fl.offsetHeight;fl.classList.add('fire');}
+
+  // Tick counter
+  const pnEl=document.getElementById('pn');
+  if(pnEl){pnEl.classList.remove('tick');pnEl.offsetHeight;pnEl.classList.add('tick');}
+
+  // Slide sortante
+  const outClass = dir>0 ? 'out-left' : 'out-right';
+  slides[prev].classList.remove('ein-right','ein-left');
+  slides[prev].classList.add('out', outClass);
+  setTimeout(()=>{
+    slides[prev].classList.remove('out',outClass,'active');
+    slides[prev].style.opacity=0;
+  },420);
+
+  // Slide entrante
+  setTimeout(()=>{
+    const inClass = dir>0 ? 'ein-right' : 'ein-left';
+    slides[cur].style.opacity='';
+    slides[cur].classList.remove('out','out-left','out-right','ein-right','ein-left');
+    slides[cur].classList.add('active', inClass);
+    slides[cur].querySelectorAll('.sg').forEach(sg=>{
+      sg.querySelectorAll(':scope>*').forEach(c=>{
+        c.style.animation='none';
+        c.offsetHeight;
+        c.style.animation='';
+      });
+    });
+    if(cur===2) startMotion(); else stopMotion();
+    setSlideAmbiance(cur);
+    if(cur===5) startSetup();
+    setTimeout(()=>{busy=false},700);
+  },380);
+}
+
+let ckRenderer,ckScene,ckCamera,ckRaycaster,ckMouse,ckPlanetMeshes=[],ckPlanets=[],ckFrame=0;
 let ckWrap=null,ckW=900,ckH=560;
 let ckJoyTargetX=0,ckJoyTargetY=0,ckJoyCurrX=0,ckJoyCurrY=0;
 let ckMouseNormX=0,ckMouseNormY=0;
-let ckBuilt=false,ckWarping=false,ckActive=0;
-let ckAnimating=false;
-let ckPovMode=false;
+let ckBuilt=false, ckWarping=false, ckActive=0;
+
+// ════════════════════════════════════════════════
+//  COCKPIT 3D — Three.js Navigation
+// ════════════════════════════════════════════════
+;(function(){
 
 const PDATA=[
-  {id:0,label:'Cover',    sub:'Votre agenda saturé de RDV', c1:'#cc1f6a',c2:'#7c1040',size:1.9,pos:[0,.6,4.5],  ring:false,speed:.008,tilt:.2,  color:'#ff3d8f'},
-  {id:1,label:'Services', sub:'Cold Email · LinkedIn · Vidéo',c1:'#4c1d95',c2:'#2d1060',size:1.1,pos:[-4.8,1.2,1], ring:false,speed:.011,tilt:.15, color:'#7c3aed'},
-  {id:2,label:'Process',  sub:'Onboarding 14 jours',         c1:'#9a3412',c2:'#7c2800',size:1.0,pos:[4.2,-.4,.5], ring:false,speed:.009,tilt:.22, color:'#ff6b35'},
-  {id:3,label:'Formules', sub:'Silver · Gold · Platinum',    c1:'#5b21b6',c2:'#3b1060',size:1.5,pos:[-2.2,-1.8,-2],ring:true, speed:.007,tilt:.1,  color:'#a78bfa'},
-  {id:4,label:'Équipe',   sub:'Fondateurs · Pas des juniors',c1:'#0e4f6b',c2:'#055060',size:.9, pos:[3.2,1.6,-1], ring:false,speed:.013,tilt:.18, color:'#22d3ee'},
-  {id:5,label:'Vidéo',    sub:'Prospection vidéo ×4',        c1:'#14532d',c2:'#0e4428',size:.85,pos:[-5.2,-.4,-3],ring:false,speed:.01, tilt:.25, color:'#4ade80'},
-  {id:6,label:'Icebreaker',sub:'IA · Séquence personnalisée',c1:'#78350f',c2:'#704800',size:.95,pos:[5.5,.6,-4], ring:false,speed:.012,tilt:.2,  color:'#fbbf24'},
-  {id:7,label:'Contact',  sub:'Démarrons ensemble',          c1:'#902020',c2:'#601010',size:1.0,pos:[-3,2.2,-5],  ring:false,speed:.011,tilt:.18, color:'#f87171'},
+  {id:0,label:'Cover',      sub:'Votre agenda saturé de RDV', c1:'#cc1f6a',c2:'#7c1040',size:1.9,pos:[0,.6,4.5],  ring:false,speed:.008,tilt:.2,  color:'#ff3d8f'},
+  {id:1,label:'Services',   sub:'De la data à la signature',  c1:'#4a1e9e',c2:'#2d1060',size:1.1,pos:[-4.8,1.2,1],ring:false,speed:.012,tilt:.15, color:'#7c3aed'},
+  {id:2,label:'Process',    sub:'14 jours, premier lead',      c1:'#b84010',c2:'#7c2800',size:1.0,pos:[4.2,-.4,.5],ring:false,speed:.015,tilt:.3,  color:'#ff6b35'},
+  {id:3,label:'Formules',   sub:'Choisissez votre vitesse',   c1:'#6040cc',c2:'#3820a0',size:1.5,pos:[-2.2,-1.8,-2],ring:true, speed:.006,tilt:.4, color:'#a78bfa'},
+  {id:4,label:'Équipe',     sub:'Fondateurs, pas des juniors',c1:'#0a7888',c2:'#055060',size:.9, pos:[3.2,1.6,-1], ring:false,speed:.018,tilt:.1,  color:'#22d3ee'},
+  {id:5,label:'Vidéo',      sub:'Prospection humaine',        c1:'#1a7040',c2:'#0e4428',size:.85,pos:[-5.2,-.4,-3],ring:false,speed:.02, tilt:.25, color:'#4ade80'},
+  {id:6,label:'Icebreaker', sub:'IA + personnalisation',      c1:'#a07010',c2:'#704800',size:.95,pos:[5.5,.6,-4],  ring:false,speed:.014,tilt:.35, color:'#fbbf24'},
+  {id:7,label:'Contact',    sub:'Démarrons ensemble',         c1:'#902020',c2:'#601010',size:1.0,pos:[-3,2.2,-5],  ring:false,speed:.011,tilt:.18, color:'#f87171'},
 ];
 
-function hexToRgb(hex){
-  if(!hex) return '124,58,237';
-  const h = hex.trim().replace(/^#/,'').toLowerCase();
-  if(h.length===3) return [
-    parseInt(h[0]+h[0],16),
-    parseInt(h[1]+h[1],16),
-    parseInt(h[2]+h[2],16)
-  ].join(',');
-  if(h.length!==6) return '124,58,237';
-  return [
-    parseInt(h.slice(0,2),16),
-    parseInt(h.slice(2,4),16),
-    parseInt(h.slice(4,6),16)
-  ].join(',');
+// ckBuilt/ckWarping/ckActive moved to global
+const overlay=document.getElementById('uni-overlay');
+const flashEl=document.getElementById('uni-landing-flash');
+
+// Cached DOM refs — set on build
+// vars moved to global scope
+
+function makeTex(c1,c2,ns){
+  const s=256,cv=document.createElement('canvas');cv.width=cv.height=s;
+  const ctx=cv.getContext('2d');
+  const g=ctx.createLinearGradient(0,0,s,s);
+  g.addColorStop(0,c1);g.addColorStop(.5,c2);g.addColorStop(1,c1);
+  ctx.fillStyle=g;ctx.fillRect(0,0,s,s);
+  for(let y=0;y<s;y+=2){for(let x=0;x<s;x+=2){
+    const n=Math.sin(x*(ns||3)*.04+y*.03)*Math.cos(y*(ns||3)*.05)*.14;
+    const n2=Math.sin(x*.08+y*(ns||3)*.06)*.09;
+    const a=Math.abs(n+n2);
+    ctx.globalAlpha=a;ctx.fillStyle=a>.05?'rgba(255,255,255,.3)':'rgba(0,0,0,.2)';
+    ctx.fillRect(x,y,2,2);
+  }}
+  ctx.globalAlpha=1;
+  const grd=ctx.createRadialGradient(s/2,s/2,s*.35,s/2,s/2,s*.5);
+  grd.addColorStop(0,'transparent');grd.addColorStop(1,'rgba(255,255,255,.05)');
+  ctx.fillStyle=grd;ctx.fillRect(0,0,s,s);
+  return new THREE.CanvasTexture(cv);
 }
 
-function applyCockpitTheme(prospect){
-  const hex = (prospect && prospect.couleur_hex) ? prospect.couleur_hex : '#ff3d8f';
-  const rgb = hexToRgb(hex);
-  const overlay = document.getElementById('uni-overlay');
-  if(overlay){
-    overlay.style.setProperty('--ck-accent', rgb);
-    overlay.style.setProperty('--ck-accent-hex', hex);
-  }
-  // Planète Icebreaker (id 6) → couleur prospect
-  if(typeof ckPlanetMeshes!=='undefined' && ckPlanetMeshes[6] && ckPlanetMeshes[6].material){
-    ckPlanetMeshes[6].material.emissive.set(hex);
-  }
-  // Watermark hublot
-  const pnEl = document.getElementById('ck-porthole-name');
-  if(pnEl && prospect && prospect.societe){
-    pnEl.textContent = prospect.societe.toUpperCase();
-    pnEl.classList.add('visible');
-  }
-  // Pilote visor dans la salle
-  const visor = document.getElementById('ck-pilot-visor');
-  if(visor) visor.setAttribute('fill', hex);
-  // Panneaux cockpit
-  if(prospect){
-    const fields = {
-      'ck-p-name':    (prospect.prenom||'') + ' ' + (prospect.nom||''),
-      'ck-p-societe': prospect.societe || '',
-      'ck-p-secteur': prospect.secteur || '',
-      'ck-p-actu':    prospect.actu    || '',
-    };
-    Object.entries(fields).forEach(([id, val])=>{
-      const el = document.getElementById(id);
-      if(el && val) el.textContent = val;
-    });
-  }
+function makeRingTex(c1,c2){
+  const s=256,cv=document.createElement('canvas');cv.width=cv.height=s;
+  const ctx=cv.getContext('2d');
+  const g=ctx.createRadialGradient(s/2,s/2,50,s/2,s/2,128);
+  g.addColorStop(0,c1);g.addColorStop(.4,c2);g.addColorStop(.8,c1);g.addColorStop(1,'transparent');
+  ctx.fillStyle=g;ctx.fillRect(0,0,s,s);
+  for(let i=0;i<10;i++){ctx.globalAlpha=.1+Math.random()*.18;ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=.8+Math.random()*2;ctx.beginPath();ctx.arc(s/2,s/2,52+i*9,0,Math.PI*2);ctx.stroke();}
+  ctx.globalAlpha=1;return new THREE.CanvasTexture(cv);
 }
-
-function updateCockpitDest(slideIdx){
-  if(typeof PDATA==='undefined') return;
-  const pd = PDATA[slideIdx];
-  if(!pd) return;
-  const destEl = document.getElementById('ck-hud-dest');
-  if(destEl) destEl.textContent = pd.label.toUpperCase() + ' — ' + pd.sub;
-}
-
 
 function buildCockpit(){
   if(ckBuilt)return;ckBuilt=true;
+
   const wrap=document.getElementById('cockpit-wrap');
   ckWrap=wrap;
-  const W=wrap.offsetWidth||900,H=wrap.offsetHeight||560;
-  ckW=W;ckH=H;
+  const W=wrap.offsetWidth||900, H=wrap.offsetHeight||560;
+  ckW=W; ckH=H;
 
   // Renderer
   ckRenderer=new THREE.WebGLRenderer({canvas:document.getElementById('ck-three'),antialias:true,alpha:true});
   ckRenderer.setSize(W,H);ckRenderer.setPixelRatio(Math.min(devicePixelRatio,2));
   ckRenderer.setClearColor(0x02030a,1);
 
-  // Scene + fog
   ckScene=new THREE.Scene();
   ckScene.fog=new THREE.FogExp2(0x02030a,.016);
   ckCamera=new THREE.PerspectiveCamera(58,W/H,.1,500);
@@ -2894,41 +2326,37 @@ function buildCockpit(){
   // Lights
   ckScene.add(new THREE.AmbientLight(0x111133,1.3));
   const sun=new THREE.PointLight(0xfff8ee,3.5,120);sun.position.set(-14,10,18);ckScene.add(sun);
-  const rim=new THREE.PointLight(0x3355ff,1.8,80);rim.position.set(16,-6,6);rim._isRim=true;ckScene.add(rim);
+  const rim=new THREE.PointLight(0x3355ff,1.8,80);rim.position.set(16,-6,6);ckScene.add(rim);
 
   // Stars
   const sg=new THREE.BufferGeometry();
-  const sp=new Float32Array(1800*3);
-  for(let i=0;i<sp.length;i++)sp[i]=(Math.random()-.5)*200;
+  const sp=new Float32Array(2400*3);for(let i=0;i<sp.length;i++)sp[i]=(Math.random()-.5)*220;
   sg.setAttribute('position',new THREE.BufferAttribute(sp,3));
-  const sm=new THREE.PointsMaterial({color:0xffffff,size:.18,sizeAttenuation:true,transparent:true,opacity:.75});
+  const sm=new THREE.PointsMaterial({color:0xffffff,size:.18,sizeAttenuation:true});
   ckScene.add(new THREE.Points(sg,sm));
   ckScene._starMat=sm;
 
-  // Planets
+  // Build planets
   ckPlanetMeshes=[];ckPlanets=[];
   PDATA.forEach(pd=>{
-    const geo=new THREE.SphereGeometry(pd.size,32,32);
-    const mat=new THREE.MeshStandardMaterial({
-      color:new THREE.Color(pd.c1),
-      roughness:.75,metalness:.05,
-      emissive:new THREE.Color(pd.color),emissiveIntensity:.0
-    });
+    const geo=new THREE.SphereGeometry(pd.size,52,52);
+    const nScale=[4,2,6,3,5,7,2.5,4.5][pd.id%8];
+    const mat=new THREE.MeshStandardMaterial({map:makeTex(pd.c1,pd.c2,nScale),roughness:.82,metalness:.06,emissive:new THREE.Color(pd.c1),emissiveIntensity:0});
     const mesh=new THREE.Mesh(geo,mat);
-    mesh.position.set(...pd.pos);
-    mesh.userData.base=pd.pos.slice();
-    mesh.userData.pd=pd;
+    mesh.position.set(...pd.pos);mesh.rotation.x=pd.tilt;
+    mesh.userData={pd,base:[...pd.pos],id:pd.id};
     ckScene.add(mesh);ckPlanetMeshes.push(mesh);
-    // Atmosphere halo
+
+    // Atmosphere
     const am=new THREE.Mesh(
-      new THREE.SphereGeometry(pd.size*1.18,20,20),
-      new THREE.MeshBasicMaterial({color:new THREE.Color(pd.color),transparent:true,opacity:.06,side:THREE.BackSide})
-    );
-    am.position.set(...pd.pos);ckScene.add(am);
-    // Ring (Formules)
+      new THREE.SphereGeometry(pd.size*1.09,28,28),
+      new THREE.MeshBasicMaterial({color:new THREE.Color(pd.c1),transparent:true,opacity:.07,side:THREE.BackSide})
+    );am.position.set(...pd.pos);ckScene.add(am);
+
+    // Ring (Formules = Saturn)
     if(pd.ring){
-      const rg=new THREE.RingGeometry(pd.size*1.5,pd.size*2.2,48);
-      const rm=new THREE.MeshBasicMaterial({color:new THREE.Color(pd.color),transparent:true,opacity:.3,side:THREE.DoubleSide});
+      const rg=new THREE.RingGeometry(pd.size*1.45,pd.size*2.5,72);
+      const rm=new THREE.MeshBasicMaterial({map:makeRingTex('rgba(140,100,240,.7)','rgba(80,50,180,.3)'),side:THREE.DoubleSide,transparent:true,opacity:.75});
       const ring=new THREE.Mesh(rg,rm);ring.position.set(...pd.pos);ring.rotation.x=Math.PI/2.7;
       ckScene.add(ring);
     }
@@ -2936,63 +2364,121 @@ function buildCockpit(){
   });
 
   // Raycaster
-  ckRaycaster=new THREE.Raycaster();
-  ckMouse=new THREE.Vector2(-10,-10);
-  const flashEl=document.getElementById('ck-warp');
+  ckRaycaster=new THREE.Raycaster();ckMouse=new THREE.Vector2();
+
+  // Porthole click zone interactions
+  const portClick=document.getElementById('ck-porthole-click');
+  portClick.addEventListener('mousemove',e=>{
+    const r2=wrap.getBoundingClientRect();
+    ckMouseNormX=((e.clientX-r2.left)/W-.5)*2;
+    ckMouseNormY=((e.clientY-r2.top)/H-.5)*2;
+    const r=wrap.getBoundingClientRect();
+    const x=e.clientX-r.left,y=e.clientY-r.top;
+    document.getElementById('ck-cur').style.cssText+=`;left:${x}px;top:${y}px`;
+    // Parallax — move planets slightly opposite to mouse
+    if(!ckWarping&&ckPlanets.length){
+      const px=(x/W-.5)*2, py=(y/H-.5)*2;
+      ckPlanets.forEach(({mesh,pd})=>{
+        const base=mesh.userData.base;
+        if(!base) return;
+        const depth=1/(1+Math.abs(pd.pos[2])*.08);
+        mesh.position.x=base[0]-px*depth*.4;
+        mesh.position.z=base[2]-py*depth*.2;
+      });
+    }
+    ckMouse.x=(x/W)*2-1;ckMouse.y=-(y/H)*2+1;
+    ckRaycaster.setFromCamera(ckMouse,ckCamera);
+    const hits=ckRaycaster.intersectObjects(ckPlanetMeshes);
+    const tt=document.getElementById('ck-tt');
+    const hint=document.getElementById('ck-hint');
+    if(hits.length>0){
+      const pd=hits[0].object.userData.pd;
+      document.getElementById('ck-tt-name').textContent=pd.label;
+      document.getElementById('ck-tt-name').style.color=pd.color;
+      document.getElementById('ck-tt-sub').textContent=pd.sub;
+      tt.style.opacity='1';hint.style.opacity='0';
+      wrap.style.cursor='none';
+      // Illuminer la planète
+      hits[0].object.material.emissiveIntensity=.35;
+      hits[0].object.scale.setScalar(1.12);
+      // HUD scan si nouvelle planète
+      if(wrap._hovered!==pd.id){
+        if(!wrap._hudTimer) clearTimeout(wrap._hudTimer);
+        wrap._hudTimer=setTimeout(()=>{
+          // Projeter coords 3D→2D pour positionner le HUD
+          const pos3=new THREE.Vector3(...pd.pos);
+          pos3.project(ckCamera);
+          const bRect=wrap.getBoundingClientRect();
+          const sx=(pos3.x*.5+.5)*ckW;
+          const sy=(-(pos3.y)*.5+.5)*ckH;
+          if(window.showHUD) showHUD(pd.id,sx,sy,pd.size*24);
+        },600);
+      }
+      wrap._hovered=pd.id;
+    } else {
+      tt.style.opacity='0';hint.style.opacity='1';
+      if(wrap._hovered!==null&&window.hideHUD) hideHUD();
+      if(wrap._hudTimer){clearTimeout(wrap._hudTimer);wrap._hudTimer=null;}
+      wrap._hovered=null;
+    }
+  });
+  portClick.addEventListener('click',()=>{
+    if(wrap._hovered!=null){
+      haptic([20,10,80]);
+      if(window.hideHUD) hideHUD();
+      ckWarpTo(wrap._hovered);
+    }
+  });
+  portClick.addEventListener('mouseleave',()=>{
+    document.getElementById('ck-tt').style.opacity='0';
+    document.getElementById('ck-hint').style.opacity='1';
+    // Reset parallax
+    if(ckPlanets.length) ckPlanets.forEach(({mesh})=>{
+      const b=mesh.userData.base;if(b){mesh.position.x=b[0];mesh.position.z=b[2];}
+    });
+  });
 
   // Nav dots
-  const navEl=document.getElementById('ck-nav');
-  if(navEl){
-    PDATA.forEach((pd,i)=>{
-      const d=document.createElement('button');
-      d.className='ck-nd'+(i===0?' active':'');
-      d.title=pd.label;
-      d.innerHTML=`<span class="ck-dot" style="--dc:${pd.color}"></span>`;
-      d.addEventListener('click',()=>ckWarpTo(i));
-      navEl.appendChild(d);
-    });
-  }
+  const nav=document.getElementById('ck-nav');nav.innerHTML='';
+  PDATA.forEach((pd,i)=>{
+    const d=document.createElement('div');d.className='ck-nd'+(i===0?' active':'');
+    d.innerHTML=`<div class="ck-dot" style="background:${pd.color};box-shadow:0 0 6px ${pd.color}"></div><div class="ck-nl">${pd.label}</div>`;
+    d.addEventListener('click',()=>ckWarpTo(i));
+    nav.appendChild(d);
+  });
 
-  // Mouse tracking
+  // Launch button — pure warp
+  document.getElementById('ck-launch').addEventListener('click',()=>{
+    const warp=document.getElementById('ck-warp');
+    warp.style.opacity='1';setTimeout(()=>warp.style.opacity='0',220);
+    if(ckScene._starMat){ckScene._starMat.size=1.2;setTimeout(()=>{ckScene._starMat.size=.18;},500);}
+    if(window.soundLaunch) soundLaunch();
+  });
+
+  // Cursor global
   wrap.addEventListener('mousemove',e=>{
     const r=wrap.getBoundingClientRect();
-    ckMouseNormX=((e.clientX-r.left)/r.width-.5)*2;
-    ckMouseNormY=-((e.clientY-r.top)/r.height-.5)*2;
-    ckMouse.x=(e.clientX-r.left)/r.width*2-1;
-    ckMouse.y=-((e.clientY-r.top)/r.height)*2+1;
     document.getElementById('ck-cur').style.left=(e.clientX-r.left)+'px';
     document.getElementById('ck-cur').style.top=(e.clientY-r.top)+'px';
   });
 
-  wrap.addEventListener('click',e=>{
-    if(ckWarping)return;
-    ckRaycaster.setFromCamera(ckMouse,ckCamera);
-    const hits=ckRaycaster.intersectObjects(ckPlanetMeshes);
-    if(hits.length>0){
-      const pd=hits[0].object.userData.pd;
-      if(pd)ckWarpTo(pd.id);
-    }
-  });
-
+  // Start render
   initParticles();
   buildHands();
-
-  // Construire la salle de contrôle SVG
-  buildRoomPlanets();
-  buildPortholeStars();
-  startRadarAnim();
-  startRoomIdle();
-
-  // Les planètes Three.js continuent de tourner (pour les fonctions existantes)
   ckAnimating=true;
   ckAnimate();
+
+  // Intro
   showIntro();
 }
 
 function showIntro(){
   const intro=document.getElementById('ck-intro');
   if(!intro)return;
-  if(sessionStorage.getItem('ck-intro-shown')){intro.classList.add('hidden');return;}
+  // Only show once per session
+  if(sessionStorage.getItem('ck-intro-shown')){
+    intro.classList.add('hidden');return;
+  }
   sessionStorage.setItem('ck-intro-shown','1');
   const txt=document.getElementById('ck-intro-text');
   const sub=document.getElementById('ck-intro-sub');
@@ -3006,13 +2492,16 @@ function showIntro(){
   setTimeout(()=>{intro.classList.add('hidden');},2200);
 }
 
+let ckAnimating=false;
 function ckAnimate(){
   if(!ckAnimating)return;
   ckFrame++;
   if(ckPlanets&&ckPlanets.length) ckPlanets.forEach(({mesh,pd})=>{
     mesh.rotation.y+=pd.speed;
-    const _b=mesh.userData.base;if(!ckWarping&&_b)mesh.position.y=_b[1]+Math.sin(ckFrame*.007+pd.id*.8)*.1;
-    const timeBonus=typeof slideTimeSpent!=='undefined'?Math.min(.3,(slideTimeSpent[pd.id]||0)/60*.3):0;
+    const _b=mesh.userData.base;if(!ckWarping&&_b) mesh.position.y=_b[1]+Math.sin(ckFrame*.007+pd.id*.8)*.1;
+    // Pulse + time-based scale
+    const timeBonus = typeof slideTimeSpent!=='undefined'
+      ? Math.min(.3, (slideTimeSpent[pd.id]||0)/60*.3) : 0;
     if(pd.id===ckActive){
       const pulse=1+timeBonus+Math.sin(ckFrame*.06)*.06;
       mesh.scale.setScalar(pulse);
@@ -3020,6 +2509,8 @@ function ckAnimate(){
         mesh.material.emissive&&mesh.material.emissive.setHex(parseInt(pd.color.replace('#',''),16));
         mesh.material.emissiveIntensity=.15+timeBonus*.5+Math.sin(ckFrame*.06)*.05;
       }
+    } else if(ckWrap&&ckWrap._hovered===pd.id){
+      // Keep hover scale managed by raycaster block
     } else {
       mesh.scale.setScalar(1+timeBonus*.5);
       if(mesh.material&&mesh.material.emissiveIntensity!==undefined)
@@ -3027,59 +2518,54 @@ function ckAnimate(){
     }
   });
   if(!ckWarping){
-    if(ckPovMode){
-      const bobX=Math.sin(ckFrame*.006)*.06+Math.cos(ckFrame*.011)*.03;
-      const bobY=Math.sin(ckFrame*.008)*.04+Math.cos(ckFrame*.013)*.02;
-      const breathZ=Math.sin(ckFrame*.004)*.025;
-      ckCamera.position.x+=(ckMouseNormX*.18+bobX-ckCamera.position.x)*.03;
-      ckCamera.position.y+=(.6-ckMouseNormY*.12+bobY-ckCamera.position.y)*.03;
-      ckCamera.position.z+=(3.2+breathZ-ckCamera.position.z)*.03;
-      ckCamera.lookAt(ckMouseNormX*.3,.8-ckMouseNormY*.2,-3);
-      [0,1,2,3].forEach(i=>{const s=ckScene[`_screen${i}`];if(s&&s.material)s.material.emissiveIntensity=.55+Math.sin(ckFrame*.04+i*1.2)*.2;});
-      if(ckScene&&ckScene._dashLight)ckScene._dashLight.intensity=3+Math.sin(ckFrame*.025)*.6;
-      if(ckScene&&ckScene._portInner&&ckScene._portInner.material)
-        ckScene._portInner.material.emissiveIntensity=.2+Math.sin(ckFrame*.04)*.15;
-    } else {
-      const targetCX=ckMouseNormX*.4+Math.sin(ckFrame*.003)*.2;
-      const targetCY=-ckMouseNormY*.25+Math.cos(ckFrame*.0025)*.15;
-      ckCamera.position.x+=(targetCX-ckCamera.position.x)*.04;
-      ckCamera.position.y+=(targetCY-ckCamera.position.y)*.04;
-      ckCamera.lookAt(0,0,0);
-    }
+    // Camera bob + mouse influence
+    const targetCX=ckMouseNormX*.4+Math.sin(ckFrame*.003)*.2;
+    const targetCY=-ckMouseNormY*.25+Math.cos(ckFrame*.0025)*.15;
+    ckCamera.position.x+=(targetCX-ckCamera.position.x)*.04;
+    ckCamera.position.y+=(targetCY-ckCamera.position.y)*.04;
+    ckCamera.lookAt(0,0,0);
   }
   tickParticles();
   animHands(ckWarping);
   if(ckRenderer&&ckScene&&ckCamera)ckRenderer.render(ckScene,ckCamera);
-  if(ckAnimating)requestAnimationFrame(ckAnimate);
+  if(ckAnimating) requestAnimationFrame(ckAnimate);
 }
 
 function ckWarpTo(id){
   if(ckWarping||id===ckActive)return;
   ckWarping=true;
-  if(window.soundLaunch)soundLaunch();
-  const warp=document.getElementById('ck-warp');
-  const target=ckPlanets[id];if(!target){ckWarping=false;return;}
-  const tp=target.pd.pos;
-  const planetMesh=ckPlanetMeshes[id];
-  if(!window._ckVisited)window._ckVisited=new Set([0]);
-  window._ckVisited.add(id);
-  ckPlanets.forEach(({mesh,pd})=>{if(window._ckVisited.has(pd.id)&&mesh.material)mesh.material.roughness=.65;});
+  if(window.soundLaunch) soundLaunch();
 
-  // Vol standard (extérieur)
+  const warp=document.getElementById('ck-warp');
   warp.style.opacity='1';setTimeout(()=>warp.style.opacity='0',180);
+
+  // Star stretch + burst
   if(ckScene._starMat){ckScene._starMat.size=1.8;setTimeout(()=>{ckScene._starMat.size=.18;},700);}
   burstParticles(0,0,5);
   animHands(true);
+
+  const target=ckPlanets[id];if(!target)return;
+  const tp=target.pd.pos;
+  // Mark as visited
+  if(!window._ckVisited) window._ckVisited=new Set([0]);
+  window._ckVisited.add(id);
+  // Update planet material — visited glow
+  ckPlanets.forEach(({mesh,pd})=>{
+    if(window._ckVisited.has(pd.id)&&mesh.material){
+      mesh.material.roughness=.65; // slightly shinier
+    }
+  });
   const cs={x:ckCamera.position.x,y:ckCamera.position.y,z:ckCamera.position.z};
   const ce={x:tp[0]*.28,y:tp[1]*.2,z:tp[2]+12};
   const dur=1000,start=performance.now();
+
   function animCam(now){
     const prog=Math.min(1,(now-start)/dur);
     const e=prog<.5?4*prog*prog*prog:1-Math.pow(-2*prog+2,3)/2;
     ckCamera.position.x=cs.x+(ce.x-cs.x)*e;
     ckCamera.position.y=cs.y+(ce.y-cs.y)*e;
     ckCamera.position.z=cs.z+(ce.z-cs.z)*e;
-    ckCamera.lookAt(tp[0],tp[1],tp[2]);
+    if(ckCamera)ckCamera.lookAt(tp[0],tp[1],tp[2]);
     if(prog<1){requestAnimationFrame(animCam);}
     else{
       setTimeout(()=>{
@@ -3100,7 +2586,7 @@ function ckWarpTo(id){
   }
   requestAnimationFrame(animCam);
 
-  // Update nav
+  // Update nav + active
   document.querySelectorAll('.ck-nd').forEach((d,i)=>{
     d.classList.toggle('active',i===id);
     if(window._ckVisited&&window._ckVisited.has(i)){
@@ -3110,317 +2596,43 @@ function ckWarpTo(id){
   });
   ckActive=id;
 
-  // After travel
+  // After travel — close overlay + navigate slide
   const tDur=1150;
-  const flashEl=document.getElementById('ck-warp');
   setTimeout(()=>{
-    if(window.soundLand)soundLand();
+    if(window.soundLand) soundLand();
     haptic([80]);
     flashEl.style.opacity='1';
     setTimeout(()=>flashEl.style.opacity='0',220);
-    if(ckPlanetMeshes&&ckPlanetMeshes[id]&&ckPlanetMeshes[id].material){
-      ckPlanetMeshes[id].material.emissiveIntensity=.55;
-      if(ckPlanetMeshes[id].material.emissive)
-        ckPlanetMeshes[id].material.emissive.setHex(0x22d3ee);
-    }
     window.closeUniverse();
     setTimeout(()=>{
-      if(typeof go==='function')go(id);
-    },200);
+      // Force navigation — bypass busy/same-slide guards
+      busy=false;
+      enterCinematic();
+      if(id===cur){
+        const s=slides[cur];
+        s.style.opacity='';
+        s.classList.remove('out','out-left','out-right');
+        s.classList.add('active');
+      } else {
+        window.go(id);
+      }
+    },250);
   },tDur);
 }
 
-// Toggle POV
-
-// ════ SALLE DE CONTRÔLE — animation SVG ════
-function buildRoomPlanets(){
-  const container = document.getElementById('ck-porthole-planets');
-  if(!container) return;
-  container.innerHTML = '';
-
-  // Positions dans le hublot (cercle r=155, centré 500,200 dans SVG 1000x620)
-  // Le container est 310×355px positionné sur le hublot
-  // Centre container: 155, 155
-  const planetPositions = [
-    {id:0, x:155, y:118, r:30},  // Cover — central haut
-    {id:1, x:72,  y:108, r:18},  // Services — gauche haut
-    {id:2, x:230, y:122, r:16},  // Process — droite haut
-    {id:3, x:105, y:175, r:24},  // Formules — milieu gauche
-    {id:4, x:210, y:168, r:15},  // Équipe — milieu droite
-    {id:5, x:68,  y:215, r:14},  // Vidéo — bas gauche
-    {id:6, x:240, y:220, r:16},  // Icebreaker — bas droite
-    {id:7, x:155, y:240, r:18},  // Contact — bas centre
-  ];
-
-  planetPositions.forEach(pp => {
-    const pd = PDATA[pp.id];
-    const btn = document.createElement('button');
-    btn.className = 'ck-planet-btn' + (pp.id === ckActive ? ' active' : '');
-    btn.title = pd.label + ' — ' + pd.sub;
-    btn.style.cssText = `
-      left:${pp.x - pp.r}px;
-      top:${pp.y - pp.r}px;
-      width:${pp.r*2}px;
-      height:${pp.r*2}px;
-    `;
-
-    // Planète SVG inline
-    const svgNS = 'http://www.w3.org/2000/svg';
-    const svg = document.createElementNS(svgNS, 'svg');
-    svg.setAttribute('viewBox', `0 0 ${pp.r*2} ${pp.r*2}`);
-    svg.setAttribute('width', pp.r*2);
-    svg.setAttribute('height', pp.r*2);
-
-    // Gradient radial planète
-    const defs = document.createElementNS(svgNS, 'defs');
-    const grad = document.createElementNS(svgNS, 'radialGradient');
-    grad.setAttribute('id', `pg-${pp.id}`);
-    grad.setAttribute('cx', '35%'); grad.setAttribute('cy', '35%'); grad.setAttribute('r', '65%');
-    const s1 = document.createElementNS(svgNS, 'stop');
-    s1.setAttribute('offset', '0%'); s1.setAttribute('stop-color', pd.c1 || pd.color);
-    const s2 = document.createElementNS(svgNS, 'stop');
-    s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', pd.c2 || '#000');
-    grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad); svg.appendChild(defs);
-
-    // Corps planète
-    const circle = document.createElementNS(svgNS, 'circle');
-    circle.setAttribute('cx', pp.r); circle.setAttribute('cy', pp.r); circle.setAttribute('r', pp.r - 1);
-    circle.setAttribute('fill', `url(#pg-${pp.id})`);
-    svg.appendChild(circle);
-
-    // Reflet
-    const shine = document.createElementNS(svgNS, 'ellipse');
-    shine.setAttribute('cx', pp.r * .55); shine.setAttribute('cy', pp.r * .4);
-    shine.setAttribute('rx', pp.r * .28); shine.setAttribute('ry', pp.r * .18);
-    shine.setAttribute('fill', 'rgba(255,255,255,.15)');
-    svg.appendChild(shine);
-
-    // Anneau si Formules
-    if(pd.ring){
-      const ring = document.createElementNS(svgNS, 'ellipse');
-      ring.setAttribute('cx', pp.r); ring.setAttribute('cy', pp.r);
-      ring.setAttribute('rx', pp.r * 1.65); ring.setAttribute('ry', pp.r * .38);
-      ring.setAttribute('fill', 'none');
-      ring.setAttribute('stroke', pd.color);
-      ring.setAttribute('stroke-width', '2');
-      ring.setAttribute('opacity', '.5');
-      ring.setAttribute('transform', `rotate(-20,${pp.r},${pp.r})`);
-      svg.appendChild(ring);
-    }
-
-    btn.appendChild(svg);
-
-    // Label
-    const lbl = document.createElement('div');
-    lbl.className = 'ck-planet-label';
-    lbl.textContent = pd.label;
-    lbl.style.color = pd.color;
-    btn.appendChild(lbl);
-
-    // Click
-    btn.addEventListener('click', () => ckRoomWarpTo(pp.id));
-    btn.addEventListener('mouseenter', () => {
-      const destEl = document.getElementById('ck-hud-dest');
-      if(destEl){ destEl.textContent = `→ ${pd.label.toUpperCase()} — ${pd.sub}`; destEl.classList.add('active'); }
-    });
-    btn.addEventListener('mouseleave', () => {
-      const destEl = document.getElementById('ck-hud-dest');
-      if(destEl){ destEl.textContent = 'CHOISISSEZ VOTRE DESTINATION'; destEl.classList.remove('active'); }
-    });
-
-    container.appendChild(btn);
-  });
-}
-
-function ckRoomWarpTo(id){
-  if(id === ckActive) return;
-  ckActive = id;
-  const pd = PDATA[id];
-
-  // Mettre à jour visuel actif
-  document.querySelectorAll('.ck-planet-btn').forEach((btn,i) => {
-    btn.classList.toggle('active', i === id);
-  });
-
-  // HUD destination
-  const destEl = document.getElementById('ck-hud-dest');
-  if(destEl){ destEl.textContent = `→ ${pd.label.toUpperCase()}`; destEl.classList.add('active'); }
-
-  // Couleur accent pilote = couleur planète
-  const visor = document.getElementById('ck-pilot-visor');
-  if(visor) visor.setAttribute('fill', pd.color);
-
-  // Effet warp — étoiles s'étirent
-  const warp = document.getElementById('ck-warp');
-  if(warp){ warp.style.opacity='.8'; setTimeout(()=>warp.style.opacity='0',400); }
-
-  // Étoiles s'étirent dans le hublot
-  const stars = document.querySelectorAll('#ck-porthole-stars circle');
-  stars.forEach(s => {
-    s.style.transition = 'transform 0.4s ease-in, opacity 0.4s';
-    const dx = (Math.random() - 0.5) * 40;
-    const dy = (Math.random() - 0.5) * 30;
-    s.style.transform = `translate(${dx}px,${dy}px) scaleX(3)`;
-    s.style.opacity = '0';
-  });
-
-  setTimeout(()=>{
-    // Reset étoiles
-    stars.forEach(s => {
-      s.style.transition = 'none';
-      s.style.transform = '';
-      s.style.opacity = '';
-    });
-    if(destEl){ destEl.textContent='CHOISISSEZ VOTRE DESTINATION'; destEl.classList.remove('active'); }
-    window.closeUniverse();
-    setTimeout(()=>{ if(typeof go==='function') go(id); }, 200);
-  }, 450);
-}
-
-// Animation radar SVG
-function startRadarAnim(){
-  const scanLine = document.getElementById('radar-scan');
-  if(!scanLine) return;
-  let angle = 0;
-  setInterval(()=>{
-    angle = (angle + 2) % 360;
-    const rad = angle * Math.PI / 180;
-    const x2 = 500 + Math.cos(rad) * 38;
-    const y2 = 420 + Math.sin(rad) * 38;
-    scanLine.setAttribute('x2', x2);
-    scanLine.setAttribute('y2', y2);
-    // Pulse les points radar
-    ['radar-p1','radar-p2','radar-p3'].forEach((id,i)=>{
-      const el = document.getElementById(id);
-      if(el){
-        const diff = Math.abs(((angle - i*120) + 360) % 360);
-        el.setAttribute('opacity', diff < 15 ? '1' : '0.4');
-      }
-    });
-  }, 25);
-}
-
-
-// ════ ANIMATIONS IDLE — salle de contrôle ════
-function startRoomIdle(){
-  // Clignotement instruments colorés
-  const btns = document.querySelectorAll('#ck-ctrl-btns circle');
-  btns.forEach((btn, i) => {
-    setInterval(()=>{
-      const on = Math.random() > 0.3;
-      btn.setAttribute('opacity', on ? (.6 + Math.random()*.4).toFixed(2) : '.15');
-    }, 800 + i * 120);
-  });
-
-  // Barres du graphe gauche oscillent
-  const bars = document.querySelectorAll('#ck-room-svg rect[fill^="rgba(255,61,143"]');
-  // Compteur données en live — texte qui change
-  let dataFrame = 0;
-  setInterval(()=>{
-    dataFrame++;
-    // Faire varier les valeurs des jauges (simuler données live)
-    const statEl = document.getElementById('ck-hud-dest');
-    // Pulse léger sur le cercle de status
-    const statusCircle = document.querySelector('#ck-room-svg circle[stroke="#4ade80"]');
-    if(statusCircle){
-      const offset = 44 + Math.sin(dataFrame * 0.05) * 8;
-      statusCircle.setAttribute('stroke-dasharray', `${132-offset} 176`);
-      statusCircle.setAttribute('stroke-dashoffset', offset);
-    }
-  }, 50);
-
-  // Étoiles hublot scintillent
-  const stars = document.querySelectorAll('#ck-porthole-stars circle');
-  stars.forEach((s, i) => {
-    setInterval(()=>{
-      const base = parseFloat(s.getAttribute('opacity')) || 0.4;
-      const twinkle = (base * (0.4 + Math.random() * 0.6)).toFixed(2);
-      s.setAttribute('opacity', twinkle);
-    }, 600 + i * 80 + Math.random() * 400);
-  });
-
-  // Points radar pulsent légèrement
-  ['radar-p1','radar-p2','radar-p3'].forEach((id, i) => {
-    const el = document.getElementById(id);
-    if(!el) return;
-    setInterval(()=>{
-      const r = 1.5 + Math.random();
-      el.setAttribute('r', r.toFixed(1));
-    }, 1200 + i * 400);
-  });
-}
-
-
-// Étoiles dans le hublot SVG
-function buildPortholeStars(){
-  const g = document.getElementById('ck-porthole-stars');
-  if(!g) return;
-  g.innerHTML = '';
-  const cx=500, cy=200, r=155;
-  for(let i=0;i<80;i++){
-    const angle = Math.random()*Math.PI*2;
-    const dist = Math.random()*r*.9;
-    const x = cx + Math.cos(angle)*dist;
-    const y = cy + Math.sin(angle)*dist;
-    const star = document.createElementNS('http://www.w3.org/2000/svg','circle');
-    star.setAttribute('cx', x);
-    star.setAttribute('cy', y);
-    star.setAttribute('r', .3 + Math.random()*1.2);
-    star.setAttribute('fill', '#fff');
-    star.setAttribute('opacity', .1+Math.random()*.7);
-    g.appendChild(star);
-  }
-}
-
-
-window.toggleCkPov=function(){
-  ckPovMode=!ckPovMode;
-  document.body.classList.toggle('ck-pov',ckPovMode);
-  const lbl=document.getElementById('ck-pov-label');
-  if(lbl)lbl.textContent=ckPovMode?'EXT':'POV';
-  if(ckScene&&ckScene._interior){
-    ckScene._interior.visible=ckPovMode;
-    ckScene._interior.traverse(obj=>{if(obj.isLight)obj.visible=ckPovMode;});
-  }
-  if(ckPovMode){
-    ckCamera.position.set(0,.6,3.2);ckCamera.fov=72;ckCamera.updateProjectionMatrix();
-  } else {
-    ckCamera.position.set(0,0,18);ckCamera.fov=58;ckCamera.updateProjectionMatrix();ckCamera.lookAt(0,0,0);
-  }
-};
-
-
-// Stub no-op (narration supprimée)
-function stopVoix(){}
-
-;(function(){
-const overlay  = document.getElementById('uni-overlay');
-const flashEl  = document.getElementById('ck-warp');
-
 window.openUniverse=function(){
-  buildCockpit();
+  if(typeof buildRoomPlanets==='function') buildRoomPlanets();
+  if(typeof applyCockpitTheme==='function'&&prospectData) applyCockpitTheme(prospectData.prospect);
   // Sync to current slide
   if(typeof cur!=='undefined'){
     document.querySelectorAll('.ck-nd').forEach((d,i)=>d.classList.toggle('active',i===cur));
     ckActive=cur;
   }
-  // Appliquer le thème prospect si disponible
-  if(typeof applyCockpitTheme==='function'){
-    const pd = (typeof prospectData!=='undefined') ? prospectData : null;
-    applyCockpitTheme(pd ? pd.prospect : null);
-  }
-  // Mettre à jour destination
-  if(typeof updateCockpitDest==='function') updateCockpitDest(cur);
   // Reset busy state before opening
   busy=false;
   exitCinematic();
   overlay.classList.add('open');
-  // Relancer le render loop
-  if(!ckAnimating){ ckAnimating=true; ckAnimate(); }
-  // Réactiver le renderer si besoin
-  // (ckAnimate boucle lui-même via rAF)
-  // Sync planète active avec slide courante
-  ckActive = cur;
+  // Three.js désactivé — salle SVG active
   document.body.style.overflow='hidden';
   if(window.soundAmbiStart) soundAmbiStart();
 };
@@ -3428,8 +2640,6 @@ window.openUniverse=function(){
 window.closeUniverse=function(){
   overlay.classList.remove('open');
   ckAnimating=false;
-  // Stopper le renderer Three.js pour économiser le GPU
-  if(ckRenderer) ckRenderer.setAnimationLoop(null);
   document.body.style.overflow='';
   if(window.soundAmbiStop) soundAmbiStop();
   // Ensure current slide is visible after overlay closes
@@ -3439,7 +2649,7 @@ window.closeUniverse=function(){
       slides[cur].classList.add('active');
     }
     busy=false;
-    },100);
+  },100);
 };
 
 // ESC to close
@@ -3447,128 +2657,6 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&overlay.classList.contains('open')) window.closeUniverse();
 });
 overlay.addEventListener('click',e=>{if(e.target===overlay)window.closeUniverse();});
-
-})();
-
-
-// ════ MUSIQUE DE FOND AMBIANTE ════
-;(function(){
-  let _ambiCtx = null, _ambiNodes = null, _ambiRunning = false;
-
-  function _getCtx(){
-    if(!_ambiCtx) _ambiCtx = new(window.AudioContext||window.webkitAudioContext)();
-    return _ambiCtx;
-  }
-
-  function _buildAmbiance(){
-    const ctx = _getCtx();
-    if(ctx.state==='suspended') ctx.resume();
-    const t = ctx.currentTime;
-    const master = ctx.createGain();
-    master.gain.setValueAtTime(0, t);
-    master.gain.linearRampToValueAtTime(0.045, t + 3.5); // fondu entrée 3.5s
-    master.connect(ctx.destination);
-
-    // Drone fondamental 40Hz (sub-bass très doux)
-    const sub = ctx.createOscillator();
-    sub.type = 'sine';
-    sub.frequency.value = 40;
-    const subG = ctx.createGain(); subG.gain.value = 0.55;
-    sub.connect(subG); subG.connect(master);
-
-    // Harmonique 80Hz
-    const h1 = ctx.createOscillator();
-    h1.type = 'sine';
-    h1.frequency.value = 80.2;
-    const h1G = ctx.createGain(); h1G.gain.value = 0.25;
-    h1.connect(h1G); h1G.connect(master);
-
-    // Harmonique 120Hz légèrement désaccordé
-    const h2 = ctx.createOscillator();
-    h2.type = 'sine';
-    h2.frequency.value = 119.7;
-    const h2G = ctx.createGain(); h2G.gain.value = 0.12;
-    h2.connect(h2G); h2G.connect(master);
-
-    // Pad stellaire — bruit blanc filtré très haut
-    const bufSize = ctx.sampleRate * 2;
-    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for(let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * 0.015;
-    const noise = ctx.createBufferSource();
-    noise.buffer = buf;
-    noise.loop = true;
-    const noiseF = ctx.createBiquadFilter();
-    noiseF.type = 'bandpass';
-    noiseF.frequency.value = 3200;
-    noiseF.Q.value = 0.4;
-    const noiseG = ctx.createGain(); noiseG.gain.value = 0.3;
-    noise.connect(noiseF); noiseF.connect(noiseG); noiseG.connect(master);
-
-    // LFO pulsation lente (0.08 Hz = ~12s par cycle)
-    const lfo = ctx.createOscillator();
-    lfo.type = 'sine';
-    lfo.frequency.value = 0.08;
-    const lfoG = ctx.createGain(); lfoG.gain.value = 0.008;
-    lfo.connect(lfoG); lfoG.connect(master.gain);
-
-    sub.start(); h1.start(); h2.start(); noise.start(); lfo.start();
-    return { master, sub, h1, h2, noise, lfo };
-  }
-
-  
-window.toggleAmbi = function(){
-  const btn = document.getElementById('ck-vol-btn');
-  if(window._ambiMuted){
-    window._ambiMuted = false;
-    if(window.soundAmbiStart) soundAmbiStart();
-    if(btn){ btn.textContent='♪'; btn.style.color='rgba(255,255,255,.4)'; }
-  } else {
-    window._ambiMuted = true;
-    if(window.soundAmbiStop) soundAmbiStop();
-    if(btn){ btn.textContent='♪̶'; btn.style.color='rgba(255,80,80,.5)'; }
-  }
-};
-
-window.soundAmbiStart = function(){
-    if(_ambiRunning) return;
-    _ambiRunning = true;
-    try{
-      _ambiNodes = _buildAmbiance();
-    } catch(e){ console.warn('Ambient audio failed:', e); }
-  };
-
-  window.soundAmbiStop = function(){
-    if(!_ambiRunning || !_ambiNodes) return;
-    _ambiRunning = false;
-    try{
-      const ctx = _getCtx();
-      const t = ctx.currentTime;
-      _ambiNodes.master.gain.setValueAtTime(_ambiNodes.master.gain.value, t);
-      _ambiNodes.master.gain.linearRampToValueAtTime(0, t + 1.2);
-      setTimeout(()=>{
-        try{
-          _ambiNodes.sub.stop(); _ambiNodes.h1.stop(); _ambiNodes.h2.stop();
-          _ambiNodes.noise.stop(); _ambiNodes.lfo.stop();
-        } catch(e){}
-        _ambiNodes = null;
-      }, 1400);
-    } catch(e){}
-  };
-
-  // Variation de tonalité selon la slide (subtile)
-  window.soundAmbiSlide = function(slideIdx){
-    if(!_ambiRunning || !_ambiNodes) return;
-    try{
-      const ctx = _getCtx();
-      const t = ctx.currentTime;
-      // Légère montée de fréquence vers les slides importantes
-      const freqMap = [40, 42, 41, 44, 40, 38, 45, 43];
-      const f = freqMap[slideIdx] || 40;
-      _ambiNodes.sub.frequency.setTargetAtTime(f, t, 1.5);
-      _ambiNodes.h1.frequency.setTargetAtTime(f * 2 + 0.2, t, 1.5);
-    } catch(e){}
-  };
 
 })();
 
@@ -3633,22 +2721,6 @@ window.soundAmbiStart = function(){
 
   // Swoosh de transition de slide — cinématique
   window.soundSlide=function(dir){
-    if(typeof cinematicMode!=='undefined'&&cinematicMode){
-      // Son cinéma : boom sourd + reverb
-      try{
-        const ctx=new(window.AudioContext||window.webkitAudioContext)();
-        const buf=ctx.createBuffer(1,ctx.sampleRate*.4,ctx.sampleRate);
-        const d=buf.getChannelData(0);
-        for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3)*.18;
-        const src=ctx.createBufferSource();
-        src.buffer=buf;
-        const g=ctx.createGain();
-        g.gain.setValueAtTime(.5,ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.4);
-        src.connect(g);g.connect(ctx.destination);src.start();
-      }catch(e){}
-      return;
-    }
     try{
       const ctx=getCtx();
       const osc=ctx.createOscillator();osc.type='sine';
@@ -3672,39 +2744,17 @@ window.soundAmbiStart = function(){
     }catch(e){}
   };
 
-  // Son ambiant cockpit — drone grave pressurisé + vibrato
+  // Son ambiant univers — bourdonnement cosmique subtil
   window.soundAmbiStart=function(){
     try{
-      if(window._ambiNodes) return; // déjà actif
       const ctx=getCtx();
-      const t=ctx.currentTime;
-
-      // Drone grave principal
-      const osc1=ctx.createOscillator();osc1.type='sawtooth';osc1.frequency.value=28;
-      // Harmonique médium
-      const osc2=ctx.createOscillator();osc2.type='sine';osc2.frequency.value=56.1;
-      // Harmonique haute subtile
-      const osc3=ctx.createOscillator();osc3.type='sine';osc3.frequency.value=84.4;
-      // LFO vibrato lent
-      const lfo=ctx.createOscillator();lfo.type='sine';lfo.frequency.value=.18;
-      const lfoGain=ctx.createGain();lfoGain.gain.value=.8;
-      lfo.connect(lfoGain);lfoGain.connect(osc1.frequency);
-
-      // Filtre passe-bas pour chaleur
-      const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=320;filt.Q.value=2.2;
-
-      // Gain master avec fade-in progressif
-      const g=ctx.createGain();g.gain.setValueAtTime(0,t);
-      g.gain.linearRampToValueAtTime(.018,t+2.5);
-      // Micro-variations de volume pour impression de vie
-      const lfo2=ctx.createOscillator();lfo2.type='sine';lfo2.frequency.value=.07;
-      const lfo2g=ctx.createGain();lfo2g.gain.value=.004;
-      lfo2.connect(lfo2g);lfo2g.connect(g.gain);
-
-      osc1.connect(filt);osc2.connect(filt);osc3.connect(filt);
-      filt.connect(g);g.connect(ctx.destination);
-      osc1.start();osc2.start();osc3.start();lfo.start();lfo2.start();
-      window._ambiNodes={osc1,osc2,osc3,lfo,lfo2,g,filt};
+      const osc1=ctx.createOscillator();osc1.type='sine';osc1.frequency.value=42;
+      const osc2=ctx.createOscillator();osc2.type='sine';osc2.frequency.value=67.3;
+      const g=ctx.createGain();g.gain.setValueAtTime(0,ctx.currentTime);
+      g.gain.linearRampToValueAtTime(.035,ctx.currentTime+1.2);
+      osc1.connect(g);osc2.connect(g);g.connect(ctx.destination);
+      osc1.start();osc2.start();
+      window._ambiNodes={osc1,osc2,g};
     }catch(e){}
   };
 
@@ -3712,11 +2762,9 @@ window.soundAmbiStart = function(){
     try{
       if(!window._ambiNodes)return;
       const ctx=getCtx();
-      const n=window._ambiNodes;
-      n.g.gain.linearRampToValueAtTime(0,ctx.currentTime+1.2);
-      setTimeout(()=>{
-        try{n.osc1.stop();n.osc2.stop();n.osc3.stop();n.lfo.stop();n.lfo2.stop();}catch(e){}
-      },1300);
+      const {osc1,osc2,g}=window._ambiNodes;
+      g.gain.linearRampToValueAtTime(0,ctx.currentTime+.8);
+      setTimeout(()=>{try{osc1.stop();osc2.stop();}catch(e){}},900);
       window._ambiNodes=null;
     }catch(e){}
   };
@@ -3873,8 +2921,708 @@ function animHands(warpActive){
 
 
 // ════ SÉQUENCE NASA ════
+window.startNASA=function(){
+  // Skip si déjà vue
+  if(sessionStorage.getItem('nasa-done')){
+    return;
+  }
+  const s=document.getElementById('nasa-seq');
+  if(s){s.style.display='flex';}
 
-// ════ SCÈNE CINÉMATIQUE 15s — PIXEL ART ════
+  const seq=document.getElementById('nasa-seq');
+  const num=document.getElementById('nasa-countdown');
+  const lbl=document.getElementById('nasa-label');
+  const fill=document.getElementById('nasa-bar-fill');
+  const pc=document.getElementById('nasa-particles');
+  if(!seq||!num) return;
+
+  // Starfield NASA
+  const W=window.innerWidth,H=window.innerHeight;
+  pc.width=W;pc.height=H;
+  const ctx=pc.getContext('2d');
+  const stars=Array.from({length:300},()=>({
+    x:Math.random()*W,y:Math.random()*H,
+    r:.1+Math.random()*1.4,a:Math.random()*.9,
+    vx:0,vy:0,warp:false
+  }));
+  let warpMode=false,nasaFrame=0;
+  function drawNasaBg(){
+    ctx.clearRect(0,0,W,H);
+    nasaFrame++;
+    stars.forEach(s=>{
+      if(warpMode){
+        // Étoiles s'étirent vers le centre
+        const dx=s.x-W/2,dy=s.y-H/2;
+        const len=Math.sqrt(dx*dx+dy*dy)||1;
+        const stretch=18+nasaFrame*.4;
+        ctx.globalAlpha=s.a*.9;
+        ctx.strokeStyle='rgba(200,220,255,'+s.a+')';
+        ctx.lineWidth=s.r*1.5;
+        ctx.beginPath();
+        ctx.moveTo(s.x,s.y);
+        ctx.lineTo(s.x+dx/len*stretch,s.y+dy/len*stretch);
+        ctx.stroke();
+        // Accélérer vers l'extérieur
+        s.x+=dx/len*1.8;s.y+=dy/len*1.8;
+        if(s.x<0||s.x>W||s.y<0||s.y>H){
+          s.x=W/2+(Math.random()-.5)*20;
+          s.y=H/2+(Math.random()-.5)*20;
+        }
+      } else {
+        ctx.globalAlpha=s.a*(.4+.6*Math.sin(nasaFrame*.02+s.r*3));
+        ctx.fillStyle='#fff';
+        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+      }
+    });
+    ctx.globalAlpha=1;ctx.lineWidth=1;
+    if(!seq.classList.contains('done')) requestAnimationFrame(drawNasaBg);
+  }
+  drawNasaBg();
+
+  // Sons compte à rebours
+  function beep(freq,dur,vol){
+    try{
+      const ctx2=new(window.AudioContext||window.webkitAudioContext)();
+      const o=ctx2.createOscillator();
+      const g=ctx2.createGain();
+      o.type='sine';o.frequency.value=freq;
+      g.gain.setValueAtTime(vol||.15,ctx2.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,ctx2.currentTime+dur);
+      o.connect(g);g.connect(ctx2.destination);
+      o.start();o.stop(ctx2.currentTime+dur);
+    }catch(e){}
+  }
+
+  function flashNum(){
+    num.classList.add('flash');
+    setTimeout(()=>num.classList.remove('flash'),150);
+  }
+
+  // Séquence timeline
+  const pName=window._getPilotName?window._getPilotName():'Pilote';
+  const labels=['Initialisation système','Vérification propulseurs',`${pName}, mise en orbite…`,'Décollage'];
+  let step=0;
+
+  // Progress bar
+  let prog=0;
+  const barInt=setInterval(()=>{
+    prog=Math.min(100,prog+.8);
+    fill.style.width=prog+'%';
+  },30);
+
+  // Compte à rebours
+  function tick(){
+    if(step>=4) return;
+    lbl.textContent=labels[step]||'';
+    if(step<3){
+      num.textContent=3-step;
+      flashNum();
+      beep(step===0?440:step===1?550:880,.18,.12);
+      haptic([20]);
+    } else {
+      num.textContent='🚀';
+      num.style.fontSize='clamp(60px,10vw,100px)';
+      beep(220,.08,.2);setTimeout(()=>beep(440,.06,.15),80);setTimeout(()=>beep(880,.04,.1),160);
+    }
+    step++;
+    if(step<4) setTimeout(tick,1100);
+    else setTimeout(launch,900);
+  }
+  setTimeout(tick,400);
+
+  function launch(){
+    // Warp speed !
+    warpMode=true;
+    clearInterval(barInt);
+    fill.style.width='100%';
+    fill.style.transition='none';
+    // Son de lancement
+    try{
+      const ctx3=new(window.AudioContext||window.webkitAudioContext)();
+      const buf=ctx3.createBuffer(1,ctx3.sampleRate*.5,ctx3.sampleRate);
+      const d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(1-i/d.length)*.8;
+      const src=ctx3.createBufferSource();src.buffer=buf;
+      const f=ctx3.createBiquadFilter();f.type='bandpass';f.frequency.value=120;
+      f.frequency.exponentialRampToValueAtTime(1200,ctx3.currentTime+.4);
+      const g=ctx3.createGain();g.gain.setValueAtTime(.4,ctx3.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,ctx3.currentTime+.5);
+      src.connect(f);f.connect(g);g.connect(ctx3.destination);src.start();
+    }catch(e){}
+
+    setTimeout(()=>{
+      seq.classList.add('done');
+      setTimeout(()=>{seq.style.display='none';},700);
+      sessionStorage.setItem('nasa-done','1');
+      if(typeof startCinematicScene==='function'){
+        startCinematicScene(()=>{
+          if(typeof enterCinematic==='function') enterCinematic();
+          if(window.soundAmbiStart) soundAmbiStart();
+          if(typeof applyCockpitTheme==='function'&&window._prospectData) applyCockpitTheme(window._prospectData.prospect);
+          if(typeof buildRoomPlanets==='function') buildRoomPlanets();
+        });
+      } else {
+        if(typeof enterCinematic==='function') enterCinematic();
+      }
+    },800);
+  }
+};
+
+
+// ════ MODE CINÉMATIQUE ════
+let cinematicMode=false;
+
+function enterCinematic(){
+  cinematicMode=true;
+  document.body.classList.add('cinematic');
+}
+
+function exitCinematic(){
+  cinematicMode=false;
+  document.body.classList.remove('cinematic');
+}
+
+// Swipe touch support
+let touchStartX=0,touchStartY=0;
+document.addEventListener('touchstart',e=>{
+  touchStartX=e.changedTouches[0].screenX;
+  touchStartY=e.changedTouches[0].screenY;
+},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].screenX-touchStartX;
+  const dy=e.changedTouches[0].screenY-touchStartY;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50){
+    if(dx<0) window.next(); else window.prev();
+  }
+},{passive:true});
+
+
+// ════ PRÉNOM + PERSONNALISATION ════
+;(function(){
+  let pilotName = localStorage.getItem('dv-pilot-name')||sessionStorage.getItem('dv-pilot-name')||'';
+
+  function applyName(name){
+    if(!name) return;
+    pilotName = name;
+    // Cover h1
+    const h1 = document.querySelector('#s1 h1');
+    if(h1) h1.innerHTML = `L'agenda de <span class="g">${name}.</span><br><span class="g">Saturé de RDV.</span>`;
+    // S8 CTA
+    const s8cta = document.getElementById('s8-cta-line');
+    if(s8cta) s8cta.textContent = `${name}, prêt·e à décoller ?`;
+    const s8title = document.getElementById('s8-title');
+    if(s8title) s8title.innerHTML = `Comment on démarre<br><span class="g">ensemble, ${name}.</span>`;
+    // Nav title
+    const title = document.querySelector('title');
+    if(title) title.textContent = `Devoleads — Mission ${name}`;
+    // Cockpit intro text
+    const intro = document.getElementById('ck-intro-text');
+    if(intro) intro.textContent = `${name}, bienvenue à bord`;
+    // NASA label final
+    window._pilotName = name;
+    // Cockpit title
+    const ckTitle = document.getElementById('uni-title');
+    if(ckTitle) ckTitle.textContent = `Cockpit · Mission ${name}`;
+  }
+
+  window.submitName = function(){
+    const inp = document.getElementById('name-input');
+    const name = (inp ? inp.value.trim() : '') || 'Pilote';
+    if(!name || name.length < 1) return;
+    localStorage.setItem('dv-pilot-name', name);
+    sessionStorage.setItem('dv-pilot-name', name);
+    applyName(name);
+    haptic([20, 10, 30]);
+    // Capturer URL prospect si fournie
+    const urlInp = document.getElementById('url-input');
+    prospectUrl = (urlInp ? urlInp.value.trim() : '');
+    if(prospectUrl && prospectUrl.startsWith('http')){
+      analyzeProspect(prospectUrl).then(data=>{
+        if(data) injectProspectSequence(data);
+      }).catch(()=>{});
+    }
+    const screen = document.getElementById('name-screen');
+    if(screen){
+      screen.classList.add('hidden');
+      // Lancer NASA après le fade-out du name-screen
+      setTimeout(()=>{
+        screen.style.display='none';
+        if(window.startNASA) startNASA();
+      }, 500);
+    } else {
+      if(window.startNASA) startNASA();
+    }
+  };
+
+  // Enter key
+  document.addEventListener('keydown', e=>{
+    const inp = document.getElementById('name-input');
+    if(inp && document.activeElement === inp && e.key === 'Enter'){
+      e.preventDefault(); window.submitName();
+    }
+  });
+
+  // Input ready state
+  const inp2 = document.getElementById('name-input');
+  if(inp2){
+    inp2.addEventListener('input', ()=>{
+      const btn = document.getElementById('name-submit');
+      if(btn) btn.classList.toggle('ready', inp2.value.trim().length > 0);
+    });
+    // Focus auto
+    setTimeout(()=>{ if(inp2) inp2.focus(); }, 400);
+  }
+
+  // Si nom déjà connu en session → skip name-screen + lancer NASA si pas vue
+  if(pilotName){
+    const screen = document.getElementById('name-screen');
+    if(screen) screen.style.display = 'none';
+    applyName(pilotName);
+    // Lancer NASA si pas encore vue
+    setTimeout(()=>{ if(window.startNASA) startNASA(); }, 100);
+  } else {
+    // Focus sur l'input après un court délai
+    setTimeout(()=>{
+      const inp = document.getElementById('name-input');
+      if(inp) inp.focus();
+    }, 300);
+  }
+
+  // Patch NASA labels avec le prénom
+  const origTick = window._nasaTick;
+  window._getPilotName = ()=> pilotName || 'Pilote';
+})();
+
+// ════ HAPTIQUE ════
+function haptic(pattern){
+  try{
+    if(navigator.vibrate) navigator.vibrate(pattern || [20]);
+  }catch(e){}
+}
+
+// ════ HUD SCAN ════
+;(function(){
+  let hudTimer = null, hudActive = false;
+  const scan = document.getElementById('hud-scan');
+  const r1 = document.getElementById('hud-r1');
+  const r2 = document.getElementById('hud-r2');
+  const dataEl = document.getElementById('hud-data');
+  if(!scan) return;
+
+  // Données fictives par planète
+  const HUD_DATA = [
+    ['COORDONNÉES 04.7 · -12.3', 'CHARGE RDV +800%', 'ZONE PRIORITAIRE'],
+    ['COORDONNÉES -18.4 · 06.1', 'PIPELINE ACTIF', 'CONVERSION ×8.3'],
+    ['COORDONNÉES 22.1 · -08.7', 'VITESSE 14J', 'EFFICACITÉ MAX'],
+    ['COORDONNÉES -05.9 · 19.2', 'BUDGET OPTIMISÉ', 'ROI GARANTI'],
+    ['COORDONNÉES 14.3 · 11.8', 'FONDATEURS DIRECTS', 'ZÉRO JUNIOR'],
+    ['COORDONNÉES -21.6 · -04.5', 'VIDÉO B2B +30%', 'HUMANISATION'],
+    ['COORDONNÉES 08.7 · -17.3', 'IA ACTIVE', 'PERSONNALISATION ×8'],
+    ['COORDONNÉES -11.2 · 14.6', 'DÉMARRAGE 14J', 'SLOT DISPONIBLE'],
+  ];
+
+  window.showHUD = function(planetId, screenX, screenY, size){
+    if(!scan) return;
+    const s = size * 1.8;
+    scan.style.left = screenX + 'px';
+    scan.style.top = screenY + 'px';
+    // Size rings
+    if(r1) {
+      r1.style.width = s+'px'; r1.style.height = s+'px';
+      r1.style.marginLeft = (-s/2)+'px'; r1.style.marginTop = (-s/2)+'px';
+    }
+    if(r2){
+      const s2 = s*1.3;
+      r2.style.width = s2+'px'; r2.style.height = s2+'px';
+      r2.style.marginLeft = (-s2/2)+'px'; r2.style.marginTop = (-s2/2)+'px';
+    }
+    // Data lines avec stagger
+    const lines = HUD_DATA[planetId] || HUD_DATA[0];
+    if(dataEl){
+      dataEl.innerHTML = '';
+      lines.forEach((txt, i)=>{
+        const d = document.createElement('div');
+        d.className = 'hud-line';
+        d.style.animationDelay = (i*120)+'ms';
+        d.textContent = txt;
+        dataEl.appendChild(d);
+      });
+    }
+    scan.classList.add('active');
+    hudActive = true;
+    // Son scan
+    try{
+      const ac = new(window.AudioContext||window.webkitAudioContext)();
+      const o = ac.createOscillator(); o.type='sine';
+      o.frequency.setValueAtTime(1200, ac.currentTime);
+      o.frequency.exponentialRampToValueAtTime(400, ac.currentTime+.3);
+      const g = ac.createGain(); g.gain.setValueAtTime(.06, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001, ac.currentTime+.35);
+      o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+.35);
+    }catch(e){}
+    haptic([15, 5, 15]);
+  };
+
+  window.hideHUD = function(){
+    if(scan) scan.classList.remove('active');
+    hudActive = false;
+  };
+})();
+
+
+// ════ UNIVERS RÉACTIF — planète grossit avec le temps passé ════
+let slideTimeStart = Date.now();
+let slideTimeSpent = new Array(8).fill(0);
+
+function trackSlideTime(){
+  const now = Date.now();
+  const spent = (now - slideTimeStart) / 1000;
+  if(cur >= 0 && cur < 8) slideTimeSpent[cur] += spent;
+  slideTimeStart = now;
+}
+
+// Patch go() pour tracker le temps
+const _origGo = window.go;
+window.go = function(idx){
+  trackSlideTime();
+  return _origGo(idx);
+};
+
+
+// ════ PERSONNALISATION PROSPECT ════
+let prospectData = null;
+let prospectUrl = '';
+
+window.toggleUrlField = function(){
+  const wrap = document.getElementById('url-optional');
+  if(!wrap) return;
+  wrap.classList.toggle('visible');
+  if(wrap.classList.contains('visible')){
+    setTimeout(()=>{
+      const inp = document.getElementById('url-input');
+      if(inp) inp.focus();
+    }, 300);
+    document.getElementById('url-toggle').style.color = 'rgba(124,58,237,.7)';
+  } else {
+    document.getElementById('url-toggle').style.color = '';
+  }
+};
+
+// Analyse prospect via Claude API pendant la NASA
+async function analyzeProspect(url){
+  if(!url || url.length < 5) return null;
+  const status = document.getElementById('url-status');
+
+  const PROSPECT_TYPES = [
+    {secteur:'SaaS RH', produit:'logiciel de gestion RH', taille:'15-40 salariés', ville:'Lyon', prenom:'Marc', nom:'Dupont', societe:'Flowify', actu:'vient de lever 800K€ en seed'},
+    {secteur:'SaaS Marketing', produit:'plateforme d\'automation marketing', taille:'20-60 salariés', ville:'Paris', prenom:'Julie', nom:'Martin', societe:'Growthly', actu:'vient de lancer une nouvelle offre entreprise'},
+    {secteur:'SaaS Finance', produit:'logiciel de comptabilité B2B', taille:'10-30 salariés', ville:'Bordeaux', prenom:'Thomas', nom:'Leroy', societe:'Finopt', actu:'vient de doubler son équipe commerciale'},
+    {secteur:'Agence conseil', produit:'services de transformation digitale', taille:'30-80 salariés', ville:'Nantes', prenom:'Sophie', nom:'Bernard', societe:'DataForge', actu:'vient de signer un partenariat avec Microsoft'},
+    {secteur:'SaaS Logistique', produit:'solution de gestion de flotte', taille:'25-50 salariés', ville:'Lille', prenom:'Antoine', nom:'Moreau', societe:'FleetPro', actu:'vient d\'ouvrir son bureau en Belgique'},
+  ];
+
+  try {
+    // Choisir un profil au hasard (mais cohérent avec l'URL si possible)
+    const idx = Math.floor(Math.random() * PROSPECT_TYPES.length);
+    const profile = PROSPECT_TYPES[idx];
+
+    const prompt = `Tu es un expert en prospection B2B pour Devoleads, agence de génération de RDV qualifiés.
+Génère une séquence de prospection complète et hyper-personnalisée pour ce profil :
+
+PROSPECT: ${profile.prenom} ${profile.nom}, CEO de ${profile.societe} (${profile.secteur}, ${profile.taille}, ${profile.ville})
+ACTU: ${profile.societe} ${profile.actu}
+SITE: ${url}
+
+Génère UNIQUEMENT un JSON valide (sans markdown, sans backticks) avec cette structure exacte:
+{
+  "prospect": {
+    "prenom": "${profile.prenom}",
+    "societe": "${profile.societe}",
+    "secteur": "${profile.secteur}",
+    "actu": "${profile.actu}",
+    "ville": "${profile.ville}"
+  },
+  "email1": {
+    "objet": "sujet court accrocheur lié à l'actu",
+    "salutation": "Bonjour ${profile.prenom},",
+    "icebreaker": "1 phrase courte qui fait référence à l'actu récente de la boite",
+    "pitch": "2 phrases max qui relient leur situation à ce que Devoleads résout (pipeline de RDV qualifiés)",
+    "social_proof": "référence courte à un client similaire (invente un nom fictif crédible)",
+    "cta": "1 question courte et douce pour obtenir un RDV"
+  },
+  "relance_j3": "Message de relance en 2 phrases maximum, ton plus direct",
+  "linkedin_touch": "Message LinkedIn en 1 phrase, très court"
+}`;
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{role: 'user', content: prompt}]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.[0]?.text || '';
+    // Nettoyer et parser
+    const cleaned = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(cleaned);
+    return parsed;
+  } catch(e) {
+    console.error('Prospect analysis error:', e);
+    return null;
+  }
+}
+
+// Injecter la séquence dans la slide Icebreaker
+function injectProspectSequence(data){
+  if(!data) return;
+  prospectData = data;
+  const p = data.prospect;
+  const e = data.email1;
+
+  // Mise à jour de l'email dans la slide S7
+  const subj = document.getElementById('ice2-subj');
+  const hi = document.getElementById('ice2-hi');
+  const brk = document.getElementById('ice2-brk');
+  const pitch = document.getElementById('ice2-pitch');
+  const social = document.getElementById('ice2-social');
+  const cta = document.getElementById('ice2-cta');
+
+  if(subj) subj.textContent = e.objet;
+  if(hi) hi.textContent = e.salutation;
+  if(brk){
+    brk.textContent = e.icebreaker;
+    brk.classList.add('lvl2'); // highlight
+  }
+  if(pitch) pitch.textContent = e.pitch;
+  if(social) social.textContent = e.social_proof;
+  if(cta) cta.textContent = e.cta;
+
+  // Injecter le bloc séquence complète sous l'email
+  injectSequenceBlock(data);
+
+  // Mettre à jour le label du slide
+  const eyebrow = document.querySelector('#s7 .eyebrow');
+  if(eyebrow) eyebrow.innerHTML = `<span class="blink"></span>Séquence pour ${p.prenom} · ${p.societe}`;
+  if(typeof applyCockpitTheme==='function') applyCockpitTheme(p);
+  if(window.updateCinematicColors) window.updateCinematicColors(p.couleur_hex,p.societe);
+  window._prospectData=data;
+  if(typeof buildRoomPlanets==='function') buildRoomPlanets();
+}
+
+function injectSequenceBlock(data){
+  const p = data.prospect;
+  const existing = document.getElementById('prospect-seq-block');
+  if(existing) existing.remove();
+
+  // Trouver la slide S7 et y ajouter le bloc
+  const s7 = document.getElementById('s7');
+  if(!s7) return;
+
+  const block = document.createElement('div');
+  block.id = 'prospect-seq-block';
+  block.style.cssText = `
+    position:absolute;bottom:clamp(60px,8vh,80px);right:clamp(20px,3vw,40px);
+    width:clamp(220px,28vw,320px);z-index:2;
+    background:rgba(6,7,15,.8);backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.08);border-radius:14px;
+    padding:14px;display:flex;flex-direction:column;gap:10px;
+  `;
+  block.innerHTML = `
+    <div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:2px">
+      Séquence complète · ${p.prenom} ${p.nom}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:8px;padding:8px 10px">
+        <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple-l);margin-bottom:4px">Email J+0</div>
+        <div style="font-size:10px;color:var(--muted2);line-height:1.5">${data.email1.icebreaker}</div>
+      </div>
+      <div style="background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.15);border-radius:8px;padding:8px 10px">
+        <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:4px">Relance J+3</div>
+        <div style="font-size:10px;color:var(--muted2);line-height:1.5">${data.relance_j3}</div>
+      </div>
+      <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.15);border-radius:8px;padding:8px 10px">
+        <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:4px">LinkedIn Touch</div>
+        <div style="font-size:10px;color:var(--muted2);line-height:1.5">${data.linkedin_touch}</div>
+      </div>
+    </div>
+    <button onclick="copyProspectEmail()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px;font-family:var(--display);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(124,58,237,.15)';this.style.borderColor='rgba(124,58,237,.3)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.1)'">
+      📋 Copier l'email
+    </button>
+  `;
+  s7.appendChild(block);
+}
+
+window.copyProspectEmail = function(){
+  if(!prospectData) return;
+  const e = prospectData.email1;
+  const p = prospectData.prospect;
+  const text = `Objet : ${e.objet}\n\n${e.salutation}\n\n${e.icebreaker}\n\n${e.pitch}\n\n${e.social_proof}\n\n${e.cta}\n\nCordialement,\nStanislas Fortune · Devoleads`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector('#prospect-seq-block button');
+    if(btn){ btn.textContent = '✓ Copié !'; setTimeout(()=>btn.textContent='📋 Copier l\'email',2000); }
+  }).catch(()=>{});
+};
+
+window.prev=function(){go(cur-1)}
+window.next=function(){go(cur+1)}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown'||e.key==='PageDown')next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp')prev();
+  if(e.key==='Home')go(0);
+  if(e.key==='End')go(TOTAL-1);
+});
+
+// ═══ THÈME COCKPIT ═══
+function applyCockpitTheme(prospect){
+  const hex = (prospect && prospect.couleur_hex) ? prospect.couleur_hex : '#ff3d8f';
+  const rgb = hexToRgb(hex);
+  const overlay = document.getElementById('uni-overlay');
+  if(overlay){
+    overlay.style.setProperty('--ck-accent', rgb);
+    overlay.style.setProperty('--ck-accent-hex', hex);
+  }
+  // Planète Icebreaker (id 6) → couleur prospect
+  if(typeof ckPlanetMeshes!=='undefined' && ckPlanetMeshes[6] && ckPlanetMeshes[6].material){
+    ckPlanetMeshes[6].material.emissive.set(hex);
+  }
+  // Watermark hublot
+  const pnEl = document.getElementById('ck-porthole-name');
+  if(pnEl && prospect && prospect.societe){
+    pnEl.textContent = prospect.societe.toUpperCase();
+    pnEl.classList.add('visible');
+  }
+  // Pilote visor dans la salle
+  const visor = document.getElementById('ck-pilot-visor');
+  if(visor) visor.setAttribute('fill', hex);
+  // Panneaux cockpit
+  if(prospect){
+    const fields = {
+      'ck-p-name':    (prospect.prenom||'') + ' ' + (prospect.nom||''),
+      'ck-p-societe': prospect.societe || '',
+      'ck-p-secteur': prospect.secteur || '',
+      'ck-p-actu':    prospect.actu    || '',
+    };
+    Object.entries(fields).forEach(([id, val])=>{
+      const el = document.getElementById(id);
+      if(el && val) el.textContent = val;
+    });
+  }
+}
+
+function updateCockpitDest(slideIdx){
+  if(typeof PDATA==='undefined') return;
+  const pd = PDATA[slideIdx];
+  if(!pd) return;
+  const destEl = document.getElementById('ck-hud-dest');
+  if(destEl) destEl.textContent = pd.label.toUpperCase() + ' — ' + pd.sub;
+}
+
+
+
+// ═══ SALLE DE CONTRÔLE ═══
+function buildRoomPlanets(){
+  const container = document.getElementById('ck-porthole-planets');
+  if(!container) return;
+  container.innerHTML = '';
+
+  // Positions dans le hublot (cercle r=155, centré 500,200 dans SVG 1000x620)
+  // Le container est 310×355px positionné sur le hublot
+  // Centre container: 155, 155
+  const planetPositions = [
+    {id:0, x:155, y:118, r:30},  // Cover — central haut
+    {id:1, x:72,  y:108, r:18},  // Services — gauche haut
+    {id:2, x:230, y:122, r:16},  // Process — droite haut
+    {id:3, x:105, y:175, r:24},  // Formules — milieu gauche
+    {id:4, x:210, y:168, r:15},  // Équipe — milieu droite
+    {id:5, x:68,  y:215, r:14},  // Vidéo — bas gauche
+    {id:6, x:240, y:220, r:16},  // Icebreaker — bas droite
+    {id:7, x:155, y:240, r:18},  // Contact — bas centre
+  ];
+
+  planetPositions.forEach(pp => {
+    const pd = PDATA[pp.id];
+    const btn = document.createElement('button');
+    btn.className = 'ck-planet-btn' + (pp.id === ckActive ? ' active' : '');
+    btn.title = pd.label + ' — ' + pd.sub;
+    btn.style.cssText = `
+      left:${pp.x - pp.r}px;
+      top:${pp.y - pp.r}px;
+      width:${pp.r*2}px;
+      height:${pp.r*2}px;
+    `;
+
+    // Planète SVG inline
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${pp.r*2} ${pp.r*2}`);
+    svg.setAttribute('width', pp.r*2);
+    svg.setAttribute('height', pp.r*2);
+
+    // Gradient radial planète
+    const defs = document.createElementNS(svgNS, 'defs');
+    const grad = document.createElementNS(svgNS, 'radialGradient');
+    grad.setAttribute('id', `pg-${pp.id}`);
+    grad.setAttribute('cx', '35%'); grad.setAttribute('cy', '35%'); grad.setAttribute('r', '65%');
+    const s1 = document.createElementNS(svgNS, 'stop');
+    s1.setAttribute('offset', '0%'); s1.setAttribute('stop-color', pd.c1 || pd.color);
+    const s2 = document.createElementNS(svgNS, 'stop');
+    s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', pd.c2 || '#000');
+    grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad); svg.appendChild(defs);
+
+    // Corps planète
+    const circle = document.createElementNS(svgNS, 'circle');
+    circle.setAttribute('cx', pp.r); circle.setAttribute('cy', pp.r); circle.setAttribute('r', pp.r - 1);
+    circle.setAttribute('fill', `url(#pg-${pp.id})`);
+    svg.appendChild(circle);
+
+    // Reflet
+    const shine = document.createElementNS(svgNS, 'ellipse');
+    shine.setAttribute('cx', pp.r * .55); shine.setAttribute('cy', pp.r * .4);
+    shine.setAttribute('rx', pp.r * .28); shine.setAttribute('ry', pp.r * .18);
+    shine.setAttribute('fill', 'rgba(255,255,255,.15)');
+    svg.appendChild(shine);
+
+    // Anneau si Formules
+    if(pd.ring){
+      const ring = document.createElementNS(svgNS, 'ellipse');
+      ring.setAttribute('cx', pp.r); ring.setAttribute('cy', pp.r);
+      ring.setAttribute('rx', pp.r * 1.65); ring.setAttribute('ry', pp.r * .38);
+      ring.setAttribute('fill', 'none');
+      ring.setAttribute('stroke', pd.color);
+      ring.setAttribute('stroke-width', '2');
+      ring.setAttribute('opacity', '.5');
+      ring.setAttribute('transform', `rotate(-20,${pp.r},${pp.r})`);
+      svg.appendChild(ring);
+    }
+
+    btn.appendChild(svg);
+
+    // Label
+    const lbl = document.createElement('div');
+    lbl.className = 'ck-planet-label';
+    lbl.textContent = pd.label;
+    lbl.style.color = pd.color;
+    btn.appendChild(lbl);
+
+    // Click
+    btn.addEventListener('click', () => ckRoomWarpTo(pp.id));
+    btn.addEventListener('mouseenter', () => {
+      const destEl = document.getElementById('ck-hud-dest');
+      if(destEl){ destEl.textContent = `→ ${pd.label.toUpperCase()} — ${pd.sub}`; destEl.classList.add('active'); }
+    });
+    btn.addEventListener('mouseleave', () => {
+      const destEl = document.getElementById('ck-hud-dest');
+      if(destEl){ destEl.textContent = 'CHOISISSEZ VOTRE DESTINATION'; destEl.classList.remove('active'); }
+    });
+
+    container.appendChild(btn);
+  });
+}
+
+// ═══ CINÉMATIQUE ASTRONAUTE ═══
 function startCinematicScene(onComplete){
   const scene = document.getElementById('cine-scene');
   if(!scene){ if(onComplete) onComplete(); return; }
@@ -4265,707 +4013,171 @@ function startCinematicScene(onComplete){
   },15500);
 }
 
-window.startNASA=function(){
-  // Skip si déjà vue
-  if(sessionStorage.getItem('nasa-done')){
-    return;
-  }
-  const s=document.getElementById('nasa-seq');
-  if(s){s.style.display='flex';}
 
-  const seq=document.getElementById('nasa-seq');
-  const num=document.getElementById('nasa-countdown');
-  const lbl=document.getElementById('nasa-label');
-  const fill=document.getElementById('nasa-bar-fill');
-  const pc=document.getElementById('nasa-particles');
-  if(!seq||!num) return;
-
-  // Starfield NASA
-  const W=window.innerWidth,H=window.innerHeight;
-  pc.width=W;pc.height=H;
-  const ctx=pc.getContext('2d');
-  const stars=Array.from({length:300},()=>({
-    x:Math.random()*W,y:Math.random()*H,
-    r:.1+Math.random()*1.4,a:Math.random()*.9,
-    vx:0,vy:0,warp:false
-  }));
-  let warpMode=false,nasaFrame=0;
-  function drawNasaBg(){
-    ctx.clearRect(0,0,W,H);
-    nasaFrame++;
-    stars.forEach(s=>{
-      if(warpMode){
-        // Étoiles s'étirent vers le centre
-        const dx=s.x-W/2,dy=s.y-H/2;
-        const len=Math.sqrt(dx*dx+dy*dy)||1;
-        const stretch=18+nasaFrame*.4;
-        ctx.globalAlpha=s.a*.9;
-        ctx.strokeStyle='rgba(200,220,255,'+s.a+')';
-        ctx.lineWidth=s.r*1.5;
-        ctx.beginPath();
-        ctx.moveTo(s.x,s.y);
-        ctx.lineTo(s.x+dx/len*stretch,s.y+dy/len*stretch);
-        ctx.stroke();
-        // Accélérer vers l'extérieur
-        s.x+=dx/len*1.8;s.y+=dy/len*1.8;
-        if(s.x<0||s.x>W||s.y<0||s.y>H){
-          s.x=W/2+(Math.random()-.5)*20;
-          s.y=H/2+(Math.random()-.5)*20;
-        }
-      } else {
-        ctx.globalAlpha=s.a*(.4+.6*Math.sin(nasaFrame*.02+s.r*3));
-        ctx.fillStyle='#fff';
-        ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
-      }
-    });
-    ctx.globalAlpha=1;ctx.lineWidth=1;
-    if(!seq.classList.contains('done')) requestAnimationFrame(drawNasaBg);
-  }
-  drawNasaBg();
-
-  // Sons compte à rebours
-  function beep(freq,dur,vol){
-    try{
-      const ctx2=new(window.AudioContext||window.webkitAudioContext)();
-      const o=ctx2.createOscillator();
-      const g=ctx2.createGain();
-      o.type='sine';o.frequency.value=freq;
-      g.gain.setValueAtTime(vol||.15,ctx2.currentTime);
-      g.gain.exponentialRampToValueAtTime(.001,ctx2.currentTime+dur);
-      o.connect(g);g.connect(ctx2.destination);
-      o.start();o.stop(ctx2.currentTime+dur);
-    }catch(e){}
-  }
-
-  function flashNum(){
-    num.classList.add('flash');
-    setTimeout(()=>num.classList.remove('flash'),150);
-  }
-
-  // Séquence timeline
-  const pName=window._getPilotName?window._getPilotName():'Pilote';
-  const labels=['Initialisation système','Vérification propulseurs',`${pName}, mise en orbite…`,'Décollage'];
-  let step=0;
-
-  // Progress bar
-  let prog=0;
-  const barInt=setInterval(()=>{
-    prog=Math.min(100,prog+.8);
-    fill.style.width=prog+'%';
-  },30);
-
-  // Compte à rebours
-  function tick(){
-    if(step>=4) return;
-    lbl.textContent=labels[step]||'';
-    if(step<3){
-      num.textContent=3-step;
-      flashNum();
-      beep(step===0?440:step===1?550:880,.18,.12);
-      haptic([20]);
-    } else {
-      num.textContent='🚀';
-      num.style.fontSize='clamp(60px,10vw,100px)';
-      beep(220,.08,.2);setTimeout(()=>beep(440,.06,.15),80);setTimeout(()=>beep(880,.04,.1),160);
-    }
-    step++;
-    if(step<4) setTimeout(tick,1100);
-    else setTimeout(launch,900);
-  }
-  setTimeout(tick,400);
-
-  function launch(){
-    // Warp speed + fade NASA → scène cinématique
-    warpMode=true;
-    clearInterval(barInt);
-    fill.style.width='100%';
-    fill.style.transition='none';
-
-    // Fondu sortie NASA
-    setTimeout(()=>{
-      seq.classList.add('done');
-      setTimeout(()=>{ seq.style.display='none'; },600);
-
-      // Lancer la scène cinématique
-      startCinematicScene(()=>{
-        // Appelé quand la scène se termine (~9.5s plus tard)
-        sessionStorage.setItem('nasa-done','1');
-        if(typeof enterCinematic==='function') enterCinematic();
-        const _pn = window._getPilotName ? window._getPilotName() : 'Pilote';
-              });
-    },500);
-  }
-};
-
-
-// ════ MODE CINÉMATIQUE ════
-let cinematicMode=false;
-
-function enterCinematic(){
-  if(window.soundAmbiStart) soundAmbiStart();
-  cinematicMode=true;
-  document.body.classList.add('cinematic');
-  // Masquage instantané — no transition flash
-  ['uni-btn','nav','pg','bar'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){el.style.transition='none';el.style.opacity='0';el.style.pointerEvents='none';}
-  });
-  document.querySelectorAll('.arr,.dot').forEach(el=>{
-    el.style.transition='none';el.style.opacity='0';el.style.pointerEvents='none';
-  });
-}
-
-function exitCinematic(){
-  cinematicMode=false;
-  document.body.classList.remove('cinematic');
-  // Restaurer styles
-  ['uni-btn','nav','pg','bar'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){el.style.transition='';el.style.opacity='';el.style.pointerEvents='';}
-  });
-  document.querySelectorAll('.arr,.dot').forEach(el=>{
-    el.style.transition='';el.style.opacity='';el.style.pointerEvents='';
-  });
-}
-
-// Swipe touch support
-let touchStartX=0,touchStartY=0;
-document.addEventListener('touchstart',e=>{
-  touchStartX=e.changedTouches[0].screenX;
-  touchStartY=e.changedTouches[0].screenY;
-},{passive:true});
-document.addEventListener('touchend',e=>{
-  const dx=e.changedTouches[0].screenX-touchStartX;
-  const dy=e.changedTouches[0].screenY-touchStartY;
-  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50){
-    if(dx<0) window.next(); else window.prev();
-  }
-},{passive:true});
-
-
-// ════ PRÉNOM + PERSONNALISATION ════
+// ═══ MUSIQUE AMBIANTE ═══
 ;(function(){
-  // Nettoyer la session à chaque chargement → expérience fraîche
-  sessionStorage.removeItem('dv-pilot-name');
-  sessionStorage.removeItem('nasa-done');
-  sessionStorage.removeItem('ck-intro-shown');
-  let pilotName = '';
-
-  function applyName(name){
-    if(!name) return;
-    pilotName = name;
-    // Cover h1
-    const h1 = document.querySelector('#s1 h1');
-    if(h1) h1.innerHTML = `L'agenda de <span class="g">${name}.</span><br><span class="g">Saturé de RDV.</span>`;
-    // S8 title — réessayer si DOM pas encore prêt
-    const patchS8 = () => {
-      const s8title = document.getElementById('s8-title');
-      if(s8title) s8title.innerHTML = `Comment on démarre<br><span class="g">ensemble, ${name}.</span>`;
-    };
-    patchS8();
-    setTimeout(patchS8, 300);
-    // Nav title
-    const title = document.querySelector('title');
-    if(title) title.textContent = `Devoleads — Mission ${name}`;
-    // Cockpit intro text
-    const intro = document.getElementById('ck-intro-text');
-    if(intro) intro.textContent = `${name}, bienvenue à bord`;
-    // NASA label final
-    window._pilotName = name;
-    // Cockpit title
-    const ckTitle = document.getElementById('uni-title');
-    if(ckTitle) ckTitle.textContent = `Cockpit · Mission ${name}`;
+  let audioCtx=null;
+  function getCtx(){
+    if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume();
+    return audioCtx;
   }
 
-  window.submitName = function(){
-    const inp = document.getElementById('name-input');
-    const name = (inp ? inp.value.trim() : '') || 'Pilote';
-    if(!name || name.length < 1) return;
-    sessionStorage.setItem('dv-pilot-name', name);
-    applyName(name);
-    haptic([20, 10, 30]);
-    // Capturer URL prospect si fournie
-    const urlInp = document.getElementById('url-input');
-    prospectUrl = (urlInp ? urlInp.value.trim() : '');
-    if(prospectUrl && prospectUrl.startsWith('http')){
-      // Feedback visuel pendant NASA
-      const statusEl = document.getElementById('url-status');
-      if(statusEl){
-        statusEl.textContent = '🔍 Analyse du site en cours…';
-        setTimeout(()=>{ if(statusEl) statusEl.textContent = '⚡ Génération de la séquence…'; }, 3000);
-      }
-      analyzeProspect(prospectUrl).then(data=>{
-        if(data){
-          injectProspectSequence(data);
-          // Notif discrète dans la slide S7
-          const eyebrow7 = document.querySelector('#s7 .eyebrow');
-          if(eyebrow7 && data.prospect){
-            eyebrow7.innerHTML = `<span class="blink"></span>Séquence personnalisée · ${data.prospect.societe || prospectUrl}`;
-          }
-        }
-      }).catch(()=>{});
+  // Son de propulsion fusée — bruit filtré + sweep
+  window.soundLaunch=function(){
+    try{
+      const ctx=getCtx();
+      const buf=ctx.createBuffer(1,ctx.sampleRate*.45,ctx.sampleRate);
+      const d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(1-i/d.length);
+      const src=ctx.createBufferSource();src.buffer=buf;
+      const fil=ctx.createBiquadFilter();fil.type='bandpass';fil.frequency.value=180;fil.Q.value=.8;
+      fil.frequency.exponentialRampToValueAtTime(800,ctx.currentTime+.3);
+      const gain=ctx.createGain();gain.gain.setValueAtTime(.28,ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.44);
+      src.connect(fil);fil.connect(gain);gain.connect(ctx.destination);
+      src.start();
+      // Whoosh haute fréquence
+      const osc=ctx.createOscillator();osc.type='sawtooth';
+      osc.frequency.setValueAtTime(60,ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(2200,ctx.currentTime+.25);
+      const g2=ctx.createGain();g2.gain.setValueAtTime(.12,ctx.currentTime);
+      g2.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.3);
+      const f2=ctx.createBiquadFilter();f2.type='highpass';f2.frequency.value=400;
+      osc.connect(f2);f2.connect(g2);g2.connect(ctx.destination);
+      osc.start();osc.stop(ctx.currentTime+.3);
+    }catch(e){}
+  };
+
+  // Son d'atterrissage — impact sourd + résonance
+  window.soundLand=function(){
+    try{
+      const ctx=getCtx();
+      // Impact basse fréquence
+      const osc=ctx.createOscillator();osc.type='sine';
+      osc.frequency.setValueAtTime(120,ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(28,ctx.currentTime+.22);
+      const gain=ctx.createGain();gain.gain.setValueAtTime(.45,ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.28);
+      osc.connect(gain);gain.connect(ctx.destination);
+      osc.start();osc.stop(ctx.currentTime+.28);
+      // Résonance cristal
+      const osc2=ctx.createOscillator();osc2.type='sine';
+      osc2.frequency.setValueAtTime(880,ctx.currentTime+.05);
+      osc2.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+.35);
+      const g2=ctx.createGain();g2.gain.setValueAtTime(0,ctx.currentTime);
+      g2.gain.setValueAtTime(.09,ctx.currentTime+.05);
+      g2.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.4);
+      osc2.connect(g2);g2.connect(ctx.destination);
+      osc2.start();osc2.stop(ctx.currentTime+.4);
+    }catch(e){}
+  };
+
+  // Swoosh de transition de slide — cinématique
+  window.soundSlide=function(dir){
+    if(typeof cinematicMode!=='undefined'&&cinematicMode){
+      // Son cinéma : boom sourd + reverb
+      try{
+        const ctx=new(window.AudioContext||window.webkitAudioContext)();
+        const buf=ctx.createBuffer(1,ctx.sampleRate*.4,ctx.sampleRate);
+        const d=buf.getChannelData(0);
+        for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,3)*.18;
+        const src=ctx.createBufferSource();
+        src.buffer=buf;
+        const g=ctx.createGain();
+        g.gain.setValueAtTime(.5,ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.4);
+        src.connect(g);g.connect(ctx.destination);src.start();
+      }catch(e){}
+      return;
     }
-    const screen = document.getElementById('name-screen');
-    if(screen){
-      screen.classList.add('hidden');
-      // Lancer NASA après le fade-out du name-screen
+    try{
+      const ctx=getCtx();
+      const osc=ctx.createOscillator();osc.type='sine';
+      const startF=dir>0?180:320, endF=dir>0?80:680;
+      osc.frequency.setValueAtTime(startF,ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(endF,ctx.currentTime+.18);
+      const gain=ctx.createGain();gain.gain.setValueAtTime(.07,ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.2);
+      const fil=ctx.createBiquadFilter();fil.type='bandpass';fil.frequency.value=300;fil.Q.value=1.2;
+      osc.connect(fil);fil.connect(gain);gain.connect(ctx.destination);
+      osc.start();osc.stop(ctx.currentTime+.2);
+      // Bruit sweep
+      const buf=ctx.createBuffer(1,ctx.sampleRate*.15,ctx.sampleRate);
+      const d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*(1-i/d.length)*.6;
+      const ns=ctx.createBufferSource();ns.buffer=buf;
+      const nf=ctx.createBiquadFilter();nf.type='bandpass';nf.frequency.value=dir>0?600:900;nf.Q.value=2;
+      const ng=ctx.createGain();ng.gain.setValueAtTime(.06,ctx.currentTime);
+      ng.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.15);
+      ns.connect(nf);nf.connect(ng);ng.connect(ctx.destination);ns.start();
+    }catch(e){}
+  };
+
+  // Son ambiant cockpit — drone grave pressurisé + vibrato
+  window.soundAmbiStart=function(){
+    try{
+      if(window._ambiNodes) return; // déjà actif
+      const ctx=getCtx();
+      const t=ctx.currentTime;
+
+      // Drone grave principal
+      const osc1=ctx.createOscillator();osc1.type='sawtooth';osc1.frequency.value=28;
+      // Harmonique médium
+      const osc2=ctx.createOscillator();osc2.type='sine';osc2.frequency.value=56.1;
+      // Harmonique haute subtile
+      const osc3=ctx.createOscillator();osc3.type='sine';osc3.frequency.value=84.4;
+      // LFO vibrato lent
+      const lfo=ctx.createOscillator();lfo.type='sine';lfo.frequency.value=.18;
+      const lfoGain=ctx.createGain();lfoGain.gain.value=.8;
+      lfo.connect(lfoGain);lfoGain.connect(osc1.frequency);
+
+      // Filtre passe-bas pour chaleur
+      const filt=ctx.createBiquadFilter();filt.type='lowpass';filt.frequency.value=320;filt.Q.value=2.2;
+
+      // Gain master avec fade-in progressif
+      const g=ctx.createGain();g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(.018,t+2.5);
+      // Micro-variations de volume pour impression de vie
+      const lfo2=ctx.createOscillator();lfo2.type='sine';lfo2.frequency.value=.07;
+      const lfo2g=ctx.createGain();lfo2g.gain.value=.004;
+      lfo2.connect(lfo2g);lfo2g.connect(g.gain);
+
+      osc1.connect(filt);osc2.connect(filt);osc3.connect(filt);
+      filt.connect(g);g.connect(ctx.destination);
+      osc1.start();osc2.start();osc3.start();lfo.start();lfo2.start();
+      window._ambiNodes={osc1,osc2,osc3,lfo,lfo2,g,filt};
+    }catch(e){}
+  };
+
+  window.soundAmbiStop=function(){
+    try{
+      if(!window._ambiNodes)return;
+      const ctx=getCtx();
+      const n=window._ambiNodes;
+      n.g.gain.linearRampToValueAtTime(0,ctx.currentTime+1.2);
       setTimeout(()=>{
-        screen.style.display='none';
-        if(window.startNASA) startNASA();
-      }, 500);
-    } else {
-      if(window.startNASA) startNASA();
-    }
-  };
-
-  // Enter key — marche sur prénom ET url
-  document.addEventListener('keydown', e=>{
-    const nameInp = document.getElementById('name-input');
-    const urlInp  = document.getElementById('url-input');
-    const active  = document.activeElement;
-    const onNameScreen = document.getElementById('name-screen') &&
-      document.getElementById('name-screen').style.display !== 'none' &&
-      !document.getElementById('name-screen').classList.contains('hidden');
-    if(onNameScreen && e.key === 'Enter' && (active === nameInp || active === urlInp)){
-      e.preventDefault(); window.submitName();
-    }
-  });
-
-  // Input ready state
-  const inp2 = document.getElementById('name-input');
-  if(inp2){
-    inp2.addEventListener('input', ()=>{
-      const btn = document.getElementById('name-submit');
-      if(btn) btn.classList.toggle('ready', inp2.value.trim().length > 0);
-    });
-    // Tab sur prénom → focus url
-    inp2.addEventListener('keydown', e=>{
-      if(e.key === 'Tab'){
-        e.preventDefault();
-        const urlInp = document.getElementById('url-input');
-        if(urlInp) urlInp.focus();
-      }
-    });
-    // Focus auto sur prénom
-    setTimeout(()=>{ if(inp2) inp2.focus(); }, 400);
-  }
-
-  // Toujours afficher l'écran prénom à chaque ouverture de session
-  // (on ne skip jamais, même si le prénom est en sessionStorage)
-  const screen = document.getElementById('name-screen');
-  if(screen) screen.style.display = 'flex';
-  // Focus auto sur le champ prénom
-  setTimeout(()=>{
-    const inp = document.getElementById('name-input');
-    if(inp){ inp.value=''; inp.focus(); }
-    // Vider aussi l'URL
-    const urlInp = document.getElementById('url-input');
-    if(urlInp) urlInp.value='';
-  }, 300);
-
-  // Patch NASA labels avec le prénom
-  const origTick = window._nasaTick;
-  window._getPilotName = ()=> pilotName || 'Pilote';
-})();
-
-// ════ HAPTIQUE ════
-function haptic(pattern){
-  try{
-    if(navigator.vibrate) navigator.vibrate(pattern || [20]);
-  }catch(e){}
-}
-
-// ════ HUD SCAN ════
-;(function(){
-  let hudTimer = null, hudActive = false;
-  const scan = document.getElementById('hud-scan');
-  const r1 = document.getElementById('hud-r1');
-  const r2 = document.getElementById('hud-r2');
-  const dataEl = document.getElementById('hud-data');
-  if(!scan) return;
-
-  // Données fictives par planète
-  const HUD_DATA = [
-    ['COORDONNÉES 04.7 · -12.3', 'CHARGE RDV +800%', 'ZONE PRIORITAIRE'],
-    ['COORDONNÉES -18.4 · 06.1', 'PIPELINE ACTIF', 'CONVERSION ×8.3'],
-    ['COORDONNÉES 22.1 · -08.7', 'VITESSE 14J', 'EFFICACITÉ MAX'],
-    ['COORDONNÉES -05.9 · 19.2', 'BUDGET OPTIMISÉ', 'ROI GARANTI'],
-    ['COORDONNÉES 14.3 · 11.8', 'FONDATEURS DIRECTS', 'ZÉRO JUNIOR'],
-    ['COORDONNÉES -21.6 · -04.5', 'VIDÉO B2B +30%', 'HUMANISATION'],
-    ['COORDONNÉES 08.7 · -17.3', 'IA ACTIVE', 'PERSONNALISATION ×8'],
-    ['COORDONNÉES -11.2 · 14.6', 'DÉMARRAGE 14J', 'SLOT DISPONIBLE'],
-  ];
-
-  window.showHUD = function(planetId, screenX, screenY, size){
-    if(!scan) return;
-    const s = size * 1.8;
-    scan.style.left = screenX + 'px';
-    scan.style.top = screenY + 'px';
-    // Size rings
-    if(r1) {
-      r1.style.width = s+'px'; r1.style.height = s+'px';
-      r1.style.marginLeft = (-s/2)+'px'; r1.style.marginTop = (-s/2)+'px';
-    }
-    if(r2){
-      const s2 = s*1.3;
-      r2.style.width = s2+'px'; r2.style.height = s2+'px';
-      r2.style.marginLeft = (-s2/2)+'px'; r2.style.marginTop = (-s2/2)+'px';
-    }
-    // Data lines avec stagger
-    const lines = HUD_DATA[planetId] || HUD_DATA[0];
-    if(dataEl){
-      dataEl.innerHTML = '';
-      lines.forEach((txt, i)=>{
-        const d = document.createElement('div');
-        d.className = 'hud-line';
-        d.style.animationDelay = (i*120)+'ms';
-        d.textContent = txt;
-        dataEl.appendChild(d);
-      });
-    }
-    scan.classList.add('active');
-    hudActive = true;
-    // Son scan
-    try{
-      const ac = new(window.AudioContext||window.webkitAudioContext)();
-      const o = ac.createOscillator(); o.type='sine';
-      o.frequency.setValueAtTime(1200, ac.currentTime);
-      o.frequency.exponentialRampToValueAtTime(400, ac.currentTime+.3);
-      const g = ac.createGain(); g.gain.setValueAtTime(.06, ac.currentTime);
-      g.gain.exponentialRampToValueAtTime(.001, ac.currentTime+.35);
-      o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+.35);
+        try{n.osc1.stop();n.osc2.stop();n.osc3.stop();n.lfo.stop();n.lfo2.stop();}catch(e){}
+      },1300);
+      window._ambiNodes=null;
     }catch(e){}
-    haptic([15, 5, 15]);
-  };
-
-  window.hideHUD = function(){
-    if(scan) scan.classList.remove('active');
-    hudActive = false;
   };
 })();
 
-
-// ════ UNIVERS RÉACTIF — planète grossit avec le temps passé ════
-let slideTimeStart = Date.now();
-let slideTimeSpent = new Array(8).fill(0);
-
-function trackSlideTime(){
-  const now = Date.now();
-  const spent = (now - slideTimeStart) / 1000;
-  if(cur >= 0 && cur < 8) slideTimeSpent[cur] += spent;
-  slideTimeStart = now;
-}
-
-window.go=function(idx){
-if(busy||idx===cur||idx<0||idx>=TOTAL) return;
-busy=true;
-const prev=cur; cur=idx;
-const dir = idx > prev ? 1 : -1; // 1=forward, -1=backward
-if(window.soundSlide) soundSlide(dir);
-haptic([15]);
-ui();
-// Flash lumineux
-const fl=document.getElementById('transition-flash');
-if(fl){fl.classList.remove('fire','fire-back');fl.offsetHeight;fl.classList.add(dir>0?'fire':'fire-back');}
-// Tick counter
-const pnEl=document.getElementById('pn');
-if(pnEl){pnEl.classList.remove('tick');pnEl.offsetHeight;pnEl.classList.add('tick');}
-// Slide sortante
-const outClass = dir>0 ? 'out-left' : 'out-right';
-slides[prev].classList.remove('ein-right','ein-left');
-slides[prev].classList.add('out', outClass);
-setTimeout(()=>{
-slides[prev].classList.remove('out',outClass,'active');
-slides[prev].style.opacity=0;
-},420);
-// Slide entrante
-setTimeout(()=>{
-const inClass = dir>0 ? 'ein-right' : 'ein-left';
-slides[cur].style.opacity='';
-slides[cur].classList.remove('out','out-left','out-right','ein-right','ein-left');
-slides[cur].classList.add('active', inClass);
-slides[cur].querySelectorAll('.sg').forEach(sg=>{
-sg.querySelectorAll(':scope>*').forEach(c=>{
-c.style.animation='none';
-c.offsetHeight;
-c.style.animation='';
-});
-});
-if(cur===2) startMotion(); else stopMotion();
-setSlideAmbiance(cur);
-if(cur===7) startSetup();
-// Sync cockpit salle de contrôle
-if(typeof PDATA!=='undefined'){
-ckActive=cur;
-document.querySelectorAll('.ck-planet-btn').forEach((b,i)=>b.classList.toggle('active',i===cur));
-const vsr=document.getElementById('ck-pilot-visor');
-if(vsr) vsr.setAttribute('fill',PDATA[cur]?.color||'#ff3d8f');
-} // S8 Mise en place = index 7
-// S7 : g\u00e9n\u00e9rer s\u00e9quence fictive si pas encore faite ET pas d'URL en cours
-if(cur===6 && !prospectData && !prospectUrl && typeof analyzeProspect==='function'){
-const DUMMY = [
-{secteur:'SaaS RH',prenom:'Marc',nom:'Dupont',societe:'Flowify',actu:'vient de lever 800K\u20ac en seed',ville:'Lyon'},
-{secteur:'SaaS Marketing',prenom:'Julie',nom:'Martin',societe:'Growthly',actu:'vient de lancer son offre Enterprise',ville:'Paris'},
-{secteur:'Agence conseil',prenom:'Sophie',nom:'Bernard',societe:'DataForge',actu:'vient de signer avec Microsoft',ville:'Nantes'},
-];
-const dp = DUMMY[Math.floor(Math.random()*DUMMY.length)];
-analyzeProspect(null, dp).then(d=>{ if(d) injectProspectSequence(d); }).catch(()=>{});
-}
-setTimeout(()=>{busy=false},700);
-},380);
-}
-
-// Patch go() pour tracker le temps et ambiance
-const _origGo = window.go;
-window.go = function(idx){
-  trackSlideTime();
-  if(window.soundAmbiSlide) soundAmbiSlide(idx);
-  return _origGo(idx);
+// ═══ updateCinematicColors ═══
+window.updateCinematicColors = function(hex, societe) {
+  const scene = document.getElementById('cine-scene');
+  if(!scene) return;
+  const visor = scene.querySelector('[class*="visor"],[id*="visor"],.cs-visor');
+  if(visor) visor.style.fill = hex||'#7c3aed';
+  const band = scene.querySelector('[class*="band"],[id*="band"],.cs-band');
+  if(band) band.style.fill = hex||'#7c3aed';
+  const mission = document.getElementById('cine-mission');
+  if(mission && societe) mission.textContent = 'MISSION ' + societe.toUpperCase();
 };
 
+// ═══ MODE LIVE (touche P) ═══
 
-// ════ PERSONNALISATION PROSPECT ════
-let prospectData = null;
-let prospectUrl = '';
-
-window.toggleUrlField = function(){}; // plus utilisé
-
-// Analyse prospect via Claude API pendant la NASA
-async function analyzeProspect(url, forcedProfile){
-  const DUMMY_PROFILES = [
-    {secteur:'SaaS RH',produit:'logiciel de gestion RH',taille:'15-40 salaries',ville:'Lyon',prenom:'Marc',nom:'Dupont',societe:'Flowify',actu:'vient de lever 800K en seed',couleur_hex:'#10b981'},
-    {secteur:'SaaS Marketing',produit:'plateforme automation marketing',taille:'20-60 salaries',ville:'Paris',prenom:'Julie',nom:'Martin',societe:'Growthly',actu:'vient de lancer son offre Enterprise',couleur_hex:'#3b82f6'},
-    {secteur:'Agence conseil',produit:'transformation digitale B2B',taille:'30-80 salaries',ville:'Nantes',prenom:'Sophie',nom:'Bernard',societe:'DataForge',actu:'vient de signer un partenariat avec Microsoft',couleur_hex:'#f59e0b'},
-    {secteur:'SaaS Finance',produit:'comptabilite B2B',taille:'10-30 salaries',ville:'Bordeaux',prenom:'Thomas',nom:'Leroy',societe:'Finopt',actu:'vient de doubler son equipe commerciale',couleur_hex:'#ec4899'},
-    {secteur:'SaaS Logistique',produit:'gestion de flotte',taille:'25-50 salaries',ville:'Lille',prenom:'Antoine',nom:'Moreau',societe:'FleetPro',actu:"vient d'ouvrir son bureau en Belgique",couleur_hex:'#8b5cf6'},
-  ];
-
-  const hasRealUrl = !!(url && url.startsWith('http') && url !== 'https://exemple.com');
-  const profile = forcedProfile || DUMMY_PROFILES[Math.floor(Math.random()*DUMMY_PROFILES.length)];
-
-  let promptText;
-  let useWebSearch = false;
-
-  if(hasRealUrl && !forcedProfile){
-    useWebSearch = true;
-    promptText = 'Tu es expert en prospection B2B pour Devoleads (agence de generation de RDV qualifies). '
-      + 'Le prospect a soumis son site : ' + url + '. '
-      + 'Analyse ce site (utilise web_search pour le visiter et trouver des infos recentes), '
-      + 'puis genere une sequence de prospection personnalisee basee sur ce que tu trouves reellement. '
-      + 'Identifie : nom entreprise, secteur, produit, CEO probable, ville, une actu recente ou notable. '
-      + 'Si tu ne trouves pas de CEO, utilise un prenom courant. '
-      + 'Reponds UNIQUEMENT avec un JSON valide, sans backticks, sans markdown : '
-      + '{"prospect":{"prenom":"...","nom":"...","societe":"...","secteur":"...","actu":"...","ville":"...","couleur_hex":"couleur_primaire_du_site_en_hex_ex_#7c3aed"},'
-      + '"email1":{"objet":"...","salutation":"Bonjour [prenom],","icebreaker":"1 phrase referant a l actu ou au produit","pitch":"2 phrases : probleme probable + Devoleads = pipeline RDV B2B","social_proof":"client fictif similaire","cta":"question courte pour un RDV 20min"},'
-      + '"relance_j3":"2 phrases directes",'
-      + '"linkedin_touch":"1 phrase courte"}';
-  } else {
-    promptText = 'Tu es expert en prospection B2B pour Devoleads. '
-      + 'Genere une sequence de prospection pour ce profil fictif mais ultra-realiste : '
-      + profile.prenom + ' ' + profile.nom + ', CEO de ' + profile.societe
-      + ' (' + profile.secteur + ', ' + profile.taille + ', ' + profile.ville + '). '
-      + 'Actu : ' + profile.societe + ' ' + profile.actu + '. '
-      + 'Les messages doivent etre naturels, sans jargon creux. '
-      + 'Reponds UNIQUEMENT avec un JSON valide, sans backticks : '
-      + '{"prospect":{"prenom":"' + profile.prenom + '","nom":"' + profile.nom + '","societe":"' + profile.societe + '","secteur":"' + profile.secteur + '","actu":"' + profile.actu + '","ville":"' + profile.ville + '","couleur_hex":"' + (profile.couleur_hex||'#7c3aed') + '"},'
-      + '"email1":{"objet":"sujet accrocheur lie a l actu","salutation":"Bonjour ' + profile.prenom + ',","icebreaker":"phrase referant naturellement a l actu","pitch":"2 phrases : situation + Devoleads","social_proof":"client fictif similaire","cta":"disponible 20 min ?"},'
-      + '"relance_j3":"2 phrases directes",'
-      + '"linkedin_touch":"1 phrase tres courte"}';
-  }
-
-  try {
-    const bodyObj = {
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 1200,
-      messages: [{role:'user', content: promptText}]
-    };
-    if(useWebSearch) bodyObj.tools = [{type:'web_search_20250305', name:'web_search'}];
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(bodyObj)
-    });
-    const respData = await response.json();
-
-    let text = '';
-    if(Array.isArray(respData.content)){
-      for(const block of respData.content){
-        if(block.type === 'text') text += block.text;
-      }
-    }
-    if(!text) return null;
-
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if(!jsonMatch) return null;
-    return JSON.parse(jsonMatch[0]);
-  } catch(e) {
-    console.error('analyzeProspect error:', e);
-    return null;
-  }
-}
-
-// Injecter la séquence dans la slide Icebreaker
-function injectProspectSequence(data){
-  if(!data) return;
-  prospectData = data;
-  console.log('[Devoleads] Prospect reçu:', data.prospect?.prenom, data.prospect?.societe, 'couleur:', data.prospect?.couleur_hex);
-  const p = data.prospect;
-  const e = data.email1;
-
-  // Mise à jour de l'email dans la slide S7
-  const subj = document.getElementById('ice2-subj');
-  const hi = document.getElementById('ice2-hi');
-  const brk = document.getElementById('ice2-brk');
-  const pitch = document.getElementById('ice2-pitch');
-  const social = document.getElementById('ice2-social');
-  const cta = document.getElementById('ice2-cta');
-
-  if(subj) subj.textContent = e.objet;
-  if(hi) hi.textContent = e.salutation;
-  if(brk){
-    brk.textContent = e.icebreaker;
-    brk.classList.add('lvl2'); // highlight
-  }
-  if(pitch) pitch.textContent = e.pitch;
-  if(social) social.textContent = e.social_proof;
-  if(cta) cta.textContent = e.cta;
-
-  // Injecter le bloc séquence complète sous l'email
-  injectSequenceBlock(data);
-
-  // ── Appliquer le thème couleur au cockpit ──
-  if(typeof applyCockpitTheme==='function' && data.prospect){
-    applyCockpitTheme(data.prospect);
-  }
-  // ── Mettre à jour la cinématique si elle tourne encore ──
-  if(typeof window.updateCinematicColors==='function' && data.prospect){
-    window.updateCinematicColors(data.prospect.couleur_hex, data.prospect.societe);
-  }
-
-  // ── Mettre à jour le titre de l'overlay cockpit si ouvert ──
-  const _ckTitle = document.getElementById('uni-title');
-  if(_ckTitle && data.prospect && data.prospect.societe){
-    _ckTitle.textContent = 'Cockpit · ' + data.prospect.societe;
-  }
-
-  // ── Mettre à jour les panneaux prospect dans le cockpit ──
-  if(data.prospect){
-    const _p = data.prospect;
-    const _show = id => { const el=document.getElementById(id); if(el) el.style.display='block'; };
-    const _set  = (id, val) => { const el=document.getElementById(id); if(el&&val) el.textContent=val; };
-    _show('ck-prospect-block');    _set('ck-p-name',    (_p.prenom||'')+(_p.nom?' '+_p.nom:''));
-    _show('ck-prospect-societe-block'); _set('ck-p-societe', _p.societe);
-    _show('ck-prospect-secteur-block'); _set('ck-p-secteur', _p.secteur);
-    if(_p.actu){ _show('ck-prospect-actu-block'); _set('ck-p-actu', _p.actu); }
-    const _logo = document.getElementById('ck-prospect-logo');
-    if(_logo && _p.societe){ _logo.textContent = _p.societe; _logo.style.display='block'; }
-  }
-
-  const _pn2 = window._getPilotName ? window._getPilotName() : 'Pilote';
-    // ── Injecter directement dans l'email S7 (bypass applyLevel guard) ──
-  const _subj  = document.getElementById('ice2-subj');
-  const _hi    = document.getElementById('ice2-hi');
-  const _brk   = document.getElementById('ice2-brk');
-  const _pitch = document.getElementById('ice2-pitch');
-  const _soc   = document.getElementById('ice2-social');
-  const _cta   = document.getElementById('ice2-cta');
-
-  if(e.objet   && _subj)  _subj.textContent  = e.objet;
-  if(e.salutation && _hi) _hi.textContent    = e.salutation;
-  if(e.icebreaker && _brk){ _brk.textContent = e.icebreaker; _brk.className='ice2-tok ice2-highlight lvl2'; }
-  if(e.pitch   && _pitch) _pitch.textContent = e.pitch;
-  if(e.social_proof && _soc) _soc.textContent= e.social_proof;
-  if(e.cta     && _cta)   _cta.textContent   = e.cta;
-
-  // Badge IA
-  const _badge = document.getElementById('ice-badge');
-  if(_badge){ _badge.textContent='IA · '+(p.societe||'Prospect'); _badge.style.background='rgba(34,211,238,.1)'; _badge.style.color='var(--cyan)'; }
-  const _emailBorder = document.querySelector('.ice-email2');
-  if(_emailBorder) _emailBorder.style.borderColor='rgba(34,211,238,.3)';
-
-  // Stats
-  ['ist2-v0','ist2-v1','ist2-v2'].forEach((id,i)=>{
-    const el=document.getElementById(id);
-    if(!el) return;
-    el.textContent = ['x8.0','100%','Sur-mesure'][i];
-    el.style.color = 'var(--cyan)';
-  });
-  const _bar=document.getElementById('ist2-bar'); if(_bar) _bar.style.width='100%';
-
-  // Slider visuel
-  const _fill=document.getElementById('ice2-fill'); if(_fill) _fill.style.width='100%';
-  const _pct=document.getElementById('ice2-pct');   if(_pct)  _pct.textContent='100%';
-  const _slider=document.getElementById('ice2-slider'); if(_slider) _slider.value=100;
-
-  // Forcer currentLvl = 2 pour cohérence UI
-  if(typeof currentLvl!=='undefined') currentLvl = 2;
-  // Level badges
-  for(let i=0;i<3;i++){ const el=document.getElementById('lb'+i); if(el) el.classList.toggle('active',i===2); }
-  // Checklist
-  for(let i=0;i<6;i++){ const el=document.getElementById('chg'+i); if(el) el.className='ice2-chg on'+(i<4?' p':''); }
-
-  // Eyebrow slide
-  const _eyebrow = document.querySelector('#s7 .eyebrow');
-  if(_eyebrow) _eyebrow.innerHTML = '<span class="blink"></span>Séquence IA · '+p.prenom+' · '+p.societe;
-}
-
-function injectSequenceBlock(data){
-  const p = data.prospect;
-  const existing = document.getElementById('prospect-seq-block');
-  if(existing) existing.remove();
-
-  // Trouver la slide S7 et y ajouter le bloc
-  const s7 = document.getElementById('s7');
-  if(!s7) return;
-
-  const block = document.createElement('div');
-  block.id = 'prospect-seq-block';
-  block.style.cssText = `
-    position:absolute;bottom:clamp(60px,8vh,80px);right:clamp(20px,3vw,40px);
-    width:clamp(220px,28vw,320px);z-index:2;
-    background:rgba(6,7,15,.8);backdrop-filter:blur(12px);
-    border:1px solid rgba(255,255,255,.08);border-radius:14px;
-    padding:14px;display:flex;flex-direction:column;gap:10px;
-  `;
-  block.innerHTML = `
-    <div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:2px">
-      Séquence complète · ${p.prenom} ${p.nom}
-    </div>
-    <div style="display:flex;flex-direction:column;gap:6px">
-      <div style="background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:8px;padding:8px 10px">
-        <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple-l);margin-bottom:4px">Email J+0</div>
-        <div style="font-size:10px;color:var(--muted2);line-height:1.5">${data.email1.icebreaker}</div>
-      </div>
-      <div style="background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.15);border-radius:8px;padding:8px 10px">
-        <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:4px">Relance J+3</div>
-        <div style="font-size:10px;color:var(--muted2);line-height:1.5">${data.relance_j3}</div>
-      </div>
-      <div style="background:rgba(74,222,128,.06);border:1px solid rgba(74,222,128,.15);border-radius:8px;padding:8px 10px">
-        <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);margin-bottom:4px">LinkedIn Touch</div>
-        <div style="font-size:10px;color:var(--muted2);line-height:1.5">${data.linkedin_touch}</div>
-      </div>
-    </div>
-    <button onclick="copyProspectEmail()" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:6px;font-family:var(--display);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(124,58,237,.15)';this.style.borderColor='rgba(124,58,237,.3)'" onmouseout="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.1)'">
-      📋 Copier l'email
-    </button>
-  `;
-  s7.appendChild(block);
-}
-
-window.copyProspectEmail = function(){
-  if(!prospectData) return;
-  const e = prospectData.email1;
-  const p = prospectData.prospect;
-  const text = `Objet : ${e.objet}\n\n${e.salutation}\n\n${e.icebreaker}\n\n${e.pitch}\n\n${e.social_proof}\n\n${e.cta}\n\nCordialement,\nStanislas Fortune · Devoleads`;
-  navigator.clipboard.writeText(text).then(()=>{
-    const btn = document.querySelector('#prospect-seq-block button');
-    if(btn){ btn.textContent = '✓ Copié !'; setTimeout(()=>btn.textContent='📋 Copier l\'email',2000); }
-  }).catch(()=>{});
-};
-
-
-// ════ MODE PRÉSENTATION LIVE ════
 let liveMode = false;
 window.toggleLiveMode = function(){
   liveMode = !liveMode;
@@ -5038,16 +4250,255 @@ window.toggleLiveMode = function(){
 })();
 
 
-window.prev=function(){go(cur-1)}
-window.next=function(){go(cur+1)}
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key===' '||e.key==='ArrowDown'||e.key==='PageDown')next();
-  if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp')prev();
-  if(e.key==='Home')go(0);
-  if(e.key==='End')go(TOTAL-1);
-  if(e.key==='p'||e.key==='P') toggleLiveMode();
-  if(e.key==='f'||e.key==='F') { if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen(); }
-});
 </script>
+<div id="cine-scene" style="display:none">
+  <canvas id="cine-stars"></canvas>
+  <div id="cine-mountains">
+    <svg width="100%" height="140" viewBox="0 0 1200 140" preserveAspectRatio="none">
+      <polygon points="0,140 0,80 60,60 120,80 180,40 260,70 320,30 400,65 460,20 540,55 600,10 660,50 720,25 800,60 860,35 940,70 1000,40 1080,75 1140,50 1200,80 1200,140" fill="#05081a"/>
+      <polygon points="0,140 0,100 80,75 160,95 240,65 320,88 400,55 480,82 560,60 640,90 720,70 800,95 880,72 960,98 1040,78 1120,100 1200,85 1200,140" fill="#060a1e" opacity=".8"/>
+    </svg>
+  </div>
+  <div id="cine-ground"></div>
+
+  <svg id="cine-svg" viewBox="0 0 1200 680" preserveAspectRatio="xMidYMin slice" shape-rendering="crispEdges">
+    <defs>
+      <!-- Pixel grid filter pour look 8-bit -->
+      <filter id="pixelate">
+        <feFlood x="4" y="4" height="2" width="2"/>
+        <feComposite width="10" height="10"/>
+        <feTile result="a"/>
+        <feComposite in="SourceGraphic" in2="a" operator="in"/>
+        <feMorphology operator="dilate" radius="2"/>
+      </filter>
+    </defs>
+
+    <!-- ── RAMPE DE LANCEMENT ── -->
+    <!-- Base en béton -->
+    <rect x="460" y="570" width="280" height="20" fill="#0d1228"/>
+    <rect x="460" y="570" width="280" height="2" fill="rgba(100,120,255,.25)"/>
+    <!-- Détails béton pixel -->
+    <rect x="480" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
+    <rect x="520" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
+    <rect x="660" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
+    <rect x="700" y="572" width="20" height="16" fill="#0b1020" opacity=".5"/>
+    <!-- Lumières rampe -->
+    <rect id="cs-l1" x="468" y="566" width="6" height="6" fill="#ff3d8f"/>
+    <rect id="cs-l2" x="490" y="566" width="6" height="6" fill="#ff3d8f" opacity=".6"/>
+    <rect id="cs-l3" x="704" y="566" width="6" height="6" fill="#ff3d8f" opacity=".6"/>
+    <rect id="cs-l4" x="726" y="566" width="6" height="6" fill="#ff3d8f"/>
+
+    <!-- ── STRUCTURE SUPPORT / BRAS ── -->
+    <g id="cs-scaffold" opacity="1">
+      <!-- Tour principale -->
+      <rect x="742" y="260" width="16" height="312" fill="#0c1122" stroke="rgba(100,120,255,.2)" stroke-width="1"/>
+      <!-- Bras horizontal -->
+      <rect x="620" y="268" width="138" height="10" fill="#0c1122" stroke="rgba(100,120,255,.15)" stroke-width="1"/>
+      <!-- Plateforme d'accès -->
+      <rect x="618" y="278" width="24" height="8" fill="#111830" stroke="rgba(100,120,255,.2)" stroke-width="1"/>
+      <!-- Échelle (pixel art) -->
+      <rect x="618" y="286" width="4" height="220" fill="#0c1122" stroke="rgba(100,120,255,.18)" stroke-width="1"/>
+      <rect x="636" y="286" width="4" height="220" fill="#0c1122" stroke="rgba(100,120,255,.18)" stroke-width="1"/>
+      <!-- Barreaux -->
+      <rect x="618" y="300" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="320" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="340" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="360" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="380" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="400" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="420" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="440" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="460" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="480" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="500" width="22" height="3" fill="rgba(100,120,255,.2)"/>
+      <!-- Lumière tour -->
+      <rect x="746" y="265" width="8" height="8" fill="#ff3d8f" opacity=".7" id="cs-tower-light"/>
+    </g>
+
+    <!-- ── FUSÉE DEVOLEADS (pixel art) ── -->
+    <g id="cs-rocket">
+      <!-- Nozzle pixel art -->
+      <rect x="556" y="552" width="8" height="20" fill="#0d1228"/>
+      <rect x="564" y="556" width="8" height="16" fill="#0d1228"/>
+      <rect x="572" y="560" width="16" height="12" fill="#0d1228"/>
+      <rect x="588" y="564" width="8" height="8" fill="#0d1228"/>
+      <rect x="596" y="556" width="8" height="16" fill="#0d1228"/>
+      <rect x="604" y="552" width="8" height="20" fill="#0d1228"/>
+
+      <!-- Corps principal -->
+      <rect x="548" y="180" width="72" height="380" fill="#0a0e1e"/>
+      <!-- Contours corps -->
+      <rect x="548" y="180" width="2" height="380" fill="rgba(100,120,255,.2)"/>
+      <rect x="618" y="180" width="2" height="380" fill="rgba(100,120,255,.2)"/>
+
+      <!-- Détails fuselage pixel -->
+      <rect x="552" y="220" width="64" height="4" fill="rgba(100,120,255,.08)"/>
+      <rect x="552" y="280" width="64" height="4" fill="rgba(100,120,255,.06)"/>
+      <rect x="552" y="340" width="64" height="4" fill="rgba(100,120,255,.06)"/>
+
+      <!-- BANDE ROSE DEVOLEADS (signature) -->
+      <rect x="548" y="440" width="72" height="14" fill="#ff3d8f" opacity=".8"/>
+      <rect x="548" y="454" width="72" height="7" fill="#7c3aed" opacity=".7"/>
+      <!-- Bande couleur prospect (dynamique) -->
+      <rect id="cs-prospect-band" x="548" y="420" width="72" height="6" fill="#ff3d8f" opacity="0"/>
+
+      <!-- Nose cone pixel art (escalier) -->
+      <rect x="548" y="160" width="72" height="20" fill="#0d1228"/>
+      <rect x="554" y="140" width="60" height="20" fill="#0d1228"/>
+      <rect x="562" y="120" width="44" height="20" fill="#0d1228"/>
+      <rect x="570" y="100" width="28" height="20" fill="#0d1228"/>
+      <rect x="576" y="80" width="16" height="20" fill="#0d1228"/>
+      <rect x="580" y="60" width="8" height="20" fill="#0d1228"/>
+      <rect x="582" y="44" width="4" height="16" fill="#0d1228"/>
+
+      <!-- Hublot pixel art -->
+      <rect x="572" y="248" width="24" height="24" fill="#060c1c" id="cs-window-outer"/>
+      <rect x="576" y="252" width="16" height="16" id="cs-window" fill="#060c1c"/>
+      <rect x="578" y="254" width="6" height="6" fill="rgba(100,180,255,.15)"/>
+      <rect x="586" y="260" width="4" height="4" fill="rgba(100,180,255,.1)"/>
+      <!-- Contour hublot -->
+      <rect x="572" y="248" width="24" height="2" fill="rgba(100,180,255,.35)"/>
+      <rect x="572" y="270" width="24" height="2" fill="rgba(100,180,255,.35)"/>
+      <rect x="572" y="248" width="2" height="24" fill="rgba(100,180,255,.35)"/>
+      <rect x="594" y="248" width="2" height="24" fill="rgba(100,180,255,.35)"/>
+
+      <!-- DEVOLEADS texte pixel -->
+      <text x="584" y="390" fill="rgba(100,120,255,.35)" font-size="7" font-weight="700" letter-spacing="2" text-anchor="middle" font-family="monospace">DL</text>
+
+      <!-- Ailerons pixel art gauche -->
+      <rect x="524" y="510" width="24" height="8" fill="#0c1020"/>
+      <rect x="530" y="500" width="18" height="10" fill="#0c1020"/>
+      <rect x="536" y="488" width="12" height="12" fill="#0c1020"/>
+      <rect x="542" y="476" width="6" height="12" fill="#0c1020"/>
+      <!-- Ailerons droite -->
+      <rect x="620" y="510" width="24" height="8" fill="#0c1020"/>
+      <rect x="620" y="500" width="18" height="10" fill="#0c1020"/>
+      <rect x="620" y="488" width="12" height="12" fill="#0c1020"/>
+      <rect x="620" y="476" width="6" height="12" fill="#0c1020"/>
+
+      <!-- Flammes pixel art (cachées) -->
+      <g id="cs-flames" opacity="0">
+        <rect x="572" y="572" width="24" height="24" fill="#ff6b00"/>
+        <rect x="566" y="580" width="12" height="20" fill="#ff8800"/>
+        <rect x="590" y="580" width="12" height="20" fill="#ff8800"/>
+        <rect x="576" y="576" width="16" height="32" fill="#ffaa00"/>
+        <rect x="580" y="580" width="8" height="40" fill="#ffdd44"/>
+        <rect x="582" y="584" width="4" height="32" fill="#fff"/>
+        <rect x="562" y="576" width="8" height="12" fill="#ff4400" opacity=".7"/>
+        <rect x="598" y="576" width="8" height="12" fill="#ff4400" opacity=".7"/>
+        <rect x="558" y="580" width="6" height="8" fill="#ff2200" opacity=".5"/>
+        <rect x="604" y="580" width="6" height="8" fill="#ff2200" opacity=".5"/>
+      </g>
+    </g>
+
+    <!-- ── ASTRONAUTE PIXEL ART 8-BIT ── -->
+    <g id="cs-astro" transform="translate(160,490)" opacity="1">
+      <!-- Jambes (2 frames alternés via JS) -->
+      <!-- Frame repos -->
+      <g id="cs-astro-legs">
+        <rect x="8" y="36" width="8" height="12" fill="#c8ccd8" rx="1"/>
+        <rect x="18" y="36" width="8" height="12" fill="#c8ccd8" rx="1"/>
+        <!-- Pieds -->
+        <rect x="6" y="46" width="10" height="4" fill="#a0a4b0"/>
+        <rect x="18" y="46" width="10" height="4" fill="#a0a4b0"/>
+      </g>
+      <!-- Corps combinaison (blanc cassé) -->
+      <rect x="6" y="18" width="22" height="20" fill="#e8ecf4" rx="2"/>
+      <!-- Contour corps -->
+      <rect x="6" y="18" width="22" height="2" fill="#c0c8d8"/>
+      <rect x="6" y="18" width="2" height="20" fill="#c0c8d8"/>
+      <rect x="26" y="18" width="2" height="20" fill="#c0c8d8"/>
+      <!-- Poches pixel -->
+      <rect x="8" y="24" width="6" height="5" fill="#d0d4e0"/>
+      <rect x="20" y="24" width="6" height="5" fill="#d0d4e0"/>
+      <!-- Bandes Devoleads sur corps -->
+      <rect x="6" y="33" width="22" height="3" fill="#7c3aed" opacity=".7"/>
+      <!-- Bras gauche -->
+      <rect x="-2" y="20" width="8" height="12" fill="#e8ecf4" rx="1"/>
+      <rect x="-2" y="20" width="2" height="12" fill="#c0c8d8"/>
+      <rect x="4" y="30" width="6" height="4" fill="#c8ccd8"/>
+      <!-- Bras droit -->
+      <rect x="28" y="20" width="8" height="12" fill="#e8ecf4" rx="1"/>
+      <rect x="34" y="20" width="2" height="12" fill="#c0c8d8"/>
+      <rect x="28" y="30" width="6" height="4" fill="#c8ccd8"/>
+      <!-- Casque (rond pixel) -->
+      <rect x="8" y="4"  width="18" height="2" fill="#e8ecf4"/>
+      <rect x="6" y="6"  width="22" height="2" fill="#e8ecf4"/>
+      <rect x="4" y="8"  width="26" height="2" fill="#e8ecf4"/>
+      <rect x="4" y="10" width="26" height="8" fill="#e8ecf4"/>
+      <rect x="6" y="18" width="22" height="2" fill="#e8ecf4"/>
+      <!-- Contour casque -->
+      <rect x="8" y="2"  width="18" height="2" fill="#c0c8d8"/>
+      <rect x="4" y="4"  width="4" height="4" fill="#c0c8d8"/>
+      <rect x="26" y="4" width="4" height="4" fill="#c0c8d8"/>
+      <rect x="2" y="8"  width="2" height="10" fill="#c0c8d8"/>
+      <rect x="30" y="8" width="2" height="10" fill="#c0c8d8"/>
+      <!-- Visière pixel (couleur prospect) -->
+      <rect id="cs-visor" x="8" y="8" width="18" height="10" fill="#ff3d8f" opacity=".85"/>
+      <!-- Reflet visière -->
+      <rect x="10" y="9" width="6" height="3" fill="rgba(255,255,255,.5)"/>
+      <rect x="10" y="13" width="4" height="2" fill="rgba(255,255,255,.2)"/>
+      <!-- Badge entreprise (bras droit) -->
+      <rect id="cs-badge-rect" x="28" y="22" width="8" height="5" fill="#ff3d8f" opacity=".7"/>
+      <!-- Réservoir dos (pixel) -->
+      <rect x="6" y="20" width="4" height="14" fill="#d0d8e8"/>
+    </g>
+
+    <!-- ── HUD MISSION ── -->
+    <g id="cs-hud" opacity="0">
+      <!-- Frame HUD -->
+      <rect x="100" y="60" width="1000" height="62" rx="4" fill="rgba(4,6,20,.85)" stroke="rgba(100,120,255,.25)" stroke-width="1"/>
+      <!-- Coins HUD pixel -->
+      <rect x="100" y="60" width="8" height="2" fill="rgba(100,120,255,.5)"/>
+      <rect x="100" y="60" width="2" height="8" fill="rgba(100,120,255,.5)"/>
+      <rect x="1092" y="60" width="8" height="2" fill="rgba(100,120,255,.5)"/>
+      <rect x="1098" y="60" width="2" height="8" fill="rgba(100,120,255,.5)"/>
+      <rect x="100" y="120" width="8" height="2" fill="rgba(100,120,255,.5)"/>
+      <rect x="100" y="114" width="2" height="8" fill="rgba(100,120,255,.5)"/>
+      <rect x="1092" y="120" width="8" height="2" fill="rgba(100,120,255,.5)"/>
+      <rect x="1098" y="114" width="2" height="8" fill="rgba(100,120,255,.5)"/>
+      <!-- Texte HUD -->
+      <text x="600" y="84" fill="rgba(100,120,255,.45)" font-size="9" font-weight="600" letter-spacing="5" text-anchor="middle" font-family="monospace">MISSION DEVOLEADS</text>
+      <text id="cs-hud-pilot" x="600" y="104" fill="rgba(255,255,255,.75)" font-size="11" font-weight="700" letter-spacing="3" text-anchor="middle" font-family="monospace">PILOTE : –</text>
+      <!-- Indicateurs latéraux -->
+      <rect x="116" y="76" width="6" height="6" fill="#4ade80" id="cs-status-dot1"/>
+      <text x="128" y="82" fill="rgba(74,222,128,.6)" font-size="7" letter-spacing="2" font-family="monospace">SYSTÈMES OK</text>
+      <rect x="116" y="90" width="6" height="6" fill="#ff3d8f" id="cs-status-dot2"/>
+      <text x="128" y="96" fill="rgba(255,61,143,.5)" font-size="7" letter-spacing="2" font-family="monospace">PROPULSION PRÊTE</text>
+      <!-- Timer -->
+      <text id="cs-timer" x="1080" y="84" fill="rgba(100,120,255,.4)" font-size="9" letter-spacing="2" text-anchor="end" font-family="monospace">T-15</text>
+      <text id="cs-phase" x="1080" y="100" fill="rgba(255,255,255,.35)" font-size="7" letter-spacing="2" text-anchor="end" font-family="monospace">EMBARQUEMENT</text>
+    </g>
+
+    <!-- ── STATUS BAS ── -->
+    <g id="cs-status" opacity="0">
+      <rect x="400" y="600" width="400" height="28" rx="3" fill="rgba(4,6,20,.7)" stroke="rgba(100,120,255,.15)" stroke-width="1"/>
+      <text id="cs-status-txt" x="600" y="619" fill="rgba(100,120,255,.5)" font-size="9" letter-spacing="3" text-anchor="middle" font-family="monospace">INITIALISATION</text>
+    </g>
+
+    <!-- ── FUMÉE ── -->
+    <g id="cs-smoke" opacity="0">
+      <rect class="cs-puff1" x="554" y="570" width="60" height="40" rx="20" fill="rgba(60,80,160,.18)"/>
+      <rect class="cs-puff2" x="570" y="575" width="80" height="35" rx="18" fill="rgba(40,60,140,.14)"/>
+      <rect class="cs-puff3" x="540" y="578" width="100" height="30" rx="15" fill="rgba(80,100,180,.1)"/>
+    </g>
+
+    <!-- ── GRILLE SOL TARMAC ── -->
+    <g opacity=".3">
+      <line x1="0" y1="590" x2="1200" y2="590" stroke="rgba(100,120,255,.12)" stroke-width="1"/>
+      <line x1="0" y1="610" x2="1200" y2="610" stroke="rgba(100,120,255,.08)" stroke-width="1"/>
+      <line x1="200" y1="570" x2="200" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
+      <line x1="400" y1="570" x2="400" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
+      <line x1="800" y1="570" x2="800" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
+      <line x1="1000" y1="570" x2="1000" y2="680" stroke="rgba(100,120,255,.06)" stroke-width="1"/>
+    </g>
+  </svg>
+
+  <div id="cine-loading">
+    <div id="cine-loading-bar"><div id="cine-loading-fill"></div></div>
+    <div id="cine-loading-text">Personnalisation en cours…</div>
+  </div>
+  <div id="cine-flash"></div>
+</div>
 </body>
 </html>
