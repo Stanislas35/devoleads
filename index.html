@@ -1009,6 +1009,20 @@ html.light #rdv-val{color:var(--purple)}
   border-radius:0 0 0 14px;width:0%;
   transition:width linear;
 }
+
+/* ═══ VOIX OFF CONTROLS ═══ */
+#narration-mute{
+  position:absolute;top:10px;right:12px;
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  cursor:pointer;pointer-events:all;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+  flex-shrink:0;
+}
+#narration-mute:hover{background:rgba(255,255,255,.14)}
+#narration-mute svg{width:11px;height:11px;stroke:rgba(255,255,255,.45);fill:none;stroke-width:1.8}
+#narration-mute.muted svg{stroke:rgba(255,100,100,.6)}
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -1150,6 +1164,13 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
     <div id="narration-name">Devoleads</div>
     <div id="narration-text"><span id="narration-content"></span><span id="narration-cursor"></span></div>
   </div>
+  <button id="narration-mute" onclick="toggleVoix()" title="Activer/couper la voix">
+    <svg id="narration-mute-icon" viewBox="0 0 24 24">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path id="nm-waves" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <line id="nm-mute-line" x1="1" y1="1" x2="23" y2="23" style="display:none"/>
+    </svg>
+  </button>
   <div id="narration-progress"></div>
 </div>
 
@@ -2211,6 +2232,93 @@ Réponds UNIQUEMENT avec un JSON valide sans markdown :
 }
 
 // Afficher la narration pour un slide donné
+
+// ════ VOIX OFF — Web Speech API ════
+let voixEnabled = true;       // activée par défaut
+let voixUtterance = null;     // utterance en cours
+let voixReady = false;        // API disponible
+
+// Détecter la disponibilité
+if('speechSynthesis' in window){
+  voixReady = true;
+  // Précharger les voix (Chrome a besoin de ça)
+  speechSynthesis.getVoices();
+  speechSynthesis.addEventListener('voiceschanged', ()=>{ speechSynthesis.getVoices(); });
+}
+
+function getVoixFr(){
+  if(!voixReady) return null;
+  const voices = speechSynthesis.getVoices();
+  // Chercher une voix française de qualité
+  const prefs = [
+    v => v.lang==='fr-FR' && v.name.includes('Thomas'),
+    v => v.lang==='fr-FR' && v.name.includes('Amélie'),
+    v => v.lang==='fr-FR' && !v.name.includes('Google') && v.localService,
+    v => v.lang==='fr-FR' && v.name.includes('Google'),
+    v => v.lang==='fr-FR',
+    v => v.lang.startsWith('fr'),
+  ];
+  for(const pref of prefs){
+    const found = voices.find(pref);
+    if(found) return found;
+  }
+  return voices[0] || null;
+}
+
+function speakNarration(text){
+  if(!voixReady || !voixEnabled || !text) return;
+  // Arrêter si déjà en train de parler
+  stopVoix();
+  // Délai pour laisser le streaming visuel démarrer
+  setTimeout(()=>{
+    if(!voixEnabled) return;
+    const utt = new SpeechSynthesisUtterance(text);
+    const voice = getVoixFr();
+    if(voice) utt.voice = voice;
+    utt.lang = 'fr-FR';
+    utt.rate = 0.92;     // légèrement plus lent que la normale — plus naturel
+    utt.pitch = 1.0;
+    utt.volume = 0.82;
+    voixUtterance = utt;
+    speechSynthesis.speak(utt);
+  }, 400);
+}
+
+function stopVoix(){
+  if(!voixReady) return;
+  try { speechSynthesis.cancel(); } catch(e){}
+  voixUtterance = null;
+}
+
+window.toggleVoix = function(){
+  voixEnabled = !voixEnabled;
+  const btn = document.getElementById('narration-mute');
+  const waves = document.getElementById('nm-waves');
+  const muteLine = document.getElementById('nm-mute-line');
+  if(btn) btn.classList.toggle('muted', !voixEnabled);
+  if(waves) waves.style.display = voixEnabled ? '' : 'none';
+  if(muteLine) muteLine.style.display = voixEnabled ? 'none' : '';
+  if(!voixEnabled) stopVoix();
+  // Sauvegarder la préférence
+  try { sessionStorage.setItem('dv-voix', voixEnabled ? '1' : '0'); } catch(e){}
+};
+
+// Restaurer la préférence mute
+(function(){
+  try {
+    const saved = sessionStorage.getItem('dv-voix');
+    if(saved === '0'){
+      voixEnabled = false;
+      const btn = document.getElementById('narration-mute');
+      const waves = document.getElementById('nm-waves');
+      const muteLine = document.getElementById('nm-mute-line');
+      if(btn) btn.classList.add('muted');
+      if(waves) waves.style.display = 'none';
+      if(muteLine) muteLine.style.display = '';
+    }
+  } catch(e){}
+})();
+
 function showNarration(slideIdx){
   // On rejoue la narration même sur les slides déjà vues (max 1× par visite cockpit)
   if(!narrationTexts && narrationShown.has(slideIdx) && narrationShown.size > 1) return;
@@ -2250,6 +2358,9 @@ function showNarration(slideIdx){
   ov.classList.add('visible');
   cursor.style.display = 'inline-block';
 
+  // Voix off — lancer en parallèle du streaming visuel
+  speakNarration(text);
+
   // Streaming effect — afficher le texte caractère par caractère
   let i = 0;
   const speed = Math.min(28, Math.max(14, 4000 / text.length));
@@ -2279,6 +2390,7 @@ function showNarration(slideIdx){
       cursor.style.display = 'none';
       progress.style.transition = 'none';
       progress.style.width = '0%';
+      stopVoix();
     }, 500);
   }, displayDuration);
 
@@ -2311,6 +2423,9 @@ window.go=function(idx){
   // Tick counter
   const pnEl=document.getElementById('pn');
   if(pnEl){pnEl.classList.remove('tick');pnEl.offsetHeight;pnEl.classList.add('tick');}
+
+  // Couper la voix de la slide précédente
+  stopVoix();
 
   // Slide sortante
   const outClass = dir>0 ? 'out-left' : 'out-right';
@@ -2842,6 +2957,7 @@ window.openUniverse=function(){
   if(_nOv){ _nOv.classList.remove('visible','fading'); }
   if(narrationTimer) clearTimeout(narrationTimer);
   if(narrationFadeTimer) clearTimeout(narrationFadeTimer);
+  stopVoix();
   // Appliquer le thème prospect si disponible
   if(typeof applyCockpitTheme==='function'){
     const pd = (typeof prospectData!=='undefined') ? prospectData : null;
