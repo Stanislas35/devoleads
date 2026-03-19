@@ -960,6 +960,55 @@ body.cinematic .slide.active .sg>*{
 html.light .orb{opacity:.04!important}
 html.light #rdv-counter{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.12)}
 html.light #rdv-val{color:var(--purple)}
+
+/* ═══ NARRATION OVERLAY ═══ */
+#narration-overlay{
+  position:fixed;
+  bottom:clamp(70px,9vh,90px);
+  left:50%;transform:translateX(-50%);
+  z-index:90;
+  max-width:min(680px,82vw);
+  width:max-content;
+  background:rgba(6,7,15,.88);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;
+  padding:14px 20px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .5s ease;
+  display:flex;align-items:flex-start;gap:12px;
+}
+#narration-overlay.visible{opacity:1}
+#narration-overlay.fading{opacity:0}
+#narration-icon{
+  width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+  font-size:12px;
+}
+#narration-body{display:flex;flex-direction:column;gap:4px;min-width:0}
+#narration-name{
+  font-family:var(--display);font-size:8px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);
+}
+#narration-text{
+  font-size:13px;color:rgba(255,255,255,.82);line-height:1.55;
+  font-weight:300;
+}
+#narration-cursor{
+  display:inline-block;width:2px;height:13px;
+  background:var(--pink);margin-left:2px;vertical-align:middle;
+  animation:nc-blink .8s step-end infinite;
+}
+@keyframes nc-blink{0%,100%{opacity:1}50%{opacity:0}}
+#narration-progress{
+  position:absolute;bottom:0;left:0;height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+  border-radius:0 0 0 14px;width:0%;
+  transition:width linear;
+}
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -1093,6 +1142,17 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8l-4 4 4 4M16 12H8"/></svg>
   Cockpit
 </div>
+
+<!-- NARRATION OVERLAY -->
+<div id="narration-overlay">
+  <div id="narration-icon">✦</div>
+  <div id="narration-body">
+    <div id="narration-name">Devoleads</div>
+    <div id="narration-text"><span id="narration-content"></span><span id="narration-cursor"></span></div>
+  </div>
+  <div id="narration-progress"></div>
+</div>
+
 <div id="name-screen">
   <div id="name-eyebrow">Mission Devoleads · Briefing</div>
   <div id="name-title">Avant de décoller,<br>qui êtes-vous ?</div>
@@ -2072,6 +2132,169 @@ function ui(){
 }
 ui();
 
+
+// ════ NARRATION PERSONNALISÉE ════
+let narrationTexts = null;   // {0: "...", 1: "...", ...8 slides}
+let narrationTimer = null;
+let narrationFadeTimer = null;
+let narrationShown = new Set();
+
+// Textes génériques (sans prospect)
+const NARRATION_GENERIC = [
+  "Bienvenue. Ce deck a été conçu pour aller droit au but — chaque slide répond à une question que vous vous posez probablement déjà.",
+  "La prospection B2B prend du temps que vous n'avez pas. Devoleads prend en charge tout le cycle — de la data à la prise de rendez-vous — pour que votre équipe ne ferme que des deals chauds.",
+  "En 14 jours, le premier lead qualifié arrive dans votre agenda. Pas de magie — juste un process rodé sur 150 clients.",
+  "Trois formules, une logique simple : vous choisissez la vitesse à laquelle vous voulez saturer votre pipeline. Chaque formule est garantie en nombre de RDV.",
+  "Stanislas et son équipe sont des fondateurs, pas des commerciaux juniors. Ils ont construit ce système pour eux-mêmes avant de le déployer pour leurs clients.",
+  "La vidéo change tout en prospection. Un message vidéo personnalisé multiplie le taux de réponse par 4 par rapport à un cold email classique.",
+  "Cette séquence a été générée spécifiquement pour votre profil. C'est exactement ce que vos prospects recevraient dès le lancement.",
+  "La prochaine étape prend 30 minutes. Un appel stratégique — gratuit, sans engagement — pour calibrer votre pipeline ensemble."
+];
+
+// Générer toutes les narrations en une seule passe
+async function generateAllNarrations(pilotName, prospect){
+  const p = prospect;
+  const hasProspect = !!(p && p.societe);
+
+  const slideContext = [
+    {idx:0, slide:"Cover / Introduction", focus:"accueil et promesse principale"},
+    {idx:1, slide:"Services", focus:"ce que Devoleads fait concrètement"},
+    {idx:2, slide:"Process", focus:"les 14 jours jusqu'au premier lead"},
+    {idx:3, slide:"Formules & tarifs", focus:"les 3 offres et leurs garanties"},
+    {idx:4, slide:"Équipe", focus:"qui sont Stanislas et son équipe"},
+    {idx:5, slide:"Vidéo prospection", focus:"pourquoi la vidéo change tout"},
+    {idx:6, slide:"AI Icebreaker", focus:"la personnalisation IA de Devoleads"},
+    {idx:7, slide:"Mise en place / Contact", focus:"comment démarrer ensemble"},
+  ];
+
+  const prospectCtx = hasProspect
+    ? `Le prospect s'appelle ${pilotName}, CEO de ${p.societe} (${p.secteur||'B2B'}, ${p.ville||'France'}). Actu : ${p.actu||''}. `
+    : `Le visiteur s'appelle ${pilotName}. `;
+
+  const prompt = `Tu es un consultant commercial senior chez Devoleads, agence de génération de RDV B2B.
+${prospectCtx}
+Tu dois écrire 8 narrations — une par slide du pitch deck — qui apparaissent comme un overlay discret pendant 6 secondes.
+
+Règles strictes :
+- 1 à 2 phrases max par narration, jamais plus
+- Ton humain et conversationnel, jamais corporatif
+- ${hasProspect ? `Intégrer naturellement "${pilotName}" et "${p.societe}" dans AU MOINS 4 slides` : `Utiliser "${pilotName}" dans 3 slides au minimum`}
+- Chaque narration doit apporter une info ou une réflexion utile — jamais juste paraphraser le titre
+- Style : comme si tu murmurais un conseil à l'oreille du prospect
+
+Slides :
+${slideContext.map(s => `${s.idx}. ${s.slide} (focus : ${s.focus})`).join('\n')}
+
+Réponds UNIQUEMENT avec un JSON valide sans markdown :
+{"0":"...","1":"...","2":"...","3":"...","4":"...","5":"...","6":"...","7":"..."}`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1200,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await resp.json();
+    let text = '';
+    if(Array.isArray(data.content)) data.content.forEach(b=>{ if(b.type==='text') text+=b.text; });
+    const match = text.match(/\{[\s\S]*\}/);
+    if(match) return JSON.parse(match[0]);
+    return null;
+  } catch(e){
+    console.error('narration gen error:', e);
+    return null;
+  }
+}
+
+// Afficher la narration pour un slide donné
+function showNarration(slideIdx){
+  // On rejoue la narration même sur les slides déjà vues (max 1× par visite cockpit)
+  if(!narrationTexts && narrationShown.has(slideIdx) && narrationShown.size > 1) return;
+
+  // Choisir le texte
+  const text = narrationTexts
+    ? (narrationTexts[slideIdx] || narrationTexts[String(slideIdx)] || NARRATION_GENERIC[slideIdx] || '')
+    : NARRATION_GENERIC[slideIdx] || '';
+
+  if(!text) return;
+
+  const ov = document.getElementById('narration-overlay');
+  const content = document.getElementById('narration-content');
+  const cursor = document.getElementById('narration-cursor');
+  const progress = document.getElementById('narration-progress');
+  const nameEl = document.getElementById('narration-name');
+  if(!ov || !content) return;
+
+  // Reset timers
+  if(narrationTimer) clearTimeout(narrationTimer);
+  if(narrationFadeTimer) clearTimeout(narrationFadeTimer);
+  ov.classList.remove('visible','fading');
+  content.textContent = '';
+  progress.style.transition = 'none';
+  progress.style.width = '0%';
+
+  // Personnaliser le label
+  const pilotName = window._getPilotName ? window._getPilotName() : '';
+  if(nameEl && pilotName && pilotName !== 'Pilote'){
+    nameEl.textContent = pilotName;
+  } else if(nameEl){
+    nameEl.textContent = 'Devoleads';
+  }
+
+  // Afficher
+  void ov.offsetHeight;
+  ov.classList.add('visible');
+  cursor.style.display = 'inline-block';
+
+  // Streaming effect — afficher le texte caractère par caractère
+  let i = 0;
+  const speed = Math.min(28, Math.max(14, 4000 / text.length));
+  const typeInterval = setInterval(()=>{
+    if(i < text.length){
+      content.textContent = text.slice(0, ++i);
+    } else {
+      clearInterval(typeInterval);
+      cursor.style.display = 'none';
+    }
+  }, speed);
+
+  // Barre de progression (6s)
+  const displayDuration = 6000;
+  setTimeout(()=>{
+    progress.style.transition = `width ${displayDuration}ms linear`;
+    progress.style.width = '100%';
+  }, 50);
+
+  // Fade out après 6s
+  narrationFadeTimer = setTimeout(()=>{
+    clearInterval(typeInterval);
+    ov.classList.add('fading');
+    narrationTimer = setTimeout(()=>{
+      ov.classList.remove('visible','fading');
+      content.textContent = '';
+      cursor.style.display = 'none';
+      progress.style.transition = 'none';
+      progress.style.width = '0%';
+    }, 500);
+  }, displayDuration);
+
+  narrationShown.add(slideIdx);
+}
+
+// Lancer la génération batch pendant / après la NASA
+async function initNarrations(pilotName){
+  const prospect = (typeof prospectData !== 'undefined' && prospectData)
+    ? prospectData.prospect : null;
+  const texts = await generateAllNarrations(pilotName, prospect);
+  narrationTexts = texts;
+  // Si on est déjà sur une slide, afficher maintenant
+  if(typeof cur !== 'undefined') showNarration(cur);
+}
+
 window.go=function(idx){
   if(busy||idx===cur||idx<0||idx>=TOTAL) return;
   busy=true;
@@ -2114,6 +2337,8 @@ window.go=function(idx){
     if(cur===2) startMotion(); else stopMotion();
     setSlideAmbiance(cur);
     if(cur===7) startSetup(); // S8 Mise en place = index 7
+    // Narration personnalisée
+    if(typeof showNarration==='function') setTimeout(()=>showNarration(cur), 600);
     // S7 : générer séquence fictive si pas encore faite ET pas d'URL en cours
     if(cur===6 && !prospectData && !prospectUrl && typeof analyzeProspect==='function'){
       const DUMMY = [
@@ -2612,6 +2837,11 @@ window.openUniverse=function(){
     document.querySelectorAll('.ck-nd').forEach((d,i)=>d.classList.toggle('active',i===cur));
     ckActive=cur;
   }
+  // Masquer la narration si visible quand on ouvre le cockpit
+  const _nOv = document.getElementById('narration-overlay');
+  if(_nOv){ _nOv.classList.remove('visible','fading'); }
+  if(narrationTimer) clearTimeout(narrationTimer);
+  if(narrationFadeTimer) clearTimeout(narrationFadeTimer);
   // Appliquer le thème prospect si disponible
   if(typeof applyCockpitTheme==='function'){
     const pd = (typeof prospectData!=='undefined') ? prospectData : null;
@@ -2643,6 +2873,11 @@ window.closeUniverse=function(){
       slides[cur].classList.add('active');
     }
     busy=false;
+    // Relancer la narration de la slide active
+    if(typeof showNarration==='function'){
+      narrationShown.delete(cur); // permettre la relecture
+      setTimeout(()=>showNarration(cur), 600);
+    }
   },100);
 };
 
@@ -3089,6 +3324,9 @@ window.startNASA=function(){
       setTimeout(()=>{seq.style.display='none';},700);
       sessionStorage.setItem('nasa-done','1');
       if(typeof enterCinematic==='function') enterCinematic();
+      // Générer les narrations en background
+      const _pn = window._getPilotName ? window._getPilotName() : 'Pilote';
+      if(typeof initNarrations==='function') initNarrations(_pn);
     },800);
   }
 };
@@ -3108,6 +3346,10 @@ function enterCinematic(){
   document.querySelectorAll('.arr,.dot').forEach(el=>{
     el.style.transition='none';el.style.opacity='0';el.style.pointerEvents='none';
   });
+  // Déclencher la narration de la slide active (slide 0 au premier lancement)
+  if(typeof showNarration==='function' && typeof cur!=='undefined'){
+    setTimeout(()=>showNarration(cur), 800);
+  }
 }
 
 function exitCinematic(){
@@ -3474,6 +3716,12 @@ function injectProspectSequence(data){
   // Appliquer le thème prospect au cockpit si disponible
   if(typeof applyCockpitTheme==='function' && data.prospect){
     applyCockpitTheme(data.prospect);
+  }
+  // Regénérer les narrations avec le contexte prospect
+  const _pn2 = window._getPilotName ? window._getPilotName() : 'Pilote';
+  if(typeof initNarrations==='function'){
+    narrationTexts = null; // reset pour forcer la regénération
+    initNarrations(_pn2);
   }
   // Forcer le slider sur niveau max pour afficher la séquence IA
   const slider = document.getElementById('ice2-slider');
