@@ -536,8 +536,10 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
   padding:16px 14px;
   border-right:1px solid rgba(var(--ck-accent),.08);
   background:rgba(2,3,12,.6);
-  overflow:hidden;
+  overflow-y:auto;overflow-x:hidden;
+  scrollbar-width:none;
 }
+.ck-panel-side::-webkit-scrollbar{display:none}
 #ck-panel-right{border-right:none;border-left:1px solid rgba(var(--ck-accent),.08)}
 .ck-pblock{
   background:rgba(var(--ck-accent),.04);
@@ -556,7 +558,8 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
 #ck-prospect-logo{
   font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
   color:rgba(var(--ck-accent),.4);text-align:center;padding:8px 0;
-  border-top:1px solid rgba(var(--ck-accent),.08);margin-top:auto;
+  border-top:1px solid rgba(var(--ck-accent),.08);
+  margin-top:auto;flex-shrink:0;
 }
 
 /* Zone centrale — canvas + hublot + dash */
@@ -589,14 +592,16 @@ html.light #uni-btn{background:rgba(248,249,252,.9);border-color:rgba(0,0,0,.12)
 /* Watermark prospect dans le hublot */
 #ck-porthole-name{
   position:absolute;
-  top:clamp(8px,2vh,18px);left:50%;transform:translateX(-50%);
+  top:calc(clamp(8px,2vh,18px) + clamp(220px,58%,460px)*.48);
+  left:50%;transform:translate(-50%,-50%);
   z-index:8;pointer-events:none;
-  font-family:var(--display);font-size:clamp(9px,1.2vw,13px);
+  font-family:var(--display);font-size:clamp(8px,1.1vw,12px);
   font-weight:700;letter-spacing:4px;text-transform:uppercase;
-  color:rgba(var(--ck-accent),.18);
-  transition:color .8s ease;
-  white-space:nowrap;
+  color:rgba(var(--ck-accent),.16);
+  transition:color .8s ease, opacity .8s ease;
+  white-space:nowrap;opacity:0;
 }
+#ck-porthole-name.visible{opacity:1}
 #ck-porthole-click{
   position:absolute;
   top:clamp(8px,2vh,18px);left:50%;transform:translateX(-50%);
@@ -2383,7 +2388,7 @@ function ckAnimate(){
       const pulse=1+timeBonus+Math.sin(ckFrame*.06)*.06;
       mesh.scale.setScalar(pulse);
       if(mesh.material){
-        mesh.material.emissive&&mesh.material.emissive.setHex(parseInt(pd.color.replace('#',''),16));
+        mesh.material.emissive&&pd.color&&mesh.material.emissive.setHex(parseInt(pd.color.replace('#',''),16));
         mesh.material.emissiveIntensity=.15+timeBonus*.5+Math.sin(ckFrame*.06)*.05;
       }
     } else if(ckWrap&&ckWrap._hovered===pd.id){
@@ -2555,9 +2560,11 @@ function applyCockpitTheme(prospect){
   if(portholeNameEl){
     if(prospect && prospect.societe){
       portholeNameEl.textContent = prospect.societe;
-      portholeNameEl.style.color = `rgba(${rgb},.22)`;
+      portholeNameEl.style.color = `rgba(${rgb},.18)`;
+      setTimeout(()=>portholeNameEl.classList.add('visible'), 800);
     } else {
       portholeNameEl.textContent = '';
+      portholeNameEl.classList.remove('visible');
     }
   }
 
