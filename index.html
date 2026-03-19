@@ -120,29 +120,33 @@ html.light #theme-toggle .ico-sun{display:block}
 .slide.active{opacity:1;pointer-events:all}
 .slide.out{pointer-events:none}
 
-/* Direction-aware transitions */
-.slide.ein-right{animation:ein-right .7s cubic-bezier(.16,1,.3,1) forwards}
-.slide.ein-left{animation:ein-left .7s cubic-bezier(.16,1,.3,1) forwards}
-.slide.out-left{animation:out-left .42s cubic-bezier(.4,0,1,1) forwards}
-.slide.out-right{animation:out-right .42s cubic-bezier(.4,0,1,1) forwards}
+/* Direction-aware transitions — cinématiques */
+.slide.ein-right{animation:ein-right .75s cubic-bezier(.16,1,.3,1) forwards}
+.slide.ein-left{animation:ein-left .75s cubic-bezier(.16,1,.3,1) forwards}
+.slide.out-left{animation:out-left .38s cubic-bezier(.55,0,1,.8) forwards}
+.slide.out-right{animation:out-right .38s cubic-bezier(.55,0,1,.8) forwards}
 
 @keyframes ein-right{
-  0%{opacity:0;transform:translateX(60px) scale(.96) rotateY(-3deg)}
-  60%{opacity:1}
+  0%  {opacity:0;transform:translateX(70px) scale(.94) rotateY(-4deg) rotateZ(.3deg)}
+  15% {opacity:.4}
+  55% {opacity:1}
   100%{opacity:1;transform:none}
 }
 @keyframes ein-left{
-  0%{opacity:0;transform:translateX(-60px) scale(.96) rotateY(3deg)}
-  60%{opacity:1}
+  0%  {opacity:0;transform:translateX(-70px) scale(.94) rotateY(4deg) rotateZ(-.3deg)}
+  15% {opacity:.4}
+  55% {opacity:1}
   100%{opacity:1;transform:none}
 }
 @keyframes out-left{
-  0%{opacity:1;transform:none}
-  100%{opacity:0;transform:translateX(-40px) scale(.97) rotateY(2deg)}
+  0%  {opacity:1;transform:none}
+  40% {opacity:.5}
+  100%{opacity:0;transform:translateX(-55px) scale(.95) rotateY(2.5deg) rotateZ(.15deg)}
 }
 @keyframes out-right{
-  0%{opacity:1;transform:none}
-  100%{opacity:0;transform:translateX(40px) scale(.97) rotateY(-2deg)}
+  0%  {opacity:1;transform:none}
+  40% {opacity:.5}
+  100%{opacity:0;transform:translateX(55px) scale(.95) rotateY(-2.5deg) rotateZ(-.15deg)}
 }
 
 /* Staggered children — plus rapide, plus dramatique */
@@ -160,18 +164,33 @@ html.light #theme-toggle .ico-sun{display:block}
   100%{opacity:1;transform:none}
 }
 
-/* Flash de transition — ligne lumineuse verticale */
+/* Flash de transition — cinématique */
 #transition-flash{
   position:fixed;inset:0;z-index:50;pointer-events:none;
-  background:linear-gradient(90deg,transparent 40%,rgba(124,58,237,.18) 50%,rgba(255,61,143,.12) 55%,transparent 65%);
-  opacity:0;
-  transform:translateX(-100%);
+  opacity:0;transform:translateX(-100%);
+  /* Halo lumineux de scan */
+  background:linear-gradient(90deg,
+    transparent 30%,
+    rgba(124,58,237,.1) 42%,
+    rgba(124,58,237,.22) 48%,
+    rgba(255,61,143,.18) 52%,
+    rgba(255,61,143,.08) 58%,
+    transparent 70%
+  );
 }
-#transition-flash.fire{animation:flash-sweep .5s cubic-bezier(.4,0,.2,1) forwards}
+#transition-flash.fire{animation:flash-sweep .48s cubic-bezier(.4,0,.15,1) forwards}
+#transition-flash.fire-back{animation:flash-sweep-back .48s cubic-bezier(.4,0,.15,1) forwards}
 @keyframes flash-sweep{
-  0%{opacity:0;transform:translateX(-100%)}
-  40%{opacity:1}
-  100%{opacity:0;transform:translateX(200%)}
+  0%  {opacity:0;transform:translateX(-110%)}
+  25% {opacity:1}
+  75% {opacity:.8}
+  100%{opacity:0;transform:translateX(210%)}
+}
+@keyframes flash-sweep-back{
+  0%  {opacity:0;transform:translateX(110%)}
+  25% {opacity:1}
+  75% {opacity:.8}
+  100%{opacity:0;transform:translateX(-210%)}
 }
 
 /* Compteur de slide animé */
@@ -961,69 +980,6 @@ html.light .orb{opacity:.04!important}
 html.light #rdv-counter{background:rgba(0,0,0,.06);border-color:rgba(0,0,0,.12)}
 html.light #rdv-val{color:var(--purple)}
 
-/* ═══ NARRATION OVERLAY ═══ */
-#narration-overlay{
-  position:fixed;
-  bottom:clamp(70px,9vh,90px);
-  left:50%;transform:translateX(-50%);
-  z-index:90;
-  max-width:min(680px,82vw);
-  width:max-content;
-  background:rgba(6,7,15,.88);
-  backdrop-filter:blur(20px);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:14px;
-  padding:14px 20px;
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .5s ease;
-  display:flex;align-items:flex-start;gap:12px;
-}
-#narration-overlay.visible{opacity:1}
-#narration-overlay.fading{opacity:0}
-#narration-icon{
-  width:26px;height:26px;border-radius:50%;
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;margin-top:1px;
-  font-size:12px;
-}
-#narration-body{display:flex;flex-direction:column;gap:4px;min-width:0}
-#narration-name{
-  font-family:var(--display);font-size:8px;font-weight:600;
-  letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);
-}
-#narration-text{
-  font-size:13px;color:rgba(255,255,255,.82);line-height:1.55;
-  font-weight:300;
-}
-#narration-cursor{
-  display:inline-block;width:2px;height:13px;
-  background:var(--pink);margin-left:2px;vertical-align:middle;
-  animation:nc-blink .8s step-end infinite;
-}
-@keyframes nc-blink{0%,100%{opacity:1}50%{opacity:0}}
-#narration-progress{
-  position:absolute;bottom:0;left:0;height:2px;
-  background:linear-gradient(90deg,var(--purple),var(--pink));
-  border-radius:0 0 0 14px;width:0%;
-  transition:width linear;
-}
-
-/* ═══ VOIX OFF CONTROLS ═══ */
-#narration-mute{
-  position:absolute;top:10px;right:12px;
-  width:22px;height:22px;border-radius:50%;
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
-  cursor:pointer;pointer-events:all;
-  display:flex;align-items:center;justify-content:center;
-  transition:background .2s;
-  flex-shrink:0;
-}
-#narration-mute:hover{background:rgba(255,255,255,.14)}
-#narration-mute svg{width:11px;height:11px;stroke:rgba(255,255,255,.45);fill:none;stroke-width:1.8}
-#narration-mute.muted svg{stroke:rgba(255,100,100,.6)}
-
 /* ═══ SCÈNE CINÉMATIQUE 15s ═══ */
 #cine-scene{
   position:fixed;inset:0;z-index:810;
@@ -1132,6 +1088,110 @@ body.ck-pov #ck-pov-hud{opacity:1}
 }
 #ck-pov-toggle:hover{color:rgba(255,255,255,.75);border-color:rgba(100,120,255,.4)}
 body.ck-pov #ck-pov-toggle{color:rgba(100,220,100,.6);border-color:rgba(100,220,100,.3);background:rgba(6,15,7,.75)}
+
+/* ═══ MODE PRÉSENTATION LIVE ═══ */
+#live-badge{
+  display:none;
+  font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:#ff3d8f;border:1px solid rgba(255,61,143,.4);border-radius:100px;
+  padding:3px 9px;margin-left:8px;
+  background:rgba(255,61,143,.08);
+  animation:live-pulse 2s ease-in-out infinite;
+}
+body.live-mode #live-badge{display:inline-block}
+@keyframes live-pulse{
+  0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,61,143,.0)}
+  50%{opacity:.7;box-shadow:0 0 0 4px rgba(255,61,143,.12)}
+}
+/* Curseur présentateur en mode live */
+body.live-mode #cur-r{
+  width:44px;height:44px;
+  border:1.5px solid rgba(255,61,143,.5);
+  background:rgba(255,61,143,.06);
+  transition:all .15s ease-out;
+}
+body.live-mode #cur-d{
+  width:7px;height:7px;
+  background:#ff3d8f;
+  box-shadow:0 0 8px rgba(255,61,143,.6);
+}
+
+/* ═══ SALLE DE CONTRÔLE ═══ */
+#ck-room{
+  position:absolute;inset:0;z-index:1;
+  background:#020408;
+  overflow:hidden;
+}
+#ck-room-svg{display:block;width:100%;height:100%}
+#cockpit-wrap{position:relative;overflow:hidden}
+
+/* Navigation planètes dans le hublot */
+#ck-porthole-planets{
+  position:absolute;
+  left:50%;top:0;
+  transform:translateX(-50%);
+  width:310px;height:355px;
+  pointer-events:all;
+  z-index:5;
+}
+.ck-planet-btn{
+  position:absolute;
+  border-radius:50%;
+  cursor:pointer;
+  border:none;background:none;padding:0;
+  transition:transform .3s ease, filter .3s ease;
+  transform-origin:center;
+}
+.ck-planet-btn:hover{transform:scale(1.2)!important;filter:brightness(1.4);}
+.ck-planet-btn.active{
+  animation:planet-pulse-active 2s ease-in-out infinite;
+}
+@keyframes planet-pulse-active{
+  0%,100%{filter:brightness(1.2) saturate(1.3);transform:scale(1.1)!important}
+  50%{filter:brightness(1.5) saturate(1.5);transform:scale(1.15)!important}
+}
+.ck-planet-label{
+  position:absolute;left:50%;transform:translateX(-50%);
+  bottom:-18px;white-space:nowrap;
+  font-size:8px;font-family:monospace;font-weight:600;letter-spacing:1px;
+  color:rgba(255,255,255,.55);
+  text-shadow:0 0 8px rgba(0,0,0,.8);
+  pointer-events:none;
+}
+.ck-planet-btn.active .ck-planet-label{color:rgba(255,255,255,.9)}
+
+/* Animation scan radar */
+@keyframes ck-radar-spin{
+  from{transform-origin:500px 420px;transform:rotate(0deg)}
+  to{transform-origin:500px 420px;transform:rotate(360deg)}
+}
+#radar-scan{animation:ck-radar-spin 3s linear infinite;transform-box:fill-box;transform-origin:0px 0px}
+
+/* Bouton nav cockpit (ancien) caché */
+#ck-nav{display:none}
+#ck-hint{display:none!important}
+#ck-pov-toggle{display:none!important}
+
+/* HUD destination clignotant */
+@keyframes ck-hud-blink{0%,100%{opacity:.4}50%{opacity:.8}}
+#ck-hud-dest.active{animation:ck-hud-blink 1.5s ease-in-out infinite}
+
+/* Lueur ambiante cockpit */
+#ck-room::after{
+  content:'';position:absolute;
+  left:50%;top:120px;
+  width:350px;height:200px;
+  transform:translateX(-50%);
+  background:radial-gradient(ellipse,rgba(80,120,255,.06) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+
+/* Scan lines léger */
+#ck-room::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.03) 3px,rgba(0,0,0,.03) 4px);
+  pointer-events:none;z-index:10;
+}
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -1190,28 +1250,237 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
       <div id="ck-prospect-logo"></div>
     </div>
 
-    <!-- CENTRE — Canvas + hublot + dash -->
+    <!-- CENTRE — Salle de contrôle SVG -->
     <div id="cockpit-wrap">
-      <canvas id="ck-three"></canvas>
-      <div id="ck-porthole"></div>
-      <div id="ck-porthole-name"></div>
-      <div id="ck-porthole-click"></div>
-      <!-- POV overlays -->
-      <div id="ck-pov-vignette"></div>
-      <div id="ck-pov-hud">
-        <span id="ck-pov-alt">ALT 47,000 KM</span>
-        <span id="ck-pov-dest">DEST: –</span>
-        <span id="ck-pov-spd">VIT 7.8 KM/S</span>
-      </div>
-      <button id="ck-pov-toggle" onclick="toggleCkPov()" title="Basculer vue intérieure/extérieure">
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/></svg>
-        <span id="ck-pov-label">POV</span>
-      </button>
+      <!-- Canvas Three.js conservé mais caché — utilisé pour calculs internes -->
+      <canvas id="ck-three" style="display:none"></canvas>
+      <!-- Overlays système -->
       <div id="ck-warp"></div>
       <div id="ck-scan"></div>
       <div id="ck-cur"></div>
       <div id="ck-tt"><div id="ck-tt-name"></div><div id="ck-tt-sub"></div></div>
-      <div id="ck-hint">Survolez une planète · cliquez pour voyager</div>
+      <div id="ck-hint" style="display:none"></div>
+      <!-- SALLE DE CONTRÔLE SVG -->
+      <div id="ck-room">
+        <svg id="ck-room-svg" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block">
+          <defs>
+            <!-- Gradients ambiance -->
+            <radialGradient id="roomBg" cx="50%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="#0c0f1e"/>
+              <stop offset="100%" stop-color="#020308"/>
+            </radialGradient>
+            <radialGradient id="screenGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#1a2a5a" stop-opacity=".9"/>
+              <stop offset="100%" stop-color="#060c18" stop-opacity=".95"/>
+            </radialGradient>
+            <!-- Hublot circulaire -->
+            <clipPath id="porthole-clip">
+              <circle cx="500" cy="200" r="155"/>
+            </clipPath>
+            <!-- Glow filter -->
+            <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="glow-soft" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="6" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- ── FOND DE LA PIÈCE ── -->
+          <rect width="1000" height="620" fill="url(#roomBg)"/>
+
+          <!-- ── PLAFOND avec lumières encastrées ── -->
+          <rect x="0" y="0" width="1000" height="55" fill="#06080f"/>
+          <rect x="0" y="54" width="1000" height="1" fill="rgba(100,140,255,.12)"/>
+          <!-- Lumières plafond -->
+          <rect x="180" y="12" width="80" height="30" rx="4" fill="#111828" stroke="rgba(100,140,255,.15)" stroke-width="1"/>
+          <rect x="183" y="15" width="74" height="24" rx="3" fill="rgba(120,180,255,.08)"/>
+          <rect x="740" y="12" width="80" height="30" rx="4" fill="#111828" stroke="rgba(100,140,255,.15)" stroke-width="1"/>
+          <rect x="743" y="15" width="74" height="24" rx="3" fill="rgba(120,180,255,.08)"/>
+          <!-- Liseré lumineux plafond -->
+          <rect x="0" y="55" width="1000" height="3" fill="rgba(80,120,255,.06)"/>
+
+          <!-- ── PAROIS LATÉRALES inclinées perspective ── -->
+          <!-- Gauche -->
+          <polygon points="0,55 160,55 260,620 0,620" fill="#07091a"/>
+          <line x1="160" y1="55" x2="260" y2="620" stroke="rgba(80,120,255,.15)" stroke-width="1"/>
+          <!-- Droite -->
+          <polygon points="1000,55 840,55 740,620 1000,620" fill="#07091a"/>
+          <line x1="840" y1="55" x2="740" y2="620" stroke="rgba(80,120,255,.15)" stroke-width="1"/>
+
+          <!-- ── CLOISONS LATÉRALES instruments ── -->
+          <!-- Gauche interior -->
+          <rect x="0" y="55" width="162" height="480" fill="#070a18" stroke="rgba(80,100,200,.1)" stroke-width="1"/>
+          <!-- Droite interior -->
+          <rect x="838" y="55" width="162" height="480" fill="#070a18" stroke="rgba(80,100,200,.1)" stroke-width="1"/>
+
+          <!-- ── ÉCRAN LATÉRAL GAUCHE ── -->
+          <rect x="15" y="90" width="130" height="80" rx="6" fill="url(#screenGlow)" stroke="rgba(80,120,255,.3)" stroke-width="1"/>
+          <text x="80" y="117" fill="rgba(100,160,255,.5)" font-size="7" font-family="monospace" letter-spacing="1" text-anchor="middle">DÉLIVRABILITÉ</text>
+          <text x="80" y="140" fill="#22d3ee" font-size="20" font-weight="800" font-family="monospace" text-anchor="middle" filter="url(#glow)">94%</text>
+          <rect x="25" y="155" width="110" height="3" rx="1" fill="rgba(34,211,238,.15)"/>
+          <rect x="25" y="155" width="103" height="3" rx="1" fill="rgba(34,211,238,.6)"/>
+
+          <rect x="15" y="185" width="130" height="80" rx="6" fill="url(#screenGlow)" stroke="rgba(80,120,255,.3)" stroke-width="1"/>
+          <text x="80" y="212" fill="rgba(100,160,255,.5)" font-size="7" font-family="monospace" letter-spacing="1" text-anchor="middle">ROI MOYEN</text>
+          <text x="80" y="235" fill="#a78bfa" font-size="20" font-weight="800" font-family="monospace" text-anchor="middle" filter="url(#glow)">×8.3</text>
+          <rect x="25" y="250" width="110" height="3" rx="1" fill="rgba(167,139,250,.15)"/>
+          <rect x="25" y="250" width="90" height="3" rx="1" fill="rgba(167,139,250,.6)"/>
+
+          <!-- Jauge déco gauche -->
+          <rect x="15" y="280" width="130" height="120" rx="6" fill="#06080f" stroke="rgba(80,120,255,.2)" stroke-width="1"/>
+          <text x="80" y="300" fill="rgba(100,160,255,.35)" font-size="6" font-family="monospace" text-anchor="middle" letter-spacing="1">MISSION STATUS</text>
+          <circle cx="80" cy="350" r="28" fill="none" stroke="rgba(80,120,255,.15)" stroke-width="8"/>
+          <circle cx="80" cy="350" r="28" fill="none" stroke="#4ade80" stroke-width="8" stroke-dasharray="132 176" stroke-dashoffset="44" stroke-linecap="round" filter="url(#glow)"/>
+          <text x="80" y="355" fill="#4ade80" font-size="11" font-weight="700" font-family="monospace" text-anchor="middle">ACTIF</text>
+
+          <!-- ── ÉCRAN LATÉRAL DROIT ── -->
+          <rect x="855" y="90" width="130" height="80" rx="6" fill="url(#screenGlow)" stroke="rgba(80,120,255,.3)" stroke-width="1"/>
+          <text x="920" y="117" fill="rgba(100,160,255,.5)" font-size="7" font-family="monospace" letter-spacing="1" text-anchor="middle">RDV / MOIS</text>
+          <text x="920" y="140" fill="#ff3d8f" font-size="20" font-weight="800" font-family="monospace" text-anchor="middle" filter="url(#glow)">8–15</text>
+          <rect x="865" y="155" width="110" height="3" rx="1" fill="rgba(255,61,143,.15)"/>
+          <rect x="865" y="155" width="85" height="3" rx="1" fill="rgba(255,61,143,.6)"/>
+
+          <rect x="855" y="185" width="130" height="80" rx="6" fill="url(#screenGlow)" stroke="rgba(80,120,255,.3)" stroke-width="1"/>
+          <text x="920" y="212" fill="rgba(100,160,255,.5)" font-size="7" font-family="monospace" letter-spacing="1" text-anchor="middle">CEOs ACTIFS</text>
+          <text x="920" y="235" fill="#fbbf24" font-size="20" font-weight="800" font-family="monospace" text-anchor="middle" filter="url(#glow)">+150</text>
+          <rect x="865" y="250" width="110" height="3" rx="1" fill="rgba(251,191,36,.15)"/>
+          <rect x="865" y="250" width="95" height="3" rx="1" fill="rgba(251,191,36,.6)"/>
+
+          <!-- Jauge déco droite -->
+          <rect x="855" y="280" width="130" height="120" rx="6" fill="#06080f" stroke="rgba(80,120,255,.2)" stroke-width="1"/>
+          <text x="920" y="300" fill="rgba(100,160,255,.35)" font-size="6" font-family="monospace" text-anchor="middle" letter-spacing="1">LANCEMENT</text>
+          <text x="920" y="355" fill="#22d3ee" font-size="14" font-weight="700" font-family="monospace" text-anchor="middle" filter="url(#glow)">&lt; 14 JOURS</text>
+
+          <!-- ── HUBLOT CENTRAL — espace + planètes ── -->
+          <!-- Cadre hublot externe (épais, métal) -->
+          <circle cx="500" cy="200" r="178" fill="#080b16" stroke="rgba(80,120,255,.2)" stroke-width="2"/>
+          <!-- Anneau décoratif externe -->
+          <circle cx="500" cy="200" r="172" fill="none" stroke="rgba(80,120,255,.12)" stroke-width="6"/>
+          <circle cx="500" cy="200" r="167" fill="none" stroke="rgba(80,120,255,.08)" stroke-width="2"/>
+          <!-- Vue espace dans le hublot -->
+          <circle cx="500" cy="200" r="155" fill="#020408" clip-path="url(#porthole-clip)"/>
+          <!-- Étoiles fond hublot (statiques + animées par JS) -->
+          <g id="ck-porthole-stars" clip-path="url(#porthole-clip)"/>
+          <!-- Planètes dans le hublot (générées par JS) -->
+          <g id="ck-planet-group" clip-path="url(#porthole-clip)"/>
+          <!-- Reflet hublot -->
+          <ellipse cx="440" cy="140" rx="40" ry="20" fill="rgba(255,255,255,.03)" clip-path="url(#porthole-clip)"/>
+          <!-- Liseré lumineux intérieur hublot -->
+          <circle cx="500" cy="200" r="155" fill="none" stroke="rgba(80,160,255,.2)" stroke-width="2"/>
+          <!-- Nom prospect watermark dans hublot -->
+          <text id="ck-porthole-name-svg" x="500" y="210" fill="rgba(255,255,255,.07)" font-size="16" font-weight="700" font-family="monospace" text-anchor="middle" letter-spacing="3"></text>
+
+          <!-- ── PILIERS ENTRE HUBLOT ET TABLEAU DE BORD ── -->
+          <rect x="260" y="360" width="18" height="260" fill="#090c1c" stroke="rgba(80,100,200,.1)" stroke-width="1"/>
+          <rect x="722" y="360" width="18" height="260" fill="#090c1c" stroke="rgba(80,100,200,.1)" stroke-width="1"/>
+
+          <!-- ── CONSOLE CENTRALE PRINCIPALE ── -->
+          <!-- Surface courbe du tableau de bord -->
+          <path d="M260,360 Q500,330 740,360 L740,580 L260,580 Z" fill="#070a18" stroke="rgba(80,120,255,.18)" stroke-width="1"/>
+          <path d="M260,360 Q500,330 740,360" fill="none" stroke="rgba(80,140,255,.25)" stroke-width="2"/>
+          <!-- Bord lumineux console -->
+          <path d="M280,365 Q500,336 720,365" fill="none" stroke="rgba(80,120,255,.15)" stroke-width="1"/>
+
+          <!-- ── ÉCRANS CONSOLE — 3 principaux ── -->
+          <!-- Écran gauche console -->
+          <rect x="290" y="385" width="130" height="90" rx="6" fill="url(#screenGlow)" stroke="rgba(80,120,255,.3)" stroke-width="1"/>
+          <text x="355" y="408" fill="rgba(100,160,255,.45)" font-size="6" font-family="monospace" text-anchor="middle" letter-spacing="1.5">COLD EMAIL</text>
+          <!-- Graphe barres déco -->
+          <rect x="306" y="415" width="12" height="40" rx="2" fill="rgba(255,61,143,.4)"/>
+          <rect x="322" y="425" width="12" height="30" rx="2" fill="rgba(124,58,237,.4)"/>
+          <rect x="338" y="418" width="12" height="37" rx="2" fill="rgba(34,211,238,.4)"/>
+          <rect x="354" y="430" width="12" height="25" rx="2" fill="rgba(74,222,128,.4)"/>
+          <rect x="370" y="421" width="12" height="34" rx="2" fill="rgba(251,191,36,.4)"/>
+
+          <!-- Écran central console — principal -->
+          <rect x="435" y="368" width="130" height="100" rx="8" fill="url(#screenGlow)" stroke="rgba(255,61,143,.35)" stroke-width="1.5"/>
+          <!-- Radar animé (cercles concentriques) -->
+          <circle cx="500" cy="420" r="38" fill="none" stroke="rgba(255,61,143,.08)" stroke-width="1"/>
+          <circle cx="500" cy="420" r="28" fill="none" stroke="rgba(255,61,143,.12)" stroke-width="1"/>
+          <circle cx="500" cy="420" r="18" fill="none" stroke="rgba(255,61,143,.18)" stroke-width="1"/>
+          <circle cx="500" cy="420" r="8" fill="rgba(255,61,143,.3)" filter="url(#glow)"/>
+          <!-- Points radar (prospects) -->
+          <circle id="radar-p1" cx="490" cy="408" r="2" fill="#ff3d8f" opacity=".8" filter="url(#glow)"/>
+          <circle id="radar-p2" cx="516" cy="425" r="2" fill="#22d3ee" opacity=".8" filter="url(#glow)"/>
+          <circle id="radar-p3" cx="485" cy="432" r="2" fill="#4ade80" opacity=".8" filter="url(#glow)"/>
+          <!-- Ligne de scan radar -->
+          <line id="radar-scan" x1="500" y1="420" x2="538" y2="420" stroke="rgba(255,61,143,.6)" stroke-width="1.5" filter="url(#glow)"/>
+          <text x="500" y="480" fill="rgba(255,61,143,.4)" font-size="6" font-family="monospace" text-anchor="middle" letter-spacing="1.5">PROSPECTION ACTIVE</text>
+
+          <!-- Écran droit console -->
+          <rect x="580" y="385" width="130" height="90" rx="6" fill="url(#screenGlow)" stroke="rgba(80,120,255,.3)" stroke-width="1"/>
+          <text x="645" y="408" fill="rgba(100,160,255,.45)" font-size="6" font-family="monospace" text-anchor="middle" letter-spacing="1.5">LINKEDIN</text>
+          <!-- Petites lignes de données déco -->
+          <rect x="596" y="415" width="80" height="3" rx="1" fill="rgba(124,58,237,.3)"/>
+          <rect x="596" y="422" width="60" height="3" rx="1" fill="rgba(124,58,237,.2)"/>
+          <rect x="596" y="429" width="70" height="3" rx="1" fill="rgba(124,58,237,.25)"/>
+          <rect x="596" y="436" width="50" height="3" rx="1" fill="rgba(124,58,237,.15)"/>
+          <rect x="596" y="443" width="75" height="3" rx="1" fill="rgba(124,58,237,.3)"/>
+          <rect x="596" y="450" width="55" height="3" rx="1" fill="rgba(124,58,237,.2)"/>
+
+          <!-- ── RANGÉE DE BOUTONS ET INSTRUMENTS BAS ── -->
+          <!-- Boutons colorés -->
+          <g id="ck-ctrl-btns">
+            <circle cx="320" cy="530" r="8" fill="#ff3d8f" opacity=".7" filter="url(#glow)"/>
+            <circle cx="345" cy="530" r="8" fill="#7c3aed" opacity=".7" filter="url(#glow)"/>
+            <circle cx="370" cy="530" r="6" fill="#22d3ee" opacity=".6"/>
+            <circle cx="393" cy="530" r="6" fill="#4ade80" opacity=".6"/>
+            <circle cx="416" cy="530" r="6" fill="#fbbf24" opacity=".6"/>
+            <circle cx="584" cy="530" r="6" fill="#fbbf24" opacity=".6"/>
+            <circle cx="607" cy="530" r="6" fill="#4ade80" opacity=".6"/>
+            <circle cx="630" cy="530" r="6" fill="#22d3ee" opacity=".6"/>
+            <circle cx="655" cy="530" r="8" fill="#7c3aed" opacity=".7" filter="url(#glow)"/>
+            <circle cx="680" cy="530" r="8" fill="#ff3d8f" opacity=".7" filter="url(#glow)"/>
+          </g>
+
+          <!-- ── ASTRONAUTE ASSIS (pixel art simplifié) ── -->
+          <g id="ck-pilot" transform="translate(440,480)">
+            <!-- Siège -->
+            <rect x="-20" y="30" width="40" height="30" rx="4" fill="#0c1020"/>
+            <rect x="-18" y="28" width="36" height="6" rx="2" fill="#14182e"/>
+            <rect x="-5" y="0" width="10" height="32" fill="#0c1020"/>
+            <!-- Corps combinaison -->
+            <rect x="-14" y="-18" width="28" height="22" rx="3" fill="#d0d8e8"/>
+            <rect x="-14" y="-18" width="28" height="2" fill="#a8b4c8"/>
+            <!-- Bande Devoleads sur corps -->
+            <rect x="-14" y="-4" width="28" height="4" fill="#7c3aed" opacity=".7"/>
+            <!-- Bras gauche -->
+            <rect x="-20" y="-14" width="8" height="14" rx="2" fill="#d0d8e8"/>
+            <rect x="-18" y="-2" width="8" height="4" fill="#b0b8c8"/>
+            <!-- Bras droit -->
+            <rect x="12" y="-14" width="8" height="14" rx="2" fill="#d0d8e8"/>
+            <rect x="10" y="-2" width="8" height="4" fill="#b0b8c8"/>
+            <!-- Casque -->
+            <rect x="-12" y="-34" width="24" height="18" rx="8" fill="#d8dce8"/>
+            <!-- Visière couleur prospect -->
+            <rect id="ck-pilot-visor" x="-9" y="-30" width="18" height="12" rx="4" fill="#ff3d8f" opacity=".9"/>
+            <rect x="-9" y="-30" width="7" height="4" fill="rgba(255,255,255,.4)" rx="2"/>
+          </g>
+
+          <!-- ── PLANÈTES — générées par JS en SVG ── -->
+          <!-- Les boutons de navigation des slides -->
+          <g id="ck-slide-buttons" transform="translate(0,0)"/>
+
+          <!-- ── SOL / LIGNE DE BASE ── -->
+          <rect x="0" y="595" width="1000" height="25" fill="#040608"/>
+          <rect x="0" y="595" width="1000" height="1" fill="rgba(80,120,255,.1)"/>
+
+          <!-- ── HUD INDICATEUR DESTINATION ── -->
+          <g id="ck-hud-bar">
+            <rect x="350" y="598" width="300" height="18" rx="3" fill="rgba(4,6,20,.8)" stroke="rgba(80,120,255,.15)" stroke-width="1"/>
+            <text id="ck-hud-dest" x="500" y="611" fill="rgba(80,120,255,.4)" font-size="7" font-family="monospace" text-anchor="middle" letter-spacing="2">CHOISISSEZ VOTRE DESTINATION</text>
+          </g>
+
+        </svg>
+
+        <!-- Planètes interactives dans le hublot (generated by JS) -->
+        <div id="ck-porthole-planets"></div>
+        <!-- Navigation slides -->
+        <div id="ck-nav"></div>
+      </div>
       <div id="ck-dash">
         <div id="ck-dash-curve"></div>
         <div class="ck-inst" style="width:54px;height:54px;left:min(168px,18%);top:28px"><div class="ck-iv" style="color:#22d3ee">×8.3</div><div class="ck-il">ROI</div></div>
@@ -1277,62 +1546,6 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   Cockpit
 </div>
 
-<!-- NARRATION OVERLAY -->
-<div id="narration-overlay">
-  <div id="narration-icon">✦</div>
-  <div id="narration-body">
-    <div id="narration-name">Devoleads</div>
-    <div id="narration-text"><span id="narration-content"></span><span id="narration-cursor"></span></div>
-  </div>
-  <button id="narration-mute" onclick="toggleVoix()" title="Activer/couper la voix">
-    <svg id="narration-mute-icon" viewBox="0 0 24 24">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path id="nm-waves" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      <line id="nm-mute-line" x1="1" y1="1" x2="23" y2="23" style="display:none"/>
-    </svg>
-  </button>
-  <div id="narration-progress"></div>
-</div>
-
-<div id="name-screen">
-  <div id="name-eyebrow">Mission Devoleads · Briefing</div>
-  <div id="name-title">Avant de décoller,<br>qui êtes-vous ?</div>
-
-  <div id="name-fields">
-    <!-- Champ prénom -->
-    <div id="name-input-wrap">
-      <input id="name-input" type="text" placeholder="Votre prénom" minlength="1" autocomplete="off" spellcheck="false"/>
-      <button id="name-submit" onclick="submitName()">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-    </div>
-    <!-- Séparateur -->
-    <div id="name-fields-sep"></div>
-    <!-- Champ URL prospect — toujours visible, optionnel -->
-    <div id="url-optional">
-      <div id="url-label-row">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
-        Site du prospect <span style="opacity:.5;margin-left:4px">(optionnel — pour personnaliser la séquence)</span>
-      </div>
-      <input id="url-input" type="url" placeholder="https://entreprise.com" autocomplete="off" spellcheck="false"/>
-    </div>
-  </div>
-
-  <div id="url-status"></div>
-  <div id="name-hint">Appuyez sur Entrée pour décoller</div>
-</div>
-<div id="hud-scan">
-  <div class="hud-ring" id="hud-r1"></div>
-  <div class="hud-ring-2" id="hud-r2"></div>
-  <div class="hud-data" id="hud-data"></div>
-  <div class="hud-progress"></div>
-</div>
-<div id="nasa-seq" style="display:none">
-  <canvas id="nasa-particles"></canvas>
-  <div id="nasa-label">Initialisation système</div>
-  <div id="nasa-countdown">3</div>
-  <div id="nasa-bar"><div id="nasa-bar-fill"></div></div>
-</div>
 
 <!-- ═══ SCÈNE CINÉMATIQUE EMBARQUEMENT 15s ═══ -->
 <div id="cine-scene" style="display:none">
@@ -1784,20 +1997,55 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <!-- Separator -->
   <div style="width:1px;background:rgba(255,255,255,.06);align-self:stretch;margin:20px 0;flex-shrink:0"></div>
 
-  <!-- RIGHT: stats + témoignages -->
-  <div class="sg" style="flex:1;padding:0 clamp(30px,5vw,90px) 0 clamp(16px,2vw,40px);display:flex;flex-direction:column;justify-content:center;gap:10px">
-    <div style="display:flex;flex-direction:column;gap:9px">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
-        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--pink);letter-spacing:-1.5px;min-width:56px">×8.3</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--white)">ROI moyen</div><div style="font-size:10.5px;color:var(--muted)">sur 90 jours d'engagement</div></div>
+  <!-- RIGHT: cartes fondateurs avec vraies photos -->
+  <div class="sg" style="flex:1;padding:0 clamp(24px,4vw,72px) 0 clamp(16px,2vw,36px);display:flex;flex-direction:column;justify-content:center;gap:16px">
+    <!-- Stanislas -->
+    <div id="card-stanislas" style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px 22px;display:flex;gap:20px;align-items:flex-start;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,.07) 0%,transparent 60%);pointer-events:none"></div>
+      <div style="flex-shrink:0;width:72px;height:72px;border-radius:14px;overflow:hidden;border:2px solid rgba(124,58,237,.3);box-shadow:0 0 20px rgba(124,58,237,.2)">
+        <img id="s5-photo-stanislas" style="width:100%;height:100%;object-fit:cover;object-position:center top" alt="Stanislas Fortune">
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
-        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--purple-l);letter-spacing:-1.5px;min-width:56px">+150</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--white)">CEOs clients actifs</div><div style="font-size:10.5px;color:var(--muted)">en 2024, tous secteurs</div></div>
+      <div style="min-width:0;flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div class="tn">Stanislas Fortune</div>
+          <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple-l);background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.2);border-radius:100px;padding:2px 7px">Co-Founder · Growth</div>
+        </div>
+        <div class="tq" style="font-size:11.5px">"L'automatisation sans stratégie, c'est juste spammer plus vite. On construit de vraies conversations."</div>
+        <div style="display:flex;gap:12px;margin-top:10px">
+          <div style="font-size:10px;color:var(--muted2)">Ex B2B SaaS · <span style="color:var(--purple-l)">×8.3 ROI moyen</span></div>
+        </div>
       </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
-        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--cyan);letter-spacing:-1.5px;min-width:56px">30%</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--white)">Taux de réponse</div><div style="font-size:10.5px;color:var(--muted)">vs 2% marché</div></div>
+    </div>
+    <!-- Amélie -->
+    <div id="card-amelie" style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px 22px;display:flex;gap:20px;align-items:flex-start;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,61,143,.07) 0%,transparent 60%);pointer-events:none"></div>
+      <div style="flex-shrink:0;width:72px;height:72px;border-radius:14px;overflow:hidden;border:2px solid rgba(255,61,143,.3);box-shadow:0 0 20px rgba(255,61,143,.2)">
+        <img id="s5-photo-amelie" style="width:100%;height:100%;object-fit:cover;object-position:center top" alt="Amélie Anquetil">
+      </div>
+      <div style="min-width:0;flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <div class="tn">Amélie Anquetil</div>
+          <div style="font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--pink);background:rgba(255,61,143,.1);border:1px solid rgba(255,61,143,.18);border-radius:100px;padding:2px 7px">Co-Founder · Ops</div>
+        </div>
+        <div class="tq" style="font-size:11.5px">"Notre obsession : transformer le chaos commercial en croissance prédictible et mesurable."</div>
+        <div style="display:flex;gap:12px;margin-top:10px">
+          <div style="font-size:10px;color:var(--muted2)">Copywriting · Ops · <span style="color:var(--pink)">30% taux de réponse</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Stat bar -->
+    <div style="display:flex;gap:8px;margin-top:2px">
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center">
+        <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--pink);letter-spacing:-1px">+150</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:1px">CEOs clients</div>
+      </div>
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center">
+        <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--cyan);letter-spacing:-1px">14j</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:1px">Lancement</div>
+      </div>
+      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center">
+        <div style="font-family:var(--display);font-size:20px;font-weight:800;color:var(--purple-l);letter-spacing:-1px">×8.3</div>
+        <div style="font-size:9px;color:var(--muted);margin-top:1px">ROI moyen</div>
       </div>
     </div>
     <div id="team-grid" style="display:none"></div>
@@ -2224,6 +2472,11 @@ const SLIDE_NAMES= ['Présentation','Services','Process','Formules','L\'équipe'
 
 // Init assets
 document.getElementById('logo-el').src = 'data:image/png;base64,' + LOGO_B64;
+// Injecter photos fondateurs S5
+const ps = document.getElementById('s5-photo-stanislas');
+const pa = document.getElementById('s5-photo-amelie');
+if(ps) ps.src = 'data:image/jpeg;base64,' + STANIS_B64;
+if(pa) pa.src = 'data:image/jpeg;base64,' + AMELIE_B64;
 document.getElementById('team-grid').innerHTML = `
   <div class="tc">
     <img src="data:image/jpeg;base64,${STANIS_B64}" alt="Stanislas Fortune">
@@ -2526,411 +2779,42 @@ function ui(){
 ui();
 
 
-// ════ NARRATION PERSONNALISÉE ════
-let narrationTexts = null;   // {0: "...", 1: "...", ...8 slides}
-let narrationTimer = null;
-let narrationFadeTimer = null;
-let narrationShown = new Set();
-
-// Textes génériques (sans prospect)
-const NARRATION_GENERIC = [
-  "Bienvenue. Ce deck a été conçu pour aller droit au but — chaque slide répond à une question que vous vous posez probablement déjà.",
-  "La prospection B2B prend du temps que vous n'avez pas. Devoleads prend en charge tout le cycle — de la data à la prise de rendez-vous — pour que votre équipe ne ferme que des deals chauds.",
-  "En 14 jours, le premier lead qualifié arrive dans votre agenda. Pas de magie — juste un process rodé sur 150 clients.",
-  "Trois formules, une logique simple : vous choisissez la vitesse à laquelle vous voulez saturer votre pipeline. Chaque formule est garantie en nombre de RDV.",
-  "Stanislas et son équipe sont des fondateurs, pas des commerciaux juniors. Ils ont construit ce système pour eux-mêmes avant de le déployer pour leurs clients.",
-  "La vidéo change tout en prospection. Un message vidéo personnalisé multiplie le taux de réponse par 4 par rapport à un cold email classique.",
-  "Cette séquence a été générée spécifiquement pour votre profil. C'est exactement ce que vos prospects recevraient dès le lancement.",
-  "La prochaine étape prend 30 minutes. Un appel stratégique — gratuit, sans engagement — pour calibrer votre pipeline ensemble."
-];
-
-// Générer toutes les narrations en une seule passe
-async function generateAllNarrations(pilotName, prospect){
-  const p = prospect;
-  const hasProspect = !!(p && p.societe);
-
-  const slideContext = [
-    {idx:0, slide:"Cover", focus:"capter l'attention, promettre des RDV qualifiés, donner confiance"},
-    {idx:1, slide:"Services", focus:"Cold Email + LinkedIn + Vidéo + IA, scraping multi-sources, scoring automatique"},
-    {idx:2, slide:"Process", focus:"onboarding 14 jours, ICP + copywriting + lancement + optimisation continue"},
-    {idx:3, slide:"Formules", focus:"Silver 800€/10RDV, Gold 1200€/20RDV, Platinum 1800€/30RDV, garantie remboursement"},
-    {idx:4, slide:"Équipe", focus:"Stanislas fondateur ex-B2B, Amélie copywriting, équipe de 5 experts"},
-    {idx:5, slide:"Vidéo prospection", focus:"vidéo personnalisée multiplie réponses ×4, Loom humanise la prospection"},
-    {idx:6, slide:"AI Icebreaker", focus:"Claude analyse chaque prospect, génère séquence ultra-personnalisée en 30s"},
-    {idx:7, slide:"Contact", focus:"session stratégique gratuite 30min, démarrage sous 14 jours"},
-  ];
-
-  const prospectCtx = hasProspect
-    ? `Le prospect s'appelle ${pilotName}, dirigeant de ${p.societe}, secteur ${p.secteur||'B2B'}, basé à ${p.ville||'France'}. Actualité récente : ${p.actu||'aucune'}. Utilise ces infos naturellement dans les narrations. `
-    : `Le visiteur s'appelle ${pilotName}. Utilise son prénom au moins 3 fois dans les narrations. `;
-
-  const prompt = `Tu es un consultant commercial senior chez Devoleads, agence de génération de RDV B2B.
-${prospectCtx}
-Tu dois écrire 8 narrations — une par slide du pitch deck — qui apparaissent comme un overlay discret pendant 6 secondes.
-
-Règles strictes :
-- 1 à 2 phrases max par narration, jamais plus
-- Ton humain et conversationnel, jamais corporatif
-- ${hasProspect
-    ? `Utiliser "${pilotName}" dans les slides 0, 3, 7. Mentionner "${p.societe}" ou "${p.secteur}" dans les slides 1, 2, 6.`
-    : `Utiliser "${pilotName}" dans les slides 0, 3, 5, 7 — jamais "vous" générique.`}
-- Chaque narration apporte une info concrète liée au focus de la slide — jamais paraphraser le titre
-- Rendre la narration slide 0 chaleureuse et directe : accueillir ${pilotName} par son prénom
-- Style : ton de conseiller senior qui connaît le dossier, pas de vendeur
-- Ne jamais commencer par "Bonjour" ou "Bienvenue" sauf slide 0
-
-Slides :
-${slideContext.map(s => `${s.idx}. ${s.slide} (focus : ${s.focus})`).join('\n')}
-
-Réponds UNIQUEMENT avec un JSON valide sans markdown :
-{"0":"...","1":"...","2":"...","3":"...","4":"...","5":"...","6":"...","7":"..."}`;
-
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1200,
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    const data = await resp.json();
-    let text = '';
-    if(Array.isArray(data.content)) data.content.forEach(b=>{ if(b.type==='text') text+=b.text; });
-    const match = text.match(/\{[\s\S]*\}/);
-    if(match) return JSON.parse(match[0]);
-    return null;
-  } catch(e){
-    console.error('narration gen error:', e);
-    return null;
-  }
-}
-
-// Afficher la narration pour un slide donné
-
-// ════ VOIX OFF — Web Speech API ════
-let voixEnabled = true;       // activée par défaut
-let voixUtterance = null;     // utterance en cours
-let voixReady = false;        // API disponible
-
-// Détecter la disponibilité
-if('speechSynthesis' in window){
-  voixReady = true;
-  // Précharger les voix (Chrome a besoin de ça)
-  speechSynthesis.getVoices();
-  speechSynthesis.addEventListener('voiceschanged', ()=>{ speechSynthesis.getVoices(); });
-}
-
-function getVoixFr(){
-  if(!voixReady) return null;
-  const voices = speechSynthesis.getVoices();
-  // Chercher une voix française de qualité
-  const prefs = [
-    v => v.lang==='fr-FR' && v.name.includes('Thomas'),
-    v => v.lang==='fr-FR' && v.name.includes('Amélie'),
-    v => v.lang==='fr-FR' && !v.name.includes('Google') && v.localService,
-    v => v.lang==='fr-FR' && v.name.includes('Google'),
-    v => v.lang==='fr-FR',
-    v => v.lang.startsWith('fr'),
-  ];
-  for(const pref of prefs){
-    const found = voices.find(pref);
-    if(found) return found;
-  }
-  return voices[0] || null;
-}
-
-function speakNarration(text){
-  if(!voixReady || !voixEnabled || !text) return;
-  stopVoix();
-  setTimeout(()=>{
-    if(!voixEnabled) return;
-    const utt = new SpeechSynthesisUtterance(text);
-    const voice = getVoixFr();
-    if(voice) utt.voice = voice;
-    utt.lang = 'fr-FR';
-    utt.rate = 0.88;   // plus posé pour bien comprendre
-    utt.pitch = 1.0;
-    utt.volume = 0.85;
-    // Nettoyer la ref à la fin
-    utt.onend = ()=>{ voixUtterance = null; };
-    utt.onerror = ()=>{ voixUtterance = null; };
-    voixUtterance = utt;
-    speechSynthesis.speak(utt);
-
-    // Chrome keepalive — speechSynthesis s'arrête après ~14s sur Chrome desktop
-    // On relance si la synthèse est en pause (bug Chrome)
-    const keepAlive = setInterval(()=>{
-      if(!voixUtterance){ clearInterval(keepAlive); return; }
-      if(speechSynthesis.paused){ speechSynthesis.resume(); }
-    }, 5000);
-    utt.onend = ()=>{ voixUtterance=null; clearInterval(keepAlive); };
-    utt.onerror = ()=>{ voixUtterance=null; clearInterval(keepAlive); };
-  }, 350);
-}
-
-function stopVoix(){
-  if(!voixReady) return;
-  try { speechSynthesis.cancel(); } catch(e){}
-  voixUtterance = null;
-}
-
-window.toggleVoix = function(){
-  voixEnabled = !voixEnabled;
-  const btn = document.getElementById('narration-mute');
-  const waves = document.getElementById('nm-waves');
-  const muteLine = document.getElementById('nm-mute-line');
-  if(btn) btn.classList.toggle('muted', !voixEnabled);
-  if(waves) waves.style.display = voixEnabled ? '' : 'none';
-  if(muteLine) muteLine.style.display = voixEnabled ? 'none' : '';
-  if(!voixEnabled) stopVoix();
-  // Sauvegarder la préférence
-  try { sessionStorage.setItem('dv-voix', voixEnabled ? '1' : '0'); } catch(e){}
-};
-
-// Restaurer la préférence mute
-(function(){
-  try {
-    const saved = sessionStorage.getItem('dv-voix');
-    if(saved === '0'){
-      voixEnabled = false;
-      const btn = document.getElementById('narration-mute');
-      const waves = document.getElementById('nm-waves');
-      const muteLine = document.getElementById('nm-mute-line');
-      if(btn) btn.classList.add('muted');
-      if(waves) waves.style.display = 'none';
-      if(muteLine) muteLine.style.display = '';
-    }
-  } catch(e){}
-})();
-
-function showNarration(slideIdx){
-  // On rejoue la narration même sur les slides déjà vues (max 1× par visite cockpit)
-  if(!narrationTexts && narrationShown.has(slideIdx) && narrationShown.size > 1) return;
-
-  // Choisir le texte
-  const text = narrationTexts
-    ? (narrationTexts[slideIdx] || narrationTexts[String(slideIdx)] || NARRATION_GENERIC[slideIdx] || '')
-    : NARRATION_GENERIC[slideIdx] || '';
-
-  if(!text) return;
-
-  const ov = document.getElementById('narration-overlay');
-  const content = document.getElementById('narration-content');
-  const cursor = document.getElementById('narration-cursor');
-  const progress = document.getElementById('narration-progress');
-  const nameEl = document.getElementById('narration-name');
-  if(!ov || !content) return;
-
-  // Reset timers
-  if(narrationTimer) clearTimeout(narrationTimer);
-  if(narrationFadeTimer) clearTimeout(narrationFadeTimer);
-  ov.classList.remove('visible','fading');
-  content.textContent = '';
-  progress.style.transition = 'none';
-  progress.style.width = '0%';
-
-  // Personnaliser le label
-  const pilotName = window._getPilotName ? window._getPilotName() : '';
-  if(nameEl && pilotName && pilotName !== 'Pilote'){
-    nameEl.textContent = pilotName;
-  } else if(nameEl){
-    nameEl.textContent = 'Devoleads';
-  }
-
-  // Afficher
-  void ov.offsetHeight;
-  ov.classList.add('visible');
-  cursor.style.display = 'inline-block';
-
-  // Voix off — lancer en parallèle du streaming visuel
-  speakNarration(text);
-
-  // Streaming effect — afficher le texte caractère par caractère
-  let i = 0;
-  const speed = Math.min(28, Math.max(14, 4000 / text.length));
-  const typeInterval = setInterval(()=>{
-    if(i < text.length){
-      content.textContent = text.slice(0, ++i);
-    } else {
-      clearInterval(typeInterval);
-      cursor.style.display = 'none';
-    }
-  }, speed);
-
-  // Barre de progression (6s)
-  const displayDuration = 6000;
-  setTimeout(()=>{
-    progress.style.transition = `width ${displayDuration}ms linear`;
-    progress.style.width = '100%';
-  }, 50);
-
-  // Fade out après 6s
-  narrationFadeTimer = setTimeout(()=>{
-    clearInterval(typeInterval);
-    ov.classList.add('fading');
-    narrationTimer = setTimeout(()=>{
-      ov.classList.remove('visible','fading');
-      content.textContent = '';
-      cursor.style.display = 'none';
-      progress.style.transition = 'none';
-      progress.style.width = '0%';
-      // La voix continue jusqu'à la fin naturelle — ne pas couper ici
-    }, 500);
-  }, displayDuration);
-
-  narrationShown.add(slideIdx);
-}
-
-// Lancer la génération batch pendant / après la NASA
-async function initNarrations(pilotName){
-  const prospect = (typeof prospectData !== 'undefined' && prospectData)
-    ? prospectData.prospect : null;
-  const texts = await generateAllNarrations(pilotName, prospect);
-  narrationTexts = texts;
-  // Si on est déjà sur une slide, afficher maintenant
-  if(typeof cur !== 'undefined') showNarration(cur);
-}
-
-window.go=function(idx){
-  if(busy||idx===cur||idx<0||idx>=TOTAL) return;
-  busy=true;
-  const prev=cur; cur=idx;
-  const dir = idx > prev ? 1 : -1; // 1=forward, -1=backward
-  if(window.soundSlide) soundSlide(dir);
-  haptic([15]);
-  ui();
-
-  // Flash lumineux
-  const fl=document.getElementById('transition-flash');
-  if(fl){fl.classList.remove('fire');fl.offsetHeight;fl.classList.add('fire');}
-
-  // Tick counter
-  const pnEl=document.getElementById('pn');
-  if(pnEl){pnEl.classList.remove('tick');pnEl.offsetHeight;pnEl.classList.add('tick');}
-
-  // Couper la voix de la slide précédente
-  stopVoix();
-
-  // Slide sortante
-  const outClass = dir>0 ? 'out-left' : 'out-right';
-  slides[prev].classList.remove('ein-right','ein-left');
-  slides[prev].classList.add('out', outClass);
-  setTimeout(()=>{
-    slides[prev].classList.remove('out',outClass,'active');
-    slides[prev].style.opacity=0;
-  },420);
-
-  // Slide entrante
-  setTimeout(()=>{
-    const inClass = dir>0 ? 'ein-right' : 'ein-left';
-    slides[cur].style.opacity='';
-    slides[cur].classList.remove('out','out-left','out-right','ein-right','ein-left');
-    slides[cur].classList.add('active', inClass);
-    slides[cur].querySelectorAll('.sg').forEach(sg=>{
-      sg.querySelectorAll(':scope>*').forEach(c=>{
-        c.style.animation='none';
-        c.offsetHeight;
-        c.style.animation='';
-      });
-    });
-    if(cur===2) startMotion(); else stopMotion();
-    setSlideAmbiance(cur);
-    if(cur===7) startSetup(); // S8 Mise en place = index 7
-    // Narration personnalisée
-    if(typeof showNarration==='function') setTimeout(()=>showNarration(cur), 600);
-    // S7 : si prospectData déjà disponible → forcer affichage personnalisé
-    if(cur===6 && prospectData && typeof injectProspectSequence==='function'){
-      injectProspectSequence(prospectData);
-    }
-    // S7 : générer séquence fictive si pas encore faite ET pas d'URL en cours
-    if(cur===6 && !prospectData && !prospectUrl && typeof analyzeProspect==='function'){
-      const DUMMY = [
-        {secteur:'SaaS RH',prenom:'Marc',nom:'Dupont',societe:'Flowify',actu:'vient de lever 800K€ en seed',ville:'Lyon',couleur_hex:'#10b981'},
-        {secteur:'SaaS Marketing',prenom:'Julie',nom:'Martin',societe:'Growthly',actu:'vient de lancer son offre Enterprise',ville:'Paris',couleur_hex:'#3b82f6'},
-        {secteur:'Agence conseil',prenom:'Sophie',nom:'Bernard',societe:'DataForge',actu:'vient de signer avec Microsoft',ville:'Nantes',couleur_hex:'#f59e0b'},
-      ];
-      const dp = DUMMY[Math.floor(Math.random()*DUMMY.length)];
-      analyzeProspect(null, dp).then(d=>{ if(d) injectProspectSequence(d); }).catch(()=>{});
-    }
-    setTimeout(()=>{busy=false},700);
-  },380);
-}
-
-let ckRenderer,ckScene,ckCamera,ckRaycaster,ckMouse,ckPlanetMeshes=[],ckPlanets=[],ckFrame=0;
+// ════════════════════════════════════════════════
+//  COCKPIT 3D — Three.js + Salle de contrôle
+// ════════════════════════════════════════════════
+let ckRenderer,ckScene,ckCamera,ckRaycaster,ckMouse;
+let ckPlanetMeshes=[],ckPlanets=[],ckFrame=0;
 let ckWrap=null,ckW=900,ckH=560;
 let ckJoyTargetX=0,ckJoyTargetY=0,ckJoyCurrX=0,ckJoyCurrY=0;
 let ckMouseNormX=0,ckMouseNormY=0;
-let ckBuilt=false, ckWarping=false, ckActive=0;
-let ckPovMode=false; // Mode POV cockpit intérieur
-
-// ════════════════════════════════════════════════
-//  COCKPIT 3D — Three.js Navigation
-// ════════════════════════════════════════════════
-;(function(){
+let ckBuilt=false,ckWarping=false,ckActive=0;
+let ckAnimating=false;
+let ckPovMode=false;
 
 const PDATA=[
-  {id:0,label:'Cover',      sub:'Votre agenda saturé de RDV', c1:'#cc1f6a',c2:'#7c1040',size:1.9,pos:[0,.6,4.5],  ring:false,speed:.008,tilt:.2,  color:'#ff3d8f'},
-  {id:1,label:'Services',   sub:'De la data à la signature',  c1:'#4a1e9e',c2:'#2d1060',size:1.1,pos:[-4.8,1.2,1],ring:false,speed:.012,tilt:.15, color:'#7c3aed'},
-  {id:2,label:'Process',    sub:'14 jours, premier lead',      c1:'#b84010',c2:'#7c2800',size:1.0,pos:[4.2,-.4,.5],ring:false,speed:.015,tilt:.3,  color:'#ff6b35'},
-  {id:3,label:'Formules',   sub:'Choisissez votre vitesse',   c1:'#6040cc',c2:'#3820a0',size:1.5,pos:[-2.2,-1.8,-2],ring:true, speed:.006,tilt:.4, color:'#a78bfa'},
-  {id:4,label:'Équipe',     sub:'Fondateurs, pas des juniors',c1:'#0a7888',c2:'#055060',size:.9, pos:[3.2,1.6,-1], ring:false,speed:.018,tilt:.1,  color:'#22d3ee'},
-  {id:5,label:'Vidéo',      sub:'Prospection humaine',        c1:'#1a7040',c2:'#0e4428',size:.85,pos:[-5.2,-.4,-3],ring:false,speed:.02, tilt:.25, color:'#4ade80'},
-  {id:6,label:'Icebreaker', sub:'IA + personnalisation',      c1:'#a07010',c2:'#704800',size:.95,pos:[5.5,.6,-4],  ring:false,speed:.014,tilt:.35, color:'#fbbf24'},
-  {id:7,label:'Contact',    sub:'Démarrons ensemble',         c1:'#902020',c2:'#601010',size:1.0,pos:[-3,2.2,-5],  ring:false,speed:.011,tilt:.18, color:'#f87171'},
+  {id:0,label:'Cover',    sub:'Votre agenda saturé de RDV', c1:'#cc1f6a',c2:'#7c1040',size:1.9,pos:[0,.6,4.5],  ring:false,speed:.008,tilt:.2,  color:'#ff3d8f'},
+  {id:1,label:'Services', sub:'Cold Email · LinkedIn · Vidéo',c1:'#4c1d95',c2:'#2d1060',size:1.1,pos:[-4.8,1.2,1], ring:false,speed:.011,tilt:.15, color:'#7c3aed'},
+  {id:2,label:'Process',  sub:'Onboarding 14 jours',         c1:'#9a3412',c2:'#7c2800',size:1.0,pos:[4.2,-.4,.5], ring:false,speed:.009,tilt:.22, color:'#ff6b35'},
+  {id:3,label:'Formules', sub:'Silver · Gold · Platinum',    c1:'#5b21b6',c2:'#3b1060',size:1.5,pos:[-2.2,-1.8,-2],ring:true, speed:.007,tilt:.1,  color:'#a78bfa'},
+  {id:4,label:'Équipe',   sub:'Fondateurs · Pas des juniors',c1:'#0e4f6b',c2:'#055060',size:.9, pos:[3.2,1.6,-1], ring:false,speed:.013,tilt:.18, color:'#22d3ee'},
+  {id:5,label:'Vidéo',    sub:'Prospection vidéo ×4',        c1:'#14532d',c2:'#0e4428',size:.85,pos:[-5.2,-.4,-3],ring:false,speed:.01, tilt:.25, color:'#4ade80'},
+  {id:6,label:'Icebreaker',sub:'IA · Séquence personnalisée',c1:'#78350f',c2:'#704800',size:.95,pos:[5.5,.6,-4], ring:false,speed:.012,tilt:.2,  color:'#fbbf24'},
+  {id:7,label:'Contact',  sub:'Démarrons ensemble',          c1:'#902020',c2:'#601010',size:1.0,pos:[-3,2.2,-5],  ring:false,speed:.011,tilt:.18, color:'#f87171'},
 ];
-
-// ckBuilt/ckWarping/ckActive moved to global
-const overlay=document.getElementById('uni-overlay');
-const flashEl=document.getElementById('uni-landing-flash');
-
-// Cached DOM refs — set on build
-// vars moved to global scope
-
-function makeTex(c1,c2,ns){
-  const s=256,cv=document.createElement('canvas');cv.width=cv.height=s;
-  const ctx=cv.getContext('2d');
-  const g=ctx.createLinearGradient(0,0,s,s);
-  g.addColorStop(0,c1);g.addColorStop(.5,c2);g.addColorStop(1,c1);
-  ctx.fillStyle=g;ctx.fillRect(0,0,s,s);
-  for(let y=0;y<s;y+=2){for(let x=0;x<s;x+=2){
-    const n=Math.sin(x*(ns||3)*.04+y*.03)*Math.cos(y*(ns||3)*.05)*.14;
-    const n2=Math.sin(x*.08+y*(ns||3)*.06)*.09;
-    const a=Math.abs(n+n2);
-    ctx.globalAlpha=a;ctx.fillStyle=a>.05?'rgba(255,255,255,.3)':'rgba(0,0,0,.2)';
-    ctx.fillRect(x,y,2,2);
-  }}
-  ctx.globalAlpha=1;
-  const grd=ctx.createRadialGradient(s/2,s/2,s*.35,s/2,s/2,s*.5);
-  grd.addColorStop(0,'transparent');grd.addColorStop(1,'rgba(255,255,255,.05)');
-  ctx.fillStyle=grd;ctx.fillRect(0,0,s,s);
-  return new THREE.CanvasTexture(cv);
-}
-
-function makeRingTex(c1,c2){
-  const s=256,cv=document.createElement('canvas');cv.width=cv.height=s;
-  const ctx=cv.getContext('2d');
-  const g=ctx.createRadialGradient(s/2,s/2,50,s/2,s/2,128);
-  g.addColorStop(0,c1);g.addColorStop(.4,c2);g.addColorStop(.8,c1);g.addColorStop(1,'transparent');
-  ctx.fillStyle=g;ctx.fillRect(0,0,s,s);
-  for(let i=0;i<10;i++){ctx.globalAlpha=.1+Math.random()*.18;ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=.8+Math.random()*2;ctx.beginPath();ctx.arc(s/2,s/2,52+i*9,0,Math.PI*2);ctx.stroke();}
-  ctx.globalAlpha=1;return new THREE.CanvasTexture(cv);
-}
 
 function buildCockpit(){
   if(ckBuilt)return;ckBuilt=true;
-
   const wrap=document.getElementById('cockpit-wrap');
   ckWrap=wrap;
-  const W=wrap.offsetWidth||900, H=wrap.offsetHeight||560;
-  ckW=W; ckH=H;
+  const W=wrap.offsetWidth||900,H=wrap.offsetHeight||560;
+  ckW=W;ckH=H;
 
   // Renderer
   ckRenderer=new THREE.WebGLRenderer({canvas:document.getElementById('ck-three'),antialias:true,alpha:true});
   ckRenderer.setSize(W,H);ckRenderer.setPixelRatio(Math.min(devicePixelRatio,2));
   ckRenderer.setClearColor(0x02030a,1);
 
+  // Scene + fog
   ckScene=new THREE.Scene();
   ckScene.fog=new THREE.FogExp2(0x02030a,.016);
   ckCamera=new THREE.PerspectiveCamera(58,W/H,.1,500);
@@ -2943,317 +2827,100 @@ function buildCockpit(){
 
   // Stars
   const sg=new THREE.BufferGeometry();
-  const sp=new Float32Array(2400*3);for(let i=0;i<sp.length;i++)sp[i]=(Math.random()-.5)*220;
+  const sp=new Float32Array(1800*3);
+  for(let i=0;i<sp.length;i++)sp[i]=(Math.random()-.5)*200;
   sg.setAttribute('position',new THREE.BufferAttribute(sp,3));
-  const sm=new THREE.PointsMaterial({color:0xffffff,size:.18,sizeAttenuation:true});
+  const sm=new THREE.PointsMaterial({color:0xffffff,size:.18,sizeAttenuation:true,transparent:true,opacity:.75});
   ckScene.add(new THREE.Points(sg,sm));
   ckScene._starMat=sm;
 
-  // Build planets
+  // Planets
   ckPlanetMeshes=[];ckPlanets=[];
   PDATA.forEach(pd=>{
-    const geo=new THREE.SphereGeometry(pd.size,52,52);
-    const nScale=[4,2,6,3,5,7,2.5,4.5][pd.id%8];
-    const mat=new THREE.MeshStandardMaterial({map:makeTex(pd.c1,pd.c2,nScale),roughness:.82,metalness:.06,emissive:new THREE.Color(pd.c1),emissiveIntensity:0});
+    const geo=new THREE.SphereGeometry(pd.size,32,32);
+    const mat=new THREE.MeshStandardMaterial({
+      color:new THREE.Color(pd.c1),
+      roughness:.75,metalness:.05,
+      emissive:new THREE.Color(pd.color),emissiveIntensity:.0
+    });
     const mesh=new THREE.Mesh(geo,mat);
-    mesh.position.set(...pd.pos);mesh.rotation.x=pd.tilt;
-    mesh.userData={pd,base:[...pd.pos],id:pd.id};
+    mesh.position.set(...pd.pos);
+    mesh.userData.base=pd.pos.slice();
+    mesh.userData.pd=pd;
     ckScene.add(mesh);ckPlanetMeshes.push(mesh);
-
-    // Atmosphere
+    // Atmosphere halo
     const am=new THREE.Mesh(
-      new THREE.SphereGeometry(pd.size*1.09,28,28),
-      new THREE.MeshBasicMaterial({color:new THREE.Color(pd.c1),transparent:true,opacity:.07,side:THREE.BackSide})
-    );am.position.set(...pd.pos);ckScene.add(am);
-
-    // Ring (Formules = Saturn)
+      new THREE.SphereGeometry(pd.size*1.18,20,20),
+      new THREE.MeshBasicMaterial({color:new THREE.Color(pd.color),transparent:true,opacity:.06,side:THREE.BackSide})
+    );
+    am.position.set(...pd.pos);ckScene.add(am);
+    // Ring (Formules)
     if(pd.ring){
-      const rg=new THREE.RingGeometry(pd.size*1.45,pd.size*2.5,72);
-      const rm=new THREE.MeshBasicMaterial({map:makeRingTex('rgba(140,100,240,.7)','rgba(80,50,180,.3)'),side:THREE.DoubleSide,transparent:true,opacity:.75});
+      const rg=new THREE.RingGeometry(pd.size*1.5,pd.size*2.2,48);
+      const rm=new THREE.MeshBasicMaterial({color:new THREE.Color(pd.color),transparent:true,opacity:.3,side:THREE.DoubleSide});
       const ring=new THREE.Mesh(rg,rm);ring.position.set(...pd.pos);ring.rotation.x=Math.PI/2.7;
       ckScene.add(ring);
     }
     ckPlanets.push({mesh,pd});
   });
 
-
-  // ── INTÉRIEUR CAPSULE 3D (mode POV) ──────────────────────────
-  const ckInterior = new THREE.Group();
-  ckInterior.visible = false; // caché par défaut
-  ckScene._interior = ckInterior;
-  ckScene.add(ckInterior);
-
-  // Cylindre capsule — vu de l'intérieur
-  const capMat = new THREE.MeshStandardMaterial({
-    color:0x08101e,roughness:.92,metalness:.35,side:THREE.BackSide
-  });
-  const capMesh = new THREE.Mesh(new THREE.CylinderGeometry(5,5.5,18,36,1,true),capMat);
-  capMesh.rotation.x = Math.PI/2;
-  capMesh.position.z = -4;
-  ckInterior.add(capMesh);
-
-  // Nervures structurelles
-  for(let i=0;i<10;i++){
-    const ang=(i/10)*Math.PI*2;
-    const rib=new THREE.Mesh(
-      new THREE.BoxGeometry(.1,18,.15),
-      new THREE.MeshStandardMaterial({color:0x0c1628,roughness:.9,metalness:.55})
-    );
-    rib.position.set(Math.cos(ang)*4.85,Math.sin(ang)*4.85,-4);
-    rib.rotation.x=Math.PI/2; rib.lookAt(0,0,-4);
-    ckInterior.add(rib);
-  }
-
-  // Tableau de bord principal
-  const dashGrp = new THREE.Group();
-  dashGrp.position.set(0,-2.2,-1.2);
-  dashGrp.rotation.x=-.38;
-  ckInterior.add(dashGrp);
-
-  // Surface dash
-  const dashSurf = new THREE.Mesh(
-    new THREE.BoxGeometry(6.5,.25,2.4),
-    new THREE.MeshStandardMaterial({color:0x060a14,roughness:.88,metalness:.45})
-  );
-  dashGrp.add(dashSurf);
-
-  // Bord supérieur dash courbé
-  const dashEdge = new THREE.Mesh(
-    new THREE.BoxGeometry(6.5,.18,.5),
-    new THREE.MeshStandardMaterial({color:0x080c1a,roughness:.9,metalness:.4})
-  );
-  dashEdge.position.set(0,.2,-1.0);
-  dashGrp.add(dashEdge);
-
-  // Lumière dash (de dessous, bleu électronique)
-  const dashLt = new THREE.PointLight(0x3355bb,3.5,7);
-  dashLt.position.set(0,.8,-.4);
-  ckInterior.add(dashLt);
-  ckScene._dashLight = dashLt;
-
-  // 4 écrans principaux
-  const scrColors=[0x002244,0x001a33,0x002233,0x001c2e];
-  const scrEmit  =[0x003388,0x002866,0x003377,0x002855];
-  [-1.8,-.6,.6,1.8].forEach((x,i)=>{
-    const scr=new THREE.Mesh(
-      new THREE.BoxGeometry(1.05,.68,.07),
-      new THREE.MeshStandardMaterial({
-        color:scrColors[i],roughness:.04,metalness:.05,
-        emissive:new THREE.Color(scrEmit[i]),emissiveIntensity:.7
-      })
-    );
-    scr.position.set(x,.18,-.68);
-    dashGrp.add(scr);
-    // Cadre écran
-    const frm=new THREE.Mesh(
-      new THREE.BoxGeometry(1.14,.77,.05),
-      new THREE.MeshStandardMaterial({color:0x09111e,roughness:.9,metalness:.65})
-    );
-    frm.position.set(x,.18,-.64);
-    dashGrp.add(frm);
-    // Lumière écran
-    const slt=new THREE.PointLight([0x2255cc,0x1a44aa,0x2266cc,0x1a44bb][i],2,4);
-    slt.position.set(x,.7,-.35);
-    dashGrp.add(slt);
-    ckScene[`_screen${i}`]=scr;
-  });
-
-  // Instruments circulaires sur le dash
-  [{x:-2.8,c:0x22d3ee},{x:-3.2,c:0x4ade80},{x:2.8,c:0xff3d8f},{x:3.2,c:0xa78bfa}].forEach(d=>{
-    const g=new THREE.Mesh(
-      new THREE.CylinderGeometry(.28,.28,.08,22),
-      new THREE.MeshStandardMaterial({color:0x060a14,roughness:.85,metalness:.55})
-    );
-    g.position.set(d.x,.1,-.2);
-    dashGrp.add(g);
-    const face=new THREE.Mesh(
-      new THREE.CircleGeometry(.24,22),
-      new THREE.MeshStandardMaterial({
-        color:d.c,roughness:.15,metalness:.05,
-        emissive:new THREE.Color(d.c),emissiveIntensity:.35
-      })
-    );
-    face.rotation.x=-Math.PI/2;
-    face.position.set(d.x,.145,-.2);
-    dashGrp.add(face);
-  });
-
-  // Boutons rangée basse
-  for(let i=0;i<14;i++){
-    const cols=[0xff3d8f,0x22d3ee,0x4ade80,0xa78bfa,0x060a14];
-    const c=cols[i%5];
-    const btn=new THREE.Mesh(
-      new THREE.BoxGeometry(.14,.08,.14),
-      new THREE.MeshStandardMaterial({
-        color:c,roughness:.35,metalness:.2,
-        emissive:new THREE.Color(c),emissiveIntensity:i%5<4?.35:0
-      })
-    );
-    btn.position.set(-2.7+i*.42,.12,.7);
-    dashGrp.add(btn);
-  }
-
-  // Cadre hublot intérieur (torus)
-  const portTorus=new THREE.Mesh(
-    new THREE.TorusGeometry(1.65,.28,14,52),
-    new THREE.MeshStandardMaterial({
-      color:0x0d1528,roughness:.8,metalness:.65,
-      emissive:new THREE.Color(0x1a2a5a),emissiveIntensity:.18
-    })
-  );
-  portTorus.position.set(0,1.6,-5.2);
-  ckInterior.add(portTorus);
-  ckScene._portTorus = portTorus;
-
-  // Second anneau intérieur
-  const portInner=new THREE.Mesh(
-    new THREE.TorusGeometry(1.4,.1,8,48),
-    new THREE.MeshStandardMaterial({
-      color:0x7c3aed,roughness:.4,metalness:.4,
-      emissive:new THREE.Color(0x7c3aed),emissiveIntensity:.3
-    })
-  );
-  portInner.position.set(0,1.6,-5.15);
-  ckInterior.add(portInner);
-  ckScene._portInner = portInner;
-
-  // Lumière hublot (lueur de l'espace)
-  const spaceLt=new THREE.PointLight(0x1122ff,2.5,12);
-  spaceLt.position.set(0,1.6,-4.5);
-  ckInterior.add(spaceLt);
-  ckScene._spaceLight=spaceLt;
-
-  // Lumières ambiantes intérieur
-  const intAmb=new THREE.PointLight(0x112244,2.8,20);
-  intAmb.position.set(0,2,0);
-  ckInterior.add(intAmb);
-  const rimL=new THREE.PointLight(0xff3d8f,.8,8);
-  rimL.position.set(-4,0,2);
-  ckInterior.add(rimL);
-  const rimR=new THREE.PointLight(0x22d3ee,.7,8);
-  rimR.position.set(4,0,2);
-  ckInterior.add(rimR);
-
   // Raycaster
-  ckRaycaster=new THREE.Raycaster();ckMouse=new THREE.Vector2();
-
-  // Porthole click zone interactions
-  const portClick=document.getElementById('ck-porthole-click');
-  portClick.addEventListener('mousemove',e=>{
-    const r2=wrap.getBoundingClientRect();
-    ckMouseNormX=((e.clientX-r2.left)/W-.5)*2;
-    ckMouseNormY=((e.clientY-r2.top)/H-.5)*2;
-    const r=wrap.getBoundingClientRect();
-    const x=e.clientX-r.left,y=e.clientY-r.top;
-    document.getElementById('ck-cur').style.cssText+=`;left:${x}px;top:${y}px`;
-    // Parallax — move planets slightly opposite to mouse
-    if(!ckWarping&&ckPlanets.length){
-      const px=(x/W-.5)*2, py=(y/H-.5)*2;
-      ckPlanets.forEach(({mesh,pd})=>{
-        const base=mesh.userData.base;
-        if(!base) return;
-        const depth=1/(1+Math.abs(pd.pos[2])*.08);
-        mesh.position.x=base[0]-px*depth*.4;
-        mesh.position.z=base[2]-py*depth*.2;
-      });
-    }
-    ckMouse.x=(x/W)*2-1;ckMouse.y=-(y/H)*2+1;
-    ckRaycaster.setFromCamera(ckMouse,ckCamera);
-    const hits=ckRaycaster.intersectObjects(ckPlanetMeshes);
-    const tt=document.getElementById('ck-tt');
-    const hint=document.getElementById('ck-hint');
-    if(hits.length>0){
-      const pd=hits[0].object.userData.pd;
-      document.getElementById('ck-tt-name').textContent=pd.label;
-      document.getElementById('ck-tt-name').style.color=pd.color;
-      document.getElementById('ck-tt-sub').textContent=pd.sub;
-      tt.style.opacity='1';hint.style.opacity='0';
-      wrap.style.cursor='none';
-      // Illuminer la planète
-      hits[0].object.material.emissiveIntensity=.35;
-      hits[0].object.scale.setScalar(1.12);
-      // HUD scan si nouvelle planète
-      if(wrap._hovered!==pd.id){
-        if(!wrap._hudTimer) clearTimeout(wrap._hudTimer);
-        wrap._hudTimer=setTimeout(()=>{
-          // Projeter coords 3D→2D pour positionner le HUD
-          const pos3=new THREE.Vector3(...pd.pos);
-          pos3.project(ckCamera);
-          const bRect=wrap.getBoundingClientRect();
-          const sx=(pos3.x*.5+.5)*ckW;
-          const sy=(-(pos3.y)*.5+.5)*ckH;
-          if(window.showHUD) showHUD(pd.id,sx,sy,pd.size*24);
-        },600);
-      }
-      wrap._hovered=pd.id;
-    } else {
-      tt.style.opacity='0';hint.style.opacity='1';
-      if(wrap._hovered!==null&&window.hideHUD) hideHUD();
-      if(wrap._hudTimer){clearTimeout(wrap._hudTimer);wrap._hudTimer=null;}
-      wrap._hovered=null;
-    }
-  });
-  portClick.addEventListener('click',()=>{
-    if(wrap._hovered!=null){
-      haptic([20,10,80]);
-      if(window.hideHUD) hideHUD();
-      ckWarpTo(wrap._hovered);
-    }
-  });
-  portClick.addEventListener('mouseleave',()=>{
-    document.getElementById('ck-tt').style.opacity='0';
-    document.getElementById('ck-hint').style.opacity='1';
-    // Reset parallax
-    if(ckPlanets.length) ckPlanets.forEach(({mesh})=>{
-      const b=mesh.userData.base;if(b){mesh.position.x=b[0];mesh.position.z=b[2];}
-    });
-  });
+  ckRaycaster=new THREE.Raycaster();
+  ckMouse=new THREE.Vector2(-10,-10);
+  const flashEl=document.getElementById('ck-warp');
 
   // Nav dots
-  const nav=document.getElementById('ck-nav');nav.innerHTML='';
-  PDATA.forEach((pd,i)=>{
-    const d=document.createElement('div');d.className='ck-nd'+(i===0?' active':'');
-    d.innerHTML=`<div class="ck-dot" style="background:${pd.color};box-shadow:0 0 6px ${pd.color}"></div><div class="ck-nl">${pd.label}</div>`;
-    d.addEventListener('click',()=>ckWarpTo(i));
-    nav.appendChild(d);
-  });
+  const navEl=document.getElementById('ck-nav');
+  if(navEl){
+    PDATA.forEach((pd,i)=>{
+      const d=document.createElement('button');
+      d.className='ck-nd'+(i===0?' active':'');
+      d.title=pd.label;
+      d.innerHTML=`<span class="ck-dot" style="--dc:${pd.color}"></span>`;
+      d.addEventListener('click',()=>ckWarpTo(i));
+      navEl.appendChild(d);
+    });
+  }
 
-  // Launch button — pure warp
-  document.getElementById('ck-launch').addEventListener('click',()=>{
-    const warp=document.getElementById('ck-warp');
-    warp.style.opacity='1';setTimeout(()=>warp.style.opacity='0',220);
-    if(ckScene._starMat){ckScene._starMat.size=1.2;setTimeout(()=>{ckScene._starMat.size=.18;},500);}
-    if(window.soundLaunch) soundLaunch();
-  });
-
-  // Cursor global
+  // Mouse tracking
   wrap.addEventListener('mousemove',e=>{
     const r=wrap.getBoundingClientRect();
+    ckMouseNormX=((e.clientX-r.left)/r.width-.5)*2;
+    ckMouseNormY=-((e.clientY-r.top)/r.height-.5)*2;
+    ckMouse.x=(e.clientX-r.left)/r.width*2-1;
+    ckMouse.y=-((e.clientY-r.top)/r.height)*2+1;
     document.getElementById('ck-cur').style.left=(e.clientX-r.left)+'px';
     document.getElementById('ck-cur').style.top=(e.clientY-r.top)+'px';
   });
 
-  // Start render
+  wrap.addEventListener('click',e=>{
+    if(ckWarping)return;
+    ckRaycaster.setFromCamera(ckMouse,ckCamera);
+    const hits=ckRaycaster.intersectObjects(ckPlanetMeshes);
+    if(hits.length>0){
+      const pd=hits[0].object.userData.pd;
+      if(pd)ckWarpTo(pd.id);
+    }
+  });
+
   initParticles();
   buildHands();
-  // Désactiver les lumières de l'intérieur dès le départ (mode extérieur par défaut)
-  if(ckScene._interior){
-    ckScene._interior.traverse(obj=>{ if(obj.isLight) obj.visible=false; });
-  }
+
+  // Construire la salle de contrôle SVG
+  buildRoomPlanets();
+  buildPortholeStars();
+  startRadarAnim();
+
+  // Les planètes Three.js continuent de tourner (pour les fonctions existantes)
   ckAnimating=true;
   ckAnimate();
-
-  // Intro
   showIntro();
 }
 
 function showIntro(){
   const intro=document.getElementById('ck-intro');
   if(!intro)return;
-  // Only show once per session
-  if(sessionStorage.getItem('ck-intro-shown')){
-    intro.classList.add('hidden');return;
-  }
+  if(sessionStorage.getItem('ck-intro-shown')){intro.classList.add('hidden');return;}
   sessionStorage.setItem('ck-intro-shown','1');
   const txt=document.getElementById('ck-intro-text');
   const sub=document.getElementById('ck-intro-sub');
@@ -3267,25 +2934,20 @@ function showIntro(){
   setTimeout(()=>{intro.classList.add('hidden');},2200);
 }
 
-let ckAnimating=false;
 function ckAnimate(){
   if(!ckAnimating)return;
   ckFrame++;
   if(ckPlanets&&ckPlanets.length) ckPlanets.forEach(({mesh,pd})=>{
     mesh.rotation.y+=pd.speed;
-    const _b=mesh.userData.base;if(!ckWarping&&_b) mesh.position.y=_b[1]+Math.sin(ckFrame*.007+pd.id*.8)*.1;
-    // Pulse + time-based scale
-    const timeBonus = typeof slideTimeSpent!=='undefined'
-      ? Math.min(.3, (slideTimeSpent[pd.id]||0)/60*.3) : 0;
+    const _b=mesh.userData.base;if(!ckWarping&&_b)mesh.position.y=_b[1]+Math.sin(ckFrame*.007+pd.id*.8)*.1;
+    const timeBonus=typeof slideTimeSpent!=='undefined'?Math.min(.3,(slideTimeSpent[pd.id]||0)/60*.3):0;
     if(pd.id===ckActive){
       const pulse=1+timeBonus+Math.sin(ckFrame*.06)*.06;
       mesh.scale.setScalar(pulse);
       if(mesh.material){
-        mesh.material.emissive&&pd.color&&mesh.material.emissive.setHex(parseInt(pd.color.replace('#',''),16));
+        mesh.material.emissive&&mesh.material.emissive.setHex(parseInt(pd.color.replace('#',''),16));
         mesh.material.emissiveIntensity=.15+timeBonus*.5+Math.sin(ckFrame*.06)*.05;
       }
-    } else if(ckWrap&&ckWrap._hovered===pd.id){
-      // Keep hover scale managed by raycaster block
     } else {
       mesh.scale.setScalar(1+timeBonus*.5);
       if(mesh.material&&mesh.material.emissiveIntensity!==undefined)
@@ -3294,34 +2956,18 @@ function ckAnimate(){
   });
   if(!ckWarping){
     if(ckPovMode){
-      // ── Mode POV : caméra dans la capsule avec bob apesanteur ──
-      const bobX = Math.sin(ckFrame*.006)*.06 + Math.cos(ckFrame*.011)*.03;
-      const bobY = Math.sin(ckFrame*.008)*.04 + Math.cos(ckFrame*.013)*.02;
-      const breathZ = Math.sin(ckFrame*.004)*.025;
-      const parallaxX = ckMouseNormX*.18;
-      const parallaxY = -ckMouseNormY*.12;
-      ckCamera.position.x += (parallaxX+bobX - ckCamera.position.x)*.03;
-      ckCamera.position.y += (.6+parallaxY+bobY - ckCamera.position.y)*.03;
-      ckCamera.position.z += (3.2+breathZ - ckCamera.position.z)*.03;
-      // Regarder légèrement vers le hublot (avant + légèrement haut)
-      ckCamera.lookAt(
-        ckMouseNormX*.3,
-        .8 - ckMouseNormY*.2,
-        -3
-      );
-      // Écrans scintillent
-      [0,1,2,3].forEach(i=>{
-        const s=ckScene[`_screen${i}`];
-        if(s&&s.material) s.material.emissiveIntensity=.55+Math.sin(ckFrame*.04+i*1.2)*.2;
-      });
-      // Lumière dashboard pulse
-      if(ckScene._dashLight) ckScene._dashLight.intensity=3+Math.sin(ckFrame*.025)*.6;
-      // Hublot inner pulse avec couleur accent
-      if(ckScene&&ckScene._portInner&&ckScene._portInner.material){
+      const bobX=Math.sin(ckFrame*.006)*.06+Math.cos(ckFrame*.011)*.03;
+      const bobY=Math.sin(ckFrame*.008)*.04+Math.cos(ckFrame*.013)*.02;
+      const breathZ=Math.sin(ckFrame*.004)*.025;
+      ckCamera.position.x+=(ckMouseNormX*.18+bobX-ckCamera.position.x)*.03;
+      ckCamera.position.y+=(.6-ckMouseNormY*.12+bobY-ckCamera.position.y)*.03;
+      ckCamera.position.z+=(3.2+breathZ-ckCamera.position.z)*.03;
+      ckCamera.lookAt(ckMouseNormX*.3,.8-ckMouseNormY*.2,-3);
+      [0,1,2,3].forEach(i=>{const s=ckScene[`_screen${i}`];if(s&&s.material)s.material.emissiveIntensity=.55+Math.sin(ckFrame*.04+i*1.2)*.2;});
+      if(ckScene&&ckScene._dashLight)ckScene._dashLight.intensity=3+Math.sin(ckFrame*.025)*.6;
+      if(ckScene&&ckScene._portInner&&ckScene._portInner.material)
         ckScene._portInner.material.emissiveIntensity=.2+Math.sin(ckFrame*.04)*.15;
-      }
     } else {
-      // ── Mode extérieur : comportement standard ──
       const targetCX=ckMouseNormX*.4+Math.sin(ckFrame*.003)*.2;
       const targetCY=-ckMouseNormY*.25+Math.cos(ckFrame*.0025)*.15;
       ckCamera.position.x+=(targetCX-ckCamera.position.x)*.04;
@@ -3332,183 +2978,57 @@ function ckAnimate(){
   tickParticles();
   animHands(ckWarping);
   if(ckRenderer&&ckScene&&ckCamera)ckRenderer.render(ckScene,ckCamera);
-  if(ckAnimating) requestAnimationFrame(ckAnimate);
+  if(ckAnimating)requestAnimationFrame(ckAnimate);
 }
 
 function ckWarpTo(id){
   if(ckWarping||id===ckActive)return;
   ckWarping=true;
-  if(window.soundLaunch) soundLaunch();
-
+  if(window.soundLaunch)soundLaunch();
   const warp=document.getElementById('ck-warp');
   const target=ckPlanets[id];if(!target){ckWarping=false;return;}
   const tp=target.pd.pos;
   const planetMesh=ckPlanetMeshes[id];
-
-  // Mark visited
-  if(!window._ckVisited) window._ckVisited=new Set([0]);
+  if(!window._ckVisited)window._ckVisited=new Set([0]);
   window._ckVisited.add(id);
-  ckPlanets.forEach(({mesh,pd})=>{
-    if(window._ckVisited.has(pd.id)&&mesh.material) mesh.material.roughness=.65;
-  });
+  ckPlanets.forEach(({mesh,pd})=>{if(window._ckVisited.has(pd.id)&&mesh.material)mesh.material.roughness=.65;});
 
-  if(ckPovMode){
-    // ════ VOL 3D POV VERS LA PLANÈTE (4s épique) ════
-    // HUD — destination
-    const destEl=document.getElementById('ck-pov-dest');
-    if(destEl) destEl.textContent='DEST: '+target.pd.label.toUpperCase();
-
-    // Phase 1 (0→0.8s) : orientation — la scène tourne vers la cible
-    // La caméra se tourne pour viser la planète par le hublot
-    const oriDur=800, oriStart=performance.now();
-    const startLookX=ckCamera.position.x, startLookY=ckCamera.position.y;
-    // Cible normalisée (direction vers la planète)
-    const tNormX=tp[0]*.04, tNormY=tp[1]*.03+.8;
-
-    function animOrient(now){
-      const p=Math.min(1,(now-oriStart)/oriDur);
-      const e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
-      ckCamera.lookAt(
-        tNormX*e*2,
-        tNormY,
-        -3
-      );
-      if(p<1) requestAnimationFrame(animOrient);
-    }
-    requestAnimationFrame(animOrient);
-
-    // Joystick s'incline
-    animHands(true);
-
-    // Phase 2 (0.8s→1.5s) : ignition — son + warp flash
-    setTimeout(()=>{
-      warp.style.opacity='.4';
-      setTimeout(()=>warp.style.opacity='0',300);
-      // Stars s'étirent
-      if(ckScene._starMat){ ckScene._starMat.size=2.2; }
-      burstParticles(0,0,5);
-      // Lumière dashboard explose
-      if(ckScene._dashLight) ckScene._dashLight.intensity=8;
-    },800);
-
-    // Phase 3 (1.5s→4.5s) : vol — la planète grossit dans le hublot
-    // On anime la planète cible pour qu'elle grossisse et se centre
-    const flyDur=3000, flyStart=performance.now()+1500;
-    const origPos={x:tp[0],y:tp[1],z:tp[2]};
-    const origScale=planetMesh.scale.x;
-    // Position finale : juste devant la caméra, dans l'axe du hublot
-    const finalPos={x:origPos.x*.1, y:origPos.y*.1+1.4, z:-3};
-    const finalScale=8; // planète remplit le hublot
-
-    // FOV s'ouvre légèrement pendant le vol (sensation d'accélération)
-    function animFly(){
-      const now=performance.now();
-      if(now < flyStart){ requestAnimationFrame(animFly); return; }
-      const p=Math.min(1,(now-flyStart)/flyDur);
-      // Ease in-out cubic
-      const e=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
-
-      // Planète se rapproche et grossit
-      if(planetMesh){
-        planetMesh.position.x=origPos.x+(finalPos.x-origPos.x)*e;
-        planetMesh.position.y=origPos.y+(finalPos.y-origPos.y)*e;
-        planetMesh.position.z=origPos.z+(finalPos.z-origPos.z)*e;
-        const sc=origScale+(finalScale-origScale)*e;
-        planetMesh.scale.setScalar(sc);
-        // Émission augmente
-        if(planetMesh.material) planetMesh.material.emissiveIntensity=.08+e*.8;
-        // Lumière de la planète éclaire l'intérieur
-        if(ckScene._spaceLight){
-          const c=target.pd.color||'#ffffff';
-          ckScene._spaceLight.color.set(c);
-          ckScene._spaceLight.intensity=2.5+e*6;
+  // Vol standard (extérieur)
+  warp.style.opacity='1';setTimeout(()=>warp.style.opacity='0',180);
+  if(ckScene._starMat){ckScene._starMat.size=1.8;setTimeout(()=>{ckScene._starMat.size=.18;},700);}
+  burstParticles(0,0,5);
+  animHands(true);
+  const cs={x:ckCamera.position.x,y:ckCamera.position.y,z:ckCamera.position.z};
+  const ce={x:tp[0]*.28,y:tp[1]*.2,z:tp[2]+12};
+  const dur=1000,start=performance.now();
+  function animCam(now){
+    const prog=Math.min(1,(now-start)/dur);
+    const e=prog<.5?4*prog*prog*prog:1-Math.pow(-2*prog+2,3)/2;
+    ckCamera.position.x=cs.x+(ce.x-cs.x)*e;
+    ckCamera.position.y=cs.y+(ce.y-cs.y)*e;
+    ckCamera.position.z=cs.z+(ce.z-cs.z)*e;
+    ckCamera.lookAt(tp[0],tp[1],tp[2]);
+    if(prog<1){requestAnimationFrame(animCam);}
+    else{
+      setTimeout(()=>{
+        const rs=performance.now();
+        function ret(n){
+          const p2=Math.min(1,(n-rs)/700);
+          const e2=p2<.5?4*p2*p2*p2:1-Math.pow(-2*p2+2,3)/2;
+          ckCamera.position.x=ce.x+(0-ce.x)*e2;
+          ckCamera.position.y=ce.y+(0-ce.y)*e2;
+          ckCamera.position.z=ce.z+(18-ce.z)*e2;
+          ckCamera.lookAt(0,0,0);
+          if(p2<1){requestAnimationFrame(ret);}
+          else{ckWarping=false;}
         }
-      }
-      // FOV s'élargit légèrement (sensation vitesse)
-      if(ckCamera){
-        ckCamera.fov = 72 + e*8;
-        ckCamera.updateProjectionMatrix();
-      }
-      // Stars s'étirent de plus en plus
-      if(ckScene._starMat) ckScene._starMat.size=.18+e*2.5;
-      // Hublot inner pulse rapide
-      if(ckScene&&ckScene._portInner&&ckScene._portInner.material){
-        const c=target.pd.color||'#ffffff';
-        ckScene._portInner.material.emissive.set(c);
-        ckScene._portInner.material.emissiveIntensity=.3+e*.9;
-      }
-
-      if(p<1){ requestAnimationFrame(animFly); }
+        requestAnimationFrame(ret);
+      },250);
     }
-    requestAnimationFrame(animFly);
-
-    // Vitesse HUD monte
-    const spdEl=document.getElementById('ck-pov-spd');
-    let spd=7.8;
-    const spdInt=setInterval(()=>{
-      spd=Math.min(299792,spd*1.4);
-      if(spdEl) spdEl.textContent=`VIT ${spd>9999?'WARP':''+spd.toFixed(1)} KM/S`;
-    },300);
-
-    // Flash + atterrissage à 4.5s
-    setTimeout(()=>{
-      clearInterval(spdInt);
-      warp.style.opacity='1';
-      setTimeout(()=>warp.style.opacity='0',400);
-      // Remettre la planète à sa place
-      if(planetMesh){
-        planetMesh.position.set(...origPos);
-        planetMesh.scale.setScalar(origScale);
-        if(planetMesh.material) planetMesh.material.emissiveIntensity=.08;
-      }
-      if(ckScene._starMat) ckScene._starMat.size=.18;
-      if(ckCamera){ ckCamera.fov=72; ckCamera.updateProjectionMatrix(); }
-      if(ckScene&&ckScene._spaceLight) ckScene._spaceLight.intensity=2.5;
-      if(destEl) destEl.textContent='DEST: –';
-      if(spdEl) spdEl.textContent='VIT 7.8 KM/S';
-      // Remettre ckWarping à false (sinon le cockpit reste bloqué)
-      ckWarping=false;
-    },4500);
-
-  } else {
-    // ════ VOL MODE EXTÉRIEUR (comportement original) ════
-    warp.style.opacity='1';setTimeout(()=>warp.style.opacity='0',180);
-    if(ckScene._starMat){ckScene._starMat.size=1.8;setTimeout(()=>{ckScene._starMat.size=.18;},700);}
-    burstParticles(0,0,5);
-    animHands(true);
-
-    const cs={x:ckCamera.position.x,y:ckCamera.position.y,z:ckCamera.position.z};
-    const ce={x:tp[0]*.28,y:tp[1]*.2,z:tp[2]+12};
-    const dur=1000,start=performance.now();
-    function animCam(now){
-      const prog=Math.min(1,(now-start)/dur);
-      const e=prog<.5?4*prog*prog*prog:1-Math.pow(-2*prog+2,3)/2;
-      ckCamera.position.x=cs.x+(ce.x-cs.x)*e;
-      ckCamera.position.y=cs.y+(ce.y-cs.y)*e;
-      ckCamera.position.z=cs.z+(ce.z-cs.z)*e;
-      if(ckCamera)ckCamera.lookAt(tp[0],tp[1],tp[2]);
-      if(prog<1){requestAnimationFrame(animCam);}
-      else{
-        setTimeout(()=>{
-          const rs=performance.now();
-          function ret(n){
-            const p2=Math.min(1,(n-rs)/700);
-            const e2=p2<.5?4*p2*p2*p2:1-Math.pow(-2*p2+2,3)/2;
-            ckCamera.position.x=ce.x+(0-ce.x)*e2;
-            ckCamera.position.y=ce.y+(0-ce.y)*e2;
-            ckCamera.position.z=ce.z+(18-ce.z)*e2;
-            ckCamera.lookAt(0,0,0);
-            if(p2<1){requestAnimationFrame(ret);}
-            else{ckWarping=false;}
-          }
-          requestAnimationFrame(ret);
-        },250);
-      }
-    }
-    requestAnimationFrame(animCam);
   }
+  requestAnimationFrame(animCam);
 
-  // Update nav + active
+  // Update nav
   document.querySelectorAll('.ck-nd').forEach((d,i)=>{
     d.classList.toggle('active',i===id);
     if(window._ckVisited&&window._ckVisited.has(i)){
@@ -3518,195 +3038,223 @@ function ckWarpTo(id){
   });
   ckActive=id;
 
-  // After travel — close overlay + navigate slide
-  const tDur = ckPovMode ? 4800 : 1150;
+  // After travel
+  const tDur=1150;
+  const flashEl=document.getElementById('ck-warp');
   setTimeout(()=>{
-    if(window.soundLand) soundLand();
+    if(window.soundLand)soundLand();
     haptic([80]);
     flashEl.style.opacity='1';
     setTimeout(()=>flashEl.style.opacity='0',220);
-    // Marquer planète comme visitée → aura cyan
     if(ckPlanetMeshes&&ckPlanetMeshes[id]&&ckPlanetMeshes[id].material){
-      ckPlanetMeshes[id].userData=ckPlanetMeshes[id].userData||{};
-      ckPlanetMeshes[id].userData.visited=true;
       ckPlanetMeshes[id].material.emissiveIntensity=.55;
       if(ckPlanetMeshes[id].material.emissive)
         ckPlanetMeshes[id].material.emissive.setHex(0x22d3ee);
     }
     window.closeUniverse();
     setTimeout(()=>{
-      // Force navigation — bypass busy/same-slide guards
-      busy=false;
-      enterCinematic();
-      if(id===cur){
-        const s=slides[cur];
-        s.style.opacity='';
-        s.classList.remove('out','out-left','out-right');
-        s.classList.add('active');
-      } else {
-        window.go(id);
-      }
-    },250);
+      if(typeof go==='function')go(id);
+    },200);
   },tDur);
 }
 
+// Toggle POV
 
-// ════ COCKPIT THEMING ════
-function hexToRgb(hex){
-  if(!hex) return '80,120,255'; // fallback bleu
-  hex = hex.trim().toLowerCase().replace(/^#/,'');
-  if(hex.length===3) hex=hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
-  if(hex.length!==6||!/^[0-9a-f]{6}$/.test(hex)) return '80,120,255';
-  const r=parseInt(hex.slice(0,2),16);
-  const g=parseInt(hex.slice(2,4),16);
-  const b=parseInt(hex.slice(4,6),16);
-  return r+','+g+','+b;
-}
+// ════ SALLE DE CONTRÔLE — animation SVG ════
+function buildRoomPlanets(){
+  const container = document.getElementById('ck-porthole-planets');
+  if(!container) return;
+  container.innerHTML = '';
 
-function applyCockpitTheme(prospect){
-  const ov = document.getElementById('uni-overlay');
-  if(!ov) return;
-  const hex = (prospect && prospect.couleur_hex) ? prospect.couleur_hex : '#5078ff';
-  const rgb = hexToRgb(hex);
-  ov.style.setProperty('--ck-accent', rgb);
-  ov.style.setProperty('--ck-accent-hex', hex);
+  // Positions dans le hublot (cercle r=155, centré 500,200 dans SVG 1000x620)
+  // Le container est 310×355px positionné sur le hublot
+  // Centre container: 155, 155
+  const planetPositions = [
+    {id:0, x:155, y:118, r:30},  // Cover — central haut
+    {id:1, x:72,  y:108, r:18},  // Services — gauche haut
+    {id:2, x:230, y:122, r:16},  // Process — droite haut
+    {id:3, x:105, y:175, r:24},  // Formules — milieu gauche
+    {id:4, x:210, y:168, r:15},  // Équipe — milieu droite
+    {id:5, x:68,  y:215, r:14},  // Vidéo — bas gauche
+    {id:6, x:240, y:220, r:16},  // Icebreaker — bas droite
+    {id:7, x:155, y:240, r:18},  // Contact — bas centre
+  ];
 
-  // Teinter les planètes Three.js avec la couleur prospect
-  if(prospect && ckPlanetMeshes && ckPlanetMeshes.length > 0){
-    // Planète cible (S7 = index 6) prend la couleur du prospect
-    const targetPlanet = ckPlanetMeshes[6];
-    if(targetPlanet && targetPlanet.material){
-      const col = new THREE.Color(hex);
-      targetPlanet.material.emissive = col;
-      targetPlanet.material.emissiveIntensity = .25;
-      // Mettre à jour PDATA couleur
-      if(ckPlanets[6] && ckPlanets[6].pd){
-        ckPlanets[6].pd.color = hex;
-        ckPlanets[6].pd.c1 = hex;
-      }
+  planetPositions.forEach(pp => {
+    const pd = PDATA[pp.id];
+    const btn = document.createElement('button');
+    btn.className = 'ck-planet-btn' + (pp.id === ckActive ? ' active' : '');
+    btn.title = pd.label + ' — ' + pd.sub;
+    btn.style.cssText = `
+      left:${pp.x - pp.r}px;
+      top:${pp.y - pp.r}px;
+      width:${pp.r*2}px;
+      height:${pp.r*2}px;
+    `;
+
+    // Planète SVG inline
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${pp.r*2} ${pp.r*2}`);
+    svg.setAttribute('width', pp.r*2);
+    svg.setAttribute('height', pp.r*2);
+
+    // Gradient radial planète
+    const defs = document.createElementNS(svgNS, 'defs');
+    const grad = document.createElementNS(svgNS, 'radialGradient');
+    grad.setAttribute('id', `pg-${pp.id}`);
+    grad.setAttribute('cx', '35%'); grad.setAttribute('cy', '35%'); grad.setAttribute('r', '65%');
+    const s1 = document.createElementNS(svgNS, 'stop');
+    s1.setAttribute('offset', '0%'); s1.setAttribute('stop-color', pd.c1 || pd.color);
+    const s2 = document.createElementNS(svgNS, 'stop');
+    s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', pd.c2 || '#000');
+    grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad); svg.appendChild(defs);
+
+    // Corps planète
+    const circle = document.createElementNS(svgNS, 'circle');
+    circle.setAttribute('cx', pp.r); circle.setAttribute('cy', pp.r); circle.setAttribute('r', pp.r - 1);
+    circle.setAttribute('fill', `url(#pg-${pp.id})`);
+    svg.appendChild(circle);
+
+    // Reflet
+    const shine = document.createElementNS(svgNS, 'ellipse');
+    shine.setAttribute('cx', pp.r * .55); shine.setAttribute('cy', pp.r * .4);
+    shine.setAttribute('rx', pp.r * .28); shine.setAttribute('ry', pp.r * .18);
+    shine.setAttribute('fill', 'rgba(255,255,255,.15)');
+    svg.appendChild(shine);
+
+    // Anneau si Formules
+    if(pd.ring){
+      const ring = document.createElementNS(svgNS, 'ellipse');
+      ring.setAttribute('cx', pp.r); ring.setAttribute('cy', pp.r);
+      ring.setAttribute('rx', pp.r * 1.65); ring.setAttribute('ry', pp.r * .38);
+      ring.setAttribute('fill', 'none');
+      ring.setAttribute('stroke', pd.color);
+      ring.setAttribute('stroke-width', '2');
+      ring.setAttribute('opacity', '.5');
+      ring.setAttribute('transform', `rotate(-20,${pp.r},${pp.r})`);
+      svg.appendChild(ring);
     }
-    // Rim light prend aussi la couleur
-    if(ckScene){
-      ckScene.traverse(obj=>{
-        if(obj.isPointLight && obj._isRim){
-          obj.color.set(hex);
-        }
-      });
-    }
-  }
 
-  // Mettre à jour le watermark dans le hublot
-  const portholeNameEl = document.getElementById('ck-porthole-name');
-  if(portholeNameEl){
-    if(prospect && prospect.societe){
-      portholeNameEl.textContent = prospect.societe;
-      portholeNameEl.style.color = `rgba(${rgb},.18)`;
-      setTimeout(()=>portholeNameEl.classList.add('visible'), 800);
-    } else {
-      portholeNameEl.textContent = '';
-      portholeNameEl.classList.remove('visible');
-    }
-  }
+    btn.appendChild(svg);
 
-  // Mettre à jour les panneaux latéraux
-  if(prospect){
-    const p = prospect;
-    // Panneau gauche — stats standard (on pourrait surcharger ici si besoin)
-    const logoEl = document.getElementById('ck-prospect-logo');
-    if(logoEl) { logoEl.textContent = p.societe || ''; logoEl.style.display = p.societe ? 'block' : 'none'; }
+    // Label
+    const lbl = document.createElement('div');
+    lbl.className = 'ck-planet-label';
+    lbl.textContent = pd.label;
+    lbl.style.color = pd.color;
+    btn.appendChild(lbl);
 
-    // Panneau droit — infos prospect
-    const show = id => { const el=document.getElementById(id); if(el) el.style.display='block'; };
-    const set = (id, val) => { const el=document.getElementById(id); if(el && val) el.textContent=val; };
-    show('ck-prospect-block'); set('ck-p-name', p.prenom + (p.nom ? ' ' + p.nom : ''));
-    show('ck-prospect-societe-block'); set('ck-p-societe', p.societe);
-    show('ck-prospect-secteur-block'); set('ck-p-secteur', p.secteur);
-    if(p.actu){ show('ck-prospect-actu-block'); set('ck-p-actu', p.actu); }
-
-    // Titre overlay
-    const title = document.getElementById('uni-title');
-    if(title) title.textContent = 'Cockpit · ' + (p.societe || 'Devoleads');
-
-    // Stat RDV avec couleur prospect
-    const rdvEl = document.getElementById('ck-stat-rdv');
-    if(rdvEl) rdvEl.style.color = hex;
-  }
-}
-
-// Mettre à jour le panneau droit — destination active
-function updateCockpitDest(slideIdx){
-  const names = ['Présentation','Services','Process','Formules','Équipe','Vidéo','Icebreaker','Contact'];
-  const el = document.getElementById('ck-dest-name');
-  if(el) el.textContent = names[slideIdx] || '–';
-  // Compteur slides visitées
-  if(!window._ckVisited) window._ckVisited = new Set();
-  window._ckVisited.add(slideIdx);
-  const cnt = document.getElementById('ck-visited-count');
-  if(cnt) cnt.textContent = window._ckVisited.size;
-}
-
-
-// ════ TOGGLE MODE POV ════
-window.toggleCkPov = function(){
-  ckPovMode = !ckPovMode;
-  document.body.classList.toggle('ck-pov', ckPovMode);
-  const lbl = document.getElementById('ck-pov-label');
-  if(lbl) lbl.textContent = ckPovMode ? 'EXT' : 'POV';
-
-  if(ckScene && ckScene._interior){
-    ckScene._interior.visible = ckPovMode;
-    // Désactiver les lumières de l'intérieur en mode extérieur
-    // (Group.visible=false ne désactive PAS les lumières en Three.js)
-    ckScene._interior.traverse(obj=>{
-      if(obj.isLight) obj.visible = ckPovMode;
+    // Click
+    btn.addEventListener('click', () => ckRoomWarpTo(pp.id));
+    btn.addEventListener('mouseenter', () => {
+      const destEl = document.getElementById('ck-hud-dest');
+      if(destEl){ destEl.textContent = `→ ${pd.label.toUpperCase()} — ${pd.sub}`; destEl.classList.add('active'); }
     });
-  }
+    btn.addEventListener('mouseleave', () => {
+      const destEl = document.getElementById('ck-hud-dest');
+      if(destEl){ destEl.textContent = 'CHOISISSEZ VOTRE DESTINATION'; destEl.classList.remove('active'); }
+    });
 
-  // Repositionner la caméra
+    container.appendChild(btn);
+  });
+}
+
+function ckRoomWarpTo(id){
+  if(id === ckActive) return;
+  ckActive = id;
+  const pd = PDATA[id];
+
+  // Mettre à jour visuel actif
+  document.querySelectorAll('.ck-planet-btn').forEach((btn,i) => {
+    btn.classList.toggle('active', i === id);
+  });
+
+  // HUD destination
+  const destEl = document.getElementById('ck-hud-dest');
+  if(destEl){ destEl.textContent = `→ ${pd.label.toUpperCase()}`; destEl.classList.add('active'); }
+
+  // Couleur accent pilote = couleur planète
+  const visor = document.getElementById('ck-pilot-visor');
+  if(visor) visor.setAttribute('fill', pd.color);
+
+  // Flash + fermeture
+  const warp = document.getElementById('ck-warp');
+  if(warp){ warp.style.opacity='.6'; setTimeout(()=>warp.style.opacity='0',200); }
+
+  setTimeout(()=>{
+    if(destEl){ destEl.textContent='CHOISISSEZ VOTRE DESTINATION'; destEl.classList.remove('active'); }
+    window.closeUniverse();
+    setTimeout(()=>{ if(typeof go==='function') go(id); }, 200);
+  }, 500);
+}
+
+// Animation radar SVG
+function startRadarAnim(){
+  const scanLine = document.getElementById('radar-scan');
+  if(!scanLine) return;
+  let angle = 0;
+  setInterval(()=>{
+    angle = (angle + 2) % 360;
+    const rad = angle * Math.PI / 180;
+    const x2 = 500 + Math.cos(rad) * 38;
+    const y2 = 420 + Math.sin(rad) * 38;
+    scanLine.setAttribute('x2', x2);
+    scanLine.setAttribute('y2', y2);
+    // Pulse les points radar
+    ['radar-p1','radar-p2','radar-p3'].forEach((id,i)=>{
+      const el = document.getElementById(id);
+      if(el){
+        const diff = Math.abs(((angle - i*120) + 360) % 360);
+        el.setAttribute('opacity', diff < 15 ? '1' : '0.4');
+      }
+    });
+  }, 25);
+}
+
+// Étoiles dans le hublot SVG
+function buildPortholeStars(){
+  const g = document.getElementById('ck-porthole-stars');
+  if(!g) return;
+  g.innerHTML = '';
+  const cx=500, cy=200, r=155;
+  for(let i=0;i<80;i++){
+    const angle = Math.random()*Math.PI*2;
+    const dist = Math.random()*r*.9;
+    const x = cx + Math.cos(angle)*dist;
+    const y = cy + Math.sin(angle)*dist;
+    const star = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    star.setAttribute('cx', x);
+    star.setAttribute('cy', y);
+    star.setAttribute('r', .3 + Math.random()*1.2);
+    star.setAttribute('fill', '#fff');
+    star.setAttribute('opacity', .1+Math.random()*.7);
+    g.appendChild(star);
+  }
+}
+
+
+window.toggleCkPov=function(){
+  ckPovMode=!ckPovMode;
+  document.body.classList.toggle('ck-pov',ckPovMode);
+  const lbl=document.getElementById('ck-pov-label');
+  if(lbl)lbl.textContent=ckPovMode?'EXT':'POV';
+  if(ckScene&&ckScene._interior){
+    ckScene._interior.visible=ckPovMode;
+    ckScene._interior.traverse(obj=>{if(obj.isLight)obj.visible=ckPovMode;});
+  }
   if(ckPovMode){
-    // Vue POV — caméra à l'intérieur de la capsule
-    ckCamera.position.set(0, .6, 3.2);
-    ckCamera.fov = 72;
-    ckCamera.updateProjectionMatrix();
+    ckCamera.position.set(0,.6,3.2);ckCamera.fov=72;ckCamera.updateProjectionMatrix();
   } else {
-    // Vue extérieure — caméra standard
-    ckCamera.position.set(0, 0, 18);
-    ckCamera.fov = 58;
-    ckCamera.updateProjectionMatrix();
-    ckCamera.lookAt(0,0,0);
+    ckCamera.position.set(0,0,18);ckCamera.fov=58;ckCamera.updateProjectionMatrix();ckCamera.lookAt(0,0,0);
   }
 };
 
 
-// Mise à jour couleurs cinématique si la scène tourne encore
-window.updateCinematicColors = function(colorHex, societe){
-  if(!colorHex) return;
-  const scene = document.getElementById('cine-scene');
-  if(!scene || scene.style.display==='none') return; // scène déjà terminée
-  const hex = colorHex.trim().replace(/^#/,'').toLowerCase();
-  if(hex.length!==6) return;
-  const col = '#'+hex;
-  const els = {
-    visor:  document.getElementById('cs-visor'),
-    badge:  document.getElementById('cs-badge-rect'),
-    band:   document.getElementById('cs-prospect-band'),
-    win:    document.getElementById('cs-window'),
-  };
-  if(els.visor)  els.visor.setAttribute('fill', col);
-  if(els.badge){ els.badge.setAttribute('fill', col); els.badge.setAttribute('opacity','.75'); }
-  if(els.band){  els.band.setAttribute('fill',  col); els.band.setAttribute('opacity','.7'); }
-  if(els.win && els.win.getAttribute('fill') !== '#060c1c'){
-    // Hublot déjà allumé → mettre à jour sa couleur
-    els.win.setAttribute('fill', col);
-  }
-  // HUD pilot text mis à jour
-  const hudPilot = document.getElementById('cs-hud-pilot');
-  if(hudPilot && societe){
-    const pn = window._getPilotName ? window._getPilotName() : 'Pilote';
-    hudPilot.textContent = `PILOTE : ${pn.toUpperCase()} · MISSION ${societe.toUpperCase()}`;
-  }
-};
+// Stub no-op (narration supprimée)
+function stopVoix(){}
 
+;(function(){
 window.openUniverse=function(){
   buildCockpit();
   // Sync to current slide
@@ -3714,12 +3262,6 @@ window.openUniverse=function(){
     document.querySelectorAll('.ck-nd').forEach((d,i)=>d.classList.toggle('active',i===cur));
     ckActive=cur;
   }
-  // Masquer la narration si visible quand on ouvre le cockpit
-  const _nOv = document.getElementById('narration-overlay');
-  if(_nOv){ _nOv.classList.remove('visible','fading'); }
-  if(narrationTimer) clearTimeout(narrationTimer);
-  if(narrationFadeTimer) clearTimeout(narrationFadeTimer);
-  stopVoix();
   // Appliquer le thème prospect si disponible
   if(typeof applyCockpitTheme==='function'){
     const pd = (typeof prospectData!=='undefined') ? prospectData : null;
@@ -3751,12 +3293,7 @@ window.closeUniverse=function(){
       slides[cur].classList.add('active');
     }
     busy=false;
-    // Relancer la narration de la slide active
-    if(typeof showNarration==='function'){
-      narrationShown.delete(cur); // permettre la relecture
-      setTimeout(()=>showNarration(cur), 600);
-    }
-  },100);
+    },100);
 };
 
 // ESC to close
@@ -3764,6 +3301,114 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&overlay.classList.contains('open')) window.closeUniverse();
 });
 overlay.addEventListener('click',e=>{if(e.target===overlay)window.closeUniverse();});
+
+})();
+
+
+// ════ MUSIQUE DE FOND AMBIANTE ════
+;(function(){
+  let _ambiCtx = null, _ambiNodes = null, _ambiRunning = false;
+
+  function _getCtx(){
+    if(!_ambiCtx) _ambiCtx = new(window.AudioContext||window.webkitAudioContext)();
+    return _ambiCtx;
+  }
+
+  function _buildAmbiance(){
+    const ctx = _getCtx();
+    if(ctx.state==='suspended') ctx.resume();
+    const t = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0, t);
+    master.gain.linearRampToValueAtTime(0.045, t + 3.5); // fondu entrée 3.5s
+    master.connect(ctx.destination);
+
+    // Drone fondamental 40Hz (sub-bass très doux)
+    const sub = ctx.createOscillator();
+    sub.type = 'sine';
+    sub.frequency.value = 40;
+    const subG = ctx.createGain(); subG.gain.value = 0.55;
+    sub.connect(subG); subG.connect(master);
+
+    // Harmonique 80Hz
+    const h1 = ctx.createOscillator();
+    h1.type = 'sine';
+    h1.frequency.value = 80.2;
+    const h1G = ctx.createGain(); h1G.gain.value = 0.25;
+    h1.connect(h1G); h1G.connect(master);
+
+    // Harmonique 120Hz légèrement désaccordé
+    const h2 = ctx.createOscillator();
+    h2.type = 'sine';
+    h2.frequency.value = 119.7;
+    const h2G = ctx.createGain(); h2G.gain.value = 0.12;
+    h2.connect(h2G); h2G.connect(master);
+
+    // Pad stellaire — bruit blanc filtré très haut
+    const bufSize = ctx.sampleRate * 2;
+    const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for(let i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * 0.015;
+    const noise = ctx.createBufferSource();
+    noise.buffer = buf;
+    noise.loop = true;
+    const noiseF = ctx.createBiquadFilter();
+    noiseF.type = 'bandpass';
+    noiseF.frequency.value = 3200;
+    noiseF.Q.value = 0.4;
+    const noiseG = ctx.createGain(); noiseG.gain.value = 0.3;
+    noise.connect(noiseF); noiseF.connect(noiseG); noiseG.connect(master);
+
+    // LFO pulsation lente (0.08 Hz = ~12s par cycle)
+    const lfo = ctx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.08;
+    const lfoG = ctx.createGain(); lfoG.gain.value = 0.008;
+    lfo.connect(lfoG); lfoG.connect(master.gain);
+
+    sub.start(); h1.start(); h2.start(); noise.start(); lfo.start();
+    return { master, sub, h1, h2, noise, lfo };
+  }
+
+  window.soundAmbiStart = function(){
+    if(_ambiRunning) return;
+    _ambiRunning = true;
+    try{
+      _ambiNodes = _buildAmbiance();
+    } catch(e){ console.warn('Ambient audio failed:', e); }
+  };
+
+  window.soundAmbiStop = function(){
+    if(!_ambiRunning || !_ambiNodes) return;
+    _ambiRunning = false;
+    try{
+      const ctx = _getCtx();
+      const t = ctx.currentTime;
+      _ambiNodes.master.gain.setValueAtTime(_ambiNodes.master.gain.value, t);
+      _ambiNodes.master.gain.linearRampToValueAtTime(0, t + 1.2);
+      setTimeout(()=>{
+        try{
+          _ambiNodes.sub.stop(); _ambiNodes.h1.stop(); _ambiNodes.h2.stop();
+          _ambiNodes.noise.stop(); _ambiNodes.lfo.stop();
+        } catch(e){}
+        _ambiNodes = null;
+      }, 1400);
+    } catch(e){}
+  };
+
+  // Variation de tonalité selon la slide (subtile)
+  window.soundAmbiSlide = function(slideIdx){
+    if(!_ambiRunning || !_ambiNodes) return;
+    try{
+      const ctx = _getCtx();
+      const t = ctx.currentTime;
+      // Légère montée de fréquence vers les slides importantes
+      const freqMap = [40, 42, 41, 44, 40, 38, 45, 43];
+      const f = freqMap[slideIdx] || 40;
+      _ambiNodes.sub.frequency.setTargetAtTime(f, t, 1.5);
+      _ambiNodes.h1.frequency.setTargetAtTime(f * 2 + 0.2, t, 1.5);
+    } catch(e){}
+  };
 
 })();
 
@@ -4587,10 +4232,7 @@ window.startNASA=function(){
         sessionStorage.setItem('nasa-done','1');
         if(typeof enterCinematic==='function') enterCinematic();
         const _pn = window._getPilotName ? window._getPilotName() : 'Pilote';
-        if(typeof initNarrations==='function' && !prospectUrl){
-          initNarrations(_pn);
-        }
-      });
+              });
     },500);
   }
 };
@@ -4600,6 +4242,7 @@ window.startNASA=function(){
 let cinematicMode=false;
 
 function enterCinematic(){
+  if(window.soundAmbiStart) soundAmbiStart();
   cinematicMode=true;
   document.body.classList.add('cinematic');
   // Masquage instantané — no transition flash
@@ -4610,10 +4253,6 @@ function enterCinematic(){
   document.querySelectorAll('.arr,.dot').forEach(el=>{
     el.style.transition='none';el.style.opacity='0';el.style.pointerEvents='none';
   });
-  // Déclencher la narration de la slide active (slide 0 au premier lancement)
-  if(typeof showNarration==='function' && typeof cur!=='undefined'){
-    setTimeout(()=>showNarration(cur), 800);
-  }
 }
 
 function exitCinematic(){
@@ -4857,10 +4496,70 @@ function trackSlideTime(){
   slideTimeStart = now;
 }
 
-// Patch go() pour tracker le temps
+window.go=function(idx){
+if(busy||idx===cur||idx<0||idx>=TOTAL) return;
+busy=true;
+const prev=cur; cur=idx;
+const dir = idx > prev ? 1 : -1; // 1=forward, -1=backward
+if(window.soundSlide) soundSlide(dir);
+haptic([15]);
+ui();
+// Flash lumineux
+const fl=document.getElementById('transition-flash');
+if(fl){fl.classList.remove('fire','fire-back');fl.offsetHeight;fl.classList.add(dir>0?'fire':'fire-back');}
+// Tick counter
+const pnEl=document.getElementById('pn');
+if(pnEl){pnEl.classList.remove('tick');pnEl.offsetHeight;pnEl.classList.add('tick');}
+// Slide sortante
+const outClass = dir>0 ? 'out-left' : 'out-right';
+slides[prev].classList.remove('ein-right','ein-left');
+slides[prev].classList.add('out', outClass);
+setTimeout(()=>{
+slides[prev].classList.remove('out',outClass,'active');
+slides[prev].style.opacity=0;
+},420);
+// Slide entrante
+setTimeout(()=>{
+const inClass = dir>0 ? 'ein-right' : 'ein-left';
+slides[cur].style.opacity='';
+slides[cur].classList.remove('out','out-left','out-right','ein-right','ein-left');
+slides[cur].classList.add('active', inClass);
+slides[cur].querySelectorAll('.sg').forEach(sg=>{
+sg.querySelectorAll(':scope>*').forEach(c=>{
+c.style.animation='none';
+c.offsetHeight;
+c.style.animation='';
+});
+});
+if(cur===2) startMotion(); else stopMotion();
+setSlideAmbiance(cur);
+if(cur===7) startSetup();
+// Sync cockpit salle de contrôle
+if(typeof PDATA!=='undefined'){
+ckActive=cur;
+document.querySelectorAll('.ck-planet-btn').forEach((b,i)=>b.classList.toggle('active',i===cur));
+const vsr=document.getElementById('ck-pilot-visor');
+if(vsr) vsr.setAttribute('fill',PDATA[cur]?.color||'#ff3d8f');
+} // S8 Mise en place = index 7
+// S7 : g\u00e9n\u00e9rer s\u00e9quence fictive si pas encore faite ET pas d'URL en cours
+if(cur===6 && !prospectData && !prospectUrl && typeof analyzeProspect==='function'){
+const DUMMY = [
+{secteur:'SaaS RH',prenom:'Marc',nom:'Dupont',societe:'Flowify',actu:'vient de lever 800K\u20ac en seed',ville:'Lyon'},
+{secteur:'SaaS Marketing',prenom:'Julie',nom:'Martin',societe:'Growthly',actu:'vient de lancer son offre Enterprise',ville:'Paris'},
+{secteur:'Agence conseil',prenom:'Sophie',nom:'Bernard',societe:'DataForge',actu:'vient de signer avec Microsoft',ville:'Nantes'},
+];
+const dp = DUMMY[Math.floor(Math.random()*DUMMY.length)];
+analyzeProspect(null, dp).then(d=>{ if(d) injectProspectSequence(d); }).catch(()=>{});
+}
+setTimeout(()=>{busy=false},700);
+},380);
+}
+
+// Patch go() pour tracker le temps et ambiance
 const _origGo = window.go;
 window.go = function(idx){
   trackSlideTime();
+  if(window.soundAmbiSlide) soundAmbiSlide(idx);
   return _origGo(idx);
 };
 
@@ -5003,15 +4702,8 @@ function injectProspectSequence(data){
     if(_logo && _p.societe){ _logo.textContent = _p.societe; _logo.style.display='block'; }
   }
 
-  // ── Générer/regénérer les narrations avec le VRAI contexte prospect ──
-  // À ce stade prospectData est set (ligne 1 de cette fonction)
-  // donc initNarrations va lire prospectData.prospect correctement
   const _pn2 = window._getPilotName ? window._getPilotName() : 'Pilote';
-  if(typeof initNarrations==='function'){
-    narrationTexts = null; // reset pour forcer régénération
-    initNarrations(_pn2);  // prospectData est maintenant disponible ✓
-  }
-  // ── Injecter directement dans l'email S7 (bypass applyLevel guard) ──
+    // ── Injecter directement dans l'email S7 (bypass applyLevel guard) ──
   const _subj  = document.getElementById('ice2-subj');
   const _hi    = document.getElementById('ice2-hi');
   const _brk   = document.getElementById('ice2-brk');
@@ -5112,6 +4804,21 @@ window.copyProspectEmail = function(){
   }).catch(()=>{});
 };
 
+
+// ════ MODE PRÉSENTATION LIVE ════
+let liveMode = false;
+window.toggleLiveMode = function(){
+  liveMode = !liveMode;
+  document.body.classList.toggle('live-mode', liveMode);
+  // Toast notification
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(6,7,15,.9);border:1px solid rgba(255,61,143,.3);border-radius:8px;padding:8px 16px;font-size:11px;font-family:monospace;letter-spacing:1px;color:rgba(255,255,255,.7);z-index:9999;pointer-events:none;opacity:0;transition:opacity .3s';
+  toast.textContent = liveMode ? '● Mode LIVE activé — P pour désactiver' : '○ Mode LIVE désactivé';
+  document.body.appendChild(toast);
+  requestAnimationFrame(()=>{ toast.style.opacity='1'; });
+  setTimeout(()=>{ toast.style.opacity='0'; setTimeout(()=>toast.remove(),400); }, 2200);
+};
+
 window.prev=function(){go(cur-1)}
 window.next=function(){go(cur+1)}
 document.addEventListener('keydown',e=>{
@@ -5119,6 +4826,8 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp')prev();
   if(e.key==='Home')go(0);
   if(e.key==='End')go(TOTAL-1);
+  if(e.key==='p'||e.key==='P') toggleLiveMode();
+  if(e.key==='f'||e.key==='F') { if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen(); }
 });
 </script>
 </body>
