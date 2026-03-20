@@ -3609,11 +3609,12 @@ Génère UNIQUEMENT un JSON valide (sans markdown, sans backticks) avec cette st
       status.style.color = 'rgba(251,191,36,.7)';
     }
     // Fallback : retourner le profil de base sans email IA
+    const fallbackSociete = url.replace(/https?:\/\//, '').split('/')[0].replace('www.','');
     return {
       prospect: {
         prenom: PROSPECT_TYPES[0].prenom,
         nom: PROSPECT_TYPES[0].nom,
-        societe: url.replace(/https?:\/\//, '').split('/')[0].replace('www.',''),
+        societe: fallbackSociete || PROSPECT_TYPES[0].societe,
         secteur: 'B2B SaaS',
         actu: 'en forte croissance',
         ville: 'France',
@@ -3622,13 +3623,13 @@ Génère UNIQUEMENT un JSON valide (sans markdown, sans backticks) avec cette st
       email1: {
         objet: 'Une question rapide sur votre prospection',
         salutation: 'Bonjour,',
-        icebreaker: 'J'ai découvert votre site — votre positionnement est clair et ambitieux.',
-        pitch: 'Chez Devoleads, on aide les équipes comme la vôtre à remplir leur agenda de RDV qualifiés en moins de 14 jours.',
-        social_proof: 'On travaille déjà avec plusieurs acteurs de votre secteur (NDA oblige).',
+        icebreaker: 'Votre site montre une approche claire et ambitieuse — exactement le type de profil que nous accompagnons.',
+        pitch: 'Chez Devoleads, nous remplissons les agendas de RDV qualifiés en moins de 14 jours. Sans effort de votre part.',
+        social_proof: 'Nous travaillons avec plus de 150 CEOs dans votre secteur (NDA oblige).',
         cta: 'Auriez-vous 20 minutes cette semaine pour en discuter ?'
       },
-      relance_j3: 'Je reviens vers vous — avez-vous eu le temps de regarder ? Je peux m'adapter à votre timing.',
-      linkedin_touch: 'Bonjour, j'ai essayé de vous joindre par email — votre approche m'intéresse, échangeons ?'
+      relance_j3: 'Je reviens vers vous — avez-vous eu le temps de regarder ? Je peux cadrer sur votre timing.',
+      linkedin_touch: 'Bonjour — votre approche nous intéresse vraiment. On échange cette semaine ?'
     };
   }
 }
