@@ -1682,6 +1682,595 @@ body.web-mode #nav{background:rgba(6,7,15,.95);backdrop-filter:blur(20px);border
 }
 
 
+
+/* ════════════════════════════════════════════════════════
+   EXPÉRIENCE CINÉMATIQUE — EFFET WAOUH INTÉGRAL
+════════════════════════════════════════════════════════ */
+
+/* ── FOND SPATIAL PERMANENT ── */
+#space-bg {
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+#space-canvas {
+  position:absolute;inset:0;width:100%;height:100%;
+}
+#deck { z-index:10; }
+.slide { background:transparent !important; }
+
+/* ── SCANLINES OVERLAY ── */
+#deck::after {
+  content:'';position:absolute;inset:0;z-index:999;pointer-events:none;
+  background:repeating-linear-gradient(0deg,
+    transparent,transparent 2px,
+    rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px
+  );
+  animation:scanlines 8s linear infinite;
+}
+@keyframes scanlines { 0%{background-position:0 0} 100%{background-position:0 100%} }
+
+/* ── VIGNETTE ── */
+.slide::before {
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 120% 120% at 50% 50%,transparent 40%,rgba(0,0,0,.7) 100%);
+}
+
+/* ── TRANSITIONS CINÉMATIQUES ── */
+@keyframes slide-enter-right {
+  0%   { opacity:0; transform:translateX(60px) scale(.97); filter:blur(8px); }
+  60%  { filter:blur(0); }
+  100% { opacity:1; transform:translateX(0) scale(1); }
+}
+@keyframes slide-enter-left {
+  0%   { opacity:0; transform:translateX(-60px) scale(.97); filter:blur(8px); }
+  60%  { filter:blur(0); }
+  100% { opacity:1; transform:translateX(0) scale(1); }
+}
+@keyframes slide-exit-left {
+  0%   { opacity:1; transform:translateX(0) scale(1); }
+  100% { opacity:0; transform:translateX(-80px) scale(.96); filter:blur(6px); }
+}
+@keyframes slide-exit-right {
+  0%   { opacity:1; transform:translateX(0) scale(1); }
+  100% { opacity:0; transform:translateX(80px) scale(.96); filter:blur(6px); }
+}
+.slide.cin-enter-r { animation:slide-enter-right .55s cubic-bezier(.16,1,.3,1) forwards; }
+.slide.cin-enter-l { animation:slide-enter-left  .55s cubic-bezier(.16,1,.3,1) forwards; }
+.slide.cin-exit-l  { animation:slide-exit-left   .35s cubic-bezier(.4,0,1,1)   forwards; }
+.slide.cin-exit-r  { animation:slide-exit-right  .35s cubic-bezier(.4,0,1,1)   forwards; }
+
+/* ── ANIMATIONS ÉLÉMENTS INTERNES ── */
+@keyframes cin-up {
+  0%   { opacity:0; transform:translateY(28px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+@keyframes cin-left {
+  0%   { opacity:0; transform:translateX(-24px); }
+  100% { opacity:1; transform:translateX(0); }
+}
+@keyframes cin-scale {
+  0%   { opacity:0; transform:scale(.88); }
+  100% { opacity:1; transform:scale(1); }
+}
+@keyframes cin-glow-in {
+  0%   { opacity:0; transform:scale(.7); filter:blur(20px); }
+  100% { opacity:1; transform:scale(1); filter:blur(0); }
+}
+@keyframes counter-up {
+  0%   { opacity:0; transform:translateY(16px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+@keyframes line-draw {
+  0%   { width:0; opacity:0; }
+  100% { opacity:1; }
+}
+@keyframes glitch {
+  0%,100% { clip-path:none; transform:none; }
+  7%  { clip-path:inset(40% 0 61% 0); transform:translate(-4px,0); }
+  10% { clip-path:inset(92% 0 1%  0); transform:translate(4px,0);  }
+  13% { clip-path:none; transform:none; }
+  60% { clip-path:inset(23% 0 70% 0); transform:translate(-3px,0); }
+  62% { clip-path:none; transform:none; }
+}
+@keyframes shimmer {
+  0%   { background-position:200% center; }
+  100% { background-position:-200% center; }
+}
+@keyframes pulse-ring {
+  0%   { transform:scale(1);   opacity:.6; }
+  100% { transform:scale(2.2); opacity:0;  }
+}
+@keyframes float-up {
+  0%,100% { transform:translateY(0); }
+  50%     { transform:translateY(-8px); }
+}
+@keyframes rotate-slow {
+  from { transform:rotate(0deg); }
+  to   { transform:rotate(360deg); }
+}
+@keyframes data-stream {
+  0%   { transform:translateY(100%); opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:1; }
+  100% { transform:translateY(-100%); opacity:0; }
+}
+@keyframes blink-cursor {
+  0%,100% { opacity:1; } 50% { opacity:0; }
+}
+@keyframes reveal-text {
+  0%   { width:0; }
+  100% { width:100%; }
+}
+@keyframes card-flip-in {
+  0%   { opacity:0; transform:perspective(800px) rotateY(-25deg) translateX(40px); }
+  100% { opacity:1; transform:perspective(800px) rotateY(0)     translateX(0); }
+}
+@keyframes beam-scan {
+  0%   { top:-2px; opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:1; }
+  100% { top:100%; opacity:0; }
+}
+
+/* ── COVER — Éléments animés ── */
+.cin-eyebrow { animation:cin-up .5s .1s both; }
+.cin-h1      { animation:cin-up .6s .25s both; }
+.cin-sub     { animation:cin-up .5s .45s both; }
+.cin-stats   { animation:cin-up .5s .6s both; }
+.cin-ctas    { animation:cin-up .5s .8s both; }
+.cin-logos   { animation:cin-up .4s 1s both; }
+
+/* Effet glitch sur le H1 */
+.cin-h1-glitch {
+  position:relative;
+}
+.cin-h1-glitch::before,
+.cin-h1-glitch::after {
+  content:attr(data-text);
+  position:absolute;inset:0;
+  font-family:inherit;font-size:inherit;font-weight:inherit;
+}
+.cin-h1-glitch::before {
+  color:var(--cyan);animation:glitch 8s 2s infinite;left:2px;
+}
+.cin-h1-glitch::after {
+  color:var(--pink);animation:glitch 8s 2.15s infinite;left:-2px;
+}
+
+/* ── HUD AMBIENT ── */
+#hud-ambient {
+  position:fixed;inset:0;pointer-events:none;z-index:5;
+  opacity:0;transition:opacity .6s;
+}
+.hud-line-h {
+  position:absolute;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,58,237,.3),transparent);
+  animation:shimmer 4s linear infinite;
+  background-size:200% auto;
+}
+.hud-line-v {
+  position:absolute;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(124,58,237,.2),transparent);
+}
+.hud-corner {
+  position:absolute;width:20px;height:20px;
+  border-color:rgba(124,58,237,.4);border-style:solid;
+}
+.hud-data-stream {
+  position:absolute;right:24px;top:80px;
+  font-family:monospace;font-size:8.5px;
+  color:rgba(124,58,237,.35);letter-spacing:1px;
+  display:flex;flex-direction:column;gap:3px;
+  overflow:hidden;height:120px;
+}
+.hud-data-stream span {
+  animation:data-stream 3s linear infinite;
+  animation-delay:calc(var(--i) * .4s);
+}
+.slide.active ~ #hud-ambient { opacity:1; }
+
+/* ── STATS COMPTEURS ANIMÉS ── */
+.stat-counter {
+  display:inline-block;
+  transition:all .3s;
+}
+
+/* ── COVER BIG NUMBERS ── */
+.cin-bignum {
+  font-family:var(--display);
+  font-size:clamp(48px,7vw,88px);
+  font-weight:900;
+  letter-spacing:-3px;
+  line-height:1;
+  background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,.6) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  position:relative;
+}
+
+/* ── SLIDE SERVICES — Grid cinématique ── */
+.cin-svc-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  width:100%;max-width:1100px;
+}
+.cin-svc-card {
+  background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:24px;
+  position:relative;overflow:hidden;
+  transform:translateY(40px);opacity:0;
+  transition:border-color .3s,transform .3s;
+}
+.cin-svc-card.in {
+  animation:cin-up .5s cubic-bezier(.16,1,.3,1) both;
+}
+.cin-svc-card:nth-child(1).in { animation-delay:.1s; }
+.cin-svc-card:nth-child(2).in { animation-delay:.22s; }
+.cin-svc-card:nth-child(3).in { animation-delay:.34s; }
+.cin-svc-card::after {
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cin-accent,var(--purple-l)),transparent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.cin-svc-card.in::after { transform:scaleX(1); transition-delay:.3s; }
+.cin-svc-card:hover { border-color:rgba(124,58,237,.3);transform:translateY(-4px) !important; }
+
+/* ── SLIDE PROCESS — Timeline animée ── */
+.cin-timeline {
+  display:flex;gap:0;width:100%;max-width:1000px;
+  position:relative;
+}
+.cin-timeline::before {
+  content:'';position:absolute;top:28px;left:5%;right:5%;height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 1.2s cubic-bezier(.16,1,.3,1) .3s;
+}
+.cin-timeline.in::before { transform:scaleX(1); }
+.cin-tstep {
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:16px;padding:0 8px;
+}
+.cin-tstep-num {
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:900;font-size:16px;
+  background:var(--bg);
+  border:2px solid rgba(124,58,237,.3);
+  color:var(--purple-l);
+  position:relative;z-index:1;
+  transform:scale(0);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.cin-timeline.in .cin-tstep-num { transform:scale(1); }
+.cin-tstep:nth-child(1) .cin-tstep-num { transition-delay:.4s; }
+.cin-tstep:nth-child(2) .cin-tstep-num { transition-delay:.6s; }
+.cin-tstep:nth-child(3) .cin-tstep-num { transition-delay:.8s; }
+.cin-tstep:nth-child(4) .cin-tstep-num { transition-delay:1s; }
+.cin-tstep:nth-child(5) .cin-tstep-num { transition-delay:1.2s; }
+.cin-tstep-num::before {
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:1px solid rgba(124,58,237,.2);
+  animation:pulse-ring 2.5s ease infinite;
+  opacity:0;
+}
+.cin-timeline.in .cin-tstep:nth-child(5) .cin-tstep-num::before { opacity:1;animation-delay:1.4s; }
+
+/* ── SLIDE FORMULES — Cards premium ── */
+.cin-plan-card {
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:24px;
+  position:relative;overflow:hidden;
+  padding:28px;
+  opacity:0;
+}
+.cin-plan-card::before {
+  content:'';
+  position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);
+  transition:left .6s ease;
+}
+.cin-plan-card.in { animation:card-flip-in .6s cubic-bezier(.16,1,.3,1) both; }
+.cin-plan-card.in:nth-child(1) { animation-delay:.1s; }
+.cin-plan-card.in:nth-child(2) { animation-delay:.25s; }
+.cin-plan-card.in:nth-child(3) { animation-delay:.4s; }
+.cin-plan-card.featured {
+  background:linear-gradient(160deg,rgba(124,58,237,.12),rgba(255,61,143,.06));
+  border-color:rgba(124,58,237,.35);
+  transform:scale(1.04);
+}
+.cin-plan-card:hover::before { left:100%; }
+
+/* Beam scanner */
+.cin-plan-card.featured::after {
+  content:'';position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--purple-l),var(--pink),transparent);
+  animation:beam-scan 3s ease infinite;
+}
+
+/* ── SLIDE ÉQUIPE ── */
+.cin-team-photo {
+  position:relative;
+}
+.cin-team-photo::after {
+  content:'';position:absolute;inset:-3px;border-radius:50%;
+  background:conic-gradient(var(--purple),var(--pink),var(--cyan),var(--purple));
+  z-index:-1;
+  animation:rotate-slow 4s linear infinite;
+}
+
+/* ── SLIDE COVER — Orb central animé ── */
+.cin-hero-orb {
+  position:absolute;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,.25) 0%,rgba(255,61,143,.1) 50%,transparent 70%);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  animation:float-up 6s ease-in-out infinite;
+  pointer-events:none;
+  filter:blur(40px);
+}
+
+/* ── DATA GRID BACKGROUND ── */
+.cin-data-grid {
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;
+  opacity:.4;
+}
+
+/* ── CHIFFRES STATS COVER ── */
+.cin-stat-card {
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:clamp(12px,1.5vh,18px) clamp(16px,2vw,24px);
+  text-align:center;
+  position:relative;overflow:hidden;
+  transition:border-color .3s,transform .3s;
+}
+.cin-stat-card:hover { border-color:rgba(124,58,237,.4);transform:translateY(-3px); }
+.cin-stat-card::after {
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--cin-color,var(--purple-l));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .8s cubic-bezier(.16,1,.3,1);
+}
+.cin-stat-card.in::after { transform:scaleX(1); }
+.cin-stat-val {
+  font-family:var(--display);
+  font-size:clamp(28px,4vw,48px);
+  font-weight:900;
+  letter-spacing:-1.5px;
+  line-height:1;
+  color:var(--cin-color,var(--white));
+}
+.cin-stat-lbl {
+  font-size:11px;color:var(--muted);letter-spacing:.5px;margin-top:5px;
+}
+
+/* ── ICEBREAKER — Email animé ── */
+.cin-ice-cursor {
+  display:inline-block;width:2px;height:1em;
+  background:var(--purple-l);
+  animation:blink-cursor .8s ease infinite;
+  vertical-align:middle;margin-left:2px;
+}
+
+/* ── COVER — Texte révélation ── */
+.text-reveal-wrap {
+  overflow:hidden;display:block;
+}
+.text-reveal-inner {
+  display:block;
+  animation:cin-up .7s cubic-bezier(.16,1,.3,1) both;
+}
+
+
+
+/* ── CARTES ENCADRÉES PREMIUM ── */
+.cin-svc-card {
+  background: linear-gradient(160deg, rgba(255,255,255,.055) 0%, rgba(255,255,255,.015) 100%);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+  box-shadow: 0 2px 20px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.cin-svc-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 0% 0%, rgba(var(--cin-accent-rgb, 124,58,237), .08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity .4s;
+}
+.cin-svc-card:hover::before { opacity: 1; }
+.cin-svc-card:hover {
+  border-color: rgba(var(--cin-accent-rgb, 124,58,237), .4) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(var(--cin-accent-rgb, 124,58,237), .15), inset 0 1px 0 rgba(255,255,255,.12);
+}
+.cin-svc-card[style*="--cin-accent:var(--orange)"] { --cin-accent-rgb: 255,107,53; }
+.cin-svc-card[style*="--cin-accent:var(--pink)"]   { --cin-accent-rgb: 255,61,143; }
+.cin-svc-card[style*="--cin-accent:var(--cyan)"]   { --cin-accent-rgb: 34,211,238; }
+.cin-svc-card.in {
+  animation: cin-up .5s cubic-bezier(.16,1,.3,1) both;
+}
+.cin-svc-card:nth-child(1).in { animation-delay:.08s; }
+.cin-svc-card:nth-child(2).in { animation-delay:.20s; }
+.cin-svc-card:nth-child(3).in { animation-delay:.32s; }
+.cin-svc-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cin-accent, var(--slide-accent)), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .7s cubic-bezier(.16,1,.3,1) .15s;
+}
+.cin-svc-card.in::after { transform: scaleX(1); }
+
+/* ── PLAN CARDS ENCADRÉES ── */
+.cin-plan {
+  background: linear-gradient(160deg, rgba(255,255,255,.05) 0%, rgba(255,255,255,.02) 100%);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 22px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: border-color .3s, transform .3s, box-shadow .3s;
+  box-shadow: 0 4px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.07);
+}
+.cin-plan:hover {
+  border-color: rgba(124,58,237,.3);
+  box-shadow: 0 12px 44px rgba(0,0,0,.45), 0 0 0 1px rgba(124,58,237,.12), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.cin-plan.featured {
+  background: linear-gradient(160deg, rgba(124,58,237,.14) 0%, rgba(255,61,143,.07) 100%);
+  border-color: rgba(124,58,237,.35);
+  transform: scale(1.03);
+  box-shadow: 0 8px 40px rgba(124,58,237,.2), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.cin-plan.in { animation: card-flip .58s cubic-bezier(.16,1,.3,1) both; }
+.cin-plan:nth-child(1).in { animation-delay:.08s; }
+.cin-plan:nth-child(2).in { animation-delay:.22s; }
+.cin-plan:nth-child(3).in { animation-delay:.38s; }
+.cin-plan.featured::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--purple-l), var(--pink), transparent);
+  animation: beam-scan 2.8s ease infinite;
+}
+
+/* ── STAT CARDS ENCADRÉES S1 ── */
+.cin-stat-card {
+  background: linear-gradient(160deg, rgba(255,255,255,.055) 0%, rgba(255,255,255,.018) 100%);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 16px;
+  padding: clamp(10px,1.4vh,18px) clamp(14px,1.8vw,22px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: border-color .3s, transform .3s;
+  box-shadow: 0 2px 16px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.07);
+}
+.cin-stat-card.in { animation: cin-scale .5s cubic-bezier(.16,1,.3,1) both; }
+.cin-stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--cin-color, var(--slide-accent));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .8s cubic-bezier(.16,1,.3,1) .2s;
+  border-radius: 0 0 2px 2px;
+}
+.cin-stat-card.in::after { transform: scaleX(1); }
+.cin-stat-card:hover {
+  border-color: rgba(var(--slide-accent-rgb), .4);
+  transform: translateY(-3px);
+}
+
+/* ── TEAM CARDS ENCADRÉES ── */
+#tc-stanis, #tc-amelie {
+  box-shadow: 0 4px 24px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.06) !important;
+}
+#tc-stanis:hover { border-color: rgba(124,58,237,.3) !important; box-shadow: 0 8px 36px rgba(124,58,237,.15), inset 0 1px 0 rgba(255,255,255,.08) !important; }
+#tc-amelie:hover { border-color: rgba(255,61,143,.3) !important; box-shadow: 0 8px 36px rgba(255,61,143,.12), inset 0 1px 0 rgba(255,255,255,.08) !important; }
+
+/* ── PROCESS STEPS ENCADRÉS ── */
+.cin-tstep-num {
+  box-shadow: 0 0 0 4px rgba(124,58,237,.1), 0 4px 12px rgba(0,0,0,.3) !important;
+}
+
+/* ── VPC CARDS S7 encadrées ── */
+.vpcard-inner {
+  box-shadow: 0 4px 20px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.07) !important;
+}
+
+/* ── MOBILE RESPONSIVE ── */
+@media (max-width: 768px) {
+  /* Nav */
+  #nav { height: 54px; padding: 0 16px; }
+  .logo-img { height: 24px; }
+  #pg { display: none; }
+  #dots { display: none; }
+  #share-btn { display: none !important; }
+
+  /* Slides */
+  .slide {
+    padding: 54px 18px 16px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slide h1 { font-size: clamp(34px,9vw,52px) !important; letter-spacing: -2px !important; }
+  .slide h2 { font-size: clamp(26px,7vw,38px) !important; letter-spacing: -1px !important; }
+
+  /* S1 Cover */
+  .cin-hero-orb { width: 300px !important; height: 300px !important; }
+  .cin-stat-card { padding: 10px 14px !important; }
+  .cin-stat-val { font-size: clamp(22px,7vw,32px) !important; }
+
+  /* S3 Services - stack vertical */
+  #s3 > .sg:first-of-type { width: 100% !important; padding: 0 !important; }
+  #s3 .cin-svc-card { padding: 14px !important; }
+
+  /* S4 Process - stack */
+  .cin-timeline { flex-direction: column !important; gap: 0 !important; }
+  .cin-timeline::before { display: none !important; }
+  .cin-tstep { flex-direction: row !important; text-align: left !important; padding: 12px 0 !important; border-bottom: 1px solid var(--border); gap: 14px !important; }
+  .cin-tstep:last-child { border-bottom: none; }
+
+  /* S5 Formules - stack */
+  #s5 .sg[style*="grid"] { grid-template-columns: 1fr !important; }
+  .cin-plan.featured { transform: none !important; }
+
+  /* S6 Team - stack */
+  #s6 { flex-direction: column !important; }
+  #s6 > .sg:first-of-type { width: 100% !important; padding: 0 !important; }
+  #tc-stanis, #tc-amelie { padding: 14px !important; }
+
+  /* S7 Video */
+  #s7 { flex-direction: column !important; }
+
+  /* S8 Closing */
+  #s8 > div { flex-direction: column !important; }
+
+  /* HUD caché sur mobile */
+  #hud-ambient { display: none !important; }
+
+  /* Curseur caché sur mobile */
+  #cur, #cur-r { display: none !important; }
+
+  /* Mode toggle */
+  #mode-toggle { top: 8px !important; right: 12px !important; }
+  #toggle-deck, #toggle-web { padding: 4px 10px !important; font-size: 10px !important; }
+
+  /* Arrows */
+  .arr { width: 32px !important; height: 32px !important; }
+
+  /* S2 Icebreaker */
+  #s2 { flex-direction: column !important; }
+}
+
+@media (max-width: 480px) {
+  /* Very small screens */
+  .slide h1 { font-size: clamp(28px,10vw,40px) !important; }
+  .cin-ctas { flex-direction: column !important; width: 100%; }
+  .cin-ctas button { width: 100% !important; justify-content: center !important; }
+  #s5 .sg[style*="grid"] { gap: 8px !important; }
+  .vpcard { height: 280px !important; }
+}
+
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -1696,6 +2285,11 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+<canvas id="space-canvas"></canvas>
+<div id="cur"></div>
+<div id="cur-r"></div>
+<div id="hud-ambient"><div class="hud-lh" style="top:22%;width:100%;left:0"></div><div class="hud-lh" style="top:72%;width:55%;left:22%"></div><div class="hud-lv" style="left:7%;top:0;height:100%"></div><div class="hud-lv" style="right:7%;top:0;height:100%"></div><div class="hud-c" style="top:60px;left:38px;border-width:2px 0 0 2px;border-top-left-radius:3px"></div><div class="hud-c" style="top:60px;right:38px;border-width:2px 2px 0 0;border-top-right-radius:3px"></div><div class="hud-c" style="bottom:36px;left:38px;border-width:0 0 2px 2px;border-bottom-left-radius:3px"></div><div class="hud-c" style="bottom:36px;right:38px;border-width:0 2px 2px 0;border-bottom-right-radius:3px"></div><div class="hud-ds"><span style="--i:0">SYS · DEVOLEADS_v13 · LIVE</span><span style="--i:1">OUTREACH · 4,247 CONTACTS</span><span style="--i:2">RDV_RATE · 12.4 / MOIS</span><span style="--i:3">ROI · ×8.3 CONFIRME</span><span style="--i:4">AI_SCORE · 97.2%</span><span style="--i:5">PIPELINE · OPTIMAL</span></div></div>
+
 <!-- ── FOND SPATIAL PERMANENT ── -->
 <canvas id="space-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%"></canvas>
 
@@ -2068,99 +2662,31 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 
 <div id="deck">
 
+<div id="deck">
+
 <!-- S1 COVER -->
 <div class="slide active" id="s1">
   <div class="cin-hero-orb"></div>
-
-  <!-- Grille de données -->
-  <div class="cin-data-grid">
-    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="opacity:.06">
-      <defs>
-        <pattern id="grid-cover" width="80" height="80" patternUnits="userSpaceOnUse">
-          <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(124,58,237,.8)" stroke-width=".5"/>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#grid-cover)"/>
-    </svg>
-  </div>
-
-  <div class="sg" style="z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(16px,2.5vh,28px);max-width:min(900px,92vw)">
-
-    <div class="eyebrow cin-eyebrow" id="s1-eyebrow">
-      <span class="blink"></span>Disponibilités limitées
+  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.055;pointer-events:none" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="gcov" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0L0 0 0 80" fill="none" stroke="rgba(124,58,237,1)" stroke-width=".5"/></pattern></defs><rect width="100%" height="100%" fill="url(#gcov)"/></svg>
+  <div class="sg" style="z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(14px,2.2vh,26px);max-width:min(860px,92vw)">
+    <div class="eyebrow cin-eyebrow"><span class="blink"></span>Disponibilités limitées</div>
+    <div class="cin-h1-wrap" style="animation:cin-up .7s .18s both"><h1 style="font-size:clamp(44px,7.5vw,96px);font-weight:900;letter-spacing:-3px;line-height:1;margin:0" id="s1-h1">Votre Agenda.<br><span class="g">Saturé de RDV.</span></h1></div>
+    <p class="lead cin-sub" style="animation-delay:.42s;max-width:520px;font-size:clamp(13px,1.5vw,17px)">Arrêtez de prospecter. <strong>Commencez à closer.</strong><br>Une infrastructure B2B qui travaille pendant que vous dormez.</p>
+    <div style="display:flex;gap:clamp(8px,1.2vw,14px);flex-wrap:wrap;justify-content:center;animation:cin-up .5s .65s both">
+      <div class="cin-stat-card" style="--cin-color:var(--pink)"><div class="cin-stat-val">8–15</div><div class="cin-stat-lbl">RDV / mois</div></div>
+      <div class="cin-stat-card" style="--cin-color:var(--purple-l)"><div class="cin-stat-val">&lt;14j</div><div class="cin-stat-lbl">Lancement</div></div>
+      <div class="cin-stat-card" style="--cin-color:var(--orange)"><div class="cin-stat-val" data-target="8.3" data-prefix="×">×0</div><div class="cin-stat-lbl">ROI moyen</div></div>
+      <div class="cin-stat-card" style="--cin-color:var(--cyan)"><div class="cin-stat-val">0€</div><div class="cin-stat-lbl">Frais cachés</div></div>
+      <div class="cin-stat-card" style="--cin-color:var(--green)"><div class="cin-stat-val" data-target="150" data-prefix="+">+0</div><div class="cin-stat-lbl">CEOs clients</div></div>
     </div>
-
-    <div class="cin-h1">
-      <div class="text-reveal-wrap" style="animation-delay:.15s">
-        <h1 class="text-reveal-inner" style="font-size:clamp(44px,7.5vw,96px);font-weight:900;letter-spacing:-3px;line-height:1;margin:0" id="s1-h1">
-          Votre Agenda.<br><span class="g">Saturé de RDV.</span>
-        </h1>
-      </div>
+    <div class="cin-ctas" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+      <button onclick="go(1)" style="display:flex;align-items:center;gap:8px;padding:13px 26px;border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));border:none;cursor:pointer;font-size:13.5px;font-weight:700;color:#fff;font-family:inherit;box-shadow:0 8px 30px rgba(124,58,237,.45);transition:transform .2s" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform=''"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Voir la démo IA</button>
+      <button onclick="go(7)" style="display:flex;align-items:center;gap:8px;padding:13px 26px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);cursor:pointer;font-size:13.5px;font-weight:600;color:rgba(255,255,255,.75);font-family:inherit;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.background='rgba(255,255,255,.04)'">Prendre un RDV</button>
     </div>
-
-    <p class="lead cin-sub" style="max-width:560px;text-align:center;font-size:clamp(13px,1.5vw,17px)">
-      Arrêtez de prospecter. <strong>Commencez à closer.</strong><br>
-      Une infrastructure B2B qui travaille pendant que vous dormez.
-    </p>
-
-    <!-- Stats avec compteurs -->
-    <div class="cin-stats" style="display:flex;gap:clamp(8px,1.5vw,16px);flex-wrap:wrap;justify-content:center;margin-top:8px">
-      <div class="cin-stat-card" style="--cin-color:var(--pink)">
-        <div class="cin-stat-val" data-target="15" data-suffix="-15" data-prefix="8–">8–15</div>
-        <div class="cin-stat-lbl">RDV / mois</div>
-      </div>
-      <div class="cin-stat-card" style="--cin-color:var(--purple-l)">
-        <div class="cin-stat-val">&lt;14j</div>
-        <div class="cin-stat-lbl">Lancement</div>
-      </div>
-      <div class="cin-stat-card" style="--cin-color:var(--orange)">
-        <div class="cin-stat-val" data-target="8.3" data-prefix="×">×8.3</div>
-        <div class="cin-stat-lbl">ROI moyen</div>
-      </div>
-      <div class="cin-stat-card" style="--cin-color:var(--cyan)">
-        <div class="cin-stat-val">0€</div>
-        <div class="cin-stat-lbl">Frais cachés</div>
-      </div>
-      <div class="cin-stat-card" style="--cin-color:var(--green)">
-        <div class="cin-stat-val" data-target="150" data-prefix="+">+150</div>
-        <div class="cin-stat-lbl">CEOs clients</div>
-      </div>
-    </div>
-
-    <!-- CTAs -->
-    <div class="cin-ctas" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-      <button onclick="go(1)" style="
-        display:flex;align-items:center;gap:8px;padding:14px 28px;border-radius:100px;
-        background:linear-gradient(135deg,var(--purple),var(--pink));
-        border:none;cursor:pointer;font-size:14px;font-weight:700;color:#fff;font-family:inherit;
-        box-shadow:0 8px 32px rgba(124,58,237,.45),inset 0 1px 0 rgba(255,255,255,.15);
-        transition:transform .2s,box-shadow .2s;letter-spacing:.2px;"
-        onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 14px 44px rgba(124,58,237,.6)'"
-        onmouseout="this.style.transform='';this.style.boxShadow='0 8px 32px rgba(124,58,237,.45)'">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        Voir la démo IA
-      </button>
-      <button onclick="go(7)" style="
-        display:flex;align-items:center;gap:8px;padding:14px 28px;border-radius:100px;
-        background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);
-        cursor:pointer;font-size:14px;font-weight:600;color:rgba(255,255,255,.75);font-family:inherit;
-        transition:all .2s;"
-        onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(255,255,255,.25)'"
-        onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.12)'">
-        Prendre un RDV
-      </button>
-    </div>
-
-    <!-- Logos clients -->
-    <div class="cin-logos" style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:640px;margin-top:4px">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div style="height:1px;width:50px;background:rgba(255,255,255,.07)"></div>
-        <span style="font-size:9px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase">Ils nous font confiance</span>
-        <div style="height:1px;width:50px;background:rgba(255,255,255,.07)"></div>
-      </div>
+    <div class="cin-logos" style="display:flex;flex-direction:column;align-items:center;gap:9px;width:100%;max-width:600px">
+      <div style="display:flex;align-items:center;gap:10px"><div style="height:1px;width:44px;background:rgba(255,255,255,.07)"></div><span style="font-size:9px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase">Ils nous font confiance</span><div style="height:1px;width:44px;background:rgba(255,255,255,.07)"></div></div>
       <div class="clients-wrap"><div class="clients-track" id="ct1"></div></div>
     </div>
-
   </div>
 </div>
 
@@ -2264,226 +2790,77 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 
 <!-- S3 SERVICES -->
 <div class="slide" id="s3" style="flex-direction:row;padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);align-items:stretch">
-  <div class="orb" style="width:500px;height:500px;background:var(--cyan);top:-150px;left:-100px;opacity:.07;animation-duration:22s"></div>
-
-  <!-- LEFT -->
-  <div class="sg" style="width:38%;padding:0 clamp(16px,2.5vw,36px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:20px;flex-shrink:0">
+  <div class="orb" style="width:400px;height:400px;background:var(--cyan);top:-100px;left:-80px;opacity:.07;animation-duration:22s"></div>
+  <div class="sg" style="width:36%;padding:0 clamp(14px,2vw,30px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:18px;flex-shrink:0">
     <div class="eyebrow cin-eyebrow">Services</div>
-    <div class="text-reveal-wrap">
-      <h2 class="text-reveal-inner" style="animation-delay:.2s;font-size:clamp(32px,4.5vw,58px)">
-        De la data<br>à la <span class="g">signature.</span>
-      </h2>
-    </div>
-    <p class="lead cin-sub" style="animation-delay:.4s">Nous gérons l'intégralité du tunnel commercial. Vous closez, on prospecte.</p>
-
-    <!-- Mini stats -->
-    <div class="cin-sub" style="animation-delay:.55s;display:flex;gap:10px;flex-direction:column">
-      <div style="padding:10px 16px;border-radius:12px;background:rgba(255,61,143,.06);border:1px solid rgba(255,61,143,.15);display:flex;align-items:center;gap:10px">
-        <span style="font-family:var(--display);font-size:20px;font-weight:900;color:var(--pink)">8–15</span>
-        <span style="font-size:12px;color:var(--muted2)">RDV qualifiés par mois</span>
-      </div>
-      <div style="padding:10px 16px;border-radius:12px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.15);display:flex;align-items:center;gap:10px">
-        <span style="font-family:var(--display);font-size:20px;font-weight:900;color:var(--purple-l)">×8.3</span>
-        <span style="font-size:12px;color:var(--muted2)">ROI moyen constaté</span>
-      </div>
-      <div style="font-size:11px;color:var(--muted);letter-spacing:.5px">
-        De la data à la signature en <strong style="color:var(--white)">&lt;14 jours</strong>
-      </div>
+    <div class="text-reveal-wrap"><h2 class="text-reveal-inner" style="animation-delay:.2s;font-size:clamp(30px,4.2vw,54px)">De la data<br>à la <span class="g">signature.</span></h2></div>
+    <p class="lead cin-sub" style="animation-delay:.38s">Nous gérons l'intégralité du tunnel commercial. Vous closez, on prospecte.</p>
+    <div class="cin-sub" style="animation-delay:.52s;display:flex;flex-direction:column;gap:8px">
+      <div style="padding:9px 14px;border-radius:11px;background:rgba(255,61,143,.06);border:1px solid rgba(255,61,143,.15);display:flex;align-items:center;gap:10px"><span style="font-family:var(--display);font-size:19px;font-weight:900;color:var(--pink)">8–15</span><span style="font-size:11.5px;color:var(--muted2)">RDV qualifiés / mois</span></div>
+      <div style="padding:9px 14px;border-radius:11px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.15);display:flex;align-items:center;gap:10px"><span style="font-family:var(--display);font-size:19px;font-weight:900;color:var(--purple-l)">×8.3</span><span style="font-size:11.5px;color:var(--muted2)">ROI moyen constaté</span></div>
     </div>
   </div>
-
-  <!-- RIGHT: cards cinématiques -->
-  <div class="sg cin-svc-grid-wrap" style="flex:1;display:flex;flex-direction:column;gap:12px;justify-content:center;padding:0 clamp(30px,4vw,60px) 0 clamp(16px,2vw,30px)">
-    <div class="cin-svc-card" id="svc-c1" style="--cin-accent:var(--orange)">
-      <div style="display:flex;align-items:flex-start;gap:14px">
-        <div class="ico" style="background:rgba(255,107,53,.1);flex-shrink:0">⚡</div>
-        <div>
-          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
-            <h3 style="margin:0;font-size:15px">Machine Outreach 2.0</h3>
-            <span style="font-size:10px;font-weight:700;color:var(--orange)">4 000+ contacts/mois</span>
-          </div>
-          <p style="margin-bottom:8px;font-size:12.5px;color:var(--muted2)">Smartlead + LinkedIn + IA pour un ciblage d'une précision chirurgicale.</p>
-          <div class="fl"><div class="fi"><span class="fd" style="background:var(--orange)"></span>Ciblage ICP granulaire</div><div class="fi"><span class="fd" style="background:var(--orange)"></span>Prospection vidéo</div></div>
-        </div>
-      </div>
-    </div>
-    <div class="cin-svc-card" id="svc-c2" style="--cin-accent:var(--pink)">
-      <div style="display:flex;align-items:flex-start;gap:14px">
-        <div class="ico" style="background:rgba(255,61,143,.1);flex-shrink:0">📅</div>
-        <div>
-          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
-            <h3 style="margin:0;font-size:15px">Prise de RDV Qualifiés</h3>
-            <span style="font-size:10px;font-weight:700;color:var(--pink)">8–15 RDV/mois</span>
-          </div>
-          <p style="margin-bottom:8px;font-size:12.5px;color:var(--muted2)">Zéro lead inutile. Uniquement des RDV confirmés dans votre calendrier.</p>
-          <div class="fl"><div class="fi"><span class="fd" style="background:var(--pink)"></span>Qualification rigoureuse</div><div class="fi"><span class="fd" style="background:var(--pink)"></span>Sync Calendly</div></div>
-        </div>
-      </div>
-    </div>
-    <div class="cin-svc-card" id="svc-c3" style="--cin-accent:var(--cyan)">
-      <div style="display:flex;align-items:flex-start;gap:14px">
-        <div class="ico" style="background:rgba(34,211,238,.08);flex-shrink:0">🤖</div>
-        <div>
-          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
-            <h3 style="margin:0;font-size:15px">Système Growth IA</h3>
-            <span style="font-size:10px;font-weight:700;color:var(--cyan)">×8 réponse</span>
-          </div>
-          <p style="margin-bottom:8px;font-size:12.5px;color:var(--muted2)">Scoring automatique, enrichissement data, relances intelligentes.</p>
-          <div class="fl"><div class="fi"><span class="fd" style="background:var(--cyan)"></span>Apollo · SalesNav</div><div class="fi"><span class="fd" style="background:var(--cyan)"></span>AI Icebreaker</div></div>
-        </div>
-      </div>
-    </div>
+  <div class="sg" style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center;padding:0 clamp(28px,4vw,60px) 0 clamp(14px,2vw,28px)">
+    <div class="cin-svc-card" style="--cin-accent:var(--orange)"><div style="display:flex;align-items:flex-start;gap:12px"><div class="ico" style="background:rgba(255,107,53,.1);flex-shrink:0">⚡</div><div><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:5px"><h3 style="margin:0;font-size:14.5px">Machine Outreach 2.0</h3><span style="font-size:9.5px;font-weight:700;color:var(--orange)">4 000+ contacts/mois</span></div><p style="margin-bottom:7px;font-size:12px;color:var(--muted2)">Smartlead + LinkedIn + IA pour un ciblage d'une précision chirurgicale.</p><div class="fl"><div class="fi"><span class="fd" style="background:var(--orange)"></span>Ciblage ICP granulaire</div><div class="fi"><span class="fd" style="background:var(--orange)"></span>Prospection vidéo</div></div></div></div></div>
+    <div class="cin-svc-card" style="--cin-accent:var(--pink)"><div style="display:flex;align-items:flex-start;gap:12px"><div class="ico" style="background:rgba(255,61,143,.1);flex-shrink:0">📅</div><div><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:5px"><h3 style="margin:0;font-size:14.5px">Prise de RDV Qualifiés</h3><span style="font-size:9.5px;font-weight:700;color:var(--pink)">8–15 RDV/mois</span></div><p style="margin-bottom:7px;font-size:12px;color:var(--muted2)">Zéro lead inutile. Uniquement des RDV confirmés dans votre calendrier.</p><div class="fl"><div class="fi"><span class="fd" style="background:var(--pink)"></span>Qualification rigoureuse</div><div class="fi"><span class="fd" style="background:var(--pink)"></span>Sync Calendly</div></div></div></div></div>
+    <div class="cin-svc-card" style="--cin-accent:var(--cyan)"><div style="display:flex;align-items:flex-start;gap:12px"><div class="ico" style="background:rgba(34,211,238,.08);flex-shrink:0">🤖</div><div><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:5px"><h3 style="margin:0;font-size:14.5px">Système Growth IA</h3><span style="font-size:9.5px;font-weight:700;color:var(--cyan)">×8 réponse</span></div><p style="margin-bottom:7px;font-size:12px;color:var(--muted2)">Scoring automatique, enrichissement data, relances intelligentes.</p><div class="fl"><div class="fi"><span class="fd" style="background:var(--cyan)"></span>Apollo · SalesNav</div><div class="fi"><span class="fd" style="background:var(--cyan)"></span>AI Icebreaker</div></div></div></div></div>
   </div>
 </div>
 
 <!-- S4 PROCESS MOTION -->
 <div class="slide" id="s4" style="flex-direction:column;padding:clamp(70px,8vh,100px) clamp(40px,6vw,90px) clamp(50px,6vh,80px)">
-  <div class="orb" style="width:400px;height:400px;background:var(--purple);bottom:-150px;right:-100px;opacity:.08"></div>
-
-  <div class="sg" style="text-align:center;margin-bottom:clamp(32px,5vh,56px);display:flex;flex-direction:column;align-items:center;gap:14px">
+  <div class="orb" style="width:400px;height:400px;background:var(--purple);bottom:-120px;right:-80px;opacity:.08"></div>
+  <div class="sg" style="text-align:center;margin-bottom:clamp(28px,5vh,52px);display:flex;flex-direction:column;align-items:center;gap:12px">
     <div class="eyebrow cin-eyebrow">Notre process</div>
-    <div class="text-reveal-wrap">
-      <h2 class="text-reveal-inner" style="animation-delay:.2s">Simple. Rapide. <span class="g">Radical.</span></h2>
-    </div>
-    <p class="lead cin-sub" style="animation-delay:.4s">Du premier appel au premier lead — <strong>en moins de 14 jours.</strong></p>
+    <div class="text-reveal-wrap"><h2 class="text-reveal-inner" style="animation-delay:.2s">Simple. Rapide. <span class="g">Radical.</span></h2></div>
+    <p class="lead cin-sub" style="animation-delay:.38s">Du premier appel au premier lead — <strong>en moins de 14 jours.</strong></p>
   </div>
-
-  <div class="cin-timeline sg" id="cin-proc-timeline" style="max-width:min(1000px,96vw)">
-    <div class="cin-tstep">
-      <div class="cin-tstep-num">01</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="font-weight:700;font-size:13px;color:var(--white)">Découverte</div>
-        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">ICP, USP, Tone of Voice. On calibre le tir.</div>
-      </div>
-    </div>
-    <div class="cin-tstep">
-      <div class="cin-tstep-num">02</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="font-weight:700;font-size:13px;color:var(--white)">Copywriting</div>
-        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">Séquences orientées problème/solution.</div>
-      </div>
-    </div>
-    <div class="cin-tstep">
-      <div class="cin-tstep-num">03</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="font-weight:700;font-size:13px;color:var(--white)">Data Sourcing</div>
-        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">Apollo, SalesNav. Seuls les bons entrent.</div>
-      </div>
-    </div>
-    <div class="cin-tstep">
-      <div class="cin-tstep-num">04</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="font-weight:700;font-size:13px;color:var(--white)">Lancement</div>
-        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">Go live. A/B testing. Optimisation continue.</div>
-      </div>
-    </div>
-    <div class="cin-tstep">
-      <div class="cin-tstep-num" style="background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none">05</div>
-      <div style="display:flex;flex-direction:column;gap:6px">
-        <div style="font-weight:700;font-size:13px;color:var(--white)">RDV confirmés</div>
-        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">Dans votre agenda. Vous closez.</div>
-      </div>
-    </div>
+  <div class="cin-timeline sg" id="cin-proc">
+    <div class="cin-tstep"><div class="cin-tstep-num">01</div><div><div style="font-weight:700;font-size:13px;margin-bottom:5px">Découverte</div><div style="font-size:11px;color:var(--muted2);line-height:1.55">ICP, USP, Tone of Voice.</div></div></div>
+    <div class="cin-tstep"><div class="cin-tstep-num">02</div><div><div style="font-weight:700;font-size:13px;margin-bottom:5px">Copywriting</div><div style="font-size:11px;color:var(--muted2);line-height:1.55">Séquences problème/solution.</div></div></div>
+    <div class="cin-tstep"><div class="cin-tstep-num">03</div><div><div style="font-weight:700;font-size:13px;margin-bottom:5px">Data Sourcing</div><div style="font-size:11px;color:var(--muted2);line-height:1.55">Apollo, SalesNav. Seuls les bons.</div></div></div>
+    <div class="cin-tstep"><div class="cin-tstep-num">04</div><div><div style="font-weight:700;font-size:13px;margin-bottom:5px">Lancement</div><div style="font-size:11px;color:var(--muted2);line-height:1.55">Go live. A/B. Optimisation.</div></div></div>
+    <div class="cin-tstep"><div class="cin-tstep-num" style="background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none">05</div><div><div style="font-weight:700;font-size:13px;margin-bottom:5px">RDV confirmés</div><div style="font-size:11px;color:var(--muted2);line-height:1.55">Dans votre agenda.</div></div></div>
   </div>
 </div>
 
 <!-- S5 FORMULES -->
-<div class="slide" id="s5" style="flex-direction:column;padding:clamp(60px,7vh,90px) clamp(24px,4vw,60px) clamp(40px,5vh,70px)">
-  <div class="orb" style="width:500px;height:500px;background:var(--purple);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.07;animation-duration:20s"></div>
-
-  <div class="sg" style="text-align:center;margin-bottom:clamp(24px,4vh,44px);display:flex;flex-direction:column;align-items:center;gap:12px">
+<div class="slide" id="s5" style="flex-direction:column;padding:clamp(60px,7vh,88px) clamp(24px,4vw,56px) clamp(36px,4.5vh,64px)">
+  <div class="orb" style="width:500px;height:500px;background:var(--purple);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.07;animation-duration:18s"></div>
+  <div class="sg" style="text-align:center;margin-bottom:clamp(20px,3.5vh,40px);display:flex;flex-direction:column;align-items:center;gap:11px">
     <div class="eyebrow cin-eyebrow">Formules</div>
-    <div class="text-reveal-wrap">
-      <h2 class="text-reveal-inner" style="animation-delay:.2s">Choisissez votre <span class="g">vitesse de croissance.</span></h2>
-    </div>
-    <p class="lead cin-sub" style="animation-delay:.35s;margin:0">Offres transparentes. Résultats garantis ou 3 mois offerts.</p>
+    <div class="text-reveal-wrap"><h2 class="text-reveal-inner" style="animation-delay:.2s">Choisissez votre <span class="g">vitesse de croissance.</span></h2></div>
+    <p class="lead cin-sub" style="animation-delay:.35s">Résultats garantis ou 3 mois offerts.</p>
   </div>
-
-  <div class="sg" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:min(900px,96vw);width:100%">
-
-    <div class="cin-plan-card" id="plan-silver">
-      <span style="font-size:28px">🪨</span>
-      <div style="font-family:var(--display);font-size:20px;font-weight:800;margin:8px 0 2px">Silver</div>
-      <div style="font-family:var(--display);font-size:36px;font-weight:900;letter-spacing:-1.5px;color:var(--muted2)">800€</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:16px">/ mois · min. 3 mois</div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--muted2);margin-bottom:16px">
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span><strong style="color:var(--white)">10 RDV qualifiés / mois</strong></div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>4 000 contacts ciblés</div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Cold Email + LinkedIn</div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Copywriting inclus</div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Reporting hebdomadaire</div>
-      </div>
-      <div style="font-size:11px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--muted);margin-bottom:12px"><strong style="color:var(--white)">Garantie</strong> — &lt;30 RDV ? On continue gratuitement.</div>
-      <button onclick="go(7)" style="width:100%;padding:10px;border-radius:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Démarrer Silver →</button>
-    </div>
-
-    <div class="cin-plan-card featured" id="plan-gold">
-      <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:10.5px;font-weight:700;padding:4px 14px;border-radius:100px;white-space:nowrap;letter-spacing:.5px">⭐ Recommandé</div>
-      <span style="font-size:28px">🪐</span>
-      <div style="font-family:var(--display);font-size:20px;font-weight:800;margin:8px 0 2px">Gold</div>
-      <div style="font-family:var(--display);font-size:36px;font-weight:900;letter-spacing:-1.5px;background:linear-gradient(135deg,var(--purple-l),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1 200€</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:16px">/ mois · min. 3 mois</div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--muted2);margin-bottom:16px">
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span><strong style="color:var(--white)">20 RDV qualifiés / mois</strong></div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>8 000 contacts ciblés</div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Full Stack Multicanal</div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--purple-l);font-weight:700">✦</span>AI Icebreaker + Scoring</div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--purple-l);font-weight:700">✦</span>Account manager dédié</div>
-      </div>
-      <div style="font-size:11px;padding:8px 12px;border-radius:8px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);color:var(--muted);margin-bottom:12px"><strong style="color:var(--white)">Garantie</strong> — &lt;60 RDV ? On continue gratuitement.</div>
-      <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" style="display:block;width:100%;padding:11px;border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));border:none;color:#fff;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;text-decoration:none;box-shadow:0 6px 24px rgba(124,58,237,.4)">⭐ Réserver créneau Gold</a>
-    </div>
-
-    <div class="cin-plan-card" id="plan-platinum">
-      <span style="font-size:28px">🌍</span>
-      <div style="font-family:var(--display);font-size:20px;font-weight:800;margin:8px 0 2px">Platinum</div>
-      <div style="font-family:var(--display);font-size:36px;font-weight:900;letter-spacing:-1.5px;color:var(--muted2)">2 000€</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:16px">/ mois · min. 3 mois</div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--muted2);margin-bottom:16px">
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span><strong style="color:var(--white)">40 RDV qualifiés / mois</strong></div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>20 000 contacts ciblés</div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Multi-marchés & langues</div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--orange);font-weight:700">✦</span>Vidéo + IA + LinkedIn</div>
-        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--orange);font-weight:700">✦</span>Reporting temps réel</div>
-      </div>
-      <div style="font-size:11px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--muted);margin-bottom:12px"><strong style="color:var(--white)">Garantie</strong> — &lt;120 RDV ? On continue gratuitement.</div>
-      <button onclick="go(7)" style="width:100%;padding:10px;border-radius:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Démarrer Platinum →</button>
-    </div>
-
+  <div class="sg" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:min(880px,96vw);width:100%">
+    <div class="cin-plan"><span style="font-size:26px">🪨</span><div style="font-family:var(--display);font-size:19px;font-weight:800;margin:7px 0 2px">Silver</div><div style="font-family:var(--display);font-size:34px;font-weight:900;letter-spacing:-1.5px;color:var(--muted2)">800€</div><div style="font-size:10.5px;color:var(--muted);margin-bottom:14px">/ mois · min. 3 mois</div><div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--muted2);margin-bottom:14px"><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span><strong style="color:var(--white)">10 RDV / mois</strong></div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span>4 000 contacts</div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span>Cold Email + LinkedIn</div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span>Copywriting inclus</div></div><div style="font-size:10.5px;padding:7px 11px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--muted);margin-bottom:10px">&lt;30 RDV ? On continue gratuit.</div><button onclick="go(7)" style="width:100%;padding:9px;border-radius:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:11.5px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Démarrer Silver →</button></div>
+    <div class="cin-plan featured"><div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:10px;font-weight:700;padding:3px 13px;border-radius:100px;white-space:nowrap">⭐ Recommandé</div><span style="font-size:26px">🪐</span><div style="font-family:var(--display);font-size:19px;font-weight:800;margin:7px 0 2px">Gold</div><div style="font-family:var(--display);font-size:34px;font-weight:900;letter-spacing:-1.5px;background:linear-gradient(135deg,var(--purple-l),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1 200€</div><div style="font-size:10.5px;color:var(--muted);margin-bottom:14px">/ mois · min. 3 mois</div><div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--muted2);margin-bottom:14px"><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span><strong style="color:var(--white)">20 RDV / mois</strong></div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span>8 000 contacts</div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span>Full Stack Multicanal</div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--purple-l);font-weight:700">✦</span>AI Icebreaker + Scoring</div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--purple-l);font-weight:700">✦</span>Account manager dédié</div></div><div style="font-size:10.5px;padding:7px 11px;border-radius:8px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);color:var(--muted);margin-bottom:10px">&lt;60 RDV ? On continue gratuit.</div><a href="https://calendly.com/devoleads/point-devoleads" target="_blank" style="display:block;text-align:center;padding:10px;border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:12px;font-weight:700;text-decoration:none;box-shadow:0 5px 20px rgba(124,58,237,.4)">⭐ Réserver Gold →</a></div>
+    <div class="cin-plan"><span style="font-size:26px">🌍</span><div style="font-family:var(--display);font-size:19px;font-weight:800;margin:7px 0 2px">Platinum</div><div style="font-family:var(--display);font-size:34px;font-weight:900;letter-spacing:-1.5px;color:var(--muted2)">2 000€</div><div style="font-size:10.5px;color:var(--muted);margin-bottom:14px">/ mois · min. 3 mois</div><div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--muted2);margin-bottom:14px"><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span><strong style="color:var(--white)">40 RDV / mois</strong></div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span>20 000 contacts</div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--green);font-weight:700">✓</span>Multi-marchés</div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--orange);font-weight:700">✦</span>Vidéo + IA + LinkedIn</div><div style="display:flex;align-items:center;gap:6px"><span style="color:var(--orange);font-weight:700">✦</span>Reporting temps réel</div></div><div style="font-size:10.5px;padding:7px 11px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--muted);margin-bottom:10px">&lt;120 RDV ? On continue gratuit.</div><button onclick="go(7)" style="width:100%;padding:9px;border-radius:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:11.5px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Démarrer Platinum →</button></div>
   </div>
 </div>
 
 <!-- S6 TEAM -->
 <div class="slide" id="s6" style="flex-direction:row;padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);align-items:stretch">
-  <div class="orb" style="width:300px;height:300px;background:var(--purple);top:40px;left:-60px;opacity:.1;animation-delay:-4s"></div>
-
-  <!-- LEFT: headline fort -->
-  <div class="sg" style="width:40%;padding:0 clamp(16px,2.5vw,36px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:14px;flex-shrink:0">
-    <div class="eyebrow">L'équipe</div>
-    <h2 style="font-size:clamp(36px,4.8vw,62px)">Fondateurs.<br>Pas des<br><span class="g">juniors.</span></h2>
-    <p class="lead" style="font-size:13px">Vous parlez directement aux créateurs du système. Pas d'intermédiaire, pas de perte en ligne.</p>
-  </div>
-
-  <!-- Separator -->
-  <div style="width:1px;background:rgba(255,255,255,.06);align-self:stretch;margin:20px 0;flex-shrink:0"></div>
-
-  <!-- RIGHT: stats + témoignages -->
-  <div class="sg" style="flex:1;padding:0 clamp(30px,5vw,90px) 0 clamp(16px,2vw,40px);display:flex;flex-direction:column;justify-content:center;gap:10px">
-    <div style="display:flex;flex-direction:column;gap:9px">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
-        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--pink);letter-spacing:-1.5px;min-width:56px">×8.3</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--white)">ROI moyen</div><div style="font-size:10.5px;color:var(--muted)">sur 90 jours d'engagement</div></div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
-        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--purple-l);letter-spacing:-1.5px;min-width:56px">+150</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--white)">CEOs clients actifs</div><div style="font-size:10.5px;color:var(--muted)">en 2024, tous secteurs</div></div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
-        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--cyan);letter-spacing:-1.5px;min-width:56px">30%</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--white)">Taux de réponse</div><div style="font-size:10.5px;color:var(--muted)">vs 2% marché</div></div>
-      </div>
+  <div class="orb" style="width:380px;height:380px;background:var(--pink);bottom:-80px;right:-60px;opacity:.09;animation-delay:-4s"></div>
+  <div class="sg" style="width:40%;padding:0 clamp(14px,2vw,30px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:16px;flex-shrink:0">
+    <div class="eyebrow cin-eyebrow">L'équipe fondatrice</div>
+    <div class="text-reveal-wrap"><h2 class="text-reveal-inner" style="animation-delay:.2s;font-size:clamp(34px,4.5vw,58px)">Fondateurs.<br>Pas des<br><span class="g">juniors.</span></h2></div>
+    <p class="lead cin-sub" style="animation-delay:.38s;font-size:13px">Vous parlez directement aux créateurs du système. Pas d'intermédiaire.</p>
+    <div class="cin-sub" style="animation-delay:.52s;display:flex;flex-direction:column;gap:7px">
+      <div style="padding:8px 13px;border-radius:10px;background:rgba(255,61,143,.06);border:1px solid rgba(255,61,143,.15);display:flex;align-items:center;gap:9px"><span style="font-family:var(--display);font-size:17px;font-weight:900;color:var(--pink)">+150</span><span style="font-size:11.5px;color:var(--muted2)">CEOs clients actifs</span></div>
+      <div style="padding:8px 13px;border-radius:10px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.15);display:flex;align-items:center;gap:9px"><span style="font-family:var(--display);font-size:17px;font-weight:900;color:var(--purple-l)">×8.3</span><span style="font-size:11.5px;color:var(--muted2)">ROI moyen sur 90 jours</span></div>
+      <div style="padding:8px 13px;border-radius:10px;background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.15);display:flex;align-items:center;gap:9px"><span style="font-family:var(--display);font-size:17px;font-weight:900;color:var(--cyan)">30%</span><span style="font-size:11.5px;color:var(--muted2)">Taux de réponse moyen</span></div>
     </div>
-    <div id="team-grid" style="display:flex;flex-direction:column;gap:14px"></div>
+  </div>
+  <div class="sg" style="flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center;padding:0 clamp(28px,4vw,70px) 0 clamp(14px,2vw,28px)" id="team-grid">
+    <div id="tc-stanis" style="background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;display:flex;gap:14px;align-items:flex-start;opacity:0;transform:translateX(28px);transition:opacity .5s .1s,transform .5s .1s">
+      <div style="position:relative;flex-shrink:0"><div style="width:54px;height:54px;border-radius:50%;overflow:hidden;border:2px solid rgba(124,58,237,.4)" id="team-photo-stanis"></div><div style="position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--purple-l),var(--pink),var(--cyan),var(--purple-l));z-index:-1;animation:rotate-slow 3.5s linear infinite;opacity:.75"></div></div>
+      <div><div style="font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:-.3px">Stanislas Fortune</div><div style="font-size:10.5px;font-weight:600;color:var(--purple-l);margin:2px 0 9px">Co-Founder · Growth</div><p style="font-size:12px;color:var(--muted2);line-height:1.65;font-style:italic;margin:0 0 10px">"L'automatisation sans stratégie, c'est juste spammer plus vite."</p><div style="display:flex;gap:5px"><span style="padding:2px 9px;border-radius:100px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);font-size:9.5px;color:var(--purple-l);font-weight:600">Growth</span><span style="padding:2px 9px;border-radius:100px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);font-size:9.5px;color:var(--purple-l);font-weight:600">Outbound</span></div></div>
+    </div>
+    <div id="tc-amelie" style="background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:18px;display:flex;gap:14px;align-items:flex-start;opacity:0;transform:translateX(28px);transition:opacity .5s .26s,transform .5s .26s">
+      <div style="position:relative;flex-shrink:0"><div style="width:54px;height:54px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,61,143,.4)" id="team-photo-amelie"></div><div style="position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(var(--pink),var(--orange),var(--purple-l),var(--pink));z-index:-1;animation:rotate-slow 3.5s linear infinite reverse;opacity:.75"></div></div>
+      <div><div style="font-family:var(--display);font-size:15px;font-weight:800;letter-spacing:-.3px">Amélie Anquetil</div><div style="font-size:10.5px;font-weight:600;color:var(--pink);margin:2px 0 9px">Co-Founder · Ops</div><p style="font-size:12px;color:var(--muted2);line-height:1.65;font-style:italic;margin:0 0 10px">"Transformer le chaos commercial en croissance prédictible et mesurable."</p><div style="display:flex;gap:5px"><span style="padding:2px 9px;border-radius:100px;background:rgba(255,61,143,.1);border:1px solid rgba(255,61,143,.2);font-size:9.5px;color:var(--pink);font-weight:600">Ops</span><span style="padding:2px 9px;border-radius:100px;background:rgba(255,61,143,.1);border:1px solid rgba(255,61,143,.2);font-size:9.5px;color:var(--pink);font-weight:600">Copywriting</span></div></div>
+    </div>
   </div>
 </div>
 
@@ -2569,95 +2946,26 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 </div>
 
 <!-- S8 MISE EN PLACE -->
-<div class="slide" id="s8" style="padding:clamp(70px,8vh,100px) clamp(30px,5vw,60px) clamp(40px,5vh,60px);justify-content:flex-start">
-  <div class="orb" style="width:500px;height:500px;background:var(--purple);bottom:-200px;right:-150px;opacity:.12;animation-duration:16s"></div>
-  <div class="orb" style="width:300px;height:300px;background:var(--pink);top:80px;left:-100px;opacity:.1;animation-delay:-7s"></div>
-
-  <!-- Header row -->
-  <div style="display:flex;align-items:flex-end;justify-content:space-between;width:100%;margin-bottom:36px" class="sg">
-    <div>
-      <div class="eyebrow"><span class="blink"></span>Mise en place</div>
-      <h2 id="s8-title" style="font-size:clamp(28px,3.5vw,44px)">Comment on démarre<br><span class="g">ensemble.</span></h2>
-      <p class="lead" style="margin-top:10px;font-size:13px">Cinq étapes. Vous validez chaque jalon. Zéro surprise.</p>
+<div class="slide" id="s8" style="flex-direction:column;padding:clamp(70px,8vh,100px) clamp(30px,5vw,60px) clamp(36px,4.5vh,60px);justify-content:center">
+  <div class="orb" style="width:480px;height:480px;background:var(--green);bottom:-180px;right:-120px;opacity:.07;animation-duration:16s"></div>
+  <div class="orb" style="width:280px;height:280px;background:var(--purple);top:60px;left:-80px;opacity:.08;animation-delay:-6s"></div>
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;width:100%;flex-wrap:wrap;gap:24px">
+    <div class="sg" style="flex:1;min-width:280px">
+      <div class="eyebrow cin-eyebrow">Mise en place</div>
+      <div class="text-reveal-wrap" style="margin:11px 0"><h2 class="text-reveal-inner" style="animation-delay:.2s;font-size:clamp(26px,3.2vw,44px)">Comment on démarre<br><span class="g" id="s8-name-span">ensemble.</span></h2></div>
+      <p class="lead cin-sub" style="animation-delay:.38s;font-size:13px">Cinq étapes. Vous validez chaque jalon. Zéro surprise.</p>
+      <div class="s8-terminal" id="s8-terminal"><div style="display:flex;align-items:center;gap:7px;margin-bottom:11px;opacity:.5"><div style="width:7px;height:7px;border-radius:50%;background:#ff5f57"></div><div style="width:7px;height:7px;border-radius:50%;background:#febc2e"></div><div style="width:7px;height:7px;border-radius:50%;background:#28c840"></div><span style="margin-left:4px;font-size:9.5px;color:rgba(255,255,255,.3)">devoleads_v13 — mission_init.sh</span></div><div id="s8-terminal-lines"></div></div>
     </div>
-    <!-- Contact pill cluster -->
-    <div style="display:flex;flex-direction:column;gap:8px;flex-shrink:0;margin-left:40px">
-      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:7px 14px">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-        <span style="font-size:11.5px;color:var(--muted2);font-weight:400">La Rochelle, France</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:7px 14px">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.5 10.5 19.79 19.79 0 01.46 2a2 2 0 012-2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.91-.91a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
-        <span style="font-size:11.5px;color:var(--muted2);font-weight:400">+33 7 56 05 20 08</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:7px 14px">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        <span style="font-size:11.5px;color:var(--muted2);font-weight:400"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e09394818e89938c8193a08485968f8c85818493ce8692">[email&#160;protected]</a></span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:7px 14px">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span style="font-size:11.5px;color:var(--muted2);font-weight:400">Lun – Ven · 9h – 19h</span>
-      </div>
+    <div style="display:flex;flex-direction:column;gap:10px;flex-shrink:0;min-width:210px">
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:7px 14px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg><span style="font-size:11px;color:var(--muted2)">La Rochelle, France</span></div>
+      <div style="display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:7px 14px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span style="font-size:11px;color:var(--muted2)">contact@devoleads.io</span></div>
+      <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:13px 18px;border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:13px;font-weight:700;font-family:inherit;box-shadow:0 7px 26px rgba(124,58,237,.45);text-decoration:none;transition:transform .2s" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform=''">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Réserver mon créneau stratégique
+      </a>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><span style="font-size:10px;color:var(--muted)">⚡ Réponse sous 2h</span><span style="font-size:10px;color:var(--muted)">🔒 Sans engagement</span></div>
     </div>
   </div>
-
-    <!-- CTA CALENDLY PRINCIPAL -->
-  <div class="sg" style="text-align:center;margin-bottom:24px">
-    <button onclick="window.open('https://calendly.com/devoleads/point-devoleads','_blank')" style="
-      display:inline-flex;align-items:center;gap:10px;padding:16px 38px;
-      border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));
-      border:none;cursor:pointer;font-size:15px;font-weight:700;color:#fff;font-family:inherit;
-      box-shadow:0 12px 40px rgba(124,58,237,.45);transition:transform .2s;"
-      onmouseover="this.style.transform='scale(1.04)'"
-      onmouseout="this.style.transform=''">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Réserver mon créneau stratégique
-    </button>
-    <div style="margin-top:10px;display:flex;gap:10px;justify-content:center;font-size:10px;color:var(--muted)">
-      <span>⚡ Réponse sous 2h</span><span style="opacity:.3">·</span>
-      <span>🎯 30 min · Gratuit</span><span style="opacity:.3">·</span>
-      <span>🔒 Sans engagement</span>
-    </div>
-  </div>
-
-  <!-- 5 steps horizontal -->
-  <div id="setup-steps" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:100%;position:relative;z-index:1">
-
-    <!-- connecting line behind -->
-    <div style="position:absolute;top:28px;left:5%;right:5%;height:1px;background:linear-gradient(90deg,var(--purple),var(--pink),var(--orange),var(--cyan),var(--green));opacity:.25;z-index:0;pointer-events:none"></div>
-
-    <div class="setup-step" id="st0">
-      <div class="stp-dot" style="--sc:var(--purple)"></div>
-      <div class="stp-num" style="color:var(--purple)">01</div>
-      <div class="stp-title">Identification des cibles</div>
-      <div class="stp-desc">Critères de ciblage — entreprises et métiers. On définit votre ICP ensemble.</div>
-    </div>
-    <div class="setup-step" id="st1">
-      <div class="stp-dot" style="--sc:var(--purple-l)"></div>
-      <div class="stp-num" style="color:var(--purple-l)">02</div>
-      <div class="stp-title">Définition des campagnes</div>
-      <div class="stp-desc">3 à 5 campagnes recommandées. Thèmes, angles et personas définis ensemble.</div>
-    </div>
-    <div class="setup-step" id="st2">
-      <div class="stp-dot" style="--sc:var(--pink)"></div>
-      <div class="stp-num" style="color:var(--pink)">03</div>
-      <div class="stp-title">Liste d'exclusion</div>
-      <div class="stp-desc">On récupère vos clients et prospects actuels — zéro doublon, zéro friction.</div>
-    </div>
-    <div class="setup-step" id="st3">
-      <div class="stp-dot" style="--sc:var(--orange)"></div>
-      <div class="stp-num" style="color:var(--orange)">04</div>
-      <div class="stp-title">Rédaction & validation</div>
-      <div class="stp-desc">Copywriting présenté à l'oral, validé sur Drive partagé avant tout envoi.</div>
-    </div>
-    <div class="setup-step" id="st4" style="border-color:rgba(74,222,128,.15);background:rgba(74,222,128,.04)">
-      <div class="stp-dot" style="--sc:var(--green)"></div>
-      <div class="stp-num" style="color:var(--green)">05</div>
-      <div class="stp-title">Début des envois</div>
-      <div class="stp-desc">Campagnes lancées + point hebdomadaire pour le suivi des statistiques.</div>
-    </div>
-  </div>
-
 </div>
 
 </div><!-- /deck -->
@@ -5337,11 +5645,6 @@ function startDemoCanvas(targetCanvas){
   const startT = performance.now();
 
   // 3 formats × ~5s chacun = ~15s total puis loop
-  const FORMATS = [
-    { name:'GIF EMAIL',    color:'#ff6b35', tag:'demo-dot-0', label:'GIF EMAIL',      draw: drawGifEmail },
-    { name:'FACE CAMÉRA',  color:'#ff3d8f', tag:'demo-dot-1', label:'FACE CAMÉRA',    draw: drawFaceCamera },
-    { name:'ÉCRAN PARTAGÉ',color:'#a78bfa', tag:'demo-dot-2', label:'ÉCRAN PARTAGÉ',  draw: drawScreenShare },
-  ];
   const DUR_EACH = 5000; // ms par format
   const TOTAL_DUR = DUR_EACH * FORMATS.length;
 
@@ -5635,6 +5938,12 @@ function startDemoCanvas(targetCanvas){
     ctx.fillText(text,x+8,y+1);
     ctx.restore();
   }
+
+  const FORMATS = [
+    { name:'GIF EMAIL',    color:'#ff6b35', tag:'demo-dot-0', label:'GIF EMAIL',      draw: drawGifEmail },
+    { name:'FACE CAMÉRA',  color:'#ff3d8f', tag:'demo-dot-1', label:'FACE CAMÉRA',    draw: drawFaceCamera },
+    { name:'ÉCRAN PARTAGÉ',color:'#a78bfa', tag:'demo-dot-2', label:'ÉCRAN PARTAGÉ',  draw: drawScreenShare },
+  ];
 
   // ── Boucle principale ─────────────────────────
   function loop(ts){
@@ -6578,5 +6887,277 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 </div><!-- /website-mode -->
 
+<script>
+// ════════════════════════════════════════════════════
+//  MOTEUR CINÉMATIQUE — EFFET WAOUH INTÉGRAL
+// ════════════════════════════════════════════════════
+
+// ── 1. FOND SPATIAL ANIMÉ ──
+(function initSpaceBg(){
+  const cv = document.getElementById('space-canvas');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  let W, H;
+
+  function resize(){ W = cv.width = window.innerWidth; H = cv.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize, {passive:true});
+
+  const stars = Array.from({length:300}, ()=>({
+    x:Math.random(), y:Math.random(),
+    r:.3+Math.random()*1.5,
+    a:.2+Math.random()*.8,
+    tw:Math.random()*Math.PI*2,
+    spd:.004+Math.random()*.014,
+    hue:[0,0,220,220,280][Math.floor(Math.random()*5)]
+  }));
+
+  const nebulas = [
+    {cx:.75, cy:.25, r:.35, col:'124,58,237', a:.06},
+    {cx:.2,  cy:.7,  r:.28, col:'255,61,143', a:.05},
+    {cx:.5,  cy:.5,  r:.22, col:'34,211,238', a:.04},
+    {cx:.85, cy:.8,  r:.18, col:'255,107,53', a:.035},
+  ];
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    nebulas.forEach(n=>{
+      const g=ctx.createRadialGradient(n.cx*W,n.cy*H,0,n.cx*W,n.cy*H,n.r*Math.min(W,H));
+      g.addColorStop(0,'rgba('+n.col+','+n.a+')');
+      g.addColorStop(1,'rgba('+n.col+',0)');
+      ctx.fillStyle=g;
+      ctx.fillRect(0,0,W,H);
+    });
+    stars.forEach(s=>{
+      s.tw+=s.spd;
+      const a=s.a*(.55+.45*Math.sin(s.tw));
+      ctx.fillStyle=s.hue===0?'rgba(255,255,255,'+a+')':'hsla('+s.hue+',75%,88%,'+a+')';
+      ctx.beginPath();
+      ctx.arc(s.x*W,s.y*H,s.r,0,Math.PI*2);
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── 2. CURSEUR CUSTOM ──
+(function initCursor(){
+  const dot = document.getElementById('cur');
+  const ring = document.getElementById('cur-r');
+  if(!dot||!ring) return;
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'},{passive:true});
+  function followRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(followRing);}
+  followRing();
+})();
+
+// ── 3. PARALLAXE SOURIS ──
+(function initParallax(){
+  let mx=0,my=0;
+  document.addEventListener('mousemove',e=>{mx=(e.clientX/window.innerWidth-.5)*2;my=(e.clientY/window.innerHeight-.5)*2;},{passive:true});
+  function applyParallax(){
+    const slide=document.querySelector('.slide.active');
+    if(slide){
+      const orbs=slide.querySelectorAll('.orb');
+      orbs.forEach((o,i)=>{const s=(i%2?1:-1)*6;o.style.transform='translate('+mx*s+'px,'+my*s+'px)';});
+    }
+    requestAnimationFrame(applyParallax);
+  }
+  applyParallax();
+})();
+
+// ── 4. ACCENT COULEUR PAR SLIDE ──
+const SLIDE_ACCENTS=['sa-1','sa-2','sa-3','sa-4','sa-5','sa-6','sa-7','sa-8'];
+function applySlideAccent(idx){
+  SLIDE_ACCENTS.forEach(c=>document.body.classList.remove(c));
+  document.body.classList.add(SLIDE_ACCENTS[idx]||'sa-1');
+}
+
+// ── 5. ANIMATIONS INTERNES PAR SLIDE ──
+function cinTrigger(idx){
+  applySlideAccent(idx);
+
+  // HUD
+  const hud=document.getElementById('hud-ambient');
+  if(hud) hud.style.opacity=idx===0?'0':'1';
+
+  // Reset éléments animables
+  document.querySelectorAll('.cin-svc-card,.cin-plan,.cin-timeline,.cin-stat-card').forEach(el=>el.classList.remove('in'));
+  document.querySelectorAll('#tc-stanis,#tc-amelie').forEach(el=>{el.style.opacity='0';el.style.transform='translateX(28px)';});
+  const term=document.getElementById('s8-terminal');
+  if(term) term.classList.remove('in');
+
+  if(idx===0){
+    // Cover : stat cards + compteurs
+    setTimeout(()=>{
+      document.querySelectorAll('#s1 .cin-stat-card').forEach((el,i)=>{
+        setTimeout(()=>el.classList.add('in'),i*100);
+      });
+      animateCounters('#s1');
+    },500);
+
+  }else if(idx===2){
+    // Services : cards
+    setTimeout(()=>{
+      document.querySelectorAll('#s3 .cin-svc-card').forEach((el,i)=>{
+        setTimeout(()=>el.classList.add('in'),80+i*140);
+      });
+    },200);
+
+  }else if(idx===3){
+    // Process : timeline
+    setTimeout(()=>{
+      const tl=document.getElementById('cin-proc');
+      if(tl) tl.classList.add('in');
+    },300);
+
+  }else if(idx===4){
+    // Formules : plans
+    setTimeout(()=>{
+      document.querySelectorAll('#s5 .cin-plan').forEach((el,i)=>{
+        setTimeout(()=>el.classList.add('in'),60+i*160);
+      });
+    },200);
+
+  }else if(idx===5){
+    // Équipe : cards slide-in
+    setTimeout(()=>{
+      const st=document.getElementById('tc-stanis');
+      const am=document.getElementById('tc-amelie');
+      if(st){st.style.opacity='1';st.style.transform='translateX(0)';}
+      setTimeout(()=>{if(am){am.style.opacity='1';am.style.transform='translateX(0)';}},180);
+      // Photos
+      if(typeof STANIS_B64!=='undefined'){
+        const ps=document.getElementById('team-photo-stanis');
+        if(ps){ps.style.backgroundImage='url(data:image/jpeg;base64,'+STANIS_B64+')';ps.style.backgroundSize='cover';ps.style.backgroundPosition='center';}
+      }
+      if(typeof AMELIE_B64!=='undefined'){
+        const pa=document.getElementById('team-photo-amelie');
+        if(pa){pa.style.backgroundImage='url(data:image/jpeg;base64,'+AMELIE_B64+')';pa.style.backgroundSize='cover';pa.style.backgroundPosition='center';}
+      }
+    },200);
+
+  }else if(idx===7){
+    // Closing : terminal effect
+    const term=document.getElementById('s8-terminal');
+    const lines=document.getElementById('s8-terminal-lines');
+    if(!term||!lines) return;
+    setTimeout(()=>{
+      term.classList.add('in');
+      const cmds=[
+        '$ ./init_mission.sh --client="'+((typeof prospectData!=='undefined'&&prospectData&&prospectData.prospect&&prospectData.prospect.societe)||'Votre entreprise')+'"',
+        '  [✓] ICP défini · Copywriting validé',
+        '  [✓] Data sourcing · 4 247 contacts qualifiés',
+        '  [✓] Séquences live · A/B actif',
+        '  [◉] RDV en cours de prise...',
+        '  > Prochain RDV estimé : dans 14 jours',
+        '$ _',
+      ];
+      lines.innerHTML='';
+      let delay=300;
+      cmds.forEach((cmd,i)=>{
+        setTimeout(()=>{
+          const div=document.createElement('div');
+          div.className='terminal-line';
+          div.style.animationDelay='0s';
+          div.style.color=i===4?'var(--green)':i===5?'var(--cyan)':'rgba(74,222,128,.7)';
+          div.textContent=cmd;
+          lines.appendChild(div);
+        },delay);
+        delay+=220+Math.random()*100;
+      });
+    },500);
+  }
+}
+
+// ── 6. COMPTEURS ANIMÉS ──
+function animateCounters(scope){
+  document.querySelectorAll((scope||'')+' [data-target]').forEach(el=>{
+    const target=parseFloat(el.getAttribute('data-target'));
+    const prefix=el.getAttribute('data-prefix')||'';
+    const isFloat=String(target).includes('.');
+    const dur=1100;
+    const t0=performance.now();
+    function tick(now){
+      const p=Math.min(1,(now-t0)/dur);
+      const ease=1-Math.pow(1-p,4);
+      const v=target*ease;
+      el.textContent=prefix+(isFloat?v.toFixed(1):Math.round(v));
+      if(p<1) requestAnimationFrame(tick);
+      else el.textContent=prefix+(isFloat?target.toFixed(1):target);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// ── 7. WRAPPER go() avec transitions ──
+(function wrapGo(){
+  const orig=window.go;
+  window.go=function(idx){
+    if(typeof busy!=='undefined'&&busy) return;
+    if(typeof cur==='undefined'){orig&&orig(idx);return;}
+    if(idx===cur||idx<0) return;
+    const dir=idx>cur?1:-1;
+    const prevEl=document.getElementById('s'+(cur+1));
+    const nextEl=document.getElementById('s'+(idx+1));
+    if(!prevEl||!nextEl){orig&&orig(idx);return;}
+
+    // Flash
+    const fl=document.getElementById('transition-flash');
+    if(fl){fl.classList.remove('fire');fl.offsetHeight;fl.classList.add('fire');}
+
+    // Glitch numéro
+    const pnEl=document.getElementById('pn');
+    if(pnEl){pnEl.classList.remove('glitch');pnEl.offsetHeight;pnEl.classList.add('glitch');setTimeout(()=>pnEl.classList.remove('glitch'),400);}
+
+    // Exit
+    prevEl.classList.add(dir>0?'cin-exit-l':'cin-exit-r');
+    setTimeout(()=>prevEl.classList.remove('active','cin-exit-l','cin-exit-r'),330);
+
+    // Enter
+    setTimeout(()=>{
+      nextEl.classList.add('active',dir>0?'cin-enter-r':'cin-enter-l');
+      setTimeout(()=>nextEl.classList.remove('cin-enter-r','cin-enter-l'),560);
+      cinTrigger(idx);
+    },200);
+
+    orig&&orig(idx);
+  };
+})();
+
+// ── 8. INIT AU CHARGEMENT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  applySlideAccent(0);
+  const hud=document.getElementById('hud-ambient');
+  if(hud) hud.style.opacity='0';
+  setTimeout(()=>{
+    document.querySelectorAll('#s1 .cin-stat-card').forEach((el,i)=>setTimeout(()=>el.classList.add('in'),400+i*100));
+    animateCounters('#s1');
+  },800);
+});
+</script>
+<script>
+// ── SWIPE MOBILE ──
+(function initSwipe(){
+  let tx=0, ty=0;
+  const deck = document.getElementById('deck');
+  if(!deck) return;
+  deck.addEventListener('touchstart',e=>{
+    tx=e.touches[0].clientX;
+    ty=e.touches[0].clientY;
+  },{passive:true});
+  deck.addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-tx;
+    const dy=e.changedTouches[0].clientY-ty;
+    if(Math.abs(dx)>Math.abs(dy)*1.5&&Math.abs(dx)>40){
+      if(typeof cur!=='undefined'&&typeof TOTAL!=='undefined'){
+        if(dx<0&&cur<TOTAL-1) window.go(cur+1);
+        else if(dx>0&&cur>0) window.go(cur-1);
+      }
+    }
+  },{passive:true});
+})();
+</script>
 </body>
 </html>
