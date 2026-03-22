@@ -1136,6 +1136,552 @@ body.web-mode #nav{background:rgba(6,7,15,.95);backdrop-filter:blur(20px);border
   0%,100% { transform:translateX(-50%) translateY(0); }
   50%      { transform:translateX(-50%) translateY(6px); }
 }
+/* ═══ MODE TOGGLE + WEBSITE PREMIUM ═══ */
+#mode-toggle{flex-shrink:0}
+#website-mode{display:none}
+body.web-mode,html:has(body.web-mode){overflow:auto!important;height:auto!important;cursor:default!important}
+body.web-mode #deck,body.web-mode #nav .slide-label-nav,body.web-mode .arr,body.web-mode #pg,body.web-mode #bar,body.web-mode #dots,body.web-mode #uni-btn,body.web-mode #share-btn,body.web-mode #warp-canvas,body.web-mode #transition-flash{display:none!important}
+body.web-mode .slide{display:none!important}
+body.web-mode #website-mode{display:block!important}
+body.web-mode #nav{background:rgba(6,7,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
+
+/* ─── WEBSITE SECTIONS ─── */
+.ws-section{padding:clamp(80px,11vh,140px) 0}
+.ws-section-dark{background:rgba(255,255,255,.018);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ws-section-inner{max-width:1160px;margin:0 auto;padding:0 clamp(24px,7vw,100px)}
+.ws-section-head{text-align:center;max-width:640px;margin:0 auto clamp(52px,7vh,88px)}
+.ws-eyebrow{font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--purple-l);font-weight:700;margin-bottom:14px}
+.ws-h2{font-family:var(--display);font-size:clamp(30px,4.5vw,58px);font-weight:900;letter-spacing:-1.5px;line-height:1.07;margin:0 0 16px;color:var(--white)}
+.ws-p{font-size:clamp(14px,1.6vw,17px);color:var(--muted2);line-height:1.75;margin:0}
+.ws-g{background:linear-gradient(135deg,var(--purple-l),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* Hero */
+.ws-hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:80px clamp(24px,8vw,120px) 80px}
+.ws-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+.ws-hero-glow{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none}
+.ws-glow-1{width:700px;height:700px;background:var(--purple);top:-250px;right:-150px;opacity:.12}
+.ws-glow-2{width:500px;height:500px;background:var(--pink);bottom:-150px;left:-100px;opacity:.09}
+.ws-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:72px 72px;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%)}
+.ws-hero-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:clamp(20px,3vh,32px);max-width:860px}
+.ws-hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);border-radius:100px;padding:7px 18px;font-size:11.5px;font-weight:600;letter-spacing:.4px;color:var(--purple-l)}
+.ws-pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 2s infinite}
+.ws-hero-h1{font-family:var(--display);font-size:clamp(52px,9vw,100px);font-weight:900;line-height:1;letter-spacing:-3px;margin:0}
+.ws-hero-sub{font-size:clamp(15px,1.8vw,19px);color:var(--muted2);max-width:520px;line-height:1.7;margin:0}
+.ws-hero-stats{display:flex;gap:clamp(12px,2.5vw,32px);flex-wrap:wrap;justify-content:center}
+.ws-hstat{text-align:center}
+.ws-hval{font-family:var(--display);font-size:clamp(28px,3.5vw,44px);font-weight:900;letter-spacing:-1.5px;line-height:1}
+.ws-hlbl{font-size:11px;color:var(--muted);letter-spacing:.5px;margin-top:3px}
+.ws-hero-ctas{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.ws-cta-main{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-weight:700;font-size:14.5px;border:none;cursor:pointer;font-family:var(--body);box-shadow:0 10px 36px rgba(124,58,237,.42),inset 0 1px 0 rgba(255,255,255,.15);transition:transform .2s,box-shadow .2s;text-decoration:none}
+.ws-cta-main:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 18px 50px rgba(124,58,237,.58)}
+.ws-cta-main.ws-cta-xl{font-size:16.5px;padding:18px 40px}
+.ws-cta-ghost{display:inline-flex;align-items:center;gap:8px;padding:15px 30px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);font-weight:600;font-size:14px;cursor:pointer;font-family:var(--body);transition:all .2s;text-decoration:none}
+.ws-cta-ghost:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22)}
+.ws-hero-trust{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;max-width:640px}
+.ws-trust-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+.ws-trust-label::before,.ws-trust-label::after{content:'';height:1px;width:50px;background:rgba(255,255,255,.08)}
+.ws-logos-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.ws-scroll-cue{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--muted);font-size:9px;letter-spacing:2.5px;text-transform:uppercase}
+.ws-scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,rgba(255,255,255,.35),transparent);animation:ws-scroll-pulse 2s ease infinite}
+@keyframes ws-scroll-pulse{0%,100%{opacity:.25}50%{opacity:.9}}
+
+/* Services */
+.ws-services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.ws-svc-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:22px;padding:28px;transition:border-color .3s,transform .3s;display:flex;flex-direction:column;gap:14px}
+.ws-svc-card:hover{border-color:rgba(124,58,237,.3);transform:translateY(-4px)}
+.ws-svc-featured{background:linear-gradient(160deg,rgba(124,58,237,.07),rgba(255,61,143,.03));border-color:rgba(124,58,237,.18)}
+.ws-svc-icon{width:48px;height:48px;border-radius:13px;border:1px solid;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.ws-svc-card h3{font-size:16.5px;font-weight:700;margin:0;letter-spacing:-.3px;color:var(--white)}
+.ws-svc-card p{font-size:13px;color:var(--muted2);line-height:1.65;margin:0}
+.ws-svc-metric{font-size:11.5px;font-weight:700;letter-spacing:.5px;margin-top:auto}
+.ws-svc-tags{display:flex;gap:6px;flex-wrap:wrap}
+.ws-svc-tags span{padding:3px 10px;border-radius:100px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);font-size:10.5px;color:var(--muted);letter-spacing:.3px}
+
+/* Icebreaker */
+.ws-ice-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(40px,6vw,80px);align-items:center}
+.ws-ice-levels{display:flex;flex-direction:column;gap:12px;margin:24px 0}
+.ws-ice-level{display:flex;align-items:center;gap:14px;padding:12px 16px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);transition:all .3s}
+.ws-ice-active{background:rgba(124,58,237,.1)!important;border-color:rgba(124,58,237,.3)!important}
+.ws-ice-lnum{width:36px;height:36px;border-radius:50%;border:1px solid;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:14px;flex-shrink:0}
+.ws-ice-stat{font-size:13px;color:var(--muted2);padding:10px 16px;border-radius:10px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.15)}
+.ws-ice-stat strong{color:var(--purple-l)}
+.ws-email-preview{background:linear-gradient(160deg,rgba(10,10,28,.95),rgba(6,7,20,.98));border:1px solid rgba(255,255,255,.1);border-radius:18px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.ws-email-header{background:rgba(0,0,0,.4);padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}
+.ws-email-dots{display:flex;gap:5px}
+.ws-email-dots span{width:9px;height:9px;border-radius:50%}
+.ws-email-dots span:nth-child(1){background:#ff5f57}
+.ws-email-dots span:nth-child(2){background:#febc2e}
+.ws-email-dots span:nth-child(3){background:#28c840}
+.ws-email-from{font-size:10.5px;color:rgba(255,255,255,.35);font-family:monospace;margin-left:auto}
+.ws-email-body{padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.ws-email-subject{font-size:12px;color:rgba(255,255,255,.5);font-weight:500}
+.ws-email-text{font-size:13px;color:rgba(255,255,255,.75);line-height:1.75}
+.ws-ice-highlight{color:var(--purple-l);background:rgba(124,58,237,.12);padding:2px 6px;border-radius:5px;font-style:italic}
+.ws-email-badge{font-size:10px;color:var(--purple-l);background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:100px;padding:4px 12px;align-self:flex-start;letter-spacing:.5px}
+
+/* Process */
+.ws-process-timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:0;position:relative}
+.ws-process-timeline::before{content:'';position:absolute;top:22px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(124,58,237,.4),transparent)}
+.ws-proc-step{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;padding:0 12px}
+.ws-proc-num{width:44px;height:44px;border-radius:50%;border:1px solid rgba(124,58,237,.3);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:13px;color:var(--purple-l);background:rgba(124,58,237,.08);flex-shrink:0;position:relative;z-index:1}
+.ws-proc-content h4{font-size:13.5px;font-weight:700;margin:0 0 6px;color:var(--white)}
+.ws-proc-content p{font-size:12px;color:var(--muted2);line-height:1.6;margin:0}
+@media(max-width:768px){.ws-process-timeline{grid-template-columns:1fr;gap:0}.ws-proc-step{flex-direction:row;text-align:left;padding:16px 0;border-bottom:1px solid var(--border)}.ws-process-timeline::before{display:none}}
+
+/* Pricing */
+.ws-pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ws-plan{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:22px;padding:28px;display:flex;flex-direction:column;gap:16px;position:relative}
+.ws-plan-featured{background:linear-gradient(160deg,rgba(124,58,237,.1),rgba(255,61,143,.05));border-color:rgba(124,58,237,.3);transform:scale(1.03)}
+.ws-plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:10.5px;font-weight:700;padding:4px 14px;border-radius:100px;white-space:nowrap;letter-spacing:.5px}
+.ws-plan-icon{font-size:28px}
+.ws-plan-name{font-family:var(--display);font-size:20px;font-weight:800;letter-spacing:-.5px}
+.ws-plan-price{font-family:var(--display);font-size:clamp(28px,3vw,38px);font-weight:900;letter-spacing:-1px}
+.ws-plan-price span{font-size:12px;font-weight:400;color:var(--muted);letter-spacing:0;font-family:var(--body)}
+.ws-plan-features{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.ws-plan-features li{font-size:13px;color:var(--muted2);display:flex;align-items:center;gap:8px}
+.ws-plan-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.ws-plan-guarantee{font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:10px 14px;margin-top:auto}
+.ws-plan-guarantee strong{color:var(--white)}
+.ws-plan-cta{display:block;text-align:center;padding:12px 20px;border-radius:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.75);font-weight:600;font-size:13px;cursor:pointer;font-family:var(--body);transition:all .2s;text-decoration:none}
+.ws-plan-cta:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
+.ws-plan-cta-featured{background:linear-gradient(135deg,var(--purple),var(--pink));border:none;color:#fff;box-shadow:0 8px 28px rgba(124,58,237,.4)}
+.ws-plan-cta-featured:hover{box-shadow:0 12px 40px rgba(124,58,237,.55)}
+@media(max-width:900px){.ws-pricing-grid{grid-template-columns:1fr}.ws-plan-featured{transform:none}}
+
+/* Team */
+.ws-team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:900px;margin:0 auto}
+.ws-team-card{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:22px;padding:28px;display:flex;gap:20px;align-items:flex-start;transition:border-color .3s}
+.ws-team-card:hover{border-color:rgba(124,58,237,.25)}
+.ws-team-photo{width:64px;height:64px;border-radius:50%;background:rgba(124,58,237,.2);flex-shrink:0;overflow:hidden;border:2px solid rgba(124,58,237,.3)}
+.ws-team-name{font-family:var(--display);font-size:16px;font-weight:800;letter-spacing:-.3px}
+.ws-team-role{font-size:12px;font-weight:600;letter-spacing:.3px;margin:3px 0 10px}
+.ws-team-quote{font-size:12.5px;color:var(--muted2);line-height:1.65;font-style:italic;margin:0 0 12px}
+.ws-team-tags{display:flex;gap:6px;flex-wrap:wrap}
+.ws-team-tags span{padding:3px 10px;border-radius:100px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.15);font-size:10px;color:var(--purple-l);font-weight:600}
+@media(max-width:700px){.ws-team-grid{grid-template-columns:1fr}}
+
+/* Vidéo */
+.ws-vid-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(40px,6vw,80px);align-items:center}
+.ws-vid-stats{display:flex;flex-direction:column;gap:12px;margin:24px 0}
+.ws-vid-stat{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);font-size:13px;color:var(--muted2)}
+.ws-vid-val{font-family:var(--display);font-size:24px;font-weight:900;min-width:52px;letter-spacing:-1px}
+.ws-vid-formats{display:flex;flex-direction:column;gap:8px}
+.ws-vid-fmt{padding:10px 16px;border-radius:12px;border:1px solid;font-size:13px;font-weight:600;background:rgba(255,255,255,.02)}
+.ws-macbook{position:relative;width:100%}
+.ws-mac-screen{background:linear-gradient(160deg,#1a1a2e,#0f0f1e);border-radius:12px 12px 0 0;border:2px solid rgba(255,255,255,.12);border-bottom:none;padding:8px 8px 0;box-shadow:0 -6px 50px rgba(0,0,0,.5)}
+.ws-mac-bar{background:rgba(0,0,0,.5);border-radius:5px 5px 0 0;padding:6px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.06)}
+.ws-mac-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.ws-mac-url{flex:1;text-align:center;font-size:9.5px;color:rgba(255,255,255,.25);font-family:monospace;letter-spacing:.5px}
+.ws-mac-content{background:rgba(4,5,14,.95);aspect-ratio:16/9;overflow:hidden}
+.ws-mac-base{background:linear-gradient(180deg,#2a2a3e,#1a1a2e);height:12px;border-radius:0 0 3px 3px;border:2px solid rgba(255,255,255,.1);border-top:1px solid rgba(255,255,255,.06)}
+.ws-mac-foot{background:linear-gradient(180deg,#222232,#181828);height:5px;border-radius:0 0 18px 18px;width:88%;margin:0 auto;border:1px solid rgba(255,255,255,.06);border-top:none;box-shadow:0 16px 50px rgba(0,0,0,.5)}
+@media(max-width:800px){.ws-vid-wrap,.ws-ice-wrap{grid-template-columns:1fr}}
+
+/* CTA Final */
+.ws-cta-final{position:relative;text-align:center;padding:clamp(100px,14vh,160px) clamp(24px,8vw,120px);overflow:hidden;border-top:1px solid var(--border)}
+.ws-cta-glow{position:absolute;width:700px;height:700px;border-radius:50%;background:var(--purple);bottom:-350px;left:50%;transform:translateX(-50%);opacity:.13;filter:blur(120px);pointer-events:none}
+.ws-cta-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:20px}
+.ws-pills{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:12px;color:var(--muted)}
+.ws-back{background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer;font-family:var(--body);transition:color .2s;text-decoration:underline;text-underline-offset:3px;margin-top:4px}
+.ws-back:hover{color:var(--purple-l)}
+
+/* Footer */
+.ws-footer{border-top:1px solid var(--border);background:rgba(0,0,0,.25);padding:clamp(24px,3.5vh,44px) clamp(24px,7vw,100px)}
+.ws-footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;max-width:1160px;margin:0 auto}
+.ws-footer-logo{font-family:var(--display);font-weight:900;font-size:17px;letter-spacing:-1px;color:var(--white)}
+.ws-footer-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.ws-footer-links{display:flex;gap:22px;flex-wrap:wrap}
+.ws-footer-links a{font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s}
+.ws-footer-links a:hover{color:var(--purple-l)}
+.ws-footer-copy{font-size:11px;color:var(--muted)}
+
+
+
+/* ════════════════════════════════════════════════════════
+   EXPÉRIENCE CINÉMATIQUE — EFFET WAOUH INTÉGRAL
+════════════════════════════════════════════════════════ */
+
+/* ── FOND SPATIAL PERMANENT ── */
+#space-bg {
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+#space-canvas {
+  position:absolute;inset:0;width:100%;height:100%;
+}
+#deck { z-index:10; }
+.slide { background:transparent !important; }
+
+/* ── SCANLINES OVERLAY ── */
+#deck::after {
+  content:'';position:absolute;inset:0;z-index:999;pointer-events:none;
+  background:repeating-linear-gradient(0deg,
+    transparent,transparent 2px,
+    rgba(0,0,0,.06) 2px,rgba(0,0,0,.06) 4px
+  );
+  animation:scanlines 8s linear infinite;
+}
+@keyframes scanlines { 0%{background-position:0 0} 100%{background-position:0 100%} }
+
+/* ── VIGNETTE ── */
+.slide::before {
+  content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 120% 120% at 50% 50%,transparent 40%,rgba(0,0,0,.7) 100%);
+}
+
+/* ── TRANSITIONS CINÉMATIQUES ── */
+@keyframes slide-enter-right {
+  0%   { opacity:0; transform:translateX(60px) scale(.97); filter:blur(8px); }
+  60%  { filter:blur(0); }
+  100% { opacity:1; transform:translateX(0) scale(1); }
+}
+@keyframes slide-enter-left {
+  0%   { opacity:0; transform:translateX(-60px) scale(.97); filter:blur(8px); }
+  60%  { filter:blur(0); }
+  100% { opacity:1; transform:translateX(0) scale(1); }
+}
+@keyframes slide-exit-left {
+  0%   { opacity:1; transform:translateX(0) scale(1); }
+  100% { opacity:0; transform:translateX(-80px) scale(.96); filter:blur(6px); }
+}
+@keyframes slide-exit-right {
+  0%   { opacity:1; transform:translateX(0) scale(1); }
+  100% { opacity:0; transform:translateX(80px) scale(.96); filter:blur(6px); }
+}
+.slide.cin-enter-r { animation:slide-enter-right .55s cubic-bezier(.16,1,.3,1) forwards; }
+.slide.cin-enter-l { animation:slide-enter-left  .55s cubic-bezier(.16,1,.3,1) forwards; }
+.slide.cin-exit-l  { animation:slide-exit-left   .35s cubic-bezier(.4,0,1,1)   forwards; }
+.slide.cin-exit-r  { animation:slide-exit-right  .35s cubic-bezier(.4,0,1,1)   forwards; }
+
+/* ── ANIMATIONS ÉLÉMENTS INTERNES ── */
+@keyframes cin-up {
+  0%   { opacity:0; transform:translateY(28px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+@keyframes cin-left {
+  0%   { opacity:0; transform:translateX(-24px); }
+  100% { opacity:1; transform:translateX(0); }
+}
+@keyframes cin-scale {
+  0%   { opacity:0; transform:scale(.88); }
+  100% { opacity:1; transform:scale(1); }
+}
+@keyframes cin-glow-in {
+  0%   { opacity:0; transform:scale(.7); filter:blur(20px); }
+  100% { opacity:1; transform:scale(1); filter:blur(0); }
+}
+@keyframes counter-up {
+  0%   { opacity:0; transform:translateY(16px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+@keyframes line-draw {
+  0%   { width:0; opacity:0; }
+  100% { opacity:1; }
+}
+@keyframes glitch {
+  0%,100% { clip-path:none; transform:none; }
+  7%  { clip-path:inset(40% 0 61% 0); transform:translate(-4px,0); }
+  10% { clip-path:inset(92% 0 1%  0); transform:translate(4px,0);  }
+  13% { clip-path:none; transform:none; }
+  60% { clip-path:inset(23% 0 70% 0); transform:translate(-3px,0); }
+  62% { clip-path:none; transform:none; }
+}
+@keyframes shimmer {
+  0%   { background-position:200% center; }
+  100% { background-position:-200% center; }
+}
+@keyframes pulse-ring {
+  0%   { transform:scale(1);   opacity:.6; }
+  100% { transform:scale(2.2); opacity:0;  }
+}
+@keyframes float-up {
+  0%,100% { transform:translateY(0); }
+  50%     { transform:translateY(-8px); }
+}
+@keyframes rotate-slow {
+  from { transform:rotate(0deg); }
+  to   { transform:rotate(360deg); }
+}
+@keyframes data-stream {
+  0%   { transform:translateY(100%); opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:1; }
+  100% { transform:translateY(-100%); opacity:0; }
+}
+@keyframes blink-cursor {
+  0%,100% { opacity:1; } 50% { opacity:0; }
+}
+@keyframes reveal-text {
+  0%   { width:0; }
+  100% { width:100%; }
+}
+@keyframes card-flip-in {
+  0%   { opacity:0; transform:perspective(800px) rotateY(-25deg) translateX(40px); }
+  100% { opacity:1; transform:perspective(800px) rotateY(0)     translateX(0); }
+}
+@keyframes beam-scan {
+  0%   { top:-2px; opacity:0; }
+  10%  { opacity:1; }
+  90%  { opacity:1; }
+  100% { top:100%; opacity:0; }
+}
+
+/* ── COVER — Éléments animés ── */
+.cin-eyebrow { animation:cin-up .5s .1s both; }
+.cin-h1      { animation:cin-up .6s .25s both; }
+.cin-sub     { animation:cin-up .5s .45s both; }
+.cin-stats   { animation:cin-up .5s .6s both; }
+.cin-ctas    { animation:cin-up .5s .8s both; }
+.cin-logos   { animation:cin-up .4s 1s both; }
+
+/* Effet glitch sur le H1 */
+.cin-h1-glitch {
+  position:relative;
+}
+.cin-h1-glitch::before,
+.cin-h1-glitch::after {
+  content:attr(data-text);
+  position:absolute;inset:0;
+  font-family:inherit;font-size:inherit;font-weight:inherit;
+}
+.cin-h1-glitch::before {
+  color:var(--cyan);animation:glitch 8s 2s infinite;left:2px;
+}
+.cin-h1-glitch::after {
+  color:var(--pink);animation:glitch 8s 2.15s infinite;left:-2px;
+}
+
+/* ── HUD AMBIENT ── */
+#hud-ambient {
+  position:fixed;inset:0;pointer-events:none;z-index:5;
+  opacity:0;transition:opacity .6s;
+}
+.hud-line-h {
+  position:absolute;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(124,58,237,.3),transparent);
+  animation:shimmer 4s linear infinite;
+  background-size:200% auto;
+}
+.hud-line-v {
+  position:absolute;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(124,58,237,.2),transparent);
+}
+.hud-corner {
+  position:absolute;width:20px;height:20px;
+  border-color:rgba(124,58,237,.4);border-style:solid;
+}
+.hud-data-stream {
+  position:absolute;right:24px;top:80px;
+  font-family:monospace;font-size:8.5px;
+  color:rgba(124,58,237,.35);letter-spacing:1px;
+  display:flex;flex-direction:column;gap:3px;
+  overflow:hidden;height:120px;
+}
+.hud-data-stream span {
+  animation:data-stream 3s linear infinite;
+  animation-delay:calc(var(--i) * .4s);
+}
+.slide.active ~ #hud-ambient { opacity:1; }
+
+/* ── STATS COMPTEURS ANIMÉS ── */
+.stat-counter {
+  display:inline-block;
+  transition:all .3s;
+}
+
+/* ── COVER BIG NUMBERS ── */
+.cin-bignum {
+  font-family:var(--display);
+  font-size:clamp(48px,7vw,88px);
+  font-weight:900;
+  letter-spacing:-3px;
+  line-height:1;
+  background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,.6) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  position:relative;
+}
+
+/* ── SLIDE SERVICES — Grid cinématique ── */
+.cin-svc-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  width:100%;max-width:1100px;
+}
+.cin-svc-card {
+  background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;padding:24px;
+  position:relative;overflow:hidden;
+  transform:translateY(40px);opacity:0;
+  transition:border-color .3s,transform .3s;
+}
+.cin-svc-card.in {
+  animation:cin-up .5s cubic-bezier(.16,1,.3,1) both;
+}
+.cin-svc-card:nth-child(1).in { animation-delay:.1s; }
+.cin-svc-card:nth-child(2).in { animation-delay:.22s; }
+.cin-svc-card:nth-child(3).in { animation-delay:.34s; }
+.cin-svc-card::after {
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--cin-accent,var(--purple-l)),transparent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .6s cubic-bezier(.16,1,.3,1);
+}
+.cin-svc-card.in::after { transform:scaleX(1); transition-delay:.3s; }
+.cin-svc-card:hover { border-color:rgba(124,58,237,.3);transform:translateY(-4px) !important; }
+
+/* ── SLIDE PROCESS — Timeline animée ── */
+.cin-timeline {
+  display:flex;gap:0;width:100%;max-width:1000px;
+  position:relative;
+}
+.cin-timeline::before {
+  content:'';position:absolute;top:28px;left:5%;right:5%;height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 1.2s cubic-bezier(.16,1,.3,1) .3s;
+}
+.cin-timeline.in::before { transform:scaleX(1); }
+.cin-tstep {
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:16px;padding:0 8px;
+}
+.cin-tstep-num {
+  width:56px;height:56px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-weight:900;font-size:16px;
+  background:var(--bg);
+  border:2px solid rgba(124,58,237,.3);
+  color:var(--purple-l);
+  position:relative;z-index:1;
+  transform:scale(0);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.cin-timeline.in .cin-tstep-num { transform:scale(1); }
+.cin-tstep:nth-child(1) .cin-tstep-num { transition-delay:.4s; }
+.cin-tstep:nth-child(2) .cin-tstep-num { transition-delay:.6s; }
+.cin-tstep:nth-child(3) .cin-tstep-num { transition-delay:.8s; }
+.cin-tstep:nth-child(4) .cin-tstep-num { transition-delay:1s; }
+.cin-tstep:nth-child(5) .cin-tstep-num { transition-delay:1.2s; }
+.cin-tstep-num::before {
+  content:'';position:absolute;inset:-6px;border-radius:50%;
+  border:1px solid rgba(124,58,237,.2);
+  animation:pulse-ring 2.5s ease infinite;
+  opacity:0;
+}
+.cin-timeline.in .cin-tstep:nth-child(5) .cin-tstep-num::before { opacity:1;animation-delay:1.4s; }
+
+/* ── SLIDE FORMULES — Cards premium ── */
+.cin-plan-card {
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:24px;
+  position:relative;overflow:hidden;
+  padding:28px;
+  opacity:0;
+}
+.cin-plan-card::before {
+  content:'';
+  position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);
+  transition:left .6s ease;
+}
+.cin-plan-card.in { animation:card-flip-in .6s cubic-bezier(.16,1,.3,1) both; }
+.cin-plan-card.in:nth-child(1) { animation-delay:.1s; }
+.cin-plan-card.in:nth-child(2) { animation-delay:.25s; }
+.cin-plan-card.in:nth-child(3) { animation-delay:.4s; }
+.cin-plan-card.featured {
+  background:linear-gradient(160deg,rgba(124,58,237,.12),rgba(255,61,143,.06));
+  border-color:rgba(124,58,237,.35);
+  transform:scale(1.04);
+}
+.cin-plan-card:hover::before { left:100%; }
+
+/* Beam scanner */
+.cin-plan-card.featured::after {
+  content:'';position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--purple-l),var(--pink),transparent);
+  animation:beam-scan 3s ease infinite;
+}
+
+/* ── SLIDE ÉQUIPE ── */
+.cin-team-photo {
+  position:relative;
+}
+.cin-team-photo::after {
+  content:'';position:absolute;inset:-3px;border-radius:50%;
+  background:conic-gradient(var(--purple),var(--pink),var(--cyan),var(--purple));
+  z-index:-1;
+  animation:rotate-slow 4s linear infinite;
+}
+
+/* ── SLIDE COVER — Orb central animé ── */
+.cin-hero-orb {
+  position:absolute;
+  width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,.25) 0%,rgba(255,61,143,.1) 50%,transparent 70%);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  animation:float-up 6s ease-in-out infinite;
+  pointer-events:none;
+  filter:blur(40px);
+}
+
+/* ── DATA GRID BACKGROUND ── */
+.cin-data-grid {
+  position:absolute;inset:0;pointer-events:none;overflow:hidden;
+  opacity:.4;
+}
+
+/* ── CHIFFRES STATS COVER ── */
+.cin-stat-card {
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px;
+  padding:clamp(12px,1.5vh,18px) clamp(16px,2vw,24px);
+  text-align:center;
+  position:relative;overflow:hidden;
+  transition:border-color .3s,transform .3s;
+}
+.cin-stat-card:hover { border-color:rgba(124,58,237,.4);transform:translateY(-3px); }
+.cin-stat-card::after {
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--cin-color,var(--purple-l));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .8s cubic-bezier(.16,1,.3,1);
+}
+.cin-stat-card.in::after { transform:scaleX(1); }
+.cin-stat-val {
+  font-family:var(--display);
+  font-size:clamp(28px,4vw,48px);
+  font-weight:900;
+  letter-spacing:-1.5px;
+  line-height:1;
+  color:var(--cin-color,var(--white));
+}
+.cin-stat-lbl {
+  font-size:11px;color:var(--muted);letter-spacing:.5px;margin-top:5px;
+}
+
+/* ── ICEBREAKER — Email animé ── */
+.cin-ice-cursor {
+  display:inline-block;width:2px;height:1em;
+  background:var(--purple-l);
+  animation:blink-cursor .8s ease infinite;
+  vertical-align:middle;margin-left:2px;
+}
+
+/* ── COVER — Texte révélation ── */
+.text-reveal-wrap {
+  overflow:hidden;display:block;
+}
+.text-reveal-inner {
+  display:block;
+  animation:cin-up .7s cubic-bezier(.16,1,.3,1) both;
+}
+
+
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -1150,6 +1696,29 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+<!-- ── FOND SPATIAL PERMANENT ── -->
+<canvas id="space-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;width:100%;height:100%"></canvas>
+
+<!-- ── HUD AMBIENT ── -->
+<div id="hud-ambient">
+  <div class="hud-line-h" style="top:20%;width:100%;left:0"></div>
+  <div class="hud-line-h" style="top:75%;width:60%;left:20%"></div>
+  <div class="hud-line-v" style="left:8%;top:0;height:100%"></div>
+  <div class="hud-line-v" style="right:8%;top:0;height:100%"></div>
+  <div class="hud-corner" style="top:60px;left:40px;border-width:2px 0 0 2px;border-top-left-radius:4px"></div>
+  <div class="hud-corner" style="top:60px;right:40px;border-width:2px 2px 0 0;border-top-right-radius:4px"></div>
+  <div class="hud-corner" style="bottom:40px;left:40px;border-width:0 0 2px 2px;border-bottom-left-radius:4px"></div>
+  <div class="hud-corner" style="bottom:40px;right:40px;border-width:0 2px 2px 0;border-bottom-right-radius:4px"></div>
+  <div class="hud-data-stream">
+    <span style="--i:0">SYS · DEVOLEADS_v13 · ACTIVE</span>
+    <span style="--i:1">OUTREACH · 4,247 contacts</span>
+    <span style="--i:2">RDV_RATE · 12.4 / mois</span>
+    <span style="--i:3">ROI_INDEX · ×8.3</span>
+    <span style="--i:4">PIPELINE · OPTIMAL</span>
+    <span style="--i:5">AI_SCORE · 97.2%</span>
+  </div>
+</div>
+
 <div id="mode-toggle" style="
   position:fixed;top:14px;right:clamp(16px,4vw,200px);z-index:999;
   display:flex;align-items:center;gap:2px;
@@ -1501,51 +2070,97 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 
 <!-- S1 COVER -->
 <div class="slide active" id="s1">
-  <div class="orb" style="width:600px;height:600px;background:var(--purple);top:-200px;right:-120px;opacity:.14"></div>
-  <div class="orb" style="width:400px;height:400px;background:var(--pink);bottom:-180px;left:-100px;animation-delay:-6s;opacity:.12"></div>
-  <div class="orb" style="width:280px;height:280px;background:var(--cyan);top:30%;left:20%;animation-delay:-10s;opacity:.06;animation-duration:18s"></div>
-  <div class="orb" style="width:200px;height:200px;background:var(--orange);bottom:20%;right:25%;animation-delay:-4s;opacity:.08;animation-duration:22s"></div>
-  <div class="sg" style="text-align:center;z-index:1;display:flex;flex-direction:column;align-items:center">
-    <div class="eyebrow"><span class="blink"></span>Disponibilités limitées · CEOs SaaS B2B · 10–100 salariés</div>
-    <h1 style="max-width:min(900px,90vw)">Votre Agenda.<br><span class="g">Saturé de RDV.</span></h1>
-    <p class="lead" style="text-align:center;margin:16px auto 0">
+  <div class="cin-hero-orb"></div>
+
+  <!-- Grille de données -->
+  <div class="cin-data-grid">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="opacity:.06">
+      <defs>
+        <pattern id="grid-cover" width="80" height="80" patternUnits="userSpaceOnUse">
+          <path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(124,58,237,.8)" stroke-width=".5"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid-cover)"/>
+    </svg>
+  </div>
+
+  <div class="sg" style="z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(16px,2.5vh,28px);max-width:min(900px,92vw)">
+
+    <div class="eyebrow cin-eyebrow" id="s1-eyebrow">
+      <span class="blink"></span>Disponibilités limitées
+    </div>
+
+    <div class="cin-h1">
+      <div class="text-reveal-wrap" style="animation-delay:.15s">
+        <h1 class="text-reveal-inner" style="font-size:clamp(44px,7.5vw,96px);font-weight:900;letter-spacing:-3px;line-height:1;margin:0" id="s1-h1">
+          Votre Agenda.<br><span class="g">Saturé de RDV.</span>
+        </h1>
+      </div>
+    </div>
+
+    <p class="lead cin-sub" style="max-width:560px;text-align:center;font-size:clamp(13px,1.5vw,17px)">
       Arrêtez de prospecter. <strong>Commencez à closer.</strong><br>
       Une infrastructure B2B qui travaille pendant que vous dormez.
     </p>
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:28px;flex-wrap:wrap">
-      <div class="hstat"><div class="hval" style="color:var(--pink)">8–15</div><div class="hlbl">RDV / mois</div></div>
-      <div class="hstat"><div class="hval" style="color:var(--purple-l)">&lt;14j</div><div class="hlbl">Lancement</div></div>
-      <div class="hstat"><div class="hval" style="color:var(--orange)">×8.3</div><div class="hlbl">ROI moyen</div></div>
-      <div class="hstat"><div class="hval" style="color:var(--cyan)">0€</div><div class="hlbl">Frais cachés</div></div>
+
+    <!-- Stats avec compteurs -->
+    <div class="cin-stats" style="display:flex;gap:clamp(8px,1.5vw,16px);flex-wrap:wrap;justify-content:center;margin-top:8px">
+      <div class="cin-stat-card" style="--cin-color:var(--pink)">
+        <div class="cin-stat-val" data-target="15" data-suffix="-15" data-prefix="8–">8–15</div>
+        <div class="cin-stat-lbl">RDV / mois</div>
+      </div>
+      <div class="cin-stat-card" style="--cin-color:var(--purple-l)">
+        <div class="cin-stat-val">&lt;14j</div>
+        <div class="cin-stat-lbl">Lancement</div>
+      </div>
+      <div class="cin-stat-card" style="--cin-color:var(--orange)">
+        <div class="cin-stat-val" data-target="8.3" data-prefix="×">×8.3</div>
+        <div class="cin-stat-lbl">ROI moyen</div>
+      </div>
+      <div class="cin-stat-card" style="--cin-color:var(--cyan)">
+        <div class="cin-stat-val">0€</div>
+        <div class="cin-stat-lbl">Frais cachés</div>
+      </div>
+      <div class="cin-stat-card" style="--cin-color:var(--green)">
+        <div class="cin-stat-val" data-target="150" data-prefix="+">+150</div>
+        <div class="cin-stat-lbl">CEOs clients</div>
+      </div>
     </div>
-    <!-- CTAs principaux -->
-    <div style="display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap">
+
+    <!-- CTAs -->
+    <div class="cin-ctas" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
       <button onclick="go(1)" style="
         display:flex;align-items:center;gap:8px;padding:14px 28px;border-radius:100px;
         background:linear-gradient(135deg,var(--purple),var(--pink));
-        border:none;cursor:pointer;font-size:14px;font-weight:700;color:#fff;
-        font-family:inherit;letter-spacing:.3px;
-        box-shadow:0 8px 32px rgba(124,58,237,.4),0 0 0 1px rgba(255,255,255,.08);
-        transition:transform .2s,box-shadow .2s;"
-        onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 12px 40px rgba(124,58,237,.55)'"
-        onmouseout="this.style.transform='';this.style.boxShadow='0 8px 32px rgba(124,58,237,.4)'">
+        border:none;cursor:pointer;font-size:14px;font-weight:700;color:#fff;font-family:inherit;
+        box-shadow:0 8px 32px rgba(124,58,237,.45),inset 0 1px 0 rgba(255,255,255,.15);
+        transition:transform .2s,box-shadow .2s;letter-spacing:.2px;"
+        onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 14px 44px rgba(124,58,237,.6)'"
+        onmouseout="this.style.transform='';this.style.boxShadow='0 8px 32px rgba(124,58,237,.45)'">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         Voir la démo IA
       </button>
       <button onclick="go(7)" style="
         display:flex;align-items:center;gap:8px;padding:14px 28px;border-radius:100px;
-        background:transparent;border:1px solid rgba(255,255,255,.15);
-        cursor:pointer;font-size:14px;font-weight:600;color:rgba(255,255,255,.8);
-        font-family:inherit;transition:background .2s,border-color .2s;"
-        onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='rgba(255,255,255,.3)'"
-        onmouseout="this.style.background='transparent';this.style.borderColor='rgba(255,255,255,.15)'">
+        background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);
+        cursor:pointer;font-size:14px;font-weight:600;color:rgba(255,255,255,.75);font-family:inherit;
+        transition:all .2s;"
+        onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(255,255,255,.25)'"
+        onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.12)'">
         Prendre un RDV
       </button>
     </div>
-    <div style="margin-top:26px;width:100%;max-width:680px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="height:1px;flex:1;background:rgba(255,255,255,.07)"></div><p style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin:0">+150 CEOs nous font confiance</p><div style="height:1px;flex:1;background:rgba(255,255,255,.07)"></div></div>
+
+    <!-- Logos clients -->
+    <div class="cin-logos" style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:640px;margin-top:4px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="height:1px;width:50px;background:rgba(255,255,255,.07)"></div>
+        <span style="font-size:9px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase">Ils nous font confiance</span>
+        <div style="height:1px;width:50px;background:rgba(255,255,255,.07)"></div>
+      </div>
       <div class="clients-wrap"><div class="clients-track" id="ct1"></div></div>
     </div>
+
   </div>
 </div>
 
@@ -1648,137 +2263,193 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 </div>
 
 <!-- S3 SERVICES -->
-<div class="slide" id="s3" style="padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);flex-direction:row;align-items:stretch">
-  <div class="orb" style="width:400px;height:400px;background:var(--purple);top:-80px;right:-80px;opacity:.12;animation-delay:-3s"></div>
-  <!-- Accent vertical bar -->
-  <div style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:55%;background:linear-gradient(180deg,var(--purple),var(--pink));border-radius:0 3px 3px 0;opacity:.7"></div>
+<div class="slide" id="s3" style="flex-direction:row;padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);align-items:stretch">
+  <div class="orb" style="width:500px;height:500px;background:var(--cyan);top:-150px;left:-100px;opacity:.07;animation-duration:22s"></div>
 
-  <!-- LEFT: texte -->
-  <div class="sg" style="width:38%;padding:0 clamp(20px,3vw,40px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:16px;flex-shrink:0">
-    <div class="eyebrow">Services</div>
-    <h2 style="font-size:clamp(36px,4.5vw,62px)">De la data<br><span class="g">à la</span><br><span class="g">signature.</span></h2>
-    <p class="lead" style="font-size:13px">Nous gérons l'intégralité du tunnel commercial.<br><strong>Vous closez, on prospecte.</strong></p>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-      <div style="background:rgba(255,61,143,.06);border:1px solid rgba(255,61,143,.18);border-radius:100px;padding:5px 14px;font-size:10px;font-weight:600;color:var(--pink);letter-spacing:.5px">×8.3 ROI moyen</div>
-      <div style="background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);border-radius:100px;padding:5px 14px;font-size:10px;font-weight:600;color:var(--purple-l);letter-spacing:.5px">8–15 RDV / mois</div>
+  <!-- LEFT -->
+  <div class="sg" style="width:38%;padding:0 clamp(16px,2.5vw,36px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:20px;flex-shrink:0">
+    <div class="eyebrow cin-eyebrow">Services</div>
+    <div class="text-reveal-wrap">
+      <h2 class="text-reveal-inner" style="animation-delay:.2s;font-size:clamp(32px,4.5vw,58px)">
+        De la data<br>à la <span class="g">signature.</span>
+      </h2>
+    </div>
+    <p class="lead cin-sub" style="animation-delay:.4s">Nous gérons l'intégralité du tunnel commercial. Vous closez, on prospecte.</p>
+
+    <!-- Mini stats -->
+    <div class="cin-sub" style="animation-delay:.55s;display:flex;gap:10px;flex-direction:column">
+      <div style="padding:10px 16px;border-radius:12px;background:rgba(255,61,143,.06);border:1px solid rgba(255,61,143,.15);display:flex;align-items:center;gap:10px">
+        <span style="font-family:var(--display);font-size:20px;font-weight:900;color:var(--pink)">8–15</span>
+        <span style="font-size:12px;color:var(--muted2)">RDV qualifiés par mois</span>
+      </div>
+      <div style="padding:10px 16px;border-radius:12px;background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.15);display:flex;align-items:center;gap:10px">
+        <span style="font-family:var(--display);font-size:20px;font-weight:900;color:var(--purple-l)">×8.3</span>
+        <span style="font-size:12px;color:var(--muted2)">ROI moyen constaté</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);letter-spacing:.5px">
+        De la data à la signature en <strong style="color:var(--white)">&lt;14 jours</strong>
+      </div>
     </div>
   </div>
 
-  <!-- RIGHT: cards -->
-  <div class="sg" style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center;padding:0 clamp(30px,5vw,90px) 0 clamp(16px,2vw,32px)">
-    <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
-      <div class="ico" style="background:rgba(255,107,53,.1);flex-shrink:0">⚡</div>
-      <div><h3 style="margin-bottom:4px">Machine Outreach 2.0</h3>
-      <p style="margin-bottom:8px">Smartlead + LinkedIn + IA pour un ciblage d'une précision chirurgicale.</p>
-      <div class="fl"><div class="fi"><span class="fd" style="background:var(--orange)"></span>Ciblage ICP granulaire</div><div class="fi"><span class="fd" style="background:var(--orange)"></span>Prospection vidéo</div></div></div>
+  <!-- RIGHT: cards cinématiques -->
+  <div class="sg cin-svc-grid-wrap" style="flex:1;display:flex;flex-direction:column;gap:12px;justify-content:center;padding:0 clamp(30px,4vw,60px) 0 clamp(16px,2vw,30px)">
+    <div class="cin-svc-card" id="svc-c1" style="--cin-accent:var(--orange)">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div class="ico" style="background:rgba(255,107,53,.1);flex-shrink:0">⚡</div>
+        <div>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+            <h3 style="margin:0;font-size:15px">Machine Outreach 2.0</h3>
+            <span style="font-size:10px;font-weight:700;color:var(--orange)">4 000+ contacts/mois</span>
+          </div>
+          <p style="margin-bottom:8px;font-size:12.5px;color:var(--muted2)">Smartlead + LinkedIn + IA pour un ciblage d'une précision chirurgicale.</p>
+          <div class="fl"><div class="fi"><span class="fd" style="background:var(--orange)"></span>Ciblage ICP granulaire</div><div class="fi"><span class="fd" style="background:var(--orange)"></span>Prospection vidéo</div></div>
+        </div>
+      </div>
     </div>
-    <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start;border-color:rgba(255,61,143,.14)">
-      <div class="ico" style="background:rgba(255,61,143,.1);flex-shrink:0">📅</div>
-      <div><h3 style="margin-bottom:4px">Prise de RDV Qualifiés</h3>
-      <p style="margin-bottom:8px">Zéro lead inutile. Uniquement des RDV confirmés dans votre calendrier.</p>
-      <div class="fl"><div class="fi"><span class="fd" style="background:var(--pink)"></span>Qualification rigoureuse</div><div class="fi"><span class="fd" style="background:var(--pink)"></span>Sync Calendly / HubSpot</div></div></div>
+    <div class="cin-svc-card" id="svc-c2" style="--cin-accent:var(--pink)">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div class="ico" style="background:rgba(255,61,143,.1);flex-shrink:0">📅</div>
+        <div>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+            <h3 style="margin:0;font-size:15px">Prise de RDV Qualifiés</h3>
+            <span style="font-size:10px;font-weight:700;color:var(--pink)">8–15 RDV/mois</span>
+          </div>
+          <p style="margin-bottom:8px;font-size:12.5px;color:var(--muted2)">Zéro lead inutile. Uniquement des RDV confirmés dans votre calendrier.</p>
+          <div class="fl"><div class="fi"><span class="fd" style="background:var(--pink)"></span>Qualification rigoureuse</div><div class="fi"><span class="fd" style="background:var(--pink)"></span>Sync Calendly</div></div>
+        </div>
+      </div>
     </div>
-    <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start;border-color:rgba(124,58,237,.14)">
-      <div class="ico" style="background:rgba(124,58,237,.1);flex-shrink:0">🤖</div>
-      <div><h3 style="margin-bottom:4px">Système Growth IA</h3>
-      <p style="margin-bottom:8px">L'IA personnalise chaque message à l'infini, sans effort de votre part.</p>
-      <div class="fl"><div class="fi"><span class="fd" style="background:var(--purple-l)"></span>AI Icebreaker</div><div class="fi"><span class="fd" style="background:var(--purple-l)"></span>Scraping multi-sources</div></div></div>
+    <div class="cin-svc-card" id="svc-c3" style="--cin-accent:var(--cyan)">
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div class="ico" style="background:rgba(34,211,238,.08);flex-shrink:0">🤖</div>
+        <div>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px">
+            <h3 style="margin:0;font-size:15px">Système Growth IA</h3>
+            <span style="font-size:10px;font-weight:700;color:var(--cyan)">×8 réponse</span>
+          </div>
+          <p style="margin-bottom:8px;font-size:12.5px;color:var(--muted2)">Scoring automatique, enrichissement data, relances intelligentes.</p>
+          <div class="fl"><div class="fi"><span class="fd" style="background:var(--cyan)"></span>Apollo · SalesNav</div><div class="fi"><span class="fd" style="background:var(--cyan)"></span>AI Icebreaker</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- S4 PROCESS MOTION -->
-<div class="slide" id="s4">
-  <div class="orb" style="width:260px;height:260px;background:var(--cyan);bottom:-60px;right:60px;opacity:.1;animation-delay:-8s"></div>
-  <div class="sg" style="text-align:center;margin-bottom:22px;display:flex;flex-direction:column;align-items:center">
-    <div class="eyebrow"><span class="blink"></span>Notre process</div>
-    <h2>Simple. Rapide.<br><span class="g">Radical.</span></h2>
-    <p class="lead" style="margin:10px auto 0">Du premier appel au premier lead — <strong>en moins de 14 jours.</strong></p>
+<div class="slide" id="s4" style="flex-direction:column;padding:clamp(70px,8vh,100px) clamp(40px,6vw,90px) clamp(50px,6vh,80px)">
+  <div class="orb" style="width:400px;height:400px;background:var(--purple);bottom:-150px;right:-100px;opacity:.08"></div>
+
+  <div class="sg" style="text-align:center;margin-bottom:clamp(32px,5vh,56px);display:flex;flex-direction:column;align-items:center;gap:14px">
+    <div class="eyebrow cin-eyebrow">Notre process</div>
+    <div class="text-reveal-wrap">
+      <h2 class="text-reveal-inner" style="animation-delay:.2s">Simple. Rapide. <span class="g">Radical.</span></h2>
+    </div>
+    <p class="lead cin-sub" style="animation-delay:.4s">Du premier appel au premier lead — <strong>en moins de 14 jours.</strong></p>
   </div>
-  <!-- Numbered step cards -->
-  <div class="sg" style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1.2vw,14px);width:100%;max-width:min(900px,94vw)">
-    <div style="background:var(--surface);border:1px solid rgba(255,61,143,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--pink);box-shadow:0 0 14px var(--pink);margin-bottom:14px"></div>
-      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--pink);margin-bottom:8px">01 · Découverte</div>
-      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Appel stratégique</div>
-      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">ICP, USP, Tone of Voice. On calibre le tir avant de tirer.</div>
-      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(255,61,143,.06);line-height:1;font-family:var(--display)">01</div>
+
+  <div class="cin-timeline sg" id="cin-proc-timeline" style="max-width:min(1000px,96vw)">
+    <div class="cin-tstep">
+      <div class="cin-tstep-num">01</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font-weight:700;font-size:13px;color:var(--white)">Découverte</div>
+        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">ICP, USP, Tone of Voice. On calibre le tir.</div>
+      </div>
     </div>
-    <div style="background:var(--surface);border:1px solid rgba(167,139,250,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--purple-l);box-shadow:0 0 14px var(--purple-l);margin-bottom:14px"></div>
-      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple-l);margin-bottom:8px">02 · Copywriting</div>
-      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Rédaction séquences</div>
-      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">Messages orientés problème/solution. Vous validez, on envoie.</div>
-      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(167,139,250,.06);line-height:1;font-family:var(--display)">02</div>
+    <div class="cin-tstep">
+      <div class="cin-tstep-num">02</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font-weight:700;font-size:13px;color:var(--white)">Copywriting</div>
+        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">Séquences orientées problème/solution.</div>
+      </div>
     </div>
-    <div style="background:var(--surface);border:1px solid rgba(255,107,53,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 14px var(--orange);margin-bottom:14px"></div>
-      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:8px">03 · Data</div>
-      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Sourcing & Ciblage</div>
-      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">Apollo, SalesNav. Seuls les prospects qualifiés entrent dans la machine.</div>
-      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(255,107,53,.06);line-height:1;font-family:var(--display)">03</div>
+    <div class="cin-tstep">
+      <div class="cin-tstep-num">03</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font-weight:700;font-size:13px;color:var(--white)">Data Sourcing</div>
+        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">Apollo, SalesNav. Seuls les bons entrent.</div>
+      </div>
     </div>
-    <div style="background:var(--surface);border:1px solid rgba(34,211,238,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan);margin-bottom:14px"></div>
-      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px">04 · Live</div>
-      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Lancement & Optimisation</div>
-      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">A/B testing, reporting hebdo. Vous voyez les RDV tomber.</div>
-      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(34,211,238,.06);line-height:1;font-family:var(--display)">04</div>
+    <div class="cin-tstep">
+      <div class="cin-tstep-num">04</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font-weight:700;font-size:13px;color:var(--white)">Lancement</div>
+        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">Go live. A/B testing. Optimisation continue.</div>
+      </div>
     </div>
-  </div>
-  <div class="sg" style="margin-top:18px">
-    <div style="background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.18);border-radius:100px;padding:8px 22px;display:inline-flex;align-items:center;gap:8px">
-      <span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;animation:bl 1.5s infinite;flex-shrink:0"></span>
-      <span style="font-size:11.5px;color:var(--green);font-weight:500;letter-spacing:.2px">Premier lead garanti en moins de 14 jours</span>
+    <div class="cin-tstep">
+      <div class="cin-tstep-num" style="background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none">05</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font-weight:700;font-size:13px;color:var(--white)">RDV confirmés</div>
+        <div style="font-size:11.5px;color:var(--muted2);line-height:1.5">Dans votre agenda. Vous closez.</div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- S5 FORMULES -->
-<div class="slide" id="s5">
-  <div class="orb" style="width:430px;height:430px;background:var(--purple);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.09;animation-duration:20s"></div>
-  <div class="sg" style="text-align:center;margin-bottom:20px;display:flex;flex-direction:column;align-items:center">
-    <div class="eyebrow">Formules</div>
-    <h2>Choisissez votre<br><span class="g">vitesse de croissance.</span></h2>
-    <p class="lead" style="margin:10px auto 0">Offres transparentes. Résultats garantis ou 3 mois offerts.</p>
+<div class="slide" id="s5" style="flex-direction:column;padding:clamp(60px,7vh,90px) clamp(24px,4vw,60px) clamp(40px,5vh,70px)">
+  <div class="orb" style="width:500px;height:500px;background:var(--purple);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.07;animation-duration:20s"></div>
+
+  <div class="sg" style="text-align:center;margin-bottom:clamp(24px,4vh,44px);display:flex;flex-direction:column;align-items:center;gap:12px">
+    <div class="eyebrow cin-eyebrow">Formules</div>
+    <div class="text-reveal-wrap">
+      <h2 class="text-reveal-inner" style="animation-delay:.2s">Choisissez votre <span class="g">vitesse de croissance.</span></h2>
+    </div>
+    <p class="lead cin-sub" style="animation-delay:.35s;margin:0">Offres transparentes. Résultats garantis ou 3 mois offerts.</p>
   </div>
-  <div class="g3 sg" style="max-width:780px;align-items:start">
-    <div class="pc">
-      <span class="pp">🪨</span>
-      <div class="pn">Silver</div>
-      <div class="pa" style="color:var(--muted2)">800€</div>
-      <div class="pe">/ mois · min. 3 mois</div>
-      <div class="pl hl">10 RDV qualifiés / mois</div>
-      <div class="pl">4 000 contacts ciblés</div>
-      <div class="pl">Cold Email + LinkedIn</div>
-      <div class="pl">Copywriting inclus</div>
-      <div class="pl">Reporting hebdomadaire</div>
-      <div class="gar"><strong>Garantie</strong> — Moins de 30 RDV ? On continue gratuitement.</div>
+
+  <div class="sg" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:min(900px,96vw);width:100%">
+
+    <div class="cin-plan-card" id="plan-silver">
+      <span style="font-size:28px">🪨</span>
+      <div style="font-family:var(--display);font-size:20px;font-weight:800;margin:8px 0 2px">Silver</div>
+      <div style="font-family:var(--display);font-size:36px;font-weight:900;letter-spacing:-1.5px;color:var(--muted2)">800€</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:16px">/ mois · min. 3 mois</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--muted2);margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span><strong style="color:var(--white)">10 RDV qualifiés / mois</strong></div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>4 000 contacts ciblés</div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Cold Email + LinkedIn</div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Copywriting inclus</div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Reporting hebdomadaire</div>
+      </div>
+      <div style="font-size:11px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--muted);margin-bottom:12px"><strong style="color:var(--white)">Garantie</strong> — &lt;30 RDV ? On continue gratuitement.</div>
+      <button onclick="go(7)" style="width:100%;padding:10px;border-radius:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Démarrer Silver →</button>
     </div>
-    <div class="pc feat">
-      <span class="pp">🪐</span>
-      <div class="pn">Gold</div>
-      <div class="pa" style="background:linear-gradient(90deg,var(--purple-l),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1 200€</div>
-      <div class="pe">/ mois · min. 3 mois</div>
-      <div class="pl hl">20 RDV qualifiés / mois</div>
-      <div class="pl">8 000 contacts ciblés</div>
-      <div class="pl">Full Stack Multicanal</div>
-      <div class="pl">AI Icebreaker + Scoring</div>
-      <div class="pl">Account manager dédié</div>
-      <div class="gar"><strong>Garantie</strong> — Moins de 60 RDV ? On continue gratuitement.</div>
+
+    <div class="cin-plan-card featured" id="plan-gold">
+      <div style="position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-size:10.5px;font-weight:700;padding:4px 14px;border-radius:100px;white-space:nowrap;letter-spacing:.5px">⭐ Recommandé</div>
+      <span style="font-size:28px">🪐</span>
+      <div style="font-family:var(--display);font-size:20px;font-weight:800;margin:8px 0 2px">Gold</div>
+      <div style="font-family:var(--display);font-size:36px;font-weight:900;letter-spacing:-1.5px;background:linear-gradient(135deg,var(--purple-l),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1 200€</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:16px">/ mois · min. 3 mois</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--muted2);margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span><strong style="color:var(--white)">20 RDV qualifiés / mois</strong></div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>8 000 contacts ciblés</div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Full Stack Multicanal</div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--purple-l);font-weight:700">✦</span>AI Icebreaker + Scoring</div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--purple-l);font-weight:700">✦</span>Account manager dédié</div>
+      </div>
+      <div style="font-size:11px;padding:8px 12px;border-radius:8px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);color:var(--muted);margin-bottom:12px"><strong style="color:var(--white)">Garantie</strong> — &lt;60 RDV ? On continue gratuitement.</div>
+      <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" style="display:block;width:100%;padding:11px;border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));border:none;color:#fff;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;text-align:center;text-decoration:none;box-shadow:0 6px 24px rgba(124,58,237,.4)">⭐ Réserver créneau Gold</a>
     </div>
-    <div class="pc">
-      <span class="pp">🌍</span>
-      <div class="pn">Platinum</div>
-      <div class="pa" style="color:var(--orange)">2 000€</div>
-      <div class="pe">/ mois · min. 3 mois</div>
-      <div class="pl hl">40 RDV qualifiés / mois</div>
-      <div class="pl">18 000 contacts ciblés</div>
-      <div class="pl">Growth IA illimité</div>
-      <div class="pl">Multi-domaines + Vidéo</div>
-      <div class="pl">Intégration CRM complète</div>
-      <div class="gar"><strong>Garantie</strong> — Moins de 120 RDV ? On continue gratuitement.</div>
+
+    <div class="cin-plan-card" id="plan-platinum">
+      <span style="font-size:28px">🌍</span>
+      <div style="font-family:var(--display);font-size:20px;font-weight:800;margin:8px 0 2px">Platinum</div>
+      <div style="font-family:var(--display);font-size:36px;font-weight:900;letter-spacing:-1.5px;color:var(--muted2)">2 000€</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:16px">/ mois · min. 3 mois</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--muted2);margin-bottom:16px">
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span><strong style="color:var(--white)">40 RDV qualifiés / mois</strong></div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>20 000 contacts ciblés</div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--green);font-weight:700">✓</span>Multi-marchés & langues</div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--orange);font-weight:700">✦</span>Vidéo + IA + LinkedIn</div>
+        <div style="display:flex;align-items:center;gap:7px"><span style="color:var(--orange);font-weight:700">✦</span>Reporting temps réel</div>
+      </div>
+      <div style="font-size:11px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--muted);margin-bottom:12px"><strong style="color:var(--white)">Garantie</strong> — &lt;120 RDV ? On continue gratuitement.</div>
+      <button onclick="go(7)" style="width:100%;padding:10px;border-radius:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Démarrer Platinum →</button>
     </div>
+
   </div>
 </div>
 
@@ -4554,6 +5225,11 @@ window.switchMode = function(mode) {
     document.body.style.cursor = 'default';
     window.scrollTo({top:0, behavior:'instant'});
     document.title = 'Devoleads — Agence B2B';
+    // Toggle actif = Site web
+    const td = document.getElementById('toggle-deck');
+    const tw = document.getElementById('toggle-web');
+    if(td){ td.style.background='transparent'; td.style.color='rgba(255,255,255,.4)'; td.style.boxShadow='none'; }
+    if(tw){ tw.style.background='rgba(124,58,237,.85)'; tw.style.color='#fff'; tw.style.boxShadow='0 2px 8px rgba(124,58,237,.4)'; }
   } else {
     document.body.classList.remove('web-mode');
     document.documentElement.style.overflow = '';
@@ -4562,6 +5238,11 @@ window.switchMode = function(mode) {
     document.body.style.height = '';
     document.body.style.cursor = '';
     window.scrollTo({top:0, behavior:'instant'});
+    // Toggle actif = Présentation
+    const td2 = document.getElementById('toggle-deck');
+    const tw2 = document.getElementById('toggle-web');
+    if(td2){ td2.style.background='rgba(124,58,237,.85)'; td2.style.color='#fff'; td2.style.boxShadow='0 2px 8px rgba(124,58,237,.4)'; }
+    if(tw2){ tw2.style.background='transparent'; tw2.style.color='rgba(255,255,255,.4)'; tw2.style.boxShadow='none'; }
     document.querySelectorAll('.slide').forEach(function(s) {
       s.classList.remove('warp-out','warp-in','out','out-left','out-right','ein-left','ein-right','active');
     });
@@ -4641,9 +5322,9 @@ function resetVideoSlide(){
 let demoAnimFrame = null;
 let demoAnimRunning = false;
 
-function startDemoCanvas(){
+function startDemoCanvas(targetCanvas){
   stopDemoCanvas();
-  const cv = document.getElementById('demo-canvas');
+  const cv = targetCanvas || document.getElementById('demo-canvas');
   if(!cv) return;
 
   const rect = cv.getBoundingClientRect();
@@ -4960,7 +5641,7 @@ function startDemoCanvas(){
     if(!demoAnimRunning) return;
     frame++;
     const elapsed=(ts-startT)%TOTAL_DUR;
-    const fmtIdx=Math.floor(elapsed/DUR_EACH);
+    const fmtIdx=Math.min(Math.floor(elapsed/DUR_EACH), FORMATS.length-1);
     const fmtP=(elapsed%DUR_EACH)/DUR_EACH;
 
     ctx.clearRect(0,0,W,H);
@@ -5018,6 +5699,277 @@ function stopDemoCanvas(){
     `<div style="padding:6px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:100px;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.5px;white-space:nowrap">${c}</div>`
   ).join('');
 })();
+
+// ── Website init ──
+(function(){
+  // Logos
+  const row = document.getElementById('ws-logos-row');
+  if(row && typeof CLIENTS !== 'undefined'){
+    row.innerHTML = CLIENTS.map(c=>
+      '<span style="padding:4px 12px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.4px">'+c+'</span>'
+    ).join('');
+  }
+  // Photos fondateurs
+  if(typeof STANIS_B64 !== 'undefined'){
+    const ps = document.getElementById('ws-photo-stanis');
+    if(ps) ps.style.backgroundImage = 'url(data:image/jpeg;base64,'+STANIS_B64+')';
+    if(ps){ ps.style.backgroundSize='cover'; ps.style.backgroundPosition='center'; }
+  }
+  if(typeof AMELIE_B64 !== 'undefined'){
+    const pa = document.getElementById('ws-photo-amelie');
+    if(pa) pa.style.backgroundImage = 'url(data:image/jpeg;base64,'+AMELIE_B64+')';
+    if(pa){ pa.style.backgroundSize='cover'; pa.style.backgroundPosition='center'; }
+  }
+  // Canvas démo vidéo website
+  const wsCv = document.getElementById('ws-demo-canvas');
+  if(wsCv && typeof startDemoCanvas === 'function'){
+    // Observer pour démarrer seulement quand visible
+    if('IntersectionObserver' in window){
+      const obs = new IntersectionObserver(entries=>{
+        if(entries[0].isIntersecting){
+          // Forcer les dimensions avant de démarrer
+          const parent = wsCv.parentElement;
+          const w = parent ? parent.offsetWidth : 480;
+          wsCv.width  = w;
+          wsCv.height = Math.round(w * 9/16);
+          wsCv.style.width  = '100%';
+          wsCv.style.height = '100%';
+          startDemoCanvas(wsCv);
+          obs.disconnect();
+        }
+      },{threshold:.2});
+      obs.observe(wsCv);
+    }
+  }
+  // Injecter prénom prospect dans l'email icebreaker du site
+  if(typeof prospectData !== 'undefined' && prospectData && prospectData.prospect){
+    const p = prospectData.prospect;
+    const e = prospectData.email1;
+    const subj = document.getElementById('ws-ice-subj');
+    const name = document.getElementById('ws-ice-name');
+    const brk  = document.getElementById('ws-ice-brk');
+    const pitch= document.getElementById('ws-ice-pitch');
+    const cta  = document.getElementById('ws-ice-cta');
+    if(subj && e && e.objet) subj.textContent = e.objet;
+    if(name && p.prenom) name.textContent = p.prenom;
+    if(brk  && e && e.icebreaker) brk.textContent = e.icebreaker;
+    if(pitch && e && e.pitch) pitch.textContent = e.pitch;
+    if(cta  && e && e.cta) cta.textContent = e.cta;
+  }
+})();
+
+// ════════════════════════════════════════════════════════
+//  MOTEUR CINÉMATIQUE — EFFET WAOUH
+// ════════════════════════════════════════════════════════
+
+// ── FOND SPATIAL PERMANENT ──
+(function(){
+  const cv = document.getElementById('space-canvas');
+  if(!cv) return;
+  const ctx = cv.getContext('2d');
+  let W, H, stars = [], nebulas = [];
+
+  function resize(){
+    W = cv.width = window.innerWidth;
+    H = cv.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Générer étoiles
+  for(let i=0;i<280;i++){
+    stars.push({
+      x: Math.random()*W, y: Math.random()*H,
+      r: .3 + Math.random()*1.4,
+      a: .2 + Math.random()*.8,
+      twinkle: Math.random()*Math.PI*2,
+      speed: .005 + Math.random()*.015,
+      hue: Math.random()<.7 ? 0 : (Math.random()<.5 ? 220 : 280)
+    });
+  }
+
+  // Générer nebulas
+  const nebulaColors = [
+    'rgba(124,58,237,', 'rgba(255,61,143,', 'rgba(34,211,238,', 'rgba(255,107,53,'
+  ];
+  for(let i=0;i<6;i++){
+    nebulas.push({
+      x: Math.random()*W, y: Math.random()*H,
+      r: 120 + Math.random()*200,
+      color: nebulaColors[i%nebulaColors.length],
+      a: .02 + Math.random()*.04,
+      drift: { x: (Math.random()-.5)*.08, y: (Math.random()-.5)*.08 }
+    });
+  }
+
+  let frame = 0;
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // Nebulas
+    nebulas.forEach(n => {
+      n.x += n.drift.x; n.y += n.drift.y;
+      if(n.x < -n.r) n.x = W+n.r;
+      if(n.x > W+n.r) n.x = -n.r;
+      if(n.y < -n.r) n.y = H+n.r;
+      if(n.y > H+n.r) n.y = -n.r;
+      const g = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r);
+      g.addColorStop(0, n.color + n.a + ')');
+      g.addColorStop(1, n.color + '0)');
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fill();
+    });
+
+    // Étoiles
+    stars.forEach(s => {
+      s.twinkle += s.speed;
+      const alpha = s.a * (.6 + .4*Math.sin(s.twinkle));
+      if(s.hue === 0){
+        ctx.fillStyle = 'rgba(255,255,255,'+alpha+')';
+      } else {
+        ctx.fillStyle = 'hsla('+s.hue+',80%,90%,'+alpha+')';
+      }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fill();
+    });
+
+    frame++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── TRANSITION CINÉMATIQUE ENTRE SLIDES ──
+(function(){
+  const origGo = window.go;
+  window.go = function(idx){
+    if(typeof busy !== 'undefined' && busy) return;
+    if(typeof cur === 'undefined') { if(origGo) origGo(idx); return; }
+    if(idx === cur || idx<0) return;
+
+    const dir = idx > cur ? 1 : -1;
+    const prevEl = document.getElementById('s'+(cur+1));
+    const nextEl = document.getElementById('s'+(idx+1));
+    if(!prevEl || !nextEl) { if(origGo) origGo(idx); return; }
+
+    // Flash de transition
+    const fl = document.getElementById('transition-flash');
+    if(fl){ fl.classList.remove('fire'); fl.offsetHeight; fl.classList.add('fire'); }
+
+    // Exit animation sur la slide sortante
+    prevEl.classList.add(dir>0 ? 'cin-exit-l' : 'cin-exit-r');
+    setTimeout(()=>{
+      prevEl.classList.remove('active','cin-exit-l','cin-exit-r');
+    }, 340);
+
+    // Enter animation sur la slide entrante
+    setTimeout(()=>{
+      nextEl.classList.add('active', dir>0 ? 'cin-enter-r' : 'cin-enter-l');
+      setTimeout(()=>{ nextEl.classList.remove('cin-enter-r','cin-enter-l'); }, 600);
+
+      // Déclencher les animations internes
+      cinTriggerSlide(idx);
+    }, 200);
+
+    // Appel normal pour la logique (son, ui(), etc.)
+    if(origGo) origGo(idx);
+  };
+})();
+
+// ── ANIMATIONS INTERNES PAR SLIDE ──
+function cinTriggerSlide(idx){
+  // Réinitialiser les éléments de TOUTES les slides non actives
+  document.querySelectorAll('.cin-svc-card,.cin-plan-card,.cin-timeline').forEach(el=>{
+    el.classList.remove('in');
+  });
+  document.querySelectorAll('.cin-stat-card').forEach(el=>el.classList.remove('in'));
+
+  const sid = 's'+(idx+1);
+
+  // Déclencher HUD ambient
+  const hud = document.getElementById('hud-ambient');
+  if(hud) hud.style.opacity = idx > 0 ? '1' : '0';
+
+  if(idx === 0){ // Cover
+    // Compteurs animés
+    setTimeout(()=>{
+      document.querySelectorAll('#s1 .cin-stat-card').forEach((el,i)=>{
+        setTimeout(()=> el.classList.add('in'), i*120);
+      });
+      // Animer les chiffres
+      animateCounters('#s1');
+    }, 600);
+
+  } else if(idx === 2){ // Services
+    setTimeout(()=>{
+      document.querySelectorAll('#s3 .cin-svc-card').forEach((el,i)=>{
+        setTimeout(()=> el.classList.add('in'), 100 + i*140);
+      });
+    }, 200);
+
+  } else if(idx === 3){ // Process
+    setTimeout(()=>{
+      const tl = document.getElementById('cin-proc-timeline');
+      if(tl) tl.classList.add('in');
+    }, 300);
+
+  } else if(idx === 4){ // Formules
+    setTimeout(()=>{
+      document.querySelectorAll('#s5 .cin-plan-card').forEach((el,i)=>{
+        setTimeout(()=> el.classList.add('in'), 80 + i*160);
+      });
+    }, 200);
+  }
+}
+
+// ── COMPTEURS ANIMÉS ──
+function animateCounters(scope){
+  const els = document.querySelectorAll(scope+' [data-target]');
+  els.forEach(el=>{
+    const target = parseFloat(el.getAttribute('data-target'));
+    const prefix = el.getAttribute('data-prefix')||'';
+    const suffix = el.getAttribute('data-suffix')||'';
+    const isDecimal = String(target).includes('.');
+    const duration = 1200;
+    const start = performance.now();
+    const orig = el.textContent;
+
+    function update(now){
+      const t = Math.min(1,(now-start)/duration);
+      const ease = 1-Math.pow(1-t,4);
+      const val = target * ease;
+      el.textContent = prefix + (isDecimal ? val.toFixed(1) : Math.round(val)) + suffix;
+      if(t < 1) requestAnimationFrame(update);
+      else el.textContent = orig;
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// ── TYPING EFFECT pour l'Icebreaker ──
+function typeText(el, text, speed, cb){
+  if(!el) return;
+  el.textContent = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'cin-ice-cursor';
+  el.appendChild(cursor);
+  let i=0;
+  const iv = setInterval(()=>{
+    if(i >= text.length){ clearInterval(iv); cursor.remove(); if(cb) cb(); return; }
+    cursor.insertAdjacentText('beforebegin', text[i++]);
+  }, speed);
+  return iv;
+}
+
+// ── DÉCLENCHER AU CHARGEMENT (slide 0 = Cover) ──
+document.addEventListener('DOMContentLoaded', ()=>{
+  setTimeout(()=>{ cinTriggerSlide(0); }, 400);
+
+  // HUD data stream animation
+  const hud = document.getElementById('hud-ambient');
+  if(hud) hud.style.opacity = '0';
+});
 </script>
 <div id="cine-scene" style="display:none">
   <canvas id="cine-stars"></canvas>
@@ -5292,228 +6244,336 @@ function stopDemoCanvas(){
 <!-- ══════════════ DEVOLEADS SITE WEB ══════════════ -->
 <div id="website-mode">
 
-<!-- ── HERO ── -->
-<section style="position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(80px,12vh,140px) clamp(24px,8vw,120px) clamp(60px,8vh,100px);overflow:hidden">
-
-  <!-- Orbs décoratifs -->
-  <div style="position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.18) 0%,transparent 70%);top:-300px;left:50%;transform:translateX(-50%);pointer-events:none"></div>
-  <div style="position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,61,143,.12) 0%,transparent 70%);bottom:-100px;left:10%;pointer-events:none"></div>
-  <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.1) 0%,transparent 70%);bottom:20%;right:8%;pointer-events:none"></div>
-
-  <!-- Grain texture overlay -->
-  <div style="position:absolute;inset:0;opacity:.025;background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%221%22 numOctaves=%224%22/></filter><rect width=%22200%22 height=%22200%22 filter=%22url(%23n)%22 opacity=%221%22/></svg>');pointer-events:none"></div>
-
-  <!-- Badge live -->
-  <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);border-radius:100px;padding:7px 18px;margin-bottom:32px;animation:fadeSlideUp .6s ease both">
-    <span style="width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:pulse 2s infinite"></span>
-    <span style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--purple-l)">+150 CEOs · Résultats garantis</span>
-  </div>
-
-  <!-- Headline -->
-  <h1 style="font-family:var(--display);font-size:clamp(48px,8vw,96px);font-weight:900;letter-spacing:-3px;line-height:.95;margin:0 0 28px;animation:fadeSlideUp .6s ease .1s both;max-width:900px">
-    Votre pipeline<br>
-    <span style="background:linear-gradient(135deg,var(--purple-l) 0%,var(--pink) 50%,var(--orange) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">B2B. Automatisé.</span>
-  </h1>
-
-  <!-- Sous-titre -->
-  <p style="font-size:clamp(16px,2vw,21px);color:var(--muted2);max-width:580px;line-height:1.6;margin:0 auto 44px;animation:fadeSlideUp .6s ease .2s both">
-    Devoleads génère <strong style="color:var(--white)">8 à 15 RDV qualifiés</strong> par mois pour les CEOs de SaaS B2B. Démarrage en moins de 14 jours.
-  </p>
-
-  <!-- CTAs -->
-  <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeSlideUp .6s ease .3s both">
-    <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" style="display:inline-flex;align-items:center;gap:10px;padding:17px 34px;border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-weight:700;font-size:15px;border:none;cursor:pointer;font-family:var(--body);box-shadow:0 16px 48px rgba(124,58,237,.45),0 0 0 1px rgba(255,255,255,.08);text-decoration:none;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 22px 60px rgba(124,58,237,.6)'" onmouseout="this.style.transform='';this.style.boxShadow='0 16px 48px rgba(124,58,237,.45),0 0 0 1px rgba(255,255,255,.08)'">
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      Réserver un créneau gratuit
-    </a>
-    <button onclick="switchMode('deck')" style="display:inline-flex;align-items:center;gap:8px;padding:17px 34px;border-radius:100px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.75);font-weight:600;font-size:15px;cursor:pointer;font-family:var(--body);transition:all .2s;backdrop-filter:blur(8px)" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.borderColor='rgba(255,255,255,.25)'" onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.12)'">
-      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21"/></svg>
-      Voir la présentation
-    </button>
-  </div>
-
-  <!-- Scroll indicator -->
-  <div style="position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:.3;animation:bounce 2s ease infinite">
-    <span style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)">Défiler</span>
-    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="var(--muted)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-  </div>
-</section>
-
-<!-- ── STATS ── -->
-<div style="border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr)">
-  <div style="padding:clamp(28px,4vh,52px) clamp(20px,3vw,40px);text-align:center;border-right:1px solid var(--border)">
-    <div style="font-family:var(--display);font-size:clamp(36px,4.5vw,58px);font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--pink),#ff8fa3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">8–15</div>
-    <div style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">RDV qualifiés / mois</div>
-  </div>
-  <div style="padding:clamp(28px,4vh,52px) clamp(20px,3vw,40px);text-align:center;border-right:1px solid var(--border)">
-    <div style="font-family:var(--display);font-size:clamp(36px,4.5vw,58px);font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--purple-l),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">&lt;14j</div>
-    <div style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">Premier lead</div>
-  </div>
-  <div style="padding:clamp(28px,4vh,52px) clamp(20px,3vw,40px);text-align:center;border-right:1px solid var(--border)">
-    <div style="font-family:var(--display);font-size:clamp(36px,4.5vw,58px);font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--orange),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">×8.3</div>
-    <div style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">ROI moyen</div>
-  </div>
-  <div style="padding:clamp(28px,4vh,52px) clamp(20px,3vw,40px);text-align:center">
-    <div style="font-family:var(--display);font-size:clamp(36px,4.5vw,58px);font-weight:900;letter-spacing:-2px;background:linear-gradient(135deg,var(--green),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">+150</div>
-    <div style="font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:6px">CEOs accompagnés</div>
-  </div>
-</div>
-
-<!-- ── SERVICES ── -->
-<section style="padding:clamp(80px,12vh,130px) clamp(24px,8vw,120px);max-width:1280px;margin:0 auto">
-  <div style="margin-bottom:56px">
-    <div style="font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--purple-l);font-weight:700;margin-bottom:14px">Ce qu'on fait</div>
-    <h2 style="font-family:var(--display);font-size:clamp(32px,4.5vw,58px);font-weight:900;letter-spacing:-2px;line-height:1;margin:0 0 16px">Une machine à RDV qualifiés<br><span style="color:var(--pink)">clé en main.</span></h2>
-    <p style="font-size:16px;color:var(--muted2);max-width:520px;line-height:1.7">On prend en charge l'intégralité de votre prospection outbound. Vous closez, on prospecte.</p>
-  </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
-    <!-- Card 1 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(255,107,53,.3)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
-      <div style="position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(255,107,53,.12) 0%,transparent 70%);border-radius:50%;transform:translate(20px,-20px)"></div>
-      <div style="width:52px;height:52px;border-radius:16px;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:22px">⚡</div>
-      <h3 style="font-size:17px;font-weight:700;letter-spacing:-.3px;margin:0 0 10px">Machine Outreach 2.0</h3>
-      <p style="font-size:13px;color:var(--muted2);line-height:1.65;margin:0 0 18px">Smartlead + LinkedIn + IA pour un ciblage d'une précision chirurgicale sur vos ICPs.</p>
-      <div style="font-size:11px;font-weight:700;color:var(--orange);letter-spacing:.5px">→ 4 000+ contacts qualifiés / mois</div>
+<!-- ─── HERO ─── -->
+<section class="ws-hero">
+  <div class="ws-noise"></div>
+  <div class="ws-hero-glow ws-glow-1"></div>
+  <div class="ws-hero-glow ws-glow-2"></div>
+  <div class="ws-hero-grid"></div>
+  <div class="ws-hero-inner">
+    <div class="ws-hero-badge">
+      <span class="ws-pulse"></span>
+      +150 CEOs · Résultats garantis ou remboursés
     </div>
-    <!-- Card 2 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(255,61,143,.3)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
-      <div style="position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(255,61,143,.12) 0%,transparent 70%);border-radius:50%;transform:translate(20px,-20px)"></div>
-      <div style="width:52px;height:52px;border-radius:16px;background:rgba(255,61,143,.1);border:1px solid rgba(255,61,143,.2);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:22px">📅</div>
-      <h3 style="font-size:17px;font-weight:700;letter-spacing:-.3px;margin:0 0 10px">RDV Qualifiés Garantis</h3>
-      <p style="font-size:13px;color:var(--muted2);line-height:1.65;margin:0 0 18px">Zéro lead inutile. Uniquement des RDV confirmés avec des décideurs dans votre agenda.</p>
-      <div style="font-size:11px;font-weight:700;color:var(--pink);letter-spacing:.5px">→ 8–15 RDV / mois garantis</div>
+    <h1 class="ws-hero-h1">
+      Votre Agenda.<br><span class="ws-g">Saturé de RDV.</span>
+    </h1>
+    <p class="ws-hero-sub">
+      Une infrastructure B2B qui travaille pendant que vous dormez.<br>
+      Arrêtez de prospecter. <strong>Commencez à closer.</strong>
+    </p>
+    <div class="ws-hero-stats">
+      <div class="ws-hstat"><div class="ws-hval" style="color:var(--pink)">8–15</div><div class="ws-hlbl">RDV / mois</div></div>
+      <div class="ws-hstat"><div class="ws-hval" style="color:var(--purple-l)">&lt;14j</div><div class="ws-hlbl">Lancement</div></div>
+      <div class="ws-hstat"><div class="ws-hval" style="color:var(--orange)">×8.3</div><div class="ws-hlbl">ROI moyen</div></div>
+      <div class="ws-hstat"><div class="ws-hval" style="color:var(--cyan)">0€</div><div class="ws-hlbl">Frais cachés</div></div>
     </div>
-    <!-- Card 3 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(124,58,237,.3)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
-      <div style="position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(124,58,237,.12) 0%,transparent 70%);border-radius:50%;transform:translate(20px,-20px)"></div>
-      <div style="width:52px;height:52px;border-radius:16px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:22px">🤖</div>
-      <h3 style="font-size:17px;font-weight:700;letter-spacing:-.3px;margin:0 0 10px">AI Icebreaker</h3>
-      <p style="font-size:13px;color:var(--muted2);line-height:1.65;margin:0 0 18px">Chaque email personnalisé en temps réel par l'IA — icebreaker unique basé sur l'actu du prospect.</p>
-      <div style="font-size:11px;font-weight:700;color:var(--purple-l);letter-spacing:.5px">→ ×8 taux de réponse vs standard</div>
-    </div>
-    <!-- Card 4 -->
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(34,211,238,.3)'" onmouseout="this.style.transform='';this.style.borderColor='var(--border)'">
-      <div style="position:absolute;top:0;right:0;width:120px;height:120px;background:radial-gradient(circle,rgba(34,211,238,.1) 0%,transparent 70%);border-radius:50%;transform:translate(20px,-20px)"></div>
-      <div style="width:52px;height:52px;border-radius:16px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:22px">🎬</div>
-      <h3 style="font-size:17px;font-weight:700;letter-spacing:-.3px;margin:0 0 10px">Prospection Vidéo</h3>
-      <p style="font-size:13px;color:var(--muted2);line-height:1.65;margin:0 0 18px">Messages vidéo personnalisés de 58 secondes — le format le plus engageant du marché B2B.</p>
-      <div style="font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:.5px">→ ×4 taux de réponse vs email texte</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── PROCESS ── -->
-<section style="border-top:1px solid var(--border);padding:clamp(80px,12vh,130px) clamp(24px,8vw,120px)">
-  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(40px,6vw,100px);align-items:start">
-    <div style="position:sticky;top:80px">
-      <div style="font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--purple-l);font-weight:700;margin-bottom:14px">Comment ça marche</div>
-      <h2 style="font-family:var(--display);font-size:clamp(30px,3.5vw,50px);font-weight:900;letter-spacing:-1.5px;line-height:1.05;margin:0 0 20px">De zéro à votre premier RDV <span style="color:var(--pink)">en 14 jours.</span></h2>
-      <p style="font-size:15px;color:var(--muted2);line-height:1.7;margin:0 0 36px">5 étapes. Vous validez chaque jalon. Zéro surprise. Résultats garantis ou on continue gratuitement.</p>
-      <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:15px 28px;border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-weight:700;font-size:14px;text-decoration:none;box-shadow:0 12px 36px rgba(124,58,237,.4);transition:transform .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">Démarrer maintenant →</a>
-    </div>
-    <div>
-      <div style="display:flex;flex-direction:column;gap:0;position:relative">
-        <!-- Ligne verticale -->
-        <div style="position:absolute;left:21px;top:0;bottom:0;width:1px;background:linear-gradient(180deg,var(--border) 0%,rgba(124,58,237,.3) 50%,var(--border) 100%)"></div>
-        <!-- Steps -->
-        
-        <div style="display:flex;gap:24px;align-items:flex-start;padding:0 0 36px;position:relative">
-          <div style="width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:14px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);color:var(--purple-l);z-index:1;position:relative">01</div>
-          <div style="padding-top:8px"><h4 style="font-size:15px;font-weight:700;margin:0 0 6px;letter-spacing:-.2px">Découverte & Stratégie</h4><p style="font-size:13px;color:var(--muted2);line-height:1.6;margin:0">Appel de cadrage ICP, USP, tone of voice. On calibre le tir avant de tirer.</p></div>
-        </div>
-        <div style="display:flex;gap:24px;align-items:flex-start;padding:0 0 36px;position:relative">
-          <div style="width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:14px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);color:var(--purple-l);z-index:1;position:relative">02</div>
-          <div style="padding-top:8px"><h4 style="font-size:15px;font-weight:700;margin:0 0 6px;letter-spacing:-.2px">Copywriting</h4><p style="font-size:13px;color:var(--muted2);line-height:1.6;margin:0">Rédaction des séquences emails. Messages orientés problème/solution. Vous validez.</p></div>
-        </div>
-        <div style="display:flex;gap:24px;align-items:flex-start;padding:0 0 36px;position:relative">
-          <div style="width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:14px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);color:var(--purple-l);z-index:1;position:relative">03</div>
-          <div style="padding-top:8px"><h4 style="font-size:15px;font-weight:700;margin:0 0 6px;letter-spacing:-.2px">Data Sourcing & Ciblage</h4><p style="font-size:13px;color:var(--muted2);line-height:1.6;margin:0">Apollo, Sales Navigator. Seuls les prospects qualifiés entrent dans la machine.</p></div>
-        </div>
-        <div style="display:flex;gap:24px;align-items:flex-start;padding:0 0 36px;position:relative">
-          <div style="width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:14px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);color:var(--purple-l);z-index:1;position:relative">04</div>
-          <div style="padding-top:8px"><h4 style="font-size:15px;font-weight:700;margin:0 0 6px;letter-spacing:-.2px">Lancement & Optimisation</h4><p style="font-size:13px;color:var(--muted2);line-height:1.6;margin:0">Go live. A/B testing continu. Reporting hebdomadaire avec actions concrètes.</p></div>
-        </div>
-        <div style="display:flex;gap:24px;align-items:flex-start;padding:0 0 36px;position:relative">
-          <div style="width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:900;font-size:14px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);color:var(--purple-l);z-index:1;position:relative">05</div>
-          <div style="padding-top:8px"><h4 style="font-size:15px;font-weight:700;margin:0 0 6px;letter-spacing:-.2px">RDV dans votre agenda</h4><p style="font-size:13px;color:var(--muted2);line-height:1.6;margin:0">Qualification rigoureuse. Sync Calendly. Vous n'avez plus qu'à closer.</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── TÉMOIGNAGES ── -->
-<section style="border-top:1px solid var(--border);padding:clamp(80px,12vh,130px) clamp(24px,8vw,120px)">
-  <div style="max-width:1280px;margin:0 auto">
-    <div style="margin-bottom:52px;text-align:center">
-      <div style="font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--purple-l);font-weight:700;margin-bottom:14px">Ils nous font confiance</div>
-      <h2 style="font-family:var(--display);font-size:clamp(28px,4vw,52px);font-weight:900;letter-spacing:-1.5px;margin:0">Des résultats <span style="color:var(--pink)">mesurables</span> dès le premier mois.</h2>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
-      
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,61,143,.4),transparent)"></div>
-        <div style="font-size:32px;margin-bottom:16px;opacity:.4">"</div>
-        <p style="font-size:14px;line-height:1.75;color:var(--muted2);margin:0 0 24px;font-style:italic">En 3 semaines, Devoleads nous a généré 11 RDV qualifiés avec des DSI de mid-market. Notre pipe a doublé sans qu'on touche à l'outbound.</p>
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,rgba(255,61,143,.4),rgba(255,107,53,.4));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0">TM</div>
-          <div><div style="font-size:13px;font-weight:700">Thomas M.</div><div style="font-size:11px;color:var(--muted);margin-top:2px">CEO · SaaS RH · Lyon</div></div>
-        </div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(124,58,237,.4),transparent)"></div>
-        <div style="font-size:32px;margin-bottom:16px;opacity:.4">"</div>
-        <p style="font-size:14px;line-height:1.75;color:var(--muted2);margin:0 0 24px;font-style:italic">Le ROI est là dès le premier mois. Les icebreakers IA changent tout — les prospects répondent vraiment. On a arrêté de se battre avec l'outbound.</p>
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,rgba(124,58,237,.4),rgba(167,139,250,.4));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0">SB</div>
-          <div><div style="font-size:13px;font-weight:700">Sophie B.</div><div style="font-size:11px;color:var(--muted);margin-top:2px">CEO · Agence conseil · Nantes</div></div>
-        </div>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(34,211,238,.4),transparent)"></div>
-        <div style="font-size:32px;margin-bottom:16px;opacity:.4">"</div>
-        <p style="font-size:14px;line-height:1.75;color:var(--muted2);margin:0 0 24px;font-style:italic">Meilleure décision de l'année. On a remplacé notre SDR interne par Devoleads : ×3 sur les RDV, à coût équivalent.</p>
-        <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,rgba(34,211,238,.4),rgba(74,222,128,.4));display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0">AL</div>
-          <div><div style="font-size:13px;font-weight:700">Antoine L.</div><div style="font-size:11px;color:var(--muted);margin-top:2px">CEO · SaaS Logistique · Lille</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── CTA FINALE ── -->
-<section style="position:relative;padding:clamp(100px,14vh,160px) clamp(24px,8vw,120px);text-align:center;overflow:hidden;border-top:1px solid var(--border)">
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 100% 80% at 50% 100%,rgba(124,58,237,.18) 0%,transparent 65%);pointer-events:none"></div>
-  <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 120%,rgba(255,61,143,.1) 0%,transparent 65%);pointer-events:none"></div>
-  <div style="position:relative;z-index:1">
-    <div style="font-size:10px;letter-spacing:3.5px;text-transform:uppercase;color:var(--purple-l);font-weight:700;margin-bottom:24px">Prochaine étape</div>
-    <h2 style="font-family:var(--display);font-size:clamp(36px,6vw,76px);font-weight:900;letter-spacing:-2.5px;line-height:.95;margin:0 0 20px">Prêt à saturer<br><span style="background:linear-gradient(135deg,var(--purple-l),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">votre agenda ?</span></h2>
-    <p style="font-size:17px;color:var(--muted2);margin:0 auto 44px;max-width:460px;line-height:1.6">30 minutes. Gratuit. Sans engagement.<br>On vous dit exactement ce qu'on peut faire pour vous.</p>
-    <div style="display:flex;flex-direction:column;align-items:center;gap:16px">
-      <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" style="display:inline-flex;align-items:center;gap:12px;padding:20px 48px;border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-weight:700;font-size:17px;text-decoration:none;box-shadow:0 20px 60px rgba(124,58,237,.5),0 0 0 1px rgba(255,255,255,.1);transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='scale(1.03)';this.style.boxShadow='0 26px 70px rgba(124,58,237,.65)'" onmouseout="this.style.transform='';this.style.boxShadow='0 20px 60px rgba(124,58,237,.5),0 0 0 1px rgba(255,255,255,.1)'">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Réserver mon créneau stratégique
+    <div class="ws-hero-ctas">
+      <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" class="ws-cta-main">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Réserver mon créneau gratuit
       </a>
-      <div style="display:flex;gap:14px;font-size:12px;color:var(--muted);flex-wrap:wrap;justify-content:center">
-        <span>⚡ Réponse sous 2h</span><span style="opacity:.3">·</span>
-        <span>🎯 Appel 30 min</span><span style="opacity:.3">·</span>
-        <span>🔒 Sans engagement</span>
+      <button onclick="switchMode('deck')" class="ws-cta-ghost">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21"/></svg>
+        Voir la présentation interactive
+      </button>
+    </div>
+    <div class="ws-hero-trust">
+      <span class="ws-trust-label">Ils nous font confiance</span>
+      <div class="ws-logos-row" id="ws-logos-row"></div>
+    </div>
+  </div>
+  <div class="ws-scroll-cue"><div class="ws-scroll-line"></div><span>défiler</span></div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section class="ws-section">
+  <div class="ws-section-inner">
+    <div class="ws-section-head">
+      <div class="ws-eyebrow">Nos services</div>
+      <h2 class="ws-h2">De la data à la <span class="ws-g">signature.</span></h2>
+      <p class="ws-p">Nous gérons l'intégralité du tunnel commercial. Vous closez, on prospecte.</p>
+    </div>
+    <div class="ws-services-grid">
+      <div class="ws-svc-card ws-svc-featured">
+        <div class="ws-svc-icon" style="background:rgba(255,107,53,.12);border-color:rgba(255,107,53,.25)">⚡</div>
+        <h3>Machine Outreach 2.0</h3>
+        <p>Smartlead + LinkedIn + IA pour un ciblage d'une précision chirurgicale. Ciblage ICP granulaire, prospection vidéo intégrée.</p>
+        <div class="ws-svc-metric" style="color:var(--orange)">4 000+ contacts qualifiés / mois</div>
+        <div class="ws-svc-tags"><span>Cold Email</span><span>LinkedIn</span><span>IA</span></div>
       </div>
-      <button onclick="switchMode('deck')" style="margin-top:8px;font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--body);transition:color .2s" onmouseover="this.style.color='var(--purple-l)'" onmouseout="this.style.color='var(--muted)'">← Retour à la présentation</button>
+      <div class="ws-svc-card">
+        <div class="ws-svc-icon" style="background:rgba(255,61,143,.1);border-color:rgba(255,61,143,.2)">📅</div>
+        <h3>Prise de RDV Qualifiés</h3>
+        <p>Zéro lead inutile. Uniquement des RDV confirmés avec des décideurs dans votre calendrier.</p>
+        <div class="ws-svc-metric" style="color:var(--pink)">8–15 RDV / mois garantis</div>
+        <div class="ws-svc-tags"><span>Qualification</span><span>Calendly Sync</span></div>
+      </div>
+      <div class="ws-svc-card">
+        <div class="ws-svc-icon" style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.2)">🤖</div>
+        <h3>Système Growth IA</h3>
+        <p>Scoring automatique, enrichissement data en temps réel, relances intelligentes basées sur le comportement.</p>
+        <div class="ws-svc-metric" style="color:var(--cyan)">×8 taux de réponse</div>
+        <div class="ws-svc-tags"><span>Apollo</span><span>SalesNav</span><span>GPT-4</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ── FOOTER ── -->
-<footer style="border-top:1px solid var(--border);padding:28px clamp(24px,8vw,120px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
-  <div style="font-family:var(--display);font-weight:900;font-size:18px;letter-spacing:-1px;background:linear-gradient(135deg,var(--purple-l),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Devoleads</div>
-  <div style="display:flex;gap:24px;flex-wrap:wrap">
-    <a href="mailto:contact@devoleads.io" style="font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--purple-l)'" onmouseout="this.style.color='var(--muted)'">contact@devoleads.io</a>
-    <a href="tel:+33756052008" style="font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--purple-l)'" onmouseout="this.style.color='var(--muted)'">+33 7 56 05 20 08</a>
-    <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" style="font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--purple-l)'" onmouseout="this.style.color='var(--muted)'">Réserver →</a>
+<!-- ─── AI ICEBREAKER ─── -->
+<section class="ws-section ws-section-dark">
+  <div class="ws-section-inner">
+    <div class="ws-ice-wrap">
+      <div class="ws-ice-left">
+        <div class="ws-eyebrow">Intelligence artificielle</div>
+        <h2 class="ws-h2">AI <span class="ws-g">Icebreaker.</span></h2>
+        <p class="ws-p">Chaque email devient unique. L'IA analyse le profil du prospect en temps réel pour personnaliser chaque mot.</p>
+        <div class="ws-ice-levels">
+          <div class="ws-ice-level">
+            <div class="ws-ice-lnum" style="background:rgba(100,116,139,.1);border-color:rgba(100,116,139,.2);color:var(--muted2)">0</div>
+            <div><strong>Standard</strong><br><span style="font-size:12px;color:var(--muted)">Email générique · 2% réponse</span></div>
+          </div>
+          <div class="ws-ice-level">
+            <div class="ws-ice-lnum" style="background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.25);color:var(--purple-l)">1</div>
+            <div><strong>Entreprise</strong><br><span style="font-size:12px;color:var(--muted)">Personnalisé secteur · ×3 réponse</span></div>
+          </div>
+          <div class="ws-ice-level ws-ice-active">
+            <div class="ws-ice-lnum" style="background:rgba(124,58,237,.2);border-color:rgba(124,58,237,.5);color:#fff">2</div>
+            <div><strong>Individu</strong><br><span style="font-size:12px;color:var(--purple-l)">Hyper-personnalisé actu · ×8 réponse</span></div>
+          </div>
+        </div>
+        <div class="ws-ice-stat">Jusqu'à <strong>×8 de taux de réponse</strong></div>
+      </div>
+      <div class="ws-ice-right">
+        <div class="ws-email-preview">
+          <div class="ws-email-header">
+            <div class="ws-email-dots"><span></span><span></span><span></span></div>
+            <div class="ws-email-from">De : stanislas@devoleads.io</div>
+          </div>
+          <div class="ws-email-body">
+            <div class="ws-email-subject">Objet : <span id="ws-ice-subj">Votre levée de fonds — une question</span></div>
+            <div class="ws-email-text">
+              <span>Bonjour <strong id="ws-ice-name">Marc</strong>,</span><br><br>
+              <span class="ws-ice-highlight" id="ws-ice-brk">J'ai vu que Flowify vient de lever 800K€ en seed — félicitations. Ce type de traction correspond exactement aux profils qu'on accompagne.</span><br><br>
+              <span id="ws-ice-pitch">Chez Devoleads, on remplit les agendas de RDV qualifiés en moins de 14 jours, sans effort de votre équipe.</span><br><br>
+              <span id="ws-ice-cta">Vous avez 20 minutes cette semaine pour en discuter ?</span>
+            </div>
+            <div class="ws-email-badge">⚡ Niveau 2 · Individu · Généré par IA en 0.8s</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div style="font-size:11px;color:var(--muted);opacity:.5">© 2025 Devoleads · La Rochelle</div>
+</section>
+
+<!-- ─── PROCESS ─── -->
+<section class="ws-section">
+  <div class="ws-section-inner">
+    <div class="ws-section-head">
+      <div class="ws-eyebrow">Notre process</div>
+      <h2 class="ws-h2">Simple. Rapide. <span class="ws-g">Radical.</span></h2>
+      <p class="ws-p">Du premier appel au premier lead — en moins de 14 jours.</p>
+    </div>
+    <div class="ws-process-timeline">
+      <div class="ws-proc-step">
+        <div class="ws-proc-num">01</div>
+        <div class="ws-proc-line"></div>
+        <div class="ws-proc-content">
+          <h4>Découverte</h4>
+          <p>Appel stratégique ICP, USP, Tone of Voice. On calibre le tir avant de tirer.</p>
+        </div>
+      </div>
+      <div class="ws-proc-step">
+        <div class="ws-proc-num">02</div>
+        <div class="ws-proc-line"></div>
+        <div class="ws-proc-content">
+          <h4>Copywriting</h4>
+          <p>Rédaction séquences. Messages orientés problème/solution. Vous validez, on envoie.</p>
+        </div>
+      </div>
+      <div class="ws-proc-step">
+        <div class="ws-proc-num">03</div>
+        <div class="ws-proc-line"></div>
+        <div class="ws-proc-content">
+          <h4>Data Sourcing</h4>
+          <p>Apollo, SalesNav. Seuls les prospects qualifiés entrent dans la machine.</p>
+        </div>
+      </div>
+      <div class="ws-proc-step">
+        <div class="ws-proc-num">04</div>
+        <div class="ws-proc-line"></div>
+        <div class="ws-proc-content">
+          <h4>Lancement & Optimisation</h4>
+          <p>Go live. A/B testing. Reporting hebdomadaire. Amélioration continue.</p>
+        </div>
+      </div>
+      <div class="ws-proc-step">
+        <div class="ws-proc-num" style="background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none">05</div>
+        <div class="ws-proc-content">
+          <h4>RDV dans votre agenda</h4>
+          <p>Qualification rigoureuse. Sync Calendly. Vous n'avez qu'à closer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FORMULES ─── -->
+<section class="ws-section ws-section-dark">
+  <div class="ws-section-inner">
+    <div class="ws-section-head">
+      <div class="ws-eyebrow">Formules</div>
+      <h2 class="ws-h2">Choisissez votre <span class="ws-g">vitesse de croissance.</span></h2>
+      <p class="ws-p">Offres transparentes. Résultats garantis ou 3 mois offerts.</p>
+    </div>
+    <div class="ws-pricing-grid">
+      <div class="ws-plan">
+        <div class="ws-plan-icon">🪨</div>
+        <div class="ws-plan-name">Silver</div>
+        <div class="ws-plan-price">800€<span>/mois · min. 3 mois</span></div>
+        <ul class="ws-plan-features">
+          <li>10 RDV qualifiés / mois</li>
+          <li>4 000 contacts ciblés</li>
+          <li>Cold Email + LinkedIn</li>
+          <li>Copywriting inclus</li>
+          <li>Reporting hebdomadaire</li>
+        </ul>
+        <div class="ws-plan-guarantee">Moins de 30 RDV ? On continue gratuitement.</div>
+        <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" class="ws-plan-cta">Démarrer Silver →</a>
+      </div>
+      <div class="ws-plan ws-plan-featured">
+        <div class="ws-plan-badge">⭐ Recommandé</div>
+        <div class="ws-plan-icon">🪐</div>
+        <div class="ws-plan-name">Gold</div>
+        <div class="ws-plan-price ws-g">1 200€<span>/mois · min. 3 mois</span></div>
+        <ul class="ws-plan-features">
+          <li>20 RDV qualifiés / mois</li>
+          <li>8 000 contacts ciblés</li>
+          <li>Full Stack Multicanal</li>
+          <li>AI Icebreaker + Scoring</li>
+          <li>Account manager dédié</li>
+        </ul>
+        <div class="ws-plan-guarantee">Moins de 60 RDV ? On continue gratuitement.</div>
+        <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" class="ws-plan-cta ws-plan-cta-featured">Réserver un créneau Gold →</a>
+      </div>
+      <div class="ws-plan">
+        <div class="ws-plan-icon">🌍</div>
+        <div class="ws-plan-name">Platinum</div>
+        <div class="ws-plan-price">2 000€<span>/mois · min. 3 mois</span></div>
+        <ul class="ws-plan-features">
+          <li>40 RDV qualifiés / mois</li>
+          <li>20 000 contacts ciblés</li>
+          <li>Stratégie multi-marchés</li>
+          <li>Vidéo + IA + LinkedIn</li>
+          <li>Reporting temps réel</li>
+        </ul>
+        <div class="ws-plan-guarantee">Moins de 120 RDV ? On continue gratuitement.</div>
+        <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" class="ws-plan-cta">Démarrer Platinum →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ÉQUIPE ─── -->
+<section class="ws-section">
+  <div class="ws-section-inner">
+    <div class="ws-section-head">
+      <div class="ws-eyebrow">L'équipe fondatrice</div>
+      <h2 class="ws-h2">Fondateurs. <span class="ws-g">Pas des juniors.</span></h2>
+      <p class="ws-p">Vous parlez directement aux créateurs du système. Pas d'intermédiaire, pas de perte en ligne.</p>
+    </div>
+    <div class="ws-team-grid">
+      <div class="ws-team-card">
+        <div class="ws-team-photo" id="ws-photo-stanis"></div>
+        <div class="ws-team-info">
+          <div class="ws-team-name">Stanislas Fortune</div>
+          <div class="ws-team-role" style="color:var(--purple-l)">Co-Founder · Growth</div>
+          <p class="ws-team-quote">"L'automatisation sans stratégie, c'est juste spammer plus vite. On construit de vraies conversations."</p>
+          <div class="ws-team-tags"><span>Growth</span><span>Outbound</span><span>+150 clients</span></div>
+        </div>
+      </div>
+      <div class="ws-team-card">
+        <div class="ws-team-photo" id="ws-photo-amelie"></div>
+        <div class="ws-team-info">
+          <div class="ws-team-name">Amélie Anquetil</div>
+          <div class="ws-team-role" style="color:var(--pink)">Co-Founder · Ops</div>
+          <p class="ws-team-quote">"Notre obsession : transformer le chaos commercial en croissance prédictible et mesurable."</p>
+          <div class="ws-team-tags"><span>Ops</span><span>Copywriting</span><span>Data</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VIDÉO ─── -->
+<section class="ws-section ws-section-dark">
+  <div class="ws-section-inner">
+    <div class="ws-vid-wrap">
+      <div class="ws-vid-left">
+        <div class="ws-eyebrow">Service additionnel</div>
+        <h2 class="ws-h2">Prospection <span class="ws-g">en Vidéo.</span></h2>
+        <p class="ws-p">Un message humain, personnalisé, en 58 secondes.</p>
+        <div class="ws-vid-stats">
+          <div class="ws-vid-stat"><span class="ws-vid-val" style="color:var(--pink)">×4</span><span>Taux de réponse</span></div>
+          <div class="ws-vid-stat"><span class="ws-vid-val" style="color:var(--purple-l)">94%</span><span>Taux de visionnage</span></div>
+          <div class="ws-vid-stat"><span class="ws-vid-val" style="color:var(--cyan)">58s</span><span>Durée optimale</span></div>
+        </div>
+        <div class="ws-vid-formats">
+          <div class="ws-vid-fmt" style="border-color:rgba(255,107,53,.3);color:var(--orange)">🎞 GIF animé dans les mails</div>
+          <div class="ws-vid-fmt" style="border-color:rgba(255,61,143,.3);color:var(--pink)">🎥 Face caméra personnalisée</div>
+          <div class="ws-vid-fmt" style="border-color:rgba(124,58,237,.3);color:var(--purple-l)">🖥 Démo écran partagé</div>
+        </div>
+      </div>
+      <div class="ws-vid-right">
+        <div class="ws-macbook">
+          <div class="ws-mac-screen">
+            <div class="ws-mac-bar">
+              <span class="ws-mac-dot" style="background:#ff5f57"></span>
+              <span class="ws-mac-dot" style="background:#febc2e"></span>
+              <span class="ws-mac-dot" style="background:#28c840"></span>
+              <span class="ws-mac-url">devoleads.io · démo vidéo</span>
+            </div>
+            <div class="ws-mac-content">
+              <canvas id="ws-demo-canvas" style="width:100%;height:100%;display:block"></canvas>
+            </div>
+          </div>
+          <div class="ws-mac-base"></div>
+          <div class="ws-mac-foot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA FINAL ─── -->
+<section class="ws-cta-final">
+  <div class="ws-cta-glow"></div>
+  <div class="ws-cta-inner">
+    <div class="ws-eyebrow">Prêt à décoller ?</div>
+    <h2 class="ws-h2" style="font-size:clamp(40px,6vw,80px)">Saturez votre agenda.<br><span class="ws-g">Dès cette semaine.</span></h2>
+    <p class="ws-p" style="max-width:500px;margin:0 auto 40px">30 minutes. Gratuit. Sans engagement. On vous dit exactement ce qu'on peut générer pour vous.</p>
+    <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" class="ws-cta-main ws-cta-xl">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Réserver mon créneau gratuit
+    </a>
+    <div class="ws-pills">
+      <span>⚡ Réponse sous 2h</span><span>🎯 30 min · Gratuit</span><span>🔒 Sans engagement</span>
+    </div>
+    <button onclick="switchMode('deck')" class="ws-back">← Retour à la présentation interactive</button>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="ws-footer">
+  <div class="ws-footer-inner">
+    <div><div class="ws-footer-logo">Devoleads</div><div class="ws-footer-sub">Pipeline B2B automatisé.</div></div>
+    <div class="ws-footer-links">
+      <a href="mailto:contact@devoleads.io">contact@devoleads.io</a>
+      <a href="tel:+33756052008">+33 7 56 05 20 08</a>
+      <a href="https://calendly.com/devoleads/point-devoleads" target="_blank">Calendly</a>
+    </div>
+    <div class="ws-footer-copy">© 2025 Devoleads · La Rochelle, France</div>
+  </div>
 </footer>
 
 </div><!-- /website-mode -->
