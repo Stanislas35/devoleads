@@ -1012,156 +1012,33 @@ body.live-mode #cur-d{
   pointer-events:none;z-index:10;
 }
 
-/* ═══ TRANSITION PLANÈTE ═══ */
-#planet-transition {
-  position:fixed;inset:0;z-index:450;
-  pointer-events:none;overflow:hidden;
+/* ═══ MOBILE FALLBACK — désactivé en preview, actif seulement sur très petit écran ═══ */
+@media (max-width: 480px) {
+  #mobile-wall { display:flex !important; }
+  #deck, #nav, #bar, #dots, #uni-btn { display:none !important; }
+}
+#mobile-wall {
   display:none;
-}
-#planet-transition canvas {
-  position:absolute;inset:0;width:100%;height:100%;
-}
-
-/* Slide sortante emportée par la planète */
-.slide.planet-out-right {
-  animation: planet-sweep-right .7s cubic-bezier(.4,0,.8,.6) forwards;
-}
-.slide.planet-out-left {
-  animation: planet-sweep-left .7s cubic-bezier(.4,0,.8,.6) forwards;
-}
-.slide.planet-in-right {
-  animation: planet-arrive-right .65s cubic-bezier(.16,1,.3,1) forwards;
-}
-.slide.planet-in-left {
-  animation: planet-arrive-left .65s cubic-bezier(.16,1,.3,1) forwards;
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(135deg,#060820,#0c0418);
+  flex-direction:column;align-items:center;justify-content:center;
+  gap:20px;padding:40px;text-align:center;
 }
 
-@keyframes planet-sweep-right {
-  0%   { transform:translateX(0)     scale(1)    opacity:1; }
-  40%  { transform:translateX(8%)    scale(.96)  opacity:.6; }
-  100% { transform:translateX(110%)  scale(.85)  opacity:0; }
-}
-@keyframes planet-sweep-left {
-  0%   { transform:translateX(0)     scale(1)    opacity:1; }
-  40%  { transform:translateX(-8%)   scale(.96)  opacity:.6; }
-  100% { transform:translateX(-110%) scale(.85)  opacity:0; }
-}
-@keyframes planet-arrive-right {
-  0%   { transform:translateX(-60%) scale(.88) opacity:0; }
-  30%  { opacity:.7; }
-  100% { transform:translateX(0)    scale(1)   opacity:1; }
-}
-@keyframes planet-arrive-left {
-  0%   { transform:translateX(60%)  scale(.88) opacity:0; }
-  30%  { opacity:.7; }
-  100% { transform:translateX(0)    scale(1)   opacity:1; }
-}
-
-/* ═══ WARP JUMP TRANSITION ═══ */
-#warp-canvas {
-  position:fixed;inset:0;z-index:450;
-  pointer-events:none;
-  opacity:0;
-  display:none;
-}
-
-/* Slide aspirée vers le centre */
+/* ═══ WARP TRANSITION ═══ */
 @keyframes warp-suck {
-  0%   { transform:scale(1) translateZ(0);          opacity:1; filter:blur(0px); }
-  60%  { transform:scale(.92) translateZ(0);         opacity:.7; filter:blur(2px); }
-  100% { transform:scale(.04) translateZ(0);         opacity:0; filter:blur(12px); }
+  0%  {transform:scale(1);opacity:1;filter:blur(0)}
+  60% {transform:scale(.94);opacity:.6;filter:blur(2px)}
+  100%{transform:scale(.04);opacity:0;filter:blur(14px)}
 }
-/* Nouvelle slide jaillit de l'hyperespace */
 @keyframes warp-emerge {
-  0%   { transform:scale(.06) translateZ(0); opacity:0; filter:blur(14px); }
-  40%  { opacity:.8; filter:blur(3px); }
-  80%  { transform:scale(1.03);             opacity:1; filter:blur(.5px); }
-  100% { transform:scale(1)   translateZ(0); opacity:1; filter:blur(0px); }
+  0%  {transform:scale(.05);opacity:0;filter:blur(16px)}
+  40% {opacity:.8;filter:blur(3px)}
+  80% {transform:scale(1.03);opacity:1;filter:blur(.5px)}
+  100%{transform:scale(1);opacity:1;filter:blur(0)}
 }
-.slide.warp-out {
-  animation: warp-suck .45s cubic-bezier(.4,0,1,1) forwards;
-  transform-origin: center center;
-  position:absolute;inset:0;z-index:2;
-}
-.slide.warp-in {
-  animation: warp-emerge .55s cubic-bezier(.16,1,.3,1) forwards;
-  transform-origin: center center;
-  position:absolute;inset:0;z-index:3;
-}
-
-/* ═══ VIDEO SLIDE MOCKUP ═══ */
-.vid-stat-card {
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:12px 16px;
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-.vid-stat-num {
-  font-family:var(--display);
-  font-size:32px;
-  font-weight:800;
-  letter-spacing:-1.5px;
-  min-width:64px;
-  line-height:1;
-}
-.vid-stat-label {
-  font-size:13px;
-  font-weight:600;
-  color:var(--white);
-}
-.vid-stat-sub {
-  font-size:10.5px;
-  color:var(--muted);
-  margin-top:2px;
-}
-/* Animation écran vidéo */
-@keyframes vid-scan {
-  0%   { background-position: 0% 0%; }
-  100% { background-position: 0% 100%; }
-}
-@keyframes vid-person-bob {
-  0%,100% { transform:translateX(-50%) translateY(0); }
-  50%     { transform:translateX(-50%) translateY(-4px); }
-}
-#vid-person { animation: vid-person-bob 2s ease-in-out infinite; }
-
-/* ═══ PERSONNALISATION PROSPECT ═══ */
-:root {
-  --prospect-color: #7c3aed;
-  --prospect-rgb: 124,58,237;
-}
-
-/* Blink indicator → couleur prospect */
-.blink {
-  background: var(--prospect-color, var(--pink));
-}
-
-/* Eyebrow blink */
-.eyebrow .blink {
-  width: 6px; height: 6px;
-  background: var(--prospect-color, var(--pink));
-}
-
-/* Badge prospect dans le HUD de navigation */
-#ck-prospect-panel {
-  transition: opacity .5s ease;
-}
-
-/* Icebreaker en chargement */
-#ice2-brk:empty::after,
-#ice2-brk:contains("⏳")::after {
-  content: '';
-  display:inline-block;
-  width:6px;height:6px;
-  border-radius:50%;
-  background:var(--purple-l);
-  animation:dot-pulse .8s ease infinite;
-  margin-left:6px;
-}
-@keyframes dot-pulse{0%,100%{opacity:.3}50%{opacity:1}}
+.slide.warp-out{animation:warp-suck .42s cubic-bezier(.4,0,1,1) forwards;transform-origin:center center;position:absolute;inset:0;z-index:2}
+.slide.warp-in {animation:warp-emerge .52s cubic-bezier(.16,1,.3,1) forwards;transform-origin:center center;position:absolute;inset:0;z-index:3}
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -1176,6 +1053,26 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+<div id="mobile-wall">
+  <div style="font-size:48px">🚀</div>
+  <h2 style="font-family:var(--display);font-size:clamp(22px,5vw,28px);font-weight:800;color:#fff;margin:0">
+    Mission <span style="background:linear-gradient(135deg,#7c3aed,#ff3d8f);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Devoleads</span>
+  </h2>
+  <p style="color:rgba(255,255,255,.5);font-size:14px;line-height:1.6;max-width:280px">
+    Ce deck est optimisé pour desktop.<br>Ouvrez ce lien depuis votre ordinateur pour une expérience complète.
+  </p>
+  <a href="mailto:?subject=Deck%20Devoleads&body=Ouvrez%20ce%20deck%20sur%20desktop%20%3A%20[URL]" style="
+    display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:100px;
+    background:linear-gradient(135deg,#7c3aed,#ff3d8f);color:#fff;
+    text-decoration:none;font-size:13px;font-weight:600;">
+    📧 Me l'envoyer par email
+  </a>
+  <a href="https://calendly.com/devoleads/point-devoleads" target="_blank" style="
+    color:rgba(124,58,237,.8);font-size:12px;text-decoration:underline;">
+    Ou réserver directement un créneau →
+  </a>
+</div>
+
 <canvas id="cv"></canvas>
 
 <!-- ═══ COCKPIT 3D OVERLAY ═══ -->
@@ -1405,27 +1302,6 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
             <text id="ck-hud-dest" x="500" y="611" fill="rgba(80,120,255,.4)" font-size="7" font-family="monospace" text-anchor="middle" letter-spacing="2">CHOISISSEZ VOTRE DESTINATION</text>
           </g>
 
-          <!-- ── PANNEAU PROSPECT (personnalisation) ── -->
-          <g id="ck-prospect-panel" opacity="0" style="transition:opacity .5s">
-            <!-- Fond panneau -->
-            <rect x="340" y="320" width="320" height="100" rx="6" fill="rgba(4,6,20,.85)" stroke="rgba(124,58,237,.3)" stroke-width="1"/>
-            <!-- Accent top couleur prospect -->
-            <rect id="ck-prospect-accent" x="340" y="320" width="320" height="2" rx="1" fill="#7c3aed"/>
-            <!-- Label -->
-            <text x="360" y="338" fill="rgba(124,58,237,.5)" font-size="6" font-family="monospace" letter-spacing="2" text-transform="uppercase">MISSION PROSPECT</text>
-            <!-- Nom -->
-            <text id="ck-p-name" x="360" y="358" fill="rgba(255,255,255,.9)" font-size="13" font-weight="700" font-family="monospace">–</text>
-            <!-- Société -->
-            <text id="ck-p-societe" x="360" y="376" fill="rgba(200,180,255,.7)" font-size="9" font-family="monospace" letter-spacing="1">–</text>
-            <!-- Actu -->
-            <text id="ck-p-actu" x="360" y="393" fill="rgba(255,255,255,.35)" font-size="7" font-family="monospace">–</text>
-            <!-- Secteur badge -->
-            <rect x="360" y="402" width="80" height="10" rx="3" fill="rgba(124,58,237,.15)" stroke="rgba(124,58,237,.3)" stroke-width="1"/>
-            <text id="ck-p-secteur" x="400" y="410" fill="rgba(167,139,250,.8)" font-size="6" font-family="monospace" text-anchor="middle">–</text>
-            <!-- Watermark société dans le hublot -->
-            <text id="ck-porthole-name" x="500" y="370" fill="rgba(255,255,255,0)" font-size="18" font-weight="800" font-family="monospace" text-anchor="middle" letter-spacing="4" opacity="0" style="transition:opacity .8s">–</text>
-          </g>
-
         </svg>
 
         <!-- Planètes interactives dans le hublot (generated by JS) -->
@@ -1438,8 +1314,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <div id="uni-landing-flash"></div>
 
 <div id="transition-flash"></div>
-<canvas id="warp-canvas"></canvas>
-<div id="planet-transition"><canvas id="planet-cv"></canvas></div>
+<canvas id="warp-canvas" style="position:fixed;inset:0;z-index:450;pointer-events:none;display:none"></canvas>
 <div id="cinematic-hint">
   <span class="hint-key">Espace</span>
   <span style="opacity:.5">/</span>
@@ -1451,8 +1326,8 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   Cockpit
 </div>
 <div id="name-screen">
-  <div id="name-eyebrow">Mission Devoleads · Briefing</div>
-  <div id="name-title">Avant de décoller —<br>comment vous appelez-vous ?</div>
+  <div id="name-eyebrow">🚀 Devoleads · Lancement</div>
+  <div id="name-title">Entrez votre prénom<br><span style="font-size:.6em;opacity:.5;font-weight:400">pour personnaliser votre expérience</span></div>
   <div id="name-input-wrap">
     <input id="name-input" type="text" placeholder="Votre prénom" minlength="1" autocomplete="off" spellcheck="false"/>
     <button id="name-submit" onclick="submitName()">
@@ -1501,7 +1376,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 
 <button class="arr" id="ap" onclick="prev()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
 <button class="arr" id="an" onclick="next()"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
-<div id="pg"><b id="pn">01</b> / 08</div>
+<div id="pg"><b id="pn">01</b><span id="pn-total" style="opacity:.35;font-size:.85em"> / 8</span></div>
 <div id="bar"></div>
 
 <div id="deck">
@@ -1513,311 +1388,51 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <div class="orb" style="width:280px;height:280px;background:var(--cyan);top:30%;left:20%;animation-delay:-10s;opacity:.06;animation-duration:18s"></div>
   <div class="orb" style="width:200px;height:200px;background:var(--orange);bottom:20%;right:25%;animation-delay:-4s;opacity:.08;animation-duration:22s"></div>
   <div class="sg" style="text-align:center;z-index:1;display:flex;flex-direction:column;align-items:center">
-    <div class="eyebrow"><span class="blink"></span>Disponibilités limitées</div>
+    <div class="eyebrow"><span class="blink"></span>Disponibilités limitées · CEOs SaaS B2B · 10–100 salariés</div>
     <h1 style="max-width:min(900px,90vw)">Votre Agenda.<br><span class="g">Saturé de RDV.</span></h1>
     <p class="lead" style="text-align:center;margin:16px auto 0">
       Arrêtez de prospecter. <strong>Commencez à closer.</strong><br>
       Une infrastructure B2B qui travaille pendant que vous dormez.
     </p>
-    <!-- Stats clés — 4 chiffres impactants -->
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:32px;flex-wrap:wrap">
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:28px;flex-wrap:wrap">
       <div class="hstat"><div class="hval" style="color:var(--pink)">8–15</div><div class="hlbl">RDV / mois</div></div>
       <div class="hstat"><div class="hval" style="color:var(--purple-l)">&lt;14j</div><div class="hlbl">Lancement</div></div>
       <div class="hstat"><div class="hval" style="color:var(--orange)">×8.3</div><div class="hlbl">ROI moyen</div></div>
       <div class="hstat"><div class="hval" style="color:var(--cyan)">0€</div><div class="hlbl">Frais cachés</div></div>
     </div>
-    <!-- CTA principal -->
-    <div style="display:flex;gap:12px;justify-content:center;margin-top:32px;flex-wrap:wrap">
-      <button onclick="go(7)" style="
-        display:flex;align-items:center;gap:8px;
-        padding:14px 28px;border-radius:100px;
-        background:linear-gradient(135deg,var(--purple),var(--pink));
-        border:none;cursor:pointer;
-        font-size:14px;font-weight:700;color:#fff;
-        letter-spacing:.3px;font-family:inherit;
-        box-shadow:0 8px 32px rgba(124,58,237,.4),0 0 0 1px rgba(255,255,255,.08);
-        transition:transform .2s,box-shadow .2s;
-      " onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 12px 40px rgba(124,58,237,.55),0 0 0 1px rgba(255,255,255,.12)'"
-         onmouseout="this.style.transform='';this.style.boxShadow='0 8px 32px rgba(124,58,237,.4),0 0 0 1px rgba(255,255,255,.08)'">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        Voir la démo
-      </button>
+    <!-- CTAs principaux -->
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap">
       <button onclick="go(1)" style="
-        display:flex;align-items:center;gap:8px;
-        padding:14px 28px;border-radius:100px;
-        background:transparent;
-        border:1px solid rgba(255,255,255,.15);cursor:pointer;
-        font-size:14px;font-weight:600;color:rgba(255,255,255,.8);
-        letter-spacing:.3px;font-family:inherit;
-        transition:background .2s,border-color .2s;
-      " onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='rgba(255,255,255,.3)'"
-         onmouseout="this.style.background='transparent';this.style.borderColor='rgba(255,255,255,.15)'">
-        Découvrir les services
+        display:flex;align-items:center;gap:8px;padding:14px 28px;border-radius:100px;
+        background:linear-gradient(135deg,var(--purple),var(--pink));
+        border:none;cursor:pointer;font-size:14px;font-weight:700;color:#fff;
+        font-family:inherit;letter-spacing:.3px;
+        box-shadow:0 8px 32px rgba(124,58,237,.4),0 0 0 1px rgba(255,255,255,.08);
+        transition:transform .2s,box-shadow .2s;"
+        onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 12px 40px rgba(124,58,237,.55)'"
+        onmouseout="this.style.transform='';this.style.boxShadow='0 8px 32px rgba(124,58,237,.4)'">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Voir la démo IA
+      </button>
+      <button onclick="go(7)" style="
+        display:flex;align-items:center;gap:8px;padding:14px 28px;border-radius:100px;
+        background:transparent;border:1px solid rgba(255,255,255,.15);
+        cursor:pointer;font-size:14px;font-weight:600;color:rgba(255,255,255,.8);
+        font-family:inherit;transition:background .2s,border-color .2s;"
+        onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.borderColor='rgba(255,255,255,.3)'"
+        onmouseout="this.style.background='transparent';this.style.borderColor='rgba(255,255,255,.15)'">
+        Prendre un RDV
       </button>
     </div>
     <div style="margin-top:26px;width:100%;max-width:680px">
-      <p style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center;margin-bottom:10px">Ils nous font confiance</p>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><div style="height:1px;flex:1;background:rgba(255,255,255,.07)"></div><p style="font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;white-space:nowrap;margin:0">+150 CEOs nous font confiance</p><div style="height:1px;flex:1;background:rgba(255,255,255,.07)"></div></div>
       <div class="clients-wrap"><div class="clients-track" id="ct1"></div></div>
     </div>
   </div>
 </div>
 
-<!-- S2 SERVICES -->
-<div class="slide" id="s2" style="padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);flex-direction:row;align-items:stretch">
-  <div class="orb" style="width:400px;height:400px;background:var(--purple);top:-80px;right:-80px;opacity:.12;animation-delay:-3s"></div>
-  <!-- Accent vertical bar -->
-  <div style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:55%;background:linear-gradient(180deg,var(--purple),var(--pink));border-radius:0 3px 3px 0;opacity:.7"></div>
-
-  <!-- LEFT: texte -->
-  <div class="sg" style="width:38%;padding:0 clamp(20px,3vw,40px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:16px;flex-shrink:0">
-    <div class="eyebrow">Services</div>
-    <h2 style="font-size:clamp(36px,4.5vw,62px)">De la data<br><span class="g">à la</span><br><span class="g">signature.</span></h2>
-    <p class="lead" style="font-size:13px">Nous gérons l'intégralité du tunnel commercial.<br><strong>Vous closez, on prospecte.</strong></p>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-      <div style="background:rgba(255,61,143,.06);border:1px solid rgba(255,61,143,.18);border-radius:100px;padding:5px 14px;font-size:10px;font-weight:600;color:var(--pink);letter-spacing:.5px">De la data à la signature en &lt;14 jours</div>
-    </div>
-  </div>
-
-  <!-- RIGHT: cards -->
-  <div class="sg" style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center;padding:0 clamp(30px,5vw,90px) 0 clamp(16px,2vw,32px)">
-    <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
-      <div class="ico" style="background:rgba(255,107,53,.1);flex-shrink:0">⚡</div>
-      <div><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px"><h3>Machine Outreach 2.0</h3><span style="font-size:11px;font-weight:700;color:var(--orange)">4 000+ contacts/mois</span></div>
-      <p style="margin-bottom:8px">Smartlead + LinkedIn + IA pour un ciblage d'une précision chirurgicale.</p>
-      <div class="fl"><div class="fi"><span class="fd" style="background:var(--orange)"></span>Ciblage ICP granulaire</div><div class="fi"><span class="fd" style="background:var(--orange)"></span>Prospection vidéo</div></div></div>
-    </div>
-    <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start;border-color:rgba(255,61,143,.14)">
-      <div class="ico" style="background:rgba(255,61,143,.1);flex-shrink:0">📅</div>
-      <div><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px"><h3>Prise de RDV Qualifiés</h3><span style="font-size:11px;font-weight:700;color:var(--pink)">8–15 RDV/mois</span></div>
-      <p style="margin-bottom:8px">Zéro lead inutile. Uniquement des RDV confirmés dans votre calendrier.</p>
-      <div class="fl"><div class="fi"><span class="fd" style="background:var(--pink)"></span>Qualification rigoureuse</div><div class="fi"><span class="fd" style="background:var(--pink)"></span>Sync Calendly / HubSpot</div></div></div>
-    </div>
-    <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start;border-color:rgba(124,58,237,.14)">
-      <div class="ico" style="background:rgba(124,58,237,.1);flex-shrink:0">🤖</div>
-      <div><h3 style="margin-bottom:4px">Système Growth IA</h3>
-      <p style="margin-bottom:8px">L'IA personnalise chaque message à l'infini, sans effort de votre part.</p>
-      <div class="fl"><div class="fi"><span class="fd" style="background:var(--purple-l)"></span>AI Icebreaker</div><div class="fi"><span class="fd" style="background:var(--purple-l)"></span>Scraping multi-sources</div></div></div>
-    </div>
-  </div>
-</div>
-
-<!-- S3 PROCESS MOTION -->
-<div class="slide" id="s3">
-  <div class="orb" style="width:260px;height:260px;background:var(--cyan);bottom:-60px;right:60px;opacity:.1;animation-delay:-8s"></div>
-  <div class="sg" style="text-align:center;margin-bottom:22px;display:flex;flex-direction:column;align-items:center">
-    <div class="eyebrow"><span class="blink"></span>Notre process</div>
-    <h2>Simple. Rapide.<br><span class="g">Radical.</span></h2>
-    <p class="lead" style="margin:10px auto 0">Du premier appel au premier lead — <strong>en moins de 14 jours.</strong></p>
-  </div>
-  <!-- Numbered step cards -->
-  <div class="sg" style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1.2vw,14px);width:100%;max-width:min(900px,94vw)">
-    <div style="background:var(--surface);border:1px solid rgba(255,61,143,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--pink);box-shadow:0 0 14px var(--pink);margin-bottom:14px"></div>
-      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--pink);margin-bottom:8px">01 · Découverte</div>
-      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Appel stratégique</div>
-      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">ICP, USP, Tone of Voice. On calibre le tir avant de tirer.</div>
-      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(255,61,143,.06);line-height:1;font-family:var(--display)">01</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid rgba(167,139,250,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--purple-l);box-shadow:0 0 14px var(--purple-l);margin-bottom:14px"></div>
-      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple-l);margin-bottom:8px">02 · Copywriting</div>
-      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Rédaction séquences</div>
-      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">Messages orientés problème/solution. Vous validez, on envoie.</div>
-      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(167,139,250,.06);line-height:1;font-family:var(--display)">02</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid rgba(255,107,53,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 14px var(--orange);margin-bottom:14px"></div>
-      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:8px">03 · Data</div>
-      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Sourcing & Ciblage</div>
-      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">Apollo, SalesNav. Seuls les prospects qualifiés entrent dans la machine.</div>
-      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(255,107,53,.06);line-height:1;font-family:var(--display)">03</div>
-    </div>
-    <div style="background:var(--surface);border:1px solid rgba(34,211,238,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
-      <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan);margin-bottom:14px"></div>
-      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px">04 · Live</div>
-      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Lancement & Optimisation</div>
-      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">A/B testing, reporting hebdo. Vous voyez les RDV tomber.</div>
-      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(34,211,238,.06);line-height:1;font-family:var(--display)">04</div>
-    </div>
-  </div>
-  <div class="sg" style="margin-top:18px">
-    <div style="background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.18);border-radius:100px;padding:8px 22px;display:inline-flex;align-items:center;gap:8px">
-      <span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;animation:bl 1.5s infinite;flex-shrink:0"></span>
-      <span style="font-size:11.5px;color:var(--green);font-weight:500;letter-spacing:.2px">Premier lead garanti en moins de 14 jours</span>
-    </div>
-  </div>
-</div>
-
-<!-- S4 TARIFS -->
-<div class="slide" id="s4">
-  <div class="orb" style="width:430px;height:430px;background:var(--purple);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.09;animation-duration:20s"></div>
-  <div class="sg" style="text-align:center;margin-bottom:20px;display:flex;flex-direction:column;align-items:center">
-    <div class="eyebrow">Formules</div>
-    <h2>Choisissez votre<br><span class="g">vitesse de croissance.</span></h2>
-    <p class="lead" style="margin:10px auto 0">Offres transparentes. Résultats garantis ou 3 mois offerts.</p>
-  </div>
-  <div class="g3 sg" style="max-width:780px;align-items:start">
-    <div class="pc">
-      <span class="pp">🪨</span>
-      <div class="pn">Silver</div>
-      <div class="pa" style="color:var(--muted2)">800€</div>
-      <div class="pe">/ mois · min. 3 mois</div>
-      <div class="pl hl">10 RDV qualifiés / mois</div>
-      <div class="pl">4 000 contacts ciblés</div>
-      <div class="pl">Cold Email + LinkedIn</div>
-      <div class="pl">Copywriting inclus</div>
-      <div class="pl">Reporting hebdomadaire</div>
-      <div class="gar"><strong>Garantie</strong> — Moins de 30 RDV ? On continue gratuitement.</div>
-      <button onclick="go(7)" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);cursor:pointer;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);font-family:inherit;margin-top:10px;width:100%;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Démarrer Silver →</button>
-    </div>
-    <div class="pc feat">
-      <span class="pp">🪐</span>
-      <div class="pn">Gold</div>
-      <div class="pa" style="background:linear-gradient(90deg,var(--purple-l),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1 200€</div>
-      <div class="pe">/ mois · min. 3 mois</div>
-      <div class="pl hl">20 RDV qualifiés / mois</div>
-      <div class="pl">8 000 contacts ciblés</div>
-      <div class="pl">Full Stack Multicanal</div>
-      <div class="pl">AI Icebreaker + Scoring</div>
-      <div class="pl">Account manager dédié</div>
-      <div class="gar"><strong>Garantie</strong> — Moins de 60 RDV ? On continue gratuitement.</div>
-      <button onclick="go(7)" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:100px;background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(255,61,143,.3));border:1px solid rgba(124,58,237,.4);cursor:pointer;font-size:12px;font-weight:700;color:#fff;font-family:inherit;margin-top:10px;width:100%;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">⭐ Démarrer Gold →</button>
-    </div>
-    <div class="pc">
-      <span class="pp">🌍</span>
-      <div class="pn">Platinum</div>
-      <div class="pa" style="color:var(--orange)">2 000€</div>
-      <div class="pe">/ mois · min. 3 mois</div>
-      <div class="pl hl">40 RDV qualifiés / mois</div>
-      <div class="pl">18 000 contacts ciblés</div>
-      <div class="pl">Growth IA illimité</div>
-      <div class="pl">Multi-domaines + Vidéo</div>
-      <div class="pl">Intégration CRM complète</div>
-      <div class="gar"><strong>Garantie</strong> — Moins de 120 RDV ? On continue gratuitement.</div>
-      <button onclick="go(7)" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);cursor:pointer;font-size:12px;font-weight:600;color:rgba(255,255,255,.7);font-family:inherit;margin-top:10px;width:100%;transition:background .2s" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">Démarrer Platinum →</button>
-    </div>
-  </div>
-</div>
-
-<!-- S5 TEAM -->
-<div class="slide" id="s5" style="flex-direction:row;padding:clamp(60px,7vh,90px) 0 clamp(40px,5vh,70px);align-items:center">
-  <div class="orb" style="width:400px;height:400px;background:var(--purple);top:-80px;left:-80px;opacity:.09;animation-delay:-4s"></div>
-  <div class="orb" style="width:300px;height:300px;background:var(--pink);bottom:-60px;right:-40px;opacity:.07;animation-delay:-9s"></div>
-
-  <!-- GAUCHE : Titre + citations -->
-  <div class="sg" style="width:44%;padding:0 clamp(16px,2.5vw,36px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:20px;flex-shrink:0">
-    <div>
-      <div class="eyebrow">L'équipe fondatrice</div>
-      <h2 style="font-size:clamp(32px,4.2vw,56px);margin-top:8px">Fondateurs.<br>Pas des<br><span class="g">juniors.</span></h2>
-      <p class="lead" style="font-size:13px;margin-top:12px">Vous parlez directement aux créateurs du système. Pas d'intermédiaire, pas de perte en ligne.</p>
-    </div>
-    <!-- Badges fondateurs — expertise terrain -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-      <div style="padding:5px 12px;border-radius:20px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.25);font-size:10px;font-weight:600;color:var(--purple-l)">Growth</div>
-      <div style="padding:5px 12px;border-radius:20px;background:rgba(255,61,143,.1);border:1px solid rgba(255,61,143,.25);font-size:10px;font-weight:600;color:var(--pink)">Ops</div>
-      <div style="padding:5px 12px;border-radius:20px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);font-size:10px;font-weight:600;color:var(--cyan)">+5 ans terrain</div>
-      <div style="padding:5px 12px;border-radius:20px;background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);font-size:10px;font-weight:600;color:var(--green)">150 clients CEOs</div>
-    </div>
-  </div>
-
-  <!-- Séparateur -->
-  <div style="width:1px;background:rgba(255,255,255,.06);align-self:stretch;margin:20px 0;flex-shrink:0"></div>
-
-  <!-- DROITE : Cartes fondateurs -->
-  <div class="sg" style="flex:1;padding:0 clamp(30px,5vw,80px) 0 clamp(16px,2vw,36px);display:flex;flex-direction:column;gap:14px;justify-content:center">
-    <div id="team-grid" style="display:flex;flex-direction:column;gap:14px"></div>
-  </div>
-</div>
-
-<!-- S6 PROSPECTION VIDEO -->
-<div class="slide" id="s6" style="flex-direction:row;padding:clamp(60px,7vh,90px) 0 clamp(40px,5vh,70px);align-items:center;gap:0">
-  <div class="orb" style="width:500px;height:500px;background:var(--pink);top:-150px;right:-120px;opacity:.07;animation-delay:-5s"></div>
-  <div class="orb" style="width:300px;height:300px;background:var(--purple);bottom:-80px;left:-40px;opacity:.06;animation-delay:-11s"></div>
-
-  <!-- GAUCHE : Titre + stats -->
-  <div class="sg" style="width:36%;padding:0 clamp(16px,2vw,32px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:18px;flex-shrink:0">
-    <div>
-      <div class="eyebrow"><span class="blink"></span>Service additionnel</div>
-      <h2 style="margin-top:8px;font-size:clamp(28px,3.5vw,48px)">Prospection<br><span class="g">en Vidéo.</span></h2>
-      <p class="lead" style="font-size:13px;margin-top:10px">Un message humain, personnalisé, en 58 secondes.</p>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div class="vid-stat-card" id="vsc1" style="opacity:0;transform:translateX(-16px);transition:opacity .5s,transform .5s">
-        <div class="vid-stat-num" style="color:var(--pink)">×4</div>
-        <div><div class="vid-stat-label">Taux de réponse</div><div class="vid-stat-sub">vs email texte classique</div></div>
-      </div>
-      <div class="vid-stat-card" id="vsc2" style="opacity:0;transform:translateX(-16px);transition:opacity .5s .15s,transform .5s .15s">
-        <div class="vid-stat-num" style="color:var(--purple-l)">94%</div>
-        <div><div class="vid-stat-label">Taux de visionnage</div><div class="vid-stat-sub">jusqu'au bout du message</div></div>
-      </div>
-      <div class="vid-stat-card" id="vsc3" style="opacity:0;transform:translateX(-16px);transition:opacity .5s .3s,transform .5s .3s">
-        <div class="vid-stat-num" style="color:var(--cyan)">58s</div>
-        <div><div class="vid-stat-label">Durée optimale</div><div class="vid-stat-sub">personnalisée par prospect</div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Séparateur -->
-  <div style="width:1px;background:rgba(255,255,255,.06);align-self:stretch;margin:20px 0;flex-shrink:0"></div>
-
-  <!-- DROITE : MacBook avec démo animée -->
-  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:0 clamp(20px,3vw,60px)">
-    <div style="position:relative;width:min(520px,95%)">
-
-      <!-- Écran -->
-      <div style="background:#0d0d1a;border-radius:12px 12px 0 0;border:2px solid rgba(255,255,255,.12);border-bottom:none;padding:8px 8px 0;box-shadow:0 -4px 40px rgba(0,0,0,.5),0 0 60px rgba(124,58,237,.06)">
-
-        <!-- Barre navigateur -->
-        <div style="background:rgba(0,0,0,.6);border-radius:5px 5px 0 0;padding:6px 10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid rgba(255,255,255,.05)">
-          <div style="width:8px;height:8px;border-radius:50%;background:#ff5f57;flex-shrink:0"></div>
-          <div style="width:8px;height:8px;border-radius:50%;background:#febc2e;flex-shrink:0"></div>
-          <div style="width:8px;height:8px;border-radius:50%;background:#28c840;flex-shrink:0"></div>
-          <div style="flex:1;background:rgba(255,255,255,.06);border-radius:4px;padding:3px 10px;margin:0 8px;text-align:center">
-            <span style="font-size:9px;color:rgba(255,255,255,.25);font-family:monospace">devoleads.io · démo vidéo</span>
-          </div>
-        </div>
-
-        <!-- Zone écran = canvas démo animée -->
-        <div style="position:relative;background:#060610;aspect-ratio:16/9;overflow:hidden">
-          <canvas id="demo-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
-
-          <!-- Overlay format actuel -->
-          <div id="demo-format-tag" style="
-            position:absolute;top:10px;left:10px;
-            background:rgba(0,0,0,.65);backdrop-filter:blur(8px);
-            border-radius:6px;padding:4px 10px;
-            border:1px solid rgba(255,255,255,.1);
-            font-size:10px;font-weight:600;letter-spacing:1px;
-            color:#fff;font-family:monospace;
-            transition:opacity .3s;
-          ">GIF EMAIL</div>
-
-          <!-- Barre progression -->
-          <div style="position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.08)">
-            <div id="demo-progress" style="height:100%;background:linear-gradient(90deg,var(--pink),var(--purple-l));width:0%;transition:width .1s linear"></div>
-          </div>
-
-          <!-- Indicateurs formats -->
-          <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px">
-            <div id="demo-dot-0" style="width:6px;height:6px;border-radius:50%;background:var(--orange);opacity:1;transition:opacity .3s"></div>
-            <div id="demo-dot-1" style="width:6px;height:6px;border-radius:50%;background:var(--pink);opacity:.3;transition:opacity .3s"></div>
-            <div id="demo-dot-2" style="width:6px;height:6px;border-radius:50%;background:var(--purple-l);opacity:.3;transition:opacity .3s"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Base MacBook -->
-      <div style="background:linear-gradient(180deg,#252535,#181828);height:12px;border-radius:0 0 3px 3px;border:2px solid rgba(255,255,255,.1);border-top:1px solid rgba(255,255,255,.05)">
-        <div style="width:50px;height:3px;background:rgba(0,0,0,.4);border-radius:0 0 3px 3px;margin:0 auto"></div>
-      </div>
-      <div style="background:linear-gradient(180deg,#1e1e2e,#141424);height:5px;width:90%;margin:0 auto;border-radius:0 0 16px 16px;border:1px solid rgba(255,255,255,.07);border-top:none;box-shadow:0 16px 50px rgba(0,0,0,.6),0 0 60px rgba(124,58,237,.04)"></div>
-      <div style="height:2px;background:linear-gradient(90deg,transparent,rgba(124,58,237,.12),transparent);width:75%;margin:3px auto 0;filter:blur(2px)"></div>
-    </div>
-  </div>
-</div>
-
-<!-- S7 AI ICEBREAKER -->
-<div class="slide" id="s7">
+<!-- S2 AI ICEBREAKER -->
+<div class="slide" id="s2">
   <div class="orb" style="width:500px;height:500px;background:var(--cyan);top:50%;right:-200px;transform:translateY(-50%);opacity:.07;animation-duration:18s"></div>
   <div class="orb" style="width:300px;height:300px;background:var(--purple);bottom:-100px;left:-60px;opacity:.1;animation-delay:-6s"></div>
 
@@ -1845,7 +1460,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
         </div>
         <div class="ice-email2-body">
           <div style="font-size:10px;color:var(--muted);margin-bottom:3px;font-weight:300">De : <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c1b2b5a0afa8b2ada0b281a5a4b7aeada4a0a5b2efa7b3">[email&#160;protected]</a></div>
-          <div style="font-size:12px;color:var(--muted2);font-weight:500;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">Objet : <span id="ice2-subj" style="transition:all .3s">Analyse personnalisation en cours…</span></div>
+          <div style="font-size:12px;color:var(--muted2);font-weight:500;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)">Objet : <span id="ice2-subj" style="transition:all .3s">Generer des leads qualifies</span></div>
           <div class="ice2-body-txt">
             <span id="ice2-hi" class="ice2-tok" style="transition:opacity .3s,color .3s">Bonjour,</span><br><br>
             <span id="ice2-brk" class="ice2-tok ice2-highlight">J'espere que vous allez bien.</span><br><br>
@@ -1914,6 +1529,413 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   </div>
 </div>
 
+<!-- S3 SERVICES -->
+<div class="slide" id="s3" style="padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);flex-direction:row;align-items:stretch">
+  <div class="orb" style="width:400px;height:400px;background:var(--purple);top:-80px;right:-80px;opacity:.12;animation-delay:-3s"></div>
+  <!-- Accent vertical bar -->
+  <div style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:55%;background:linear-gradient(180deg,var(--purple),var(--pink));border-radius:0 3px 3px 0;opacity:.7"></div>
+
+  <!-- LEFT: texte -->
+  <div class="sg" style="width:38%;padding:0 clamp(20px,3vw,40px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:16px;flex-shrink:0">
+    <div class="eyebrow">Services</div>
+    <h2 style="font-size:clamp(36px,4.5vw,62px)">De la data<br><span class="g">à la</span><br><span class="g">signature.</span></h2>
+    <p class="lead" style="font-size:13px">Nous gérons l'intégralité du tunnel commercial.<br><strong>Vous closez, on prospecte.</strong></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+      <div style="background:rgba(255,61,143,.06);border:1px solid rgba(255,61,143,.18);border-radius:100px;padding:5px 14px;font-size:10px;font-weight:600;color:var(--pink);letter-spacing:.5px">×8.3 ROI moyen</div>
+      <div style="background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.18);border-radius:100px;padding:5px 14px;font-size:10px;font-weight:600;color:var(--purple-l);letter-spacing:.5px">8–15 RDV / mois</div>
+    </div>
+  </div>
+
+  <!-- RIGHT: cards -->
+  <div class="sg" style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center;padding:0 clamp(30px,5vw,90px) 0 clamp(16px,2vw,32px)">
+    <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start">
+      <div class="ico" style="background:rgba(255,107,53,.1);flex-shrink:0">⚡</div>
+      <div><h3 style="margin-bottom:4px">Machine Outreach 2.0</h3>
+      <p style="margin-bottom:8px">Smartlead + LinkedIn + IA pour un ciblage d'une précision chirurgicale.</p>
+      <div class="fl"><div class="fi"><span class="fd" style="background:var(--orange)"></span>Ciblage ICP granulaire</div><div class="fi"><span class="fd" style="background:var(--orange)"></span>Prospection vidéo</div></div></div>
+    </div>
+    <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start;border-color:rgba(255,61,143,.14)">
+      <div class="ico" style="background:rgba(255,61,143,.1);flex-shrink:0">📅</div>
+      <div><h3 style="margin-bottom:4px">Prise de RDV Qualifiés</h3>
+      <p style="margin-bottom:8px">Zéro lead inutile. Uniquement des RDV confirmés dans votre calendrier.</p>
+      <div class="fl"><div class="fi"><span class="fd" style="background:var(--pink)"></span>Qualification rigoureuse</div><div class="fi"><span class="fd" style="background:var(--pink)"></span>Sync Calendly / HubSpot</div></div></div>
+    </div>
+    <div class="card" style="padding:20px;display:flex;gap:14px;align-items:flex-start;border-color:rgba(124,58,237,.14)">
+      <div class="ico" style="background:rgba(124,58,237,.1);flex-shrink:0">🤖</div>
+      <div><h3 style="margin-bottom:4px">Système Growth IA</h3>
+      <p style="margin-bottom:8px">L'IA personnalise chaque message à l'infini, sans effort de votre part.</p>
+      <div class="fl"><div class="fi"><span class="fd" style="background:var(--purple-l)"></span>AI Icebreaker</div><div class="fi"><span class="fd" style="background:var(--purple-l)"></span>Scraping multi-sources</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S4 PROCESS MOTION -->
+<div class="slide" id="s4">
+  <div class="orb" style="width:260px;height:260px;background:var(--cyan);bottom:-60px;right:60px;opacity:.1;animation-delay:-8s"></div>
+  <div class="sg" style="text-align:center;margin-bottom:22px;display:flex;flex-direction:column;align-items:center">
+    <div class="eyebrow"><span class="blink"></span>Notre process</div>
+    <h2>Simple. Rapide.<br><span class="g">Radical.</span></h2>
+    <p class="lead" style="margin:10px auto 0">Du premier appel au premier lead — <strong>en moins de 14 jours.</strong></p>
+  </div>
+  <!-- Numbered step cards -->
+  <div class="sg" style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(8px,1.2vw,14px);width:100%;max-width:min(900px,94vw)">
+    <div style="background:var(--surface);border:1px solid rgba(255,61,143,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--pink);box-shadow:0 0 14px var(--pink);margin-bottom:14px"></div>
+      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--pink);margin-bottom:8px">01 · Découverte</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Appel stratégique</div>
+      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">ICP, USP, Tone of Voice. On calibre le tir avant de tirer.</div>
+      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(255,61,143,.06);line-height:1;font-family:var(--display)">01</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid rgba(167,139,250,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--purple-l);box-shadow:0 0 14px var(--purple-l);margin-bottom:14px"></div>
+      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--purple-l);margin-bottom:8px">02 · Copywriting</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Rédaction séquences</div>
+      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">Messages orientés problème/solution. Vous validez, on envoie.</div>
+      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(167,139,250,.06);line-height:1;font-family:var(--display)">02</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid rgba(255,107,53,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 14px var(--orange);margin-bottom:14px"></div>
+      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--orange);margin-bottom:8px">03 · Data</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Sourcing & Ciblage</div>
+      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">Apollo, SalesNav. Seuls les prospects qualifiés entrent dans la machine.</div>
+      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(255,107,53,.06);line-height:1;font-family:var(--display)">03</div>
+    </div>
+    <div style="background:var(--surface);border:1px solid rgba(34,211,238,.18);border-radius:18px;padding:22px 18px;position:relative;overflow:hidden">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan);margin-bottom:14px"></div>
+      <div style="font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px">04 · Live</div>
+      <div style="font-family:var(--display);font-size:15px;font-weight:600;margin-bottom:6px;letter-spacing:-.2px">Lancement & Optimisation</div>
+      <div style="font-size:11.5px;color:var(--muted2);line-height:1.65;font-weight:300">A/B testing, reporting hebdo. Vous voyez les RDV tomber.</div>
+      <div style="position:absolute;bottom:-8px;right:6px;font-size:clamp(40px,5vw,64px);font-weight:800;color:rgba(34,211,238,.06);line-height:1;font-family:var(--display)">04</div>
+    </div>
+  </div>
+  <div class="sg" style="margin-top:18px">
+    <div style="background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.18);border-radius:100px;padding:8px 22px;display:inline-flex;align-items:center;gap:8px">
+      <span style="width:5px;height:5px;border-radius:50%;background:var(--green);display:inline-block;animation:bl 1.5s infinite;flex-shrink:0"></span>
+      <span style="font-size:11.5px;color:var(--green);font-weight:500;letter-spacing:.2px">Premier lead garanti en moins de 14 jours</span>
+    </div>
+  </div>
+</div>
+
+<!-- S5 FORMULES -->
+<div class="slide" id="s5">
+  <div class="orb" style="width:430px;height:430px;background:var(--purple);top:50%;left:50%;transform:translate(-50%,-50%);opacity:.09;animation-duration:20s"></div>
+  <div class="sg" style="text-align:center;margin-bottom:20px;display:flex;flex-direction:column;align-items:center">
+    <div class="eyebrow">Formules</div>
+    <h2>Choisissez votre<br><span class="g">vitesse de croissance.</span></h2>
+    <p class="lead" style="margin:10px auto 0">Offres transparentes. Résultats garantis ou 3 mois offerts.</p>
+  </div>
+  <div class="g3 sg" style="max-width:780px;align-items:start">
+    <div class="pc">
+      <span class="pp">🪨</span>
+      <div class="pn">Silver</div>
+      <div class="pa" style="color:var(--muted2)">800€</div>
+      <div class="pe">/ mois · min. 3 mois</div>
+      <div class="pl hl">10 RDV qualifiés / mois</div>
+      <div class="pl">4 000 contacts ciblés</div>
+      <div class="pl">Cold Email + LinkedIn</div>
+      <div class="pl">Copywriting inclus</div>
+      <div class="pl">Reporting hebdomadaire</div>
+      <div class="gar"><strong>Garantie</strong> — Moins de 30 RDV ? On continue gratuitement.</div>
+    </div>
+    <div class="pc feat">
+      <span class="pp">🪐</span>
+      <div class="pn">Gold</div>
+      <div class="pa" style="background:linear-gradient(90deg,var(--purple-l),var(--pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">1 200€</div>
+      <div class="pe">/ mois · min. 3 mois</div>
+      <div class="pl hl">20 RDV qualifiés / mois</div>
+      <div class="pl">8 000 contacts ciblés</div>
+      <div class="pl">Full Stack Multicanal</div>
+      <div class="pl">AI Icebreaker + Scoring</div>
+      <div class="pl">Account manager dédié</div>
+      <div class="gar"><strong>Garantie</strong> — Moins de 60 RDV ? On continue gratuitement.</div>
+    </div>
+    <div class="pc">
+      <span class="pp">🌍</span>
+      <div class="pn">Platinum</div>
+      <div class="pa" style="color:var(--orange)">2 000€</div>
+      <div class="pe">/ mois · min. 3 mois</div>
+      <div class="pl hl">40 RDV qualifiés / mois</div>
+      <div class="pl">18 000 contacts ciblés</div>
+      <div class="pl">Growth IA illimité</div>
+      <div class="pl">Multi-domaines + Vidéo</div>
+      <div class="pl">Intégration CRM complète</div>
+      <div class="gar"><strong>Garantie</strong> — Moins de 120 RDV ? On continue gratuitement.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 TEAM -->
+<div class="slide" id="s6" style="flex-direction:row;padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);align-items:stretch">
+  <div class="orb" style="width:300px;height:300px;background:var(--purple);top:40px;left:-60px;opacity:.1;animation-delay:-4s"></div>
+
+  <!-- LEFT: headline fort -->
+  <div class="sg" style="width:40%;padding:0 clamp(16px,2.5vw,36px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:14px;flex-shrink:0">
+    <div class="eyebrow">L'équipe</div>
+    <h2 style="font-size:clamp(36px,4.8vw,62px)">Fondateurs.<br>Pas des<br><span class="g">juniors.</span></h2>
+    <p class="lead" style="font-size:13px">Vous parlez directement aux créateurs du système. Pas d'intermédiaire, pas de perte en ligne.</p>
+  </div>
+
+  <!-- Separator -->
+  <div style="width:1px;background:rgba(255,255,255,.06);align-self:stretch;margin:20px 0;flex-shrink:0"></div>
+
+  <!-- RIGHT: stats + témoignages -->
+  <div class="sg" style="flex:1;padding:0 clamp(30px,5vw,90px) 0 clamp(16px,2vw,40px);display:flex;flex-direction:column;justify-content:center;gap:10px">
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
+        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--pink);letter-spacing:-1.5px;min-width:56px">×8.3</div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--white)">ROI moyen</div><div style="font-size:10.5px;color:var(--muted)">sur 90 jours d'engagement</div></div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
+        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--purple-l);letter-spacing:-1.5px;min-width:56px">+150</div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--white)">CEOs clients actifs</div><div style="font-size:10.5px;color:var(--muted)">en 2024, tous secteurs</div></div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:16px">
+        <div style="font-family:var(--display);font-size:28px;font-weight:800;color:var(--cyan);letter-spacing:-1.5px;min-width:56px">30%</div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--white)">Taux de réponse</div><div style="font-size:10.5px;color:var(--muted)">vs 2% marché</div></div>
+      </div>
+    </div>
+    <div id="team-grid" style="display:none"></div>
+  </div>
+</div>
+
+<!-- S7 VIDEO -->
+<div class="slide" id="s7">
+  <div class="orb" style="width:450px;height:450px;background:var(--pink);top:-120px;right:-100px;opacity:.1;animation-delay:-5s"></div>
+  <div class="orb" style="width:300px;height:300px;background:var(--purple);bottom:-80px;left:-60px;opacity:.09;animation-delay:-11s"></div>
+
+  <!-- Header -->
+  <div class="sg" style="text-align:center;margin-bottom:28px;display:flex;flex-direction:column;align-items:center;z-index:1">
+    <div class="eyebrow"><span class="blink"></span>Service additionnel</div>
+    <h2>Prospection <span class="g">en Vidéo.</span></h2>
+    <p class="lead" style="margin:8px auto 0;text-align:center;font-size:13px">Humaniser la prospection avec des formats video personnalisés.<br>Cliquez sur une carte pour voir l'aperçu.</p>
+  </div>
+
+  <!-- 3 interactive cards -->
+  <div class="vg3 sg">
+
+    <!-- CARD 1: GIF email -->
+    <div class="vpcard" id="vpc0" onclick="selectVpc(0)">
+      <div class="vpcard-inner">
+        <!-- Front -->
+        <div class="vpcard-face vpcard-front">
+          <div class="vpc-preview vpc-gif-preview">
+            <!-- Email mockup with animated GIF -->
+            <div class="vpc-email-mock">
+              <div class="vpc-em-bar">
+                <div class="vpc-em-dot"></div><div class="vpc-em-dot"></div><div class="vpc-em-dot"></div>
+                <div style="flex:1;height:4px;background:rgba(255,255,255,.06);border-radius:2px;margin-left:8px"></div>
+              </div>
+              <div class="vpc-em-body">
+                <div class="vpc-em-line" style="width:55%;opacity:.4"></div>
+                <div class="vpc-em-line" style="width:70%;opacity:.3;margin-top:4px"></div>
+                <div class="vpc-gif-box">
+                  <div class="vpc-gif-person"></div>
+                  <div class="vpc-gif-bars">
+                    <div class="vpc-gif-bar" style="--d:0s;--h:60%"></div>
+                    <div class="vpc-gif-bar" style="--d:.12s;--h:85%"></div>
+                    <div class="vpc-gif-bar" style="--d:.24s;--h:45%"></div>
+                    <div class="vpc-gif-bar" style="--d:.36s;--h:75%"></div>
+                    <div class="vpc-gif-bar" style="--d:.08s;--h:55%"></div>
+                  </div>
+                  <div class="vpc-gif-label">GIF · Click to play</div>
+                </div>
+                <div class="vpc-em-line" style="width:80%;opacity:.2;margin-top:6px"></div>
+                <div class="vpc-em-line" style="width:45%;opacity:.15;margin-top:3px"></div>
+              </div>
+            </div>
+            <div class="vpc-tag" style="background:rgba(255,107,53,.15);border-color:rgba(255,107,53,.3);color:var(--orange)">GIF animé</div>
+          </div>
+          <div class="vpc-info">
+            <div class="vpc-num" style="color:var(--orange)">01</div>
+            <div class="vpc-title">GIF dans les mails</div>
+            <div class="vpc-desc">Un GIF animé personnalisé intégré dans vos séquences email. Capte l'attention avant même la lecture.</div>
+            <div class="vpc-cta">Voir l'aperçu <span>→</span></div>
+          </div>
+        </div>
+        <!-- Back / expanded -->
+        <div class="vpcard-face vpcard-back">
+          <div class="vpb-title" style="color:var(--orange)">GIF dans les mails</div>
+          <div class="vpc-email-full">
+            <div class="vef-hdr">
+              <div style="font-size:9px;color:rgba(255,255,255,.3)">De : <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4a393e2b242339262b390a2e2f3c25262f2b2e39642c38">[email&#160;protected]</a></div>
+              <div style="font-size:10px;color:rgba(255,255,255,.6);font-weight:500;margin-top:2px">Objet : Une question rapide — en vidéo</div>
+            </div>
+            <div class="vef-body">
+              <div class="vef-txt">Bonjour,<br><br>J'ai créé une courte vidéo pour vous — moins de 60 secondes ↓</div>
+              <div class="vpc-gif-large">
+                <div class="vgl-person"></div>
+                <div class="vgl-bars">
+                  <div class="vgl-bar" style="--d:0s"></div>
+                  <div class="vgl-bar" style="--d:.1s"></div>
+                  <div class="vgl-bar" style="--d:.2s"></div>
+                  <div class="vgl-bar" style="--d:.3s"></div>
+                  <div class="vgl-bar" style="--d:.15s"></div>
+                  <div class="vgl-bar" style="--d:.05s"></div>
+                </div>
+                <div class="vgl-overlay">
+                  <div class="vgl-play"><svg viewBox="0 0 24 24" width="16" fill="white"><polygon points="5 3 19 12 5 21"/></svg></div>
+                  <div class="vgl-dur">0:47</div>
+                </div>
+              </div>
+              <div class="vef-txt" style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.4)">Disponible 20 min cette semaine ?</div>
+            </div>
+          </div>
+          <div class="vpb-stats">
+            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--orange)">+42%</div><div class="vpb-sl">Taux d'ouverture</div></div>
+            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--orange)">+3x</div><div class="vpb-sl">Clics vs texte</div></div>
+          </div>
+          <div class="vpb-close" onclick="selectVpc(-1);event.stopPropagation()">Fermer ×</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2: Face caméra -->
+    <div class="vpcard" id="vpc1" onclick="selectVpc(1)">
+      <div class="vpcard-inner">
+        <div class="vpcard-face vpcard-front">
+          <div class="vpc-preview vpc-cam-preview">
+            <div class="vpc-player">
+              <div class="vpc-player-face">
+                <div class="vpc-face-circle">
+                  <div class="vpc-face-inner"></div>
+                </div>
+                <div class="vpc-face-wave">
+                  <div class="vpc-fw-bar" style="--d:0s"></div>
+                  <div class="vpc-fw-bar" style="--d:.08s"></div>
+                  <div class="vpc-fw-bar" style="--d:.16s"></div>
+                  <div class="vpc-fw-bar" style="--d:.24s"></div>
+                  <div class="vpc-fw-bar" style="--d:.32s"></div>
+                </div>
+              </div>
+              <div class="vpc-player-overlay">
+                <div class="vpc-play-btn" style="background:var(--pink)">
+                  <svg viewBox="0 0 24 24" width="14" fill="white"><polygon points="5 3 19 12 5 21"/></svg>
+                </div>
+              </div>
+              <div class="vpc-personname" style="font-size:7px;color:rgba(255,255,255,.6);font-style:italic">Un message humain, pas un template</div>
+              <div class="vpc-timeline">
+                <div class="vpc-tl-fill" style="background:var(--pink)"></div>
+              </div>
+            </div>
+            <div class="vpc-tag" style="background:rgba(255,61,143,.15);border-color:rgba(255,61,143,.3);color:var(--pink)">Face caméra</div>
+          </div>
+          <div class="vpc-info">
+            <div class="vpc-num" style="color:var(--pink)">02</div>
+            <div class="vpc-title">Vidéo face caméra</div>
+            <div class="vpc-desc">Votre commercial à l'écran, salutation personnalisée, script rédigé par nos copywriters.</div>
+            <div class="vpc-cta">Voir l'aperçu <span>→</span></div>
+          </div>
+        </div>
+        <div class="vpcard-face vpcard-back">
+          <div class="vpb-title" style="color:var(--pink)">Vidéo face caméra</div>
+          <div class="vpc-email-full">
+            <div class="vef-hdr">
+              <div style="font-size:9px;color:rgba(255,255,255,.3)">De : <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="017275606f68726d6072416564776e6d646065722f6773">[email&#160;protected]</a></div>
+              <div style="font-size:10px;color:rgba(255,255,255,.6);font-weight:500;margin-top:2px">Objet : J'ai enregistré quelque chose pour vous</div>
+            </div>
+            <div class="vef-body">
+              <div class="vef-txt">Bonjour,<br><br>Plutôt qu'un email de plus, j'ai préféré vous enregistrer une courte vidéo. 60 secondes, pas de script corporate ↓</div>
+              <div class="vpc-gif-large" style="background:rgba(255,61,143,.06);border-color:rgba(255,61,143,.15);height:68px">
+                <div class="vlp-vid-face" style="flex-shrink:0">
+                  <div class="vlp-face-c" style="width:20px;height:20px"></div>
+                  <div class="vlp-face-body" style="width:16px;height:12px"></div>
+                </div>
+                <div class="vgl-bars" style="flex:1;margin:0 8px">
+                  <div class="vgl-bar" style="--d:0s;background:var(--pink)"></div>
+                  <div class="vgl-bar" style="--d:.1s;background:var(--pink)"></div>
+                  <div class="vgl-bar" style="--d:.2s;background:var(--pink)"></div>
+                  <div class="vgl-bar" style="--d:.3s;background:var(--pink)"></div>
+                  <div class="vgl-bar" style="--d:.15s;background:var(--pink)"></div>
+                </div>
+                <div class="vgl-overlay">
+                  <div class="vgl-play" style="background:rgba(255,61,143,.8)"><svg viewBox="0 0 24 24" width="14" fill="white"><polygon points="5 3 19 12 5 21"/></svg></div>
+                  <div class="vgl-dur">1:02</div>
+                </div>
+              </div>
+              <div class="vef-txt" style="margin-top:6px;font-size:10px;color:rgba(255,255,255,.35)">20 minutes suffisent pour voir si c'est pertinent pour vous.</div>
+            </div>
+          </div>
+          <div class="vpb-stats">
+            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--pink)">+68%</div><div class="vpb-sl">Taux de réponse</div></div>
+            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--pink)">x5</div><div class="vpb-sl">vs email texte</div></div>
+          </div>
+          <div class="vpb-close" onclick="selectVpc(-1);event.stopPropagation()">Fermer ×</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3: Landing page -->
+    <div class="vpcard" id="vpc2" onclick="selectVpc(2)">
+      <div class="vpcard-inner">
+        <div class="vpcard-face vpcard-front">
+          <div class="vpc-preview vpc-lp-preview">
+            <div class="vpc-lp-mini">
+              <div class="vlpm-bar">
+                <div style="width:40px;height:5px;background:var(--purple);border-radius:2px;opacity:.7"></div>
+                <div style="display:flex;gap:4px">
+                  <div style="width:18px;height:4px;background:rgba(255,255,255,.15);border-radius:1px"></div>
+                  <div style="width:18px;height:4px;background:rgba(255,255,255,.15);border-radius:1px"></div>
+                </div>
+              </div>
+              <div class="vlpm-hero" style="background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(167,139,250,.1))">
+                <div class="vlpm-h-title"></div>
+                <div class="vlpm-h-sub"></div>
+                <div class="vlpm-video">
+                  <svg viewBox="0 0 24 24" width="20" fill="rgba(167,139,250,.8)"><polygon points="5 3 19 12 5 21"/></svg>
+                </div>
+              </div>
+              <div class="vlpm-body">
+                <div class="vlpm-line"></div>
+                <div class="vlpm-line" style="width:70%"></div>
+                <div class="vlpm-btn" style="background:var(--purple)"></div>
+              </div>
+            </div>
+            <div class="vpc-tag" style="background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.3);color:var(--purple-l)">Landing page</div>
+          </div>
+          <div class="vpc-info">
+            <div class="vpc-num" style="color:var(--purple-l)">03</div>
+            <div class="vpc-title">Landing page vidéo</div>
+            <div class="vpc-desc">Page aux couleurs de votre client avec vidéo hébergée, copywriting et prise de RDV intégrée.</div>
+            <div class="vpc-cta">Voir l'aperçu <span>→</span></div>
+          </div>
+        </div>
+        <div class="vpcard-face vpcard-back">
+          <div class="vpb-title" style="color:var(--purple-l)">Landing page vidéo</div>
+          <div class="vpc-lp-mock purple">
+            <div class="vlp-hdr" style="border-color:rgba(124,58,237,.3)">
+              <div class="vlp-logo" style="background:rgba(124,58,237,.3)"></div>
+              <div style="font-size:8px;color:rgba(255,255,255,.4)">Charte graphique de votre client</div>
+            </div>
+            <div class="vlp-video">
+              <div class="vlp-vid-inner promo">
+                <div class="vlp-promo-content">
+                  <div style="font-size:8px;font-weight:700;color:var(--purple-l);letter-spacing:1px;text-transform:uppercase">Aux couleurs de</div>
+                  <div style="font-size:10px;font-weight:600;color:white;margin:2px 0">Votre client</div>
+                </div>
+                <div class="vlp-vid-play" style="border-color:var(--purple-l)">
+                  <svg viewBox="0 0 24 24" width="18" fill="var(--purple-l)"><polygon points="5 3 19 12 5 21"/></svg>
+                </div>
+              </div>
+            </div>
+            <div class="vlp-cta" style="background:var(--purple)">Réserver un créneau →</div>
+            <div style="display:flex;justify-content:center;gap:16px;margin-top:6px">
+              <div class="vlp-slot">Lundi 11h</div>
+              <div class="vlp-slot">Mercredi 15h</div>
+              <div class="vlp-slot">Vendredi 9h</div>
+            </div>
+          </div>
+          <div class="vpb-stats">
+            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--purple-l)">+85%</div><div class="vpb-sl">Conversion RDV</div></div>
+            <div class="vpb-stat"><div class="vpb-sv" style="color:var(--purple-l)">x7</div><div class="vpb-sl">vs lien Calendly brut</div></div>
+          </div>
+          <div class="vpb-close" onclick="selectVpc(-1);event.stopPropagation()">Fermer ×</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- S8 MISE EN PLACE -->
 <div class="slide" id="s8" style="padding:clamp(70px,8vh,100px) clamp(30px,5vw,60px) clamp(40px,5vh,60px);justify-content:flex-start">
   <div class="orb" style="width:500px;height:500px;background:var(--purple);bottom:-200px;right:-150px;opacity:.12;animation-duration:16s"></div>
@@ -1944,21 +1966,25 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <span style="font-size:11.5px;color:var(--muted2);font-weight:400">Lun – Ven · 9h – 19h</span>
       </div>
-      <!-- CTA Calendly -->
-      <button onclick="window.open('https://calendly.com/devoleads','_blank')" style="
-        display:flex;align-items:center;justify-content:center;gap:8px;
-        padding:13px 22px;border-radius:100px;
-        background:linear-gradient(135deg,var(--purple),var(--pink));
-        border:none;cursor:pointer;width:100%;margin-top:4px;
-        font-size:13px;font-weight:700;color:#fff;
-        letter-spacing:.3px;font-family:inherit;
-        box-shadow:0 6px 24px rgba(124,58,237,.4);
-        transition:transform .2s,box-shadow .2s;
-      " onmouseover="this.style.transform='scale(1.03)'"
-         onmouseout="this.style.transform=''">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        Réserver un appel
-      </button>
+    </div>
+  </div>
+
+    <!-- CTA CALENDLY PRINCIPAL -->
+  <div class="sg" style="text-align:center;margin-bottom:24px">
+    <button onclick="window.open('https://calendly.com/devoleads/point-devoleads','_blank')" style="
+      display:inline-flex;align-items:center;gap:10px;padding:16px 38px;
+      border-radius:100px;background:linear-gradient(135deg,var(--purple),var(--pink));
+      border:none;cursor:pointer;font-size:15px;font-weight:700;color:#fff;font-family:inherit;
+      box-shadow:0 12px 40px rgba(124,58,237,.45);transition:transform .2s;"
+      onmouseover="this.style.transform='scale(1.04)'"
+      onmouseout="this.style.transform=''">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Réserver mon créneau stratégique
+    </button>
+    <div style="margin-top:10px;display:flex;gap:10px;justify-content:center;font-size:10px;color:var(--muted)">
+      <span>⚡ Réponse sous 2h</span><span style="opacity:.3">·</span>
+      <span>🎯 30 min · Gratuit</span><span style="opacity:.3">·</span>
+      <span>🔒 Sans engagement</span>
     </div>
   </div>
 
@@ -2009,7 +2035,7 @@ const LOGO_B64   = "/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAA
 const STANIS_B64 = "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";
 const AMELIE_B64 = "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCADIAMgDAREAAhEBAxEB/8QAHQAAAQUBAQEBAAAAAAAAAAAABwMEBQYIAgkBAP/EAEgQAAEDAwMCAwYDBgEICgMBAAECAwQABREGEiEHMRNBUQgUImFxgTKRoRUjQlKxwRYJJENygpKi0RclM1NiY7LC4fA0k7Px/8QAGwEAAgMBAQEAAAAAAAAAAAAAAwQBAgUABgf/xAA1EQACAgEEAQIEBQIFBQEAAAAAAQIDEQQSITFBBRMiMlFhFEJxgbEjMwZSYpGhFTSCwfDR/9oADAMBAAIRAxEAPwDLV01xqrp5JiNyimZBeaSUe8HduIA34UOe5866yuDk0i9UpOGZfVln0r15tyZJdD0rT81e3e4yrLa8HI3DsR9RSUtN9AyeOjU/SL2i7NE1A1c5iW3W1ICFuxAFkpxzxnIzx+VJzqcF1krJccEtpK4Wq4S2nLe8Ftu3OGXd2dwUVO4yD/s/nXJPbJP/ACsboXKBZ0DNwc6/dYoEpWz/ADSeHHjzgCUg/wBKaeFQmCk5O1I0pp4NI0slj3hkLC3mkJbVyAFI8vLyP3+dZ1mWkw8WlIDHtGSVNIjOZB8WdazjzP7xQz+lF0vDf6P+Ako71n6Emy+5Bg3LaUKww2EpcGQB46uMeZzS65ii/TMSda7hPsvVy8y4r64zyVp+NpWD29PSn9FCNmmUZLK5L6y1w1DcXh4X8D3SXW1bZS1d2txPHvLAwfun/lS93p67rHKfUPFgadAa2tMW3LbjPJfiOureLqF5KVKOTkeVJ7pwe2aLW6eNuZ1ssz/U3TsZWz9pNuHPJRlQHyz2phQb5wZvtyJW1avtl2AEWW04r+UK5/KqtNEODRPsuhXY5zVWDHeiVHwp6vWW5/Wpn4KstTSxuz2x2oRAuHM+dSioqHCTnPbtUnC4cxjnIqSUOo7mRz2qDsHa1hRH/wBxXHH5JzgA8VU4+lfnjHoK4g4WsD4e5NcTgRdWRwBz61JODH0fpnbes0q3WmXJfiOQoE2Ql2PtyVJSkpBBHIyOe3yNeo1EvbjKxd8fwL6KpXSVbfDb/kzf1B0odC6wuljL5le5PeGHijZvGAc4z86pXP3IKX1CX1ezZKvPQ1sLt1C1LtbjwebG4hhXxYHnjzq0nFdg4QnPO1dBG0V1b1lFf/dwpF0XGHiFbKFJebA/iyn09aVtdMPnklkYp0992XVBvH0QQelXtD2jTWvZmqVLkpu0+O7HlomvHY94mMqKh3IIBGfSunVJx2roCp8ps0HF606Q1TZo7a1NxZavG3FSgEq3oQDhYOOSgdz5Ck5VyisFuJPOSE64XJu/xYSo7rL0eOba6dh3KUfHwCCDjHxH1oen4cs/f+BmW6KWPJIu3Zt1F5jKBT4KGkqK04GS/kEev4hz60KMfhTLuS3Myv1uk24dRNQRZUMuPkjEkKO4Hbxx2rR9OTenX7inqeVqW0vC/gGVp0y5LUt11C0MIOQrGPEHlimZ2JcLsJVU5Lcy0seOhKYrKhEhlG5ZbG3d9T5+lLYTe58jeWltjwj7Kgp2BxD/AIbROxtKe+BjnP1zz/8ANWygeGTmkobAloS1epIkbvhaYZC+f9YqGPzoFucdB4Y6bNCaSvEtlpDMp4S0gcOAp3j5KCVK/Os5y55RNlKfMGX3RDn/AFc8ofxyHVf8Zq0hBrks7bp5P2ofZAqh3B7+vbyqSGOEucj4u5riUhVL2z5VxUctSCOc1xYUD24jGfpUHCoWEjPdR8qg45D2DjuqoOPi1kE8/F581xIhvwCtR5qWQwM9BtMNu2abqAPYdjNvxAwQCFBbThJJ8vwdq2Na3u+2F/A56ZYopVNc785899BVuPSDSOsLJpy4XazR7gtchbbzMlAWlQKnFZ9Qc+h868l6zqrtLofcpk4vK6NWuqFutnGaysAU6j6Mstq6q2FVmt0C07oQjCJCjJaAIeTtXwOSckZPNPelaq3VaGM7pZeXyVdEKNTbGC4UTUPXCx2uPpaCpq1xG5KnWmg+mOkOYO/eN+M4OBkZoPq/9iP6oZ/wxJ/i58/kkeYHtB6diWLqJPjWmGmPBQ+8hLcdJ8NBDywEj6DHFes0zk4ts8VzvkmUzTsHUMiYhi0synH1qCUtNd1HyGPOmJOKWWXSfgJcIdR9O2ZE6VY5wty3Nu5n8W5PIJQCe2Dzjypd+1Pphd0ovDLv0/8AaESLir9qMuSS62ll042q+FYVkjsTxjypadCjHhhoy3vojNZvWW8dUtQmfGcW2tCHUYSnKcgEJ+44/OhaSTr0yx3lhtdQ7tS+eML+BO2WJ+5y0phwsICQlLafwoHoBQ5TxzJmhCvCUY+C6xvZ/ud5tuGUBlKx/pBg0u9ZGLGFpJSILUPsy6hZhjwllZ9U5wKJDXVt8kT0MscMG976eas0eSfDdQyjhSmDhR+ee9Ow1FNnkSs0t1fjgt3T2ddLu0pMe6vuymU7vCWvccfRVBuUV2uDq8+OwpWDqpc4FudimNFdnDIZddKkNqUO4XjkH5/nSexQkueC9latWY9lavHtBa7hOraFqtUVSTggocXg/wC8K0I0VNZyZTUk8FUne0F1EeUQm4RYgzwGIaOP97NG9ir6EYbIOb1h6iTUkHVc1rj/AEQS3/QURVVr8pG1/UtHT72mNWaUWiNfkHUlvzy4s7ZKB8l/xff86DZp4T+XglKSNOaC6sac1/HH7JnpEraCuFI/dvp/2T3+oyKz51Sh2jsl1ZWQrHagsliqlnbgHAqCD42SeAfPua5lsnX4BwSVfWq9kiSkKUnOR9Cal8EFC0DEi2bTU+3NRJPhPJRJZdbysKdEWQpSTjkZzwKfzO+OZPnoLDZRdGXhPP8AyEPSGrLZdNNWWC1MaMxh5a3WN2Fox4h5BwfI15f/ABBp7JaFwhHLyuufJtaTUVy1k7M4TXkC+t7edRdcbA+0p1DFvQ2FLDeUKJfGEk+tPejxdPp8ISWHyTfYnqLZLnKNHe0JLWxo61IQcuKnJ2jHmQv/AJip9TW6uEf9SC/4e+G66f0hI88eqrzbltvbySFA3NThUnsSV5JH516+j+y/1PE6pKPqCX+lCfR+5MQNN3aa+hO5S0oZJAyP3oJNKXJtpGjF+TQ2iZ0W9aIhSHADKYkPhskE9gsnny4UazpZimg81mYMemmh4l21Rre23y3MR5Vud/aDEhlI8UhRCkAnnKSFDIomreNOpxZbRzf4pQfQnrjRET/Esm6IDqnpEhLZSeE5SCAB9qV0037EUauoivxEmHfpdoKLBtbch1AcfIGAOyay9Rc28I1NPUkssK0KzpcQE8JFKRi5MclJRHP7GCRtzuBo/tsX90p2sNDR5wcK2knPliq/FDoPCSmsMyr1X0E506usfUVoy0WXQp1LY/hzzW1pdR76dUzH1ml9p+9WTF9s6JT0W5R0FCZ7SXHEeXb+oPb5fahxm8OD8A3DlSXkhJkE3FgrcSS41+6cz3OPwn8uPtTOnm1Lb4E9VXHZuxyVK5WJIJ2p/StVMyckFItmzPw1bJZDB2Ak+qT8qnJxXLw1OiXNiTDlONvNDKHGlFC0kc8EUSOGuQM85C7029rzUWlPCg6mZVfoKSEl/hMpA9c9l/f86Ws0sZ8x4KqTXDNV9PurWlepkbxLFcm3nwMriPHY+j6oPP3GRWVZVOt8oKmmi5pAIGV/ZNCZx2AE9uflVSxwptaz3KR9ak5sy1oj2k4FtiLionR5CVnID6i0ofultgc4zws+flWz7DisRRV2KXMkXfTvV7Ts2RbnbnBbk+7eOoONhLiQVtrTkef8QHftVZRklgjEW+HgkLTqzTTl1mNw3BbWpaQy2tv4FIHihRIJ5B5JH3pR1z3Jv6jPG3CYaOo6GdVWJt6JdUu+AhLjSVqCwlaUK+Icjk5+nyo9tNVySmugWm1F+lcnU8ZTT/QxB1p0TL05om4SQ77xHclN5cDeMbkIUD3470/U3FbPAhdH3tQruuEv9gcaNlhOmZDAO0KAzz57u9Vn2Pw+U0j0jujP+CWGQoOPmS8hLIUApZyrJGfQEVmWLOQssqSYvppST1Y1222SF+4xcntkBpv/AJUPUf8AZr9y+m51q/b+SB1xeFsX1CEj4Gn1PLGc527uflyRSenX9BI27V/XbNMdPIxGnYCnFAlTSVKPqSM1kyXxM184iki9Q2AtJxjFFggE5DjwSgpA5pjAtnkhNQNlbmweQJoFqG6OgOdVrE3dbJLZdSCC2aHTJwmmO2RU4NMF7zqo2grI8UkFhlKVYP4k9h/Q1o92SMNrCSGN6gB22vSWFnwn2UqUW1YPcc/kf0olEvjSYHUxzW2C64G4Q3FoTNWvacDeAoEVvRw0eeaIp+5zkZ3IZd+xTRFgqMnbwQPjjKT/AKqganBORi7JYlOhISoL8gUnNd0R2xY2i0zGnROkNxVgDYVK2nzzUKT/ACkSX1Ko9HcstxQ/a7jl5pW5t6KsocT8wRz+VGTUuGgOMdBy6Ze2PftMFqFquP8A4ggD4fek4RKQPmey/vg/Ok7dJGfMOGSpPyax0B1W0z1Nhe8afuzElxIyuKs7H2/9ZB5+4yPnWVZTOt/EgylnotpQvg54+tBLMxL1A6CLv/TXSN90pZYzUhuFJkXZxLobK0oXgKwTgkc9q2qbsNqbHPUKY16iSgsIzzC958Ue6qcSsf8AdKKTT7x5MpZL7pKydRNQS24tnblTHVdkOuIIP+8aFKVceycNEnftba56W3+TYb9HES4xwnxowdwUhQBGdiinsRXKMJrKO3OI0uPWoajsTtlu7Mr3B1YcWht0K+IAAHJ54wOPlVtmOUTlPshYU2xso2Qrs9HbJyWpLXJ57ZqHFvtFlLHAb9LdZbSwx8UdkOmQt0e6qG1OR3xWfZp5NPHkcjZDKz4LNpPV+nntS3G6e8Jjy5sRLbgUNu9QwPzxSOqrtdHt4HNKq46hWZK7rgPr1ygx1bkyQ4hKEjPiblAEZ+XegUcU8+DVsi5WOSNF3NhqBpxh2Xc5MGFHbCdsdewHA7qNZ0HmWEuTRksLLBMz1WbZvATZNa3NJWspwpsOtjz5PpxWsqJqGZQMz36pT2qRovp3qufd7G4udIbkyGU5LiU7d49cVmuWG0OSrXGAadRupl0jTnvdLzFtjQUB4jzW/wC1Xqh7j5jkvY41R7wUlN+uV9hys6vg3BwA8IZHfzBFEnWoPmGCtVvuJ7Z5GOooTkDT8Rp4pIRHbQ6E8gd8kf8A7AamLzLIpLyiM064gackQ5C8eGS1k84yePsa5vbapIrKO+rANtWPRrbclsPOBsnlBIOCPrW5XNSWUYNlUosrb8yK6DtkNk/6wo6ANMjnsKztKT9DVyh3Yo/jXZnjtk/pQr3itsNUszREa4Ti4pT6VGm+U7U9laU35jvToidhPip/eDd/4h3/APmuOPsV+ZZpbc2BJdiSGjuRIjrKFpP1HIqWlLhkddGhemfto3ywpZhaui/tyEkhPvzBCJKR8x+Ff6H50jbo4y5hwXU2uw/dImYl46R2tqTu8N2LcYh2fykFas/YVnybSeD0vqcUtXz5wDeV0E0ZGiGTHtL0V9Taz+6kKKQQT659O1eMh65rVNwck8fY9NL0XRtJqOM/cJHQ612TQ+qw2u0sXEOOsx0CUlKi3ve2FQOO/mPlWnT6xZbOELIr4jG1Polca5WQk/hWQAdbtNRtR9epzt8S8t1+BDdcbDmCtxQQg5P6/avU+9KuKUfLZ5yrTxsjKT8Ftv3s66PZ0fcE2+1j31tlEpEt55S3NpCwUjBx32eVW0+olZbGE+mDlXGK3IG/Tjo3a9aB2ElhLr6i6lJC8KC0pynBHkQe3qKPOyUHyFvqhGUlHpELrzoU7ausH+ELGMeMGjHTJd+I7kg8qx86NG1bczFI0TsUnX4WT9pnp5erfMjSJKFm3uy1wkOJdBJeRncnbnI7H8qX1E3GLcPpkPo9s57ZmhLJZRJ1XbWylC1NiSsBQyUlIbA/U5rzuf6WT1+nx7so/Y0BbbfHuNsMWTGRIQrIwtIUMfekYv4uByUU1yQDfRa0w5JeVFbSwTkJQwgf2rRd1mMMzvYgnlEu3BFrjuojJDDfhbEhIA+EDApByzI0IRWMMp9n0TbdXNPQ5rLKpLZJSXE5ChnJ++QKapscH8LFdTUp/Msobz+h9isRMxyC0l9tKtq2tySM/ept1Fj4bIp01a5giiXh9uUyGlNhbZTsVgcnjaR9fOr1rMRS9e3YVdu1Px4twZQnxXPCyny3gfEhQ/L+tdvW5ZJlF7HgCwuD19YuDE9Kg5C/exlrPxbVYyk+o5B+1bThGGHHyYkbJTbUvAKH3lh9zClJwTxmtRJYMhyeTlM19H4XVfnXbURvkXXpw4/Lujbi3VKA3cE8djSGrwo4NHS/E8sS6iOqauqduM486tpeYFNV8xVhLWTyAadwIi4nhlICkfkajsnoXiLXOKvd2ipSe4BGa7o5c9CE5gR1hL7amFkZGexqUQ0b96IMqtuibJbn3WRKkXCWlltDmFKCo6kKODjsf7Viyg4rL6PRa/VVaq5Sq8JIdyYCptl3p2EhbiCUk7RkHOB/tV8tsjKF8lh4PoNUk6o8+BnppSoWoA8UeGjxY74KTnOHAcj5AE0/TFq2p48id7TpsWecMDHW6f7z7RkrYsKAaiNoA9ApPFfRJrEE/wBf4Z4LTvMJr/7tB0sCn3zbm5Skux32VxVc5Hw9hzwex7UpGW2cZIFJZjJAL6Crc0dr+4xFhSVQLrtB7YTvUP7D869B6g05Ka8iOn5Uol11+0lz2idHXLxCC+4ELUscgtvKGCfXAApB/L+5paHlWr/SzrQLv7S0Bcn3GkrUbxJdSs921+M12z8lEcVXW/Cv/Ez9Bzcv1JaLd29L6wRfnyBFhNyCpAGN5XyQPmcADNYMHviq/qexxscrPoGzRGqody05CuCNyG5TYeQFjkBQyAfnzScouE2maCfuRUo9De/6zl3iczZbYstFwkuvDulA7/n2ppTyuSjrjH4mfUaii2duS1cYLzCW0YStawoOcdwKqors7OemUbSepHH7tKlxG3Y4SrIQ72WPSpa2hJYmi96h1TGn2wKUsALTgg9xS05OTJqr2gEsS/2zru42xtJWyOUE+Rzg4/P9K0I/BSpGXqEpXNBHl6NUw0l/ZhY+FQH8BIz/AGNZs58hq8bcGW+p+nWdK3qdIZQWUXJvelvyQUnCh+Yz969Lp7XZBJ+DBtrULG15A1Isu1pLoWdiu2QPyrXi2Y8opMdq0vHSw2feMKUgKJKBjJHbvVstkOKJ/p00hF0eSkcNhfI7HsKztXnA9pcYZCdQleJe8eWOKY0yxAX1PMiJjWuP7qzIky/A8UqCUhsqzjvTfPgUwl2duQrYsH/rFfH/AJBrlkh4ZzFTbYjyXG7g+Fp7FLNS8kcIcXCTa7q+hbkmQFAbQEtD1+tcsoltM2/pHX2mbi1pb3lSY8i1zw4VSCEcFWSQc/hxWfKMnFrA7KqNbUt6efp/7H6dSacltyIonOulyUVHw3twwoJ3KTg8Y29/Sk1bCEdsoPP6Df4edj3xsX+5B2C2WxqQpaTIYd9yAclOuHBWnwxuPPJIB8qNG6qfGP8AgHOi2C3bl/uBvqTGZa9oEKQp1yC8WwJCQpQGVHnd5ds060pJN9C0JSjGUF2w4QihqQUi/teGzNWU/CAspUCpPxA84UQMY+uaA4VLop/V8kFqgQGLpHW1co7kxLCvFAWnedziVbjg8c54+dCkpZeVxwGqXH35ENfPIm37SV4alNeO2+XeVD/tQjcoEehI4A9aMo5jgmqyVMpYXj+RTp34w0E/HjvRZKHbg+6SkkkAuMqxx58n8qHqdtkHL6IDpYypvUX9QpyunovVjnRkbFOy2lPRVq7JeTztP3GMfKvLqThOMvoeq37ouJAdIbvJumkWYlyAZuUZ1xiS2lOwIUFHsPIYIomqS9xyj0x7SNqpRl2hC+sah05rCNLjSy1YjIS3NcjtpL4bxkKSVccen60xpo12Qw+yNQ7VzWs/YK8zRTGqIaXoes2XYxWkIFyg5UAc5IUMZxx8uaY9tJcmb+OUXiVYHOqa7hotuFBsdxNzucl5KDmF4MZCeNx3HBPn2qsaoybc+hmvUWXPFUMElJjPt22NIuCgF+GFOJHGSAM4+/FZUsbng2Iy+HkkumulmbfcIq1I33R9vxXSRwyFKUoD68ii2ScsJdGRPzJhcl2pJt9yOBgLTgHnJz/80tKPAGNnxIxv7TNr93ixZoyrxn1hP/hyBkD7jNbHp888MX1cdvKM5Xh9TcaC3lJSU5BR9hzXp0lg81Nvciadcje7tpOdwQMknzwKhFmddO0h9c/J/Eg9lEdz6jml7Xicch6v7bwVzWDqjNZQsYUhHPxZOcnv86Zjz0Kz4fIwua/DgWxODnw1K5+av/iroE2RninBHrVkVZyK4gWjnY82sjKUqBI9cVxZdljOpNRMx/HMp8Mfz8EUNOLeA8qrIx3NcH23dRtSW2Ul+JcnW3wCApKUk8/arOKfYLP0LMevHUqREMdd4lPMgAbFRUKTgdv4ar7cPodljK6dYtcSraqDOnue5urCy2uMhAUoeedoqVXHtHZZAHX964HjoPPGWxVtqOyd/wCL7zJ7/ET/ACtcmqvASKm+kKKvt6Q1vcbdS0k/iU2oJST/AEqrw+iz3R7Lr0xk3G56ggtLkKaiB4OuIQSEkDk8Z+VJaizZFjlFW9pm3+l0y4PaVuz0hCi1GnB5kkfwrOF4P615i5LbFm3H+44g/wBaT3tDawVeorKn4E0AymUD4iB/GkeZHOR5ioqxbFwb5XQ9udbU115CVpO5W3V1pU9HcRMZdSMjOdyfX61RKVbw+BtSziUTtWgWWytUKQ9GQediFbcfcU9G2TXJ0pKT+KOSpXLSkaLdBLccckvN8lx9ZITj60Cy2XQdNbcJYRVJ2r277c1MRj4zbJAISc8A8D7mhOvassXdi+VBp6cWgpecku5LuUhR+e0Af3ocn0jMsZbrtNSlExpCshPJI9e/9qHN+ClcXwzH/tUvN/4dWhsjDC0uBXpypKh9ea1PTV/UBa1/AY8kyCs7snGexr1sVg8tKWThUj92CHSSe4zjFXwVH9l1HIsLqnWA24pxO0hYJIFBsqViwwtdrreUdXGYm6zTIWnG9IOKrGOyOEXlLe8sa3l0BcZAzhDIH6mix6AyxkjwvzNXKizLbj5w2hS/9VOanDZVhDsPR68yksOXBhyBHeSFIWUbiokZAwOx+tZ89XBcR5ZrU+n2S5nwi2aZ6VuXhVusd8eXZxKU2VPISl1SEqOUkJzznI/OgbnG3KHbXGzTcFi6v9D7V0KuFjhNyRfW7uwp5ue8x4S2VA4wE5NOqTlFy+hl0OE3slH68mndH9K9PaE0jHbTEZvN3uVtfmRbltUPAdQDhBAUQRlJHzPFKu1t4YpKGec9FQ9snQl26r6F0PLt8dlu9wWlolwchohZxlIHYHlJ5PY0Sq1R7OVb5SMNat0XdtC3k2u9xTDmpQFqaK0r4JPmkkeVPxkpcoql9S09MdJxL7qqz2+atxaJrqW1ICgjAPorOfyq0ox258hpqcIKSYTXtHNSrJrS1wG3P2Wxdm2YbslRWopSpxKQo5ycApz9azspPJN02oKT54/9lp6EdLrnPuiG5mmFRWfibE3x1jJI8kkdu9Ia22pLanlmhpI3N7msI2JpyDHh2O4wWG8MNJDKcfxH4iT+deblLKZs4xNMDfX6L+xLTZ/CdCJSX0pQocnIGT/X8jR9LDMm31gvOzjH3Bzpe7StP3lU21ue6BaiVsp/7Pd58dsGmpcrDGoL6BFldS7yhtKkMNjjPCjihLgY3cA41/r+7XG2yGtwjoczv2d1fLNGrgnLLKWWPacdELOFxlOuHcd+9xX8vbA/Wh6uXxJC1Pyv6mm9OuiECwknIy4sk8nPasqUnuOcU1kRXJW5BWsHBkPqSPXA70NsIo4eDOntHaRmy9O3ZuHGXKU48V7EDK0k5Jx8vhHFbHp9sVYtzwJayqUq3tWTJdk0Y7ci+3KL0N1pWNjjZB/I17HesZjyeT2NcS4JRHTNJeUlU4lCWy4rDeD9jmodnBG0j3tFsMvBIddKdu7fgYz6Vym2W2ckHMaEaUppJJSj4cmu7O6GsiQ2+5laDkDaCFY4H2oyQFsVixY8o42upSO6twwP0qVEq5E5Dltw2g022kpH60wmorAJ8hLc68OxtCQ7QYy/fmFeH42cpU2O2c+Y7fasSzQr3nYumegr9SaoVb7RdZk0R9Qw1s4QplqGokknHDQ9fU1R14mvuUjPNDj9C7+2ehcnSPTy6/CXG3HGlKSn5A9/IU1Uu19jPpli1fqGuDqtu79H7G5tSkrsqkFSuAClbSyePPvSfktZHbJnOu5KXYy3UHep5xl0KT/DuQwcfp+tCiGh0zGvtaJ926uRnDtKkw2lYV2PHnWrT00L9STCb7M3ssau1bctP6vkxU2uztkSYy5JCFP7fwqSgAnbnzOM+VEvsahtr7GZbJpRn19jUWk/Z5sukDOXIcK5z0lUpxmQnLS1HnKa8zNzsbU3hrwaMNkEtkcr6+S4Li+5tJQ3DaiuZxlJOAnGSflxms+a8JYwNKW7lvIzscUN2zkYXKeUvB9O/wDT+tKSXAw38X6Ga+vt0kXLWlobP/48PxCtA7FZIOfngcfY1qabCgwbg9yYwtrMafCSGmktlscBPmKBLKZqQ6Q+dWuM3sXyBwFetT2c+Af6mPjScK5Scqx5cUzDgFNZQSOhlnS3pya6tQPiLbK1ehySQPyFLavtCtT5YVbJcRNanSQoq8QZCvuePtWTJYY5jhIeJaU6m2sjs3ycepNUaJTSyxG86abukpbqkFbaV/FjGT+dX2tclq7EuB850C09qq2KRcI7EfenCXEHc7k9sHPGK2tJGUfiUsGPrLYye1rJi3qhoG6dOtU3K2T20IRGC/AdSfgdbV+FQP0r0cJKUe+Tz8lhgreneI44jOCggDAJB49aPgrnkZRNNuXGLNuCI25qKkqfdPb4j8I58+OMfOh2TUcRzywtcHLMscIQl2O3uW5y4Pbgo5YQ2j4UpXtyFH186rCyaexFrK4NbmQ8eN4TKU9vWtVRMpsUiLQJYbWOD51aPzckPolJ0BYXCMcDeXByRkfepvSUMlqcueEFbWKZVsC7ihBWr3SKtAB5CQltRP8AwfrWWoqUk/oaG5qDj9QydalNdReg2k5LJS3/AJwhaFeLu2lSfPj/AO4qI5jPArW+XL6D7S8m4w+jlsiJSH3IZlRnULGN48NZGPTlKeTQ4xTm0wt08tS+omrUi5zNtS+6YyxEYJbS4dhUS2PvwkjmoqjFuSZducY/D5yTHTL2Z4vXXrErWGpPElaTtcWMgRnlE++SPDSdh/8AAPxKx3JA9aazhYQvHPbNvOMNw5EVtlCWmGmihDaBhKQNoAAHYAVQLngZXWM1PWlK07ljsofw0tdTCz5kMV2Sr6KRMtqnDcXw8rclCm0p+Z+EV52NKbbz5Nl24Sjg/X2F+xYcTH+gQNx9TjmhaqvZ0X08/czkyz1Lgpn6lmLOT4bil5T3UknIx9+K6mWDRceEQ1otMqGEjadwSSrHkCeB/WizaYauPA9kyHCnw0nIHGO9DQxgib3p1dzQ0AkhWCDgeRq8ZYZScMoJnSq0fsjR7sUk+Kp/cc+mTig3S3PJnKO1lk01E8OO+hI+EOKT+p/5mkpLPIy3jBZ7fCUqS2c8J54+mKmMHIFOaii92nTccp8aUhLjaxnZjzHrW1Tp045kZNt7TxEtNiaY/Z7aA0gBtSkg7fIE4rR00VsxjoQ1De/OTL3t+6ca/wAA22+tJ2Px5Pu6ikYCkLBIz9Cn9acrSUhZttGHdKdOtRaxbkv223rcjtZUqS45sRwOwzwT9M11uqpoaU5csJXprbcuK4JPp/IB0jrZhQz/AJk0+U+Z2uY/99C1Mczra+obTyxGeSmplM3DTU9lok+FIYdHyB3JP/qFNV1uNqyLW2xlW0iPDG5IxW0lwZLZDyipuZhPBSeKXlwwi6DV0eg6UkMR5WppznjiSER7e02cLxg7lqxjb9Kzdfq7YwddS/V//hr+n6WqU1ZbL9EK6tv7F4hsNpmNwW0xW46/EI3EpGD59jV4QeEwEppZWBSb1nhSNDW/RbkhqFao7yHFS4ilrdSEkn4e4HfyojhzuFV8LbFh14tFqsTltgO3i5qW54pWpKQCogpPfnBBPl51X2+clnPJWJvWS4vQ3Y8WzOI8VrwUvPuqykDsRgDkfWrKCTydvb4PTj2T7G5p32ftIIeQES5kX36RjzW6Svn7FI+1UfZYKM1f71kjtg/2qCUJJAz3waholFfdaZalLZcWlDZeSoqP1zWHCOJ7PuzTcntUvsLajjIkxFN4C3FpPfy+dTqoKawiNNNweTLOuLO7A1AXfDK9vCj5KR2P5VhxTjwz0kZqfJHpWLa6pl0cOp3Nrx+IeVHzuWRqrHQtbYLCl+IpKTn5VweRMGLHUtKUNjJGO1VKSfBJacIZmSI+cJdbCkA+qVDJ/I1WcfhMtvMi72ezj3R5xCeC8pQx271EK90cg7LMSSLDFtKW47L2QFOHbsPc05XThKQnO3LaLO2XvcQltIKs+flWlXGTWEIScc5ZN29hMSKG93CUgc+ZPenq4KEcIVnLc8mevbwC2+gs2QkAmLNivEEZG3xQD/Wr4+LBTOFkH1mdjomTIzDSGoxIcabQMJCFpCgAPLg14i5POX2e0qaceDJek4AsuqOp1pUrYhMCU2EnudryCB+VewlLfVVP7o8rCOy2yH6g4sDnh268pOQn3dCjj1DqMf1rSbxKLM5cxkhIT0oHC1EmnfcSFtpHyXi+sq7UGUssulg7bvEpkJCHSNvYg4oTin2FU5LphOj9FLhc03m6yXW48CGXX1o3HxFITyQngjOPWgV2xxGL84L6iEoOUuxG49JGZMy3Q7KuQ9JlMl8iStO1KQeeycntRbZ+1NxfgBp/69Cv6ELBoFuTLWw9FZkqbDhKI0rY4dgysJCgASPSi54FnJyWYSLhpXU0SDrDT+mrfGeNpXIQHBcEJdcWVqIUN3kkcY4z3oM4trJTTQdj9yT5PVvS8YWrS9piITtSxEaaCfTCAMVRdGjnLH7qw8psg9j/AGq2CRs6+ELAqCUQU3P7YKANynAkjPbGayLFtv8A1NCHNXJItW3wkPqU74m7G1HkmnXUkhffyBDqNNaj6+btcpsJamxvGjvgfheSSFJPqCMfl86x9RVzuNfTze39CqXeNGet3uzqACg5bWO6PUfP+4rL5hLBsVSb+JEJCd8NJbI5SeTRMjuckvBIcXnNWSBTfg7iKDOpbaEco2OlQHzGB+oFRL5WJSXLYedCWhMrTYewNzqlkE8juRn9K1tNRmpGFqbcWkpbrE5BW6/KAeUo4Cx2SM9gPKm4V7VyLys3dEqltIQduOSKZhBLoA2xaI4lch3nOw4x6VdLtkPpAG9t0h32etVk8gJYPb/z0VRfOiPDM+aIvolWLTsvflUizxlE+W5CfDP/AKK8rqq8WSX3PVaWeaov7AevcdKOs2tAkDEmzSHc+RJaT/cVtUvOkh9mv5Me1Y1UvugN2OXEiSpDE1LgjSGiw6W/xo5BCgD3wUjitiabWY9mTBpSakPrtoxu2SUtG9QMqSFhLviNrSD23J2nBx5VCsl5iznCP5ZELKtSWF7Uz4bw/mbWrH6pFEUs+Cjh9xsbe4R8DjTh9Er5NTuI2mxWFIcsMxpaQW1NvpWM4Kh4GcHHcVmw6ixm9fHJfcpOmFPyNRaKlIVy7GfQ4UjsEBR/5UfUNylJv7FaK1DSuEessqNjecg9QGVJQpSETJg2g4OVI5H6/pT6+RGTp/7KX2HFkipZ6z2QFYDCZrAKOxIElIx+ZzVJdFtB1j7s9b0q8NpCR2AAoMR9DVckIcyDjnJFWLYyhCc4pMhB/hzUNErrA1mMrVMYlfy/CcelK2V5kpBozxHaS7a8oOfOmEDZnz2loC2Lpp24NKUhQW41uTxg4Ch9Pw1mapY5NfQvLaZQJdycnxkSVfC5t2uJHkocg/8A31+VYlkco2qvheCKRIUF5Sf/APKpHlDy+habSkqjlZx+Hyq+QUhKJLU3qCMhGC6QSfRLaQST9zxVtu4RsltTNJ9JFFfT2xOFW4uxw5k+e4k/3r01MVGCPL2vM2WC8vhIaaBwVqyfmBUzWOCkfqJo+BwHyAziiJYREhraXCUPuK7uOEj5jNQui0vCAv7Z6gr2etVpUe7bX/8AZFVx8SIfTMf9LrqpejdL+Jn9yw/HBKu4S8o/purC1sf6sv2PQaGWao/uVHWl6jWXrEzInOFiFMgGK+7jOxK0qTuPyB2k/Sm9PBz0rjHtMS1MlXqU31glZnTCLLCJwtjc8qw4iXDytKz3BO04NDjqZw4zgO9PVYt2Cn3DSUKJOck3C1SXA4sqW4rxAFE9zmmo3zkuJC701ce4kXc7BppxW6M1Ii8fgIUoZ+pNWjbau2VdFPgqd5tjFvdSuM8VJ8wpJB7U7VY5cMQurUOYmu9NwE3S33FhCC4+tpwNoTnO4sqAwKSh8kS2o/uSKrojTd0iPaXediONNR0yozzbiMLStQWQCnv2SaZuWdz/AEKVziobc9srVy0/K0lrGLcLqliLF/bTzS/FXyFFlC+fLBCh5+dM12KUUkZtdbhHD/8AuQtq6J2dfVi3zmZkh7CmJbS0EBtalvpUM4HIwR584pd2y6+4SitV8L9Teri8j0xR0HQwuDSnWV7T8WOCO4q2AiE2Fqm25lxRwvGFfUcGoIfDHLTRU0sHkGrFc8jhheGEk9/P60NoIBD2qLnGsehot2l/BFiT2fFcxnYlZKCfp8QpO+t2Rwux7S2qqe59AuZaTLt6Xoy0usuJBCknIUPI5rz8lzhnpIvPKIyJHJlFhQ/D2PrUbcBt/kuMSC8llLbKScjlXkKq4lHNMhLyRaJU5hhxLtzXEUVc8tpKVYOPTKcUzXHjL6EL5ZaiuzVXTuKLVoWwRP8AuYLKD9kCvSRXCPNz+ZisyR73dFEfha+Ef3ob5ZaPERw5IDTC1njCaM+ED7YjbVgxkq7Zqi6Ly7Ax7ZKfG9n3V2DylhCvydRUfmRV9GBdHXN236Isb6FEn3yUjbny/dn+9Z2phutf6I1dJJxqX6kB1Vki+X+3OJyoqYCCB3yFHj9aZ0MdsGvuK655mmMNU3l/TTDVktbxipjAGY8wrC3nz+L4hzhP4QB6H1p9xjLtGZGUlymQS9b6ica8I3y4lr/u/el7fyziqezX/lQb3bP8zP0fVN4cWhLt2lhoEZy4VfpUOqv6HK6f+YeOXdU7e1PWZDRGd6+VAcdj3HrUKtJfCuS7tcniXKNWaBuTtpuiH3H22mUvgIPY9j3P1zScV/RhgLcs3TQ+u+trVYDMiMrMoOSnnQ4HMgbg4Mkk5PJ/WmdkpbvuKQSSi2+gO9TNZ2zVilMTnUe7+9JlpYbOVbwyho58/wDR58u9Frr2L7kTe4k9AdQLzK1/oyE0ZK7c9dIUYFwqDYQlxISPngURxS5wDUEsfY9PVrAbUaqgiGfjhWQf1qxYaW6QETZEfyV+8R/Q/wBqgtJcZJVlRCSM1INHLLhBWjBx3qrLg46/6fY1R0xvkCS0HmVs7lII77SFf2oFuUsoYpw5JPox/oq5yuj17Y07eXlP6WuCsWu4uHhhZ/0Lh8h6GsmyC1Efcj8y7Niqb00val8r6YTJrrMK5xiogBatuc96z1lms8YLzcL5A01pmZdpzyWYcNkvOLPoB2+p7Cjwg5tJCU7FBZYHtFMTXLVdtcahV7o9qBSXG2nTgRoichpH1wc/enZx5jVHwZ8XlO2Xk3FAfRDsbKuAlplP6CtbpGS+WQ9rcUoqUTkqJUfvQ4rku+B1eHwiApOcFeE0SXRSPLO7erbHSM5AFSuiZdgi9rL990E1j6e6j/1pqv5kV8M889NsKVoaKpJyGp72PllLdIaji39jT0vNX7kvbrGiY7HlFA95jqK2VL/Du8s+oBwftQoXup/YLdp1fHHkq0/pLqB4qLXu8tSzuKg7gqOcnvim1ravPAi9Db4GSekOq0k4tu7PPwvI4/WrfjaX5Kfgr14GcjprqeO4Qu1O/IpUkj+tXWqpfUgb0ly/KIRLTfbG8txUBacJIUl5oLSpPmDRPcrl5K+zbH8pe9U69mQLzOtccKV4bx5Ur4Rkeg796rpse1EJqf70iTsvTO/a3sc27PXFTcOOnJQlJRv5AwMd+/NMSkovAo1h4IDqboaPomPCRDDj7ag2qRN+FSQpaQdiT5kHNT+bAvCbmmsdeQ/9LtJxZNp0CUktqgayYVvPKlIUyVDt5FTdXny8gNO3Gc4SecG81u7kfiFDSNBETOcUyrfuOPlUPsIuSPkXJLUiPKB4QsBX+qeDVWwyjlNFqQv71bItgTC9ruRXM5EbqWEm5WiXGXyl1pSD9xiqSWUXi8M82pPXSE7FvGh9f2pT7cd5yIZsVPxAoUUhRT5KGM5H5Up+GcZb62OfilKOyxFct3WdyKxHtb8/31uAv/N56sgutD8IVn+IdqrPS/FuiuxmrV4WyT6Lbq/r/Y9YLsNmuL7idOx1iZcwyklUlSOUMgeYzyfKrV6dwzLyAu1Cm1HPBFaz67z+t2u9M2CBHNpsBuUZpEfOVu5cSAV48h5JFMVUqvl9ill7s4XR6X3yX4NtaYHBcIGPkKmXWCIdnNrUEpP0roImTyNtSPlxUVhHdS8n6VMuzoeWSEdSm2wjzxyasQwOe2NNEH2ftSpBA8VLTfPnl1Fd5RQwR0mkxbmiVYpD6GX3HA/F8Q4DisbVIz64wR9KztdFrFkV+po6Gay62ESZYZNoSAllWU9uKyFZGRtbWiNVepUUkqRs/wBk1famRuwcjVUsA/vABU+2iN4wmajkPgpLn9qIqyjsIOW+qQlzcoqG0+dHSwBfIWNVezLM1D12m2SyFpuMTvLsknyRvPb5cUT03Uu3SwnLsz9dCMNQ0hfp0jVJOsdHuW7DFrt0h1gRkncFYytRJOfNv6U9uU4qwW1dD09zrA7qyKubYJyX4stTzAYeSlDhLLKcbVKXn+I7QMfM0zu5TyZu3bLoO/sjwJ2prdIjIUt8wLnAuI8RWQEoWpLmPoFdqZuwkmKQ+HUNfVG1XVuJQCM4oKNFIYqmh9RaUTk1SQeMX2RN+tko2yUhnlS21JSfQkcGgSeB+mOXyXTT0n36zQnyMKWyncPQ45qYyyha2vbJo6lSEx3iFedGXItjkauS0Osk578V3ZzWGeVnta6dTpzrvqINo2MzVImI44O9Pxf8QNWj0Ul2B7NSVPwNccX/AKBRxM616JaPY3aOT9lg/wBq45dnq9c5Pvc8p/haASPr3P8Aal3yNLhD+B8KODzVolGRsuYhV2G88oGBXPlhIp7SYjvhfINXRRozb7ed1UejbrDeNq57CV/mT/YVC+Yozzsjr2yG1KUQAoH4e/FEKZ5C9I6j3Hp9aYsGVc5d1vLrYedjuLSWYiVDKWzuSSVY5I8s0lLR02PLiM162+PClwRI6/3RbGyTZrXKWFE71tqTxjthJFLP06vOYtocj6jZ+ZJnTfW6I6FCTpWKrIAyxJWj69waj8BJfLNk/wDUF+aH/JxN6p6fmhG2wy4pz8WySlfH3SK5aO1fm/4Jetrf5T9F1jpuU0UhUqKteQQ40FYHrkGuenuX0Lx1dL+qPQLSb7ET2n5Tkp1Lbe0gFZ9Y/kPPtSHo3Ojj+/8AIt6vZGq1ym8HHT23SI3tZzI8e3ldludueD7iWjhHiN7AV8cAlkAZ8zXorsKKX2Qh7quirF5Re7H7Kmk5sibG1Fa25DCZW92IwShl1CwHP3iuCUpIXSUJSksPwZ2orbthOLffS88eSz9KujGntD3VxrSqUM2pU51yQlhKS2tICwG8+eCUdv5aulNyy3wh7MFnPYYZGl7ZJBC4iOfQUfLBqTRW7t0qt8olcVSmHPLnioeWHhdt4ZWbnou5W2O8G2hMUkHYnGMn5n0oMsmjVbBvvBT+kF2uV1hy4N1hKjTIkhbKwEkAEHtQ4PHAxdiS3Fk1TaXkALQhRxzkCnK5GZNclVdDqGV9wcbsf1ovko+UYX9u3TDn7YsmoUpylaVRHVfMHcn/AN1QuyJrhMyhirgD7UHBP9mWEZ3XvRLYyALglwkeiQVH+lcyy7PURp4POOKH8ayaXQy+sExFV4bGfSrrgoUqOzcrnf5Do/cRkuYSVHukfKqR5Y3xCGC5La2s4Qry7jzomBNsyh7dUmX/ANHkCEwypxt2elx5SRnalKVYJ+5FVUkpYZ21tNoxtoS0tSLq7cJicwLYj3l0HspQ/Aj7qx9gaKBbIC7z3rtcZM2QSp19wuKJ+ZqThkRXFj5XEYPnlXFT6lZbVuHftXEnrHpOFGc9pwmQwhwJSCFLAOzLGP8A215H0ibWljFfc2fVaY2XNyWTQUNCLdPlPwoe9clSVLfd/doTtWSCokZPCuAK2oxlLvwZM3GHEyl9XvaI0D0eMqZqK9IXMebCUW5J8RxwDONrI5PfurA+dNxh9AHuzfEOEBf2fPbMmddPaBtmnocSPpzTKWH3ENSCFPy1JQdqBj4Ud84GT8PejbEkzlXhbn2bfoRU/Vxw2muPtsrMdgSHQk7ULWEpJ8snBri8dr7eCN05YU21qTIfba9+mumRI8MfCFEAYHyAAGfOqxWAttm54j0iVXEZd/G0hX1FWA7mRsrSdslq3LjICvUCpL+40Z+9r72cLbr3otqVy2sFF0gxlT46U/xLaG4j7gEfeuXZZWZWGePD1skMn4m1D7Uwc0Ni2pJwQRUFQ9exRY13PrlDkJbKhAhSJPAzg7NgP/HUS4QSHZ6B2wOpABzQeMDTH99vwslrSVcvvnw2kep8z9AKrOWFhBKaXN/YUsRbWwlRGxwjPNXiTasMkJMrYkpKsfOriuMgJ673Bl+RboeN6vjcUVDIIPAH9axPUZ/LE1/ToZcpMCcvRWn5lvkRXLc00zIWFuCPlsqUOxO3FZcdXfDqRpz0dE+XEq8roLpWWnch6dGznBS6FAfmKYj6leu0mLy9NpfTZCy/Z1ti1K92vUpAONocaSr9QRRl6pNdxAv0uHiRHyPZyCVYav6Tx2XG8/8Aeoq9U+sAT9LfiRE3DoDLgpSRfIairsFNrA/TNGj6lGX5WBl6bJfmRDy+jN2ZSpTU63yAP5XSkn7EUda6t9pgXoLF00ehmqOpmi+jHVW/6s1VfktSYyGm4FlZRvedX4Zy5tHJ/FgZwB61lei1r8Nn7sJ6pZP3VGPlIzj1n/yhes9eregaSaOmLas7RIyHJix279kf7Iz869GoJGGq0uZA56fezjrXqvNN3vLr1tgvHxHbhcipb7o8ylJO4n5nAohZzUejX3STovpnpG6zJs0Yu3VGM3SVhTw+aT2R9qsAc2zcGlrwL9YIU3PxuNjf8lDg/rS8lhl1yStVJP1ccNLes7HWlK3OtOKCvucj9CKhBbF010x3Ugj9XHFe1pqO12Kyyf2mvMd5tTS0JG47SCDkelcFjXKXR4p3y7WW3XqdbJCQfdJDkcEp7hKiAeR6AU1kI+OxZvT1ru8dK4sRxYVyFBHFSVNif5ODpGxB1Hq+/SIxCRCbhNlaf517lY+yBQrOsEOWOja116eWuQkuMshpwfyil2uC8LXnkEbXT686mutykSoKUsxnyxGbznakAZz8zml4qTeWbXv11wUUxw5oi7WxBAhL2Ad0c03GSEpyUumV27qfitqQ82pOPJYwRRcpgcGduqE4ytUqAWVJabSnny7n+9ea1zzbg9BoI7as/UpinVpBydp+dZuDSPvjEIAz+dRgnImp7OUkkcHBqdpG4SW7tIBVjOec120jJB315SvD+L4ckCmK0AmyBknCST2ppAJEp/lA4oZ6/OqHd23tKP2W4P7UX0N508l/qZlepfPH9EWH2YPZ+Tb2WdY6jib5RTvgQnU/9kMcOrB/i/lHl3r0RgTn4RqRHKdo+EJ5wCPn3/KrAB8ygMEKAJwMbU9jXHBY9n3qDA1Cq/aejubpNpcQ4r5pWD/Qj9aFNeQ0U8BioRY/VxxGvrVCu6HlYTFfbDSlejm74fzyR+VU6eRhfHXtXa5/Y+3W+xLO0pT7oCgMhA5Jq5SNcp9A31B1HnTVFqL/AJqz6p/EfvV0sjSqjEpFymLuTbjchanUuApUVHPei7UEUjzV9qLQv+EuqdzT4KUNSmxIbUkH4s8En55H61KQtYviBRZ75PtjoEV9xKf5UqOKnDBo9j/Yc0PL0h0Gtcu45FxvazcXUHuhCgA2P90A/egzfJSXZoKhlBrbmS0woqACnHFuHj1Jx+mK5F5vLHJGa4oR9y09b7u2USorbgPGSkVzLqbR5udWUOR9f31TURxqIJbgayggbAohP6D9a8vbKM7JNM9lQnCqKwUuRJSkbsYNDURhyEPfUpyrdn5Gu2nbhMTUqTyRzXbSciTsrYeeRk1yiQ2Rd1XvaCvRXFGgsA5EO+rKFUdAGG7WD/T/AK69bUaxTdo8qFCjpZi2947VSHEuKUFqSeyRu4B5JHPzf9L0lmkqlGztvJga+9WuOxdLAZ2XUuoCWyNq84IPGK2jEHTLzSQrxMLV/LnIGRXM4oPWnqqnp9pne0oC5SAUMoPfPrj0qVyEhHcyt/5Pvqgi39ZLjb7q+PEv8YsturV3fSoLSOfUbh+VRNZiNzXHB6T0qAPhOBk1xwEOsPXawWZLtlRPSmevhspBI8QHKeQCByPM0nK5T+GJvaTRyi1ZNFHtXUt3ULwclLO5YyQfI0Wtt9jNtcYL4SdckB0Ap5BphZQk0mMZLgHbg0xFgHEy97bNv8KyWe6Fxxthb6Yz6WzgKBHGQO+CO1EWE+QFnKyZ66HdNf8ApC6lxIDzRNrgLMmYRwChKuEf7RwPpmrzaisga473g9SdCz5dvk2+O08pDYUhPhpPwgZ7YrEdjlPg25UxVbyvAcnzwEZwVnH/ADpvJgJeRSuKn6uOI3Ul4TYLFNuCoz8wR2ivwIqNzi/kketRLLTSJXYE9O3rp/1iedjWskzUp3OQZ0Nxh1HrncnB+xrxt3ptkZZgejr17gviZDat9mKx3AlTVv2E91ND/lSEo6mlmlVrKrPmBBqH2SCoqMOU4ypWcJVXR11keJIa/pT5TBxfPZr1TalnwNshIHAHFMx19b+ZE+zn5ZFLufT7U9pUQ9bnSBxkDNNx1NMumUdU14IG4RZMZJTIYW1/rpIpmLT6YBprshnl4SrPp2oyBn//2Q==";
 const CLIENTS    = ['Pitchy','Lakaa','Rshoot','Optrium','2h56','Octarina','RTE','WeAdvocacy'];
-const SLIDE_NAMES= ['Présentation','Services','Process','Formules','L\'équipe','Vidéo','AI Icebreaker','Mise en place'];
+const SLIDE_NAMES= ['Présentation','AI Icebreaker','Services','Process',"Formules","L'équipe",'Vidéo','Mise en place'];
 
 // Init assets
 document.getElementById('logo-el').src = 'data:image/png;base64,' + LOGO_B64;
@@ -2252,24 +2278,12 @@ for(let i=0;i<TOTAL;i++){const d=document.createElement('button');d.className='d
 
 function ui(){
   const _pn=document.getElementById('pn');
-  if(_pn) _pn.textContent=String(cur+1).padStart(2,'0');
+  if(_pn){ _pn.textContent=String(cur+1).padStart(2,'0'); const pt=document.getElementById('pn-total'); if(pt) pt.textContent=' / '+TOTAL; }
   const _sn=document.getElementById('slide-name');
   if(_sn) _sn.textContent=SLIDE_NAMES[cur]||'';
-  document.querySelectorAll('.dot').forEach((d,i)=>{
-    d.classList.toggle('on',i===cur);
-    if(i===cur){
-      const pc = document.documentElement.style.getPropertyValue('--prospect-color');
-      if(pc) d.style.background = pc;
-    } else {
-      d.style.background = '';
-    }
-  });
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
   const _bar=document.getElementById('bar');
-  if(_bar){
-    _bar.style.width=((cur+1)/TOTAL*100)+'%';
-    const pc = document.documentElement.style.getPropertyValue('--prospect-color');
-    if(pc) _bar.style.background = pc;
-  }
+  if(_bar) _bar.style.width=((cur+1)/TOTAL*100)+'%';
   const _ap=document.getElementById('ap');
   if(_ap) _ap.style.opacity=cur===0?.25:1;
   const _an=document.getElementById('an');
@@ -2277,160 +2291,93 @@ function ui(){
 }
 ui();
 
-// ══ WARP JUMP ENGINE ══════════════════════════════
+
+// ══ WARP JUMP ENGINE ══════════════════════
 (function(){
   const cv = document.getElementById('warp-canvas');
   if(!cv) return;
-
   let running = false;
+  window._warpCount = 0;
 
   window.warpJump = function(dir, onDone){
-    if(running){ onDone(); return; }
+    if(running){ if(onDone) onDone(); return; }
     running = true;
+    window._warpCount++;
 
-    const W = window.innerWidth, H = window.innerHeight;
-    cv.width = W; cv.height = H;
-    cv.style.display = 'block';
+    const W=window.innerWidth, H=window.innerHeight;
+    cv.width=W; cv.height=H;
+    cv.style.display='block';
 
-    const ctx = cv.getContext('2d');
-    const CX = W/2, CY = H/2;
-    const TOTAL_DUR = 580; // ms
-    const start = performance.now();
+    const ctx=cv.getContext('2d');
+    const CX=W/2, CY=H/2;
+    const DUR = window._warpCount > 3 ? 360 : 560;
+    const N   = window._warpCount > 3 ? 80  : 240;
+    const start=performance.now();
 
-    // Générer les étoiles warp
-    const stars = Array.from({length: 260}, () => {
-      const angle = Math.random() * Math.PI * 2;
-      const dist  = 30 + Math.random() * Math.max(W,H) * .65;
-      return {
-        angle,
-        dist,
-        x: CX + Math.cos(angle) * dist,
-        y: CY + Math.sin(angle) * dist,
-        r: .5 + Math.random() * 1.5,
-        speed: .6 + Math.random() * 1.4,
-        hue: Math.random() < .6 ? 220 : (Math.random() < .5 ? 280 : 180),
-      };
+    const stars=Array.from({length:N},()=>{
+      const a=Math.random()*Math.PI*2;
+      const d=40+Math.random()*Math.max(W,H)*.6;
+      return {a,d,r:.5+Math.random()*1.5,
+              spd:.6+Math.random()*1.4,
+              hue:Math.random()<.6?220:(Math.random()<.5?280:180)};
     });
 
     function draw(now){
-      const elapsed = now - start;
-      const t = Math.min(1, elapsed / TOTAL_DUR);
-
+      const t=Math.min(1,(now-start)/DUR);
       ctx.clearRect(0,0,W,H);
 
-      // Phase 1 (0→.4) : étoiles s'étirent, fond noircit
-      // Phase 2 (.4→.7) : flash blanc central + tunnel
-      // Phase 3 (.7→1) : étoiles se rétractent, fond revient
-
-      // Fond espace
-      const bgAlpha = t < .4
-        ? t / .4 * .85
-        : t < .7
-          ? .85
-          : .85 * (1 - (t-.7)/.3);
-      ctx.fillStyle = `rgba(1,2,12,${bgAlpha})`;
+      // Fond
+      const bg=t<.4?t/.4*.82:t<.7?.82:.82*(1-(t-.7)/.3);
+      ctx.fillStyle='rgba(1,2,12,'+bg+')';
       ctx.fillRect(0,0,W,H);
 
-      // Étoiles qui s'étirent
-      stars.forEach(s => {
-        let stretchFactor, alpha, headDist;
-
-        if(t < .45){
-          // Accélération — étoiles s'allongent vers l'extérieur
-          const p = t / .45;
-          const ep = p*p*p; // ease in cubique
-          stretchFactor = 1 + ep * 28 * s.speed;
-          alpha = .3 + ep * .7;
-          headDist = s.dist * (1 + ep * .4);
-        } else if(t < .7){
-          // Pic warp — lignes maximales
-          stretchFactor = 30 * s.speed;
-          alpha = 1;
-          headDist = s.dist * 1.4;
-        } else {
-          // Décélération
-          const p = (t - .7) / .3;
-          const ep = 1 - Math.pow(1-p, 3);
-          stretchFactor = 30 * s.speed * (1 - ep * .95);
-          alpha = 1 - ep * .9;
-          headDist = s.dist * (1.4 - ep * .5);
-        }
-
-        const hx = CX + Math.cos(s.angle) * headDist;
-        const hy = CY + Math.sin(s.angle) * headDist;
-        const len = stretchFactor * s.r * 18;
-        const tx = hx - Math.cos(s.angle) * len;
-        const ty = hy - Math.sin(s.angle) * len;
-
-        const grad = ctx.createLinearGradient(tx, ty, hx, hy);
-        grad.addColorStop(0, `hsla(${s.hue},100%,80%,0)`);
-        grad.addColorStop(.5, `hsla(${s.hue},100%,90%,${alpha*.5})`);
-        grad.addColorStop(1, `hsla(${s.hue},100%,100%,${alpha})`);
-
-        ctx.beginPath();
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = s.r * Math.min(3, 1 + stretchFactor*.04);
-        ctx.moveTo(tx, ty);
-        ctx.lineTo(hx, hy);
-        ctx.stroke();
+      // Étoiles étirées
+      stars.forEach(s=>{
+        let stretch,alpha,hd;
+        if(t<.45){const p=t/.45,ep=p*p*p;stretch=1+ep*26*s.spd;alpha=.3+ep*.7;hd=s.d*(1+ep*.4);}
+        else if(t<.7){stretch=27*s.spd;alpha=1;hd=s.d*1.4;}
+        else{const p=(t-.7)/.3,ep=1-Math.pow(1-p,3);stretch=27*s.spd*(1-ep*.95);alpha=1-ep*.9;hd=s.d*(1.4-ep*.5);}
+        const hx=CX+Math.cos(s.a)*hd, hy=CY+Math.sin(s.a)*hd;
+        const len=stretch*s.r*16;
+        const tx=hx-Math.cos(s.a)*len, ty=hy-Math.sin(s.a)*len;
+        const g=ctx.createLinearGradient(tx,ty,hx,hy);
+        g.addColorStop(0,'hsla('+s.hue+',100%,80%,0)');
+        g.addColorStop(.5,'hsla('+s.hue+',100%,90%,'+(alpha*.5)+')');
+        g.addColorStop(1,'hsla('+s.hue+',100%,100%,'+alpha+')');
+        ctx.beginPath();ctx.strokeStyle=g;
+        ctx.lineWidth=s.r*Math.min(3,1+stretch*.04);
+        ctx.moveTo(tx,ty);ctx.lineTo(hx,hy);ctx.stroke();
       });
 
-      // Tunnel central (vortex)
-      if(t > .25 && t < .85){
-        const tp = t < .55
-          ? (t - .25) / .3
-          : t < .7 ? 1 : 1 - (t-.7)/.15;
-        const tunnelAlpha = Math.sin(tp * Math.PI) * .9;
-        const maxR = Math.min(W,H) * .45;
-
-        for(let ring = 8; ring > 0; ring--){
-          const rp = ring / 8;
-          const radius = rp * maxR * (.3 + tp * .7);
-          const ringAlpha = tunnelAlpha * (1 - rp) * .6;
-          const hue = 220 + rp * 60;
+      // Vortex central
+      if(t>.25&&t<.85){
+        const tp=t<.55?(t-.25)/.3:t<.7?1:1-(t-.7)/.15;
+        const ta=Math.sin(tp*Math.PI)*.85;
+        const mR=Math.min(W,H)*.42;
+        for(let r=8;r>0;r--){
           ctx.beginPath();
-          ctx.strokeStyle = `hsla(${hue},100%,75%,${ringAlpha})`;
-          ctx.lineWidth = 1.5;
-          ctx.arc(CX, CY, radius, 0, Math.PI*2);
+          ctx.strokeStyle='hsla('+(220+r*8)+',100%,75%,'+(ta*(1-r/8)*.55)+')';
+          ctx.lineWidth=1.5;
+          ctx.arc(CX,CY,r/8*mR*(.3+tp*.7),0,Math.PI*2);
           ctx.stroke();
         }
-
-        // Flash core blanc/violet
-        const coreR = maxR * .12 * tp;
-        const core = ctx.createRadialGradient(CX,CY,0,CX,CY,coreR*3);
-        core.addColorStop(0,   `rgba(255,255,255,${tunnelAlpha*.9})`);
-        core.addColorStop(.25, `rgba(180,120,255,${tunnelAlpha*.6})`);
-        core.addColorStop(.6,  `rgba(100,60,200,${tunnelAlpha*.25})`);
-        core.addColorStop(1,   'transparent');
-        ctx.fillStyle = core;
-        ctx.beginPath();
-        ctx.arc(CX, CY, coreR*3, 0, Math.PI*2);
-        ctx.fill();
+        const core=ctx.createRadialGradient(CX,CY,0,CX,CY,mR*.12*tp);
+        core.addColorStop(0,'rgba(255,255,255,'+(ta*.88)+')');
+        core.addColorStop(.3,'rgba(160,100,255,'+(ta*.55)+')');
+        core.addColorStop(1,'transparent');
+        ctx.fillStyle=core;
+        ctx.beginPath();ctx.arc(CX,CY,mR*.35*tp,0,Math.PI*2);ctx.fill();
       }
 
-      // Flash de sortie
-      if(t > .82){
-        const fp = (t - .82) / .18;
-        cv.style.opacity = String(1 - fp);
-      } else {
-        cv.style.opacity = '1';
-      }
+      if(t>.82) cv.style.opacity=String(1-(t-.82)/.18);
+      else cv.style.opacity='1';
 
-      if(t < 1){
-        requestAnimationFrame(draw);
-      } else {
-        ctx.clearRect(0,0,W,H);
-        cv.style.display = 'none';
-        cv.style.opacity = '1';
-        running = false;
-        onDone();
-      }
+      if(t<1) requestAnimationFrame(draw);
+      else{ ctx.clearRect(0,0,W,H);cv.style.display='none';cv.style.opacity='1';running=false;if(onDone)onDone(); }
     }
-
     requestAnimationFrame(draw);
   };
 })();
-
 window.go=function(idx){
   if(busy||idx===cur||idx<0||idx>=TOTAL) return;
   busy=true;
@@ -2444,33 +2391,28 @@ window.go=function(idx){
   const pnEl=document.getElementById('pn');
   if(pnEl){pnEl.classList.remove('tick');pnEl.offsetHeight;pnEl.classList.add('tick');}
 
-  // Slide sortante — aspirée vers le centre
-  slides[prev].classList.remove('ein-right','ein-left','warp-in');
-  slides[prev].classList.add('warp-out');
-  setTimeout(()=>{
-    slides[prev].classList.remove('warp-out','active');
-    slides[prev].style.opacity=0;
-  },440);
-
-  // Warp canvas démarre immédiatement
+  // Warp transition
   if(window.warpJump) warpJump(dir, ()=>{});
 
-  // Slide entrante jaillit depuis le centre (~pic du warp)
+  slides[prev].classList.add('warp-out');
+  setTimeout(()=>{ slides[prev].classList.remove('warp-out','active'); slides[prev].style.opacity=0; },410);
+
   setTimeout(()=>{
     slides[cur].style.opacity='';
-    slides[cur].classList.remove('out','out-left','out-right','ein-right','ein-left','warp-out',
-      'planet-out-left','planet-out-right','planet-in-right','planet-in-left');
+    slides[cur].classList.remove('out','out-left','out-right','ein-right','ein-left','warp-out');
     slides[cur].classList.add('active','warp-in');
     slides[cur].querySelectorAll('.sg').forEach(sg=>{
       sg.querySelectorAll(':scope>*').forEach(c=>{
-        c.style.animation='none'; c.offsetHeight; c.style.animation='';
+        c.style.animation='none';
+        c.offsetHeight;
+        c.style.animation='';
       });
     });
     if(cur===2) startMotion(); else stopMotion();
     setSlideAmbiance(cur);
-    if(cur===5) startSetup();
-    setTimeout(()=>{ busy=false; },600);
-  },290);
+    if(cur===7) startSetup();
+    setTimeout(()=>{busy=false},700);
+  },380);
 }
 
 let ckRenderer,ckScene,ckCamera,ckRaycaster,ckMouse,ckPlanetMeshes=[],ckPlanets=[],ckFrame=0;
@@ -2847,7 +2789,9 @@ function ckWarpTo(id){
   },tDur);
 }
 
+window._cockpitOpenCount = 0;
 window.openUniverse=function(){
+  window._cockpitOpenCount++;
   if(typeof buildRoomPlanets==='function') buildRoomPlanets();
   if(typeof applyCockpitTheme==='function'&&prospectData) applyCockpitTheme(prospectData.prospect);
   // Sync to current slide
@@ -2859,6 +2803,18 @@ window.openUniverse=function(){
   busy=false;
   exitCinematic();
   overlay.classList.add('open');
+  // Tooltip premier usage
+  if(window._cockpitOpenCount === 1){
+    const tip = document.createElement('div');
+    tip.style.cssText = 'position:absolute;bottom:80px;left:50%;transform:translateX(-50%);'+
+      'background:rgba(0,0,0,.7);color:rgba(255,255,255,.7);font-size:11px;'+
+      'padding:8px 16px;border-radius:100px;pointer-events:none;z-index:10;'+
+      'white-space:nowrap;letter-spacing:1px;font-family:monospace;'+
+      'animation:hint-fade 3.5s ease 1s forwards;';
+    tip.textContent = '🪐 Cliquez sur une planète pour naviguer';
+    const wrap = document.getElementById('cockpit-wrap');
+    if(wrap){ wrap.appendChild(tip); setTimeout(()=>tip.remove(), 5000); }
+  }
   // Three.js désactivé — salle SVG active
   document.body.style.overflow='hidden';
   if(window.soundAmbiStart) soundAmbiStart();
@@ -3008,10 +2964,10 @@ const SLIDE_AMBIANCE = [
   ['rgba(248,113,113,.82)','rgba(167,139,250,.72)'],
 ];
 
-function setSlideAmbiance(idx){  // Vidéo slide
-  if(idx===5) setTimeout(initVideoSlide,300);
-  else resetVideoSlide();
-}
+function setSlideAmbiance(idx){
+  // Afficher le bouton partage après la slide 2
+  const shareBtn = document.getElementById('share-btn');
+  if(shareBtn) shareBtn.style.display = idx >= 2 ? 'block' : 'none';}
 
 ;(function(){
   const BASE=623, RATE=1/72;
@@ -3326,7 +3282,10 @@ document.addEventListener('touchend',e=>{
 
 // ════ PRÉNOM + PERSONNALISATION ════
 ;(function(){
-  let pilotName = localStorage.getItem('dv-pilot-name')||sessionStorage.getItem('dv-pilot-name')||'';
+  // Toujours repartir de zéro (chaque ouverture = nouvelle session)
+  localStorage.removeItem('dv-pilot-name');
+  sessionStorage.removeItem('dv-pilot-name');
+  let pilotName = '';
 
   function applyName(name){
     if(!name) return;
@@ -3364,32 +3323,9 @@ document.addEventListener('touchend',e=>{
     const urlInp = document.getElementById('url-input');
     prospectUrl = (urlInp ? urlInp.value.trim() : '');
     if(prospectUrl && prospectUrl.startsWith('http')){
-      analyzeProspect(prospectUrl, pilotName).then(data=>{
+      analyzeProspect(prospectUrl).then(data=>{
         if(data) injectProspectSequence(data);
       }).catch(()=>{});
-    } else if(pilotName) {
-      // Pas d'URL — personnalisation prénom seul
-      injectProspectSequence({
-        prospect: {
-          prenom: pilotName,
-          nom: '',
-          societe: '',
-          secteur: '',
-          actu: '',
-          ville: '',
-          couleur_hex: colorFromName(pilotName)
-        },
-        email1: {
-          objet: 'Une question rapide',
-          salutation: 'Bonjour ' + pilotName + ',',
-          icebreaker: '',
-          pitch: '',
-          social_proof: '',
-          cta: ''
-        },
-        relance_j3: '',
-        linkedin_touch: ''
-      });
     }
     const screen = document.getElementById('name-screen');
     if(screen){
@@ -3550,74 +3486,57 @@ window.toggleUrlField = function(){
 };
 
 // Analyse prospect via Claude API pendant la NASA
-// Couleur déterministe depuis un nom ou domaine
+
+// Couleur déterministe depuis domaine/nom
+function hexToRgb(hex){
+  const r=parseInt(hex.slice(1,3),16)||255;
+  const g=parseInt(hex.slice(3,5),16)||61;
+  const b=parseInt(hex.slice(5,7),16)||143;
+  return r+','+g+','+b;
+}
 function colorFromName(name){
-  const PALETTE = ['#ff3d8f','#7c3aed','#22d3ee','#4ade80','#fbbf24','#f97316','#a78bfa','#f87171'];
+  const P=['#ff3d8f','#7c3aed','#22d3ee','#4ade80','#fbbf24','#f97316','#a78bfa','#f87171'];
   let h=0; for(let i=0;i<name.length;i++) h=(h*31+name.charCodeAt(i))&0xffff;
-  return PALETTE[h % PALETTE.length];
+  return P[h%P.length];
 }
 function colorFromDomain(domain){
-  const PALETTE = ['#ff3d8f','#7c3aed','#22d3ee','#4ade80','#fbbf24','#f97316','#a78bfa','#f87171'];
+  const P=['#ff3d8f','#7c3aed','#22d3ee','#4ade80','#fbbf24','#f97316','#a78bfa','#f87171'];
   let h=0; for(let i=0;i<domain.length;i++) h=(h*31+domain.charCodeAt(i))&0xffff;
-  return PALETTE[h % PALETTE.length];
+  return P[h%P.length];
 }
-
-async function analyzeProspect(url, realPrenom){
+function shiftHue(hex,degrees){
+  const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;
+  const max=Math.max(r,g,b),min=Math.min(r,g,b),l=(max+min)/2;
+  let h=0,s=0;
+  if(max!==min){const d=max-min;s=l>.5?d/(2-max-min):d/(max+min);if(max===r)h=(g-b)/d+(g<b?6:0);else if(max===g)h=(b-r)/d+2;else h=(r-g)/d+4;h/=6;}
+  h=(h*360+degrees)%360/360;
+  const hue2rgb=(p,q,t)=>{if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return p+(q-p)*6*t;if(t<1/2)return q;if(t<2/3)return p+(q-p)*(2/3-t)*6;return p;};
+  const q=l<.5?l*(1+s):l+s-l*s,p=2*l-q;
+  return '#'+[Math.round(hue2rgb(p,q,h+1/3)*255),Math.round(hue2rgb(p,q,h)*255),Math.round(hue2rgb(p,q,h-1/3)*255)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+async function analyzeProspect(url){
   if(!url || url.length < 5) return null;
   const status = document.getElementById('url-status');
 
   const PROSPECT_TYPES = [
-    {secteur:'SaaS RH', produit:'logiciel de gestion RH', taille:'15-40 salariés', ville:'Lyon', prenom:'Marc', nom:'Dupont', societe:'Flowify', actu:'vient de lever 800K€ en seed', couleur_hex:'#22d3ee'},
-    {secteur:'SaaS Marketing', produit:'plateforme d\'automation marketing', taille:'20-60 salariés', ville:'Paris', prenom:'Julie', nom:'Martin', societe:'Growthly', actu:'vient de lancer une nouvelle offre entreprise', couleur_hex:'#a78bfa'},
-    {secteur:'SaaS Finance', produit:'logiciel de comptabilité B2B', taille:'10-30 salariés', ville:'Bordeaux', prenom:'Thomas', nom:'Leroy', societe:'Finopt', actu:'vient de doubler son équipe commerciale', couleur_hex:'#4ade80'},
-    {secteur:'Agence conseil', produit:'services de transformation digitale', taille:'30-80 salariés', ville:'Nantes', prenom:'Sophie', nom:'Bernard', societe:'DataForge', actu:'vient de signer un partenariat avec Microsoft', couleur_hex:'#fbbf24'},
-    {secteur:'SaaS Logistique', produit:'solution de gestion de flotte', taille:'25-50 salariés', ville:'Lille', prenom:'Antoine', nom:'Moreau', societe:'FleetPro', actu:'vient d\'ouvrir son bureau en Belgique', couleur_hex:'#f97316'},
+    {secteur:'SaaS RH', produit:'logiciel de gestion RH', taille:'15-40 salariés', ville:'Lyon', prenom:'Marc', nom:'Dupont', societe:'Flowify', actu:'vient de lever 800K€ en seed'},
+    {secteur:'SaaS Marketing', produit:'plateforme d\'automation marketing', taille:'20-60 salariés', ville:'Paris', prenom:'Julie', nom:'Martin', societe:'Growthly', actu:'vient de lancer une nouvelle offre entreprise'},
+    {secteur:'SaaS Finance', produit:'logiciel de comptabilité B2B', taille:'10-30 salariés', ville:'Bordeaux', prenom:'Thomas', nom:'Leroy', societe:'Finopt', actu:'vient de doubler son équipe commerciale'},
+    {secteur:'Agence conseil', produit:'services de transformation digitale', taille:'30-80 salariés', ville:'Nantes', prenom:'Sophie', nom:'Bernard', societe:'DataForge', actu:'vient de signer un partenariat avec Microsoft'},
+    {secteur:'SaaS Logistique', produit:'solution de gestion de flotte', taille:'25-50 salariés', ville:'Lille', prenom:'Antoine', nom:'Moreau', societe:'FleetPro', actu:'vient d\'ouvrir son bureau en Belgique'},
   ];
 
   try {
-    // Feedback visuel
-    if(status){
-      status.textContent = '🔍 Analyse en cours…';
-      status.style.color = 'rgba(124,58,237,.7)';
-      status.style.fontSize = '11px';
-    }
-
-    // Domaine pour choisir le secteur
-    const domain = url.replace(/https?:\/\//, '').split('/')[0].toLowerCase();
-    let profileIdx = 0;
-    if(domain.includes('finance') || domain.includes('compta') || domain.includes('pay')) profileIdx=2;
-    else if(domain.includes('market') || domain.includes('growth') || domain.includes('crm')) profileIdx=1;
-    else if(domain.includes('fleet') || domain.includes('logis') || domain.includes('transport')) profileIdx=4;
-    else if(domain.includes('consult') || domain.includes('digital') || domain.includes('agency')) profileIdx=3;
-    else { // Hash de l'URL pour cohérence
-      let h=0; for(let i=0;i<domain.length;i++) h=(h*31+domain.charCodeAt(i))&0xffff;
-      profileIdx = h % PROSPECT_TYPES.length;
-    }
-    const baseProfile = PROSPECT_TYPES[profileIdx];
-    // Extraire société depuis le domaine
-    const societe = domain.replace(/\.(com|fr|io|co|net|org|eu).*/,'').replace(/-/g,' ').replace(/^www\./, '');
-    const societeDisplay = societe.charAt(0).toUpperCase() + societe.slice(1);
-    // Utiliser le vrai prénom saisi + société du domaine
-    const profile = {
-      ...baseProfile,
-      prenom: realPrenom || baseProfile.prenom,
-      societe: societeDisplay || baseProfile.societe,
-      couleur_hex: colorFromDomain(domain) || baseProfile.couleur_hex
-    };
+    // Choisir un profil au hasard (mais cohérent avec l'URL si possible)
+    const idx = Math.floor(Math.random() * PROSPECT_TYPES.length);
+    const profile = PROSPECT_TYPES[idx];
 
     const prompt = `Tu es un expert en prospection B2B pour Devoleads, agence de génération de RDV qualifiés.
 Génère une séquence de prospection complète et hyper-personnalisée pour ce profil :
 
-PROSPECT: ${profile.prenom}${profile.nom ? ' '+profile.nom : ''}, CEO/Directeur de ${profile.societe} (${profile.secteur}, ${profile.taille}, ${profile.ville})
+PROSPECT: ${profile.prenom} ${profile.nom}, CEO de ${profile.societe} (${profile.secteur}, ${profile.taille}, ${profile.ville})
 ACTU: ${profile.societe} ${profile.actu}
 SITE: ${url}
-
-Instructions:
-- L'icebreaker DOIT être ultra-spécifique à la société ${profile.societe} et à l'actu "${profile.actu}"
-- Commence l'icebreaker par "J'ai vu que" ou "Félicitations pour" ou "Impressionnant —"  
-- Le pitch doit mentionner leur secteur (${profile.secteur}) et leur taille (${profile.taille})
-- Le CTA doit être une vraie question fermée (oui/non), pas une demande vague
-- Garde un ton humain, pas corporate
 
 Génère UNIQUEMENT un JSON valide (sans markdown, sans backticks) avec cette structure exacte:
 {
@@ -3626,8 +3545,7 @@ Génère UNIQUEMENT un JSON valide (sans markdown, sans backticks) avec cette st
     "societe": "${profile.societe}",
     "secteur": "${profile.secteur}",
     "actu": "${profile.actu}",
-    "ville": "${profile.ville}",
-    "couleur_hex": "${profile.couleur_hex}"
+    "ville": "${profile.ville}"
   },
   "email1": {
     "objet": "sujet court accrocheur lié à l'actu",
@@ -3655,48 +3573,44 @@ Génère UNIQUEMENT un JSON valide (sans markdown, sans backticks) avec cette st
     // Nettoyer et parser
     const cleaned = text.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(cleaned);
-    // Forcer la couleur du profil (l'IA peut oublier)
-    if(parsed.prospect && !parsed.prospect.couleur_hex){
-      parsed.prospect.couleur_hex = profile.couleur_hex;
-    }
-    if(status){
-      status.textContent = `✓ ${parsed.prospect.societe} · ${parsed.prospect.secteur}`;
-      status.style.color = 'rgba(74,222,128,.8)';
-    }
     return parsed;
   } catch(e) {
     console.error('Prospect analysis error:', e);
-    if(status){
-      status.textContent = '⚠ Personnalisation basique appliquée';
-      status.style.color = 'rgba(251,191,36,.7)';
-    }
-    // Fallback : retourner le profil de base sans email IA
-    const fallbackSociete = url.replace(/https?:\/\//, '').split('/')[0].replace('www.','');
-    return {
-      prospect: {
-        prenom: realPrenom || PROSPECT_TYPES[0].prenom,
-        nom: PROSPECT_TYPES[0].nom,
-        societe: fallbackSociete || PROSPECT_TYPES[0].societe,
-        secteur: 'B2B SaaS',
-        actu: 'en forte croissance',
-        ville: 'France',
-        couleur_hex: PROSPECT_TYPES[0].couleur_hex
-      },
-      email1: {
-        objet: 'Une question rapide sur votre prospection',
-        salutation: 'Bonjour,',
-        icebreaker: 'Votre site montre une approche claire et ambitieuse — exactement le type de profil que nous accompagnons.',
-        pitch: 'Chez Devoleads, nous remplissons les agendas de RDV qualifiés en moins de 14 jours. Sans effort de votre part.',
-        social_proof: 'Nous travaillons avec plus de 150 CEOs dans votre secteur (NDA oblige).',
-        cta: 'Auriez-vous 20 minutes cette semaine pour en discuter ?'
-      },
-      relance_j3: 'Je reviens vers vous — avez-vous eu le temps de regarder ? Je peux cadrer sur votre timing.',
-      linkedin_touch: 'Bonjour — votre approche nous intéresse vraiment. On échange cette semaine ?'
-    };
+    return null;
   }
 }
 
 // Injecter la séquence dans la slide Icebreaker
+
+function applyProspectColorToSlides(p){
+  const hex = p.couleur_hex || '#7c3aed';
+  const rgb = hexToRgb(hex);
+  document.documentElement.style.setProperty('--prospect-color', hex);
+  document.documentElement.style.setProperty('--prospect-rgb', rgb);
+
+  // S1 Cover h1
+  const h1 = document.querySelector('#s1 h1');
+  if(h1 && p.prenom){
+    h1.innerHTML = `L'agenda de <span style="background:linear-gradient(135deg,${hex},#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${p.prenom}.</span><br><span class="g">Saturé de RDV.</span>`;
+  }
+  // S8 titre
+  const s8t = document.getElementById('s8-title');
+  if(s8t && p.prenom){
+    s8t.innerHTML = `Comment on démarre<br><span style="color:${hex}">ensemble, ${p.prenom}.</span>`;
+  }
+  // Eyebrow société
+  const eb = document.querySelector('#s1 .eyebrow');
+  if(eb && p.societe){
+    eb.innerHTML = `<span class="blink" style="background:${hex}"></span>Mission ${p.societe}`;
+  }
+  // Barre de progression
+  const bar = document.getElementById('bar');
+  if(bar) bar.style.background = hex;
+  // Dots actifs
+  document.querySelectorAll('.dot.on').forEach(function(d){ d.style.background = hex; });
+  // Blinks
+  document.querySelectorAll('.blink').forEach(function(b){ b.style.background = hex; });
+}
 function injectProspectSequence(data){
   if(!data) return;
   prospectData = data;
@@ -3728,92 +3642,10 @@ function injectProspectSequence(data){
   const eyebrow = document.querySelector('#s7 .eyebrow');
   if(eyebrow) eyebrow.innerHTML = `<span class="blink"></span>Séquence pour ${p.prenom} · ${p.societe}`;
   if(typeof applyCockpitTheme==='function') applyCockpitTheme(p);
+  if(p && p.couleur_hex && typeof applyProspectColorToSlides==='function') applyProspectColorToSlides(p);
   if(window.updateCinematicColors) window.updateCinematicColors(p.couleur_hex,p.societe);
   window._prospectData=data;
   if(typeof buildRoomPlanets==='function') buildRoomPlanets();
-
-  // ── Propager la couleur prospect sur toutes les slides
-  if(p.couleur_hex){
-    applyProspectColorToSlides(p);
-  }
-}
-
-function applyProspectColorToSlides(p){
-  const hex = p.couleur_hex || '#7c3aed';
-  const rgb = hexToRgb(hex);
-
-  // CSS variables globales
-  document.documentElement.style.setProperty('--prospect-color', hex);
-  document.documentElement.style.setProperty('--prospect-rgb', rgb);
-
-  // S1 Cover — h1 prénom en couleur prospect
-  const h1 = document.querySelector('#s1 h1');
-  if(h1 && p.prenom){
-    h1.innerHTML = `L'agenda de <span style="background:linear-gradient(135deg,${hex},#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">${p.prenom}.</span><br><span class="g">Saturé de RDV.</span>`;
-  }
-
-  // S8 closing — titre personnalisé
-  const s8title = document.getElementById('s8-title');
-  if(s8title && p.prenom){
-    s8title.innerHTML = `Comment on démarre<br><span style="color:${hex}">ensemble, ${p.prenom}.</span>`;
-  }
-
-  // Eyebrow "Disponibilités limitées" → entreprise du prospect
-  const eyebrow = document.querySelector('#s1 .eyebrow');
-  if(eyebrow && p.societe){
-    eyebrow.innerHTML = `<span class="blink" style="background:${hex}"></span>Mission ${p.societe}`;
-  }
-
-  // S2 Services — injecter nom société dans le titre
-  const s2h2 = document.querySelector('#s2 h2');
-  if(s2h2 && p.societe){
-    s2h2.innerHTML = `De la data<br>à la <span style="color:${hex}">signature.</span>`;
-  }
-
-  // Boutons CTA cover → couleur prospect
-  document.querySelectorAll('#s1 button').forEach(btn=>{
-    if(btn.style.background && btn.style.background.includes('var(--purple)')){
-      btn.style.background = `linear-gradient(135deg,${hex},${shiftHue(hex,30)})`;
-      btn.style.boxShadow = `0 8px 32px ${hex}66,0 0 0 1px rgba(255,255,255,.08)`;
-    }
-  });
-
-  // Progress bar → couleur prospect
-  const bar = document.getElementById('bar');
-  if(bar) bar.style.background = hex;
-
-  // Dots actifs → couleur prospect
-  document.querySelectorAll('.dot.on').forEach(d=>{
-    d.style.background = hex;
-  });
-
-  // Blink indicators → couleur prospect
-  document.querySelectorAll('.blink').forEach(b=>{
-    b.style.background = hex;
-  });
-}
-
-// Helper: décaler teinte hex
-function shiftHue(hex, degrees){
-  const r=parseInt(hex.slice(1,3),16)/255;
-  const g=parseInt(hex.slice(3,5),16)/255;
-  const b=parseInt(hex.slice(5,7),16)/255;
-  const max=Math.max(r,g,b), min=Math.min(r,g,b), l=(max+min)/2;
-  let h=0, s=0;
-  if(max!==min){
-    const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min);
-    if(max===r) h=(g-b)/d+(g<b?6:0);
-    else if(max===g) h=(b-r)/d+2;
-    else h=(r-g)/d+4;
-    h/=6;
-  }
-  h=(h*360+degrees)%360/360;
-  const hue2rgb=(p,q,t)=>{ if(t<0)t+=1; if(t>1)t-=1; if(t<1/6)return p+(q-p)*6*t; if(t<1/2)return q; if(t<2/3)return p+(q-p)*(2/3-t)*6; return p; };
-  const q=l<0.5?l*(1+s):l+s-l*s, p=2*l-q;
-  const nr=Math.round(hue2rgb(p,q,h+1/3)*255);
-  const ng=Math.round(hue2rgb(p,q,h)*255);
-  const nb=Math.round(hue2rgb(p,q,h-1/3)*255);
-  return '#'+[nr,ng,nb].map(x=>x.toString(16).padStart(2,'0')).join('');
 }
 
 function injectSequenceBlock(data){
@@ -3880,13 +3712,6 @@ document.addEventListener('keydown',e=>{
 });
 
 // ═══ THÈME COCKPIT ═══
-function hexToRgb(hex){
-  const r=parseInt(hex.slice(1,3),16)||255;
-  const g=parseInt(hex.slice(3,5),16)||61;
-  const b=parseInt(hex.slice(5,7),16)||143;
-  return `${r},${g},${b}`;
-}
-
 function applyCockpitTheme(prospect){
   const hex = (prospect && prospect.couleur_hex) ? prospect.couleur_hex : '#ff3d8f';
   const rgb = hexToRgb(hex);
@@ -3920,27 +3745,7 @@ function applyCockpitTheme(prospect){
       const el = document.getElementById(id);
       if(el && val) el.textContent = val;
     });
-
-    // Accent couleur sur le panneau
-    const accent = document.getElementById('ck-prospect-accent');
-    if(accent) accent.setAttribute('fill', hex);
-
-    // Watermark société dans le hublot
-    const wm = document.getElementById('ck-porthole-name');
-    if(wm && prospect.societe){
-      wm.textContent = prospect.societe.toUpperCase();
-      wm.setAttribute('fill', `rgba(${hexToRgb(hex)},.12)`);
-      wm.setAttribute('opacity','1');
-    }
-
-    // Afficher le panneau prospect
-    const panel = document.getElementById('ck-prospect-panel');
-    if(panel) setTimeout(()=>{ panel.setAttribute('opacity','1'); },300);
   }
-
-  // CSS variable sur toutes les slides (couleur accent globale)
-  document.documentElement.style.setProperty('--prospect-color', hex);
-  document.documentElement.style.setProperty('--prospect-rgb', hexToRgb(hex));
 }
 
 function updateCockpitDest(slideIdx){
@@ -4134,6 +3939,32 @@ function startCinematicScene(onComplete){
   scene.style.opacity = '0';
   scene.style.transition = 'opacity 1s ease';
   requestAnimationFrame(()=> requestAnimationFrame(()=> scene.style.opacity = '1'));
+
+  // ── Bouton PASSER
+  const existSkip = document.getElementById('cine-skip-btn');
+  if(existSkip) existSkip.remove();
+  const skipBtn = document.createElement('button');
+  skipBtn.id = 'cine-skip-btn';
+  skipBtn.textContent = 'Passer →';
+  skipBtn.style.cssText = [
+    'position:fixed;bottom:28px;right:32px;z-index:900',
+    'background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)',
+    'color:rgba(255,255,255,.45);font-family:monospace;font-size:11px',
+    'letter-spacing:2px;padding:8px 18px;border-radius:100px;cursor:pointer',
+    'transition:all .2s;text-transform:uppercase;backdrop-filter:blur(6px)'
+  ].join(';');
+  skipBtn.onmouseover = function(){ this.style.background='rgba(255,255,255,.16)'; this.style.color='#fff'; };
+  skipBtn.onmouseout  = function(){ this.style.background='rgba(255,255,255,.08)'; this.style.color='rgba(255,255,255,.45)'; };
+  skipBtn._skipFn = function(){
+    cRunning = false;
+    clearInterval(timerInt);
+    scene.style.transition = 'opacity .35s';
+    scene.style.opacity = '0';
+    skipBtn.remove();
+    setTimeout(()=>{ scene.style.display='none'; if(onComplete) onComplete(); }, 350);
+  };
+  skipBtn.onclick = skipBtn._skipFn;
+  document.body.appendChild(skipBtn);
 
   // ── Starfield canvas
   const cv = document.getElementById('cine-stars');
@@ -4728,457 +4559,6 @@ window.toggleLiveMode = function(){
 })();
 
 
-
-// ── Animation slide vidéo (s6)
-function initVideoSlide(){
-  // Stats en cascade
-  ['vsc1','vsc2','vsc3'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){ el.style.opacity='1'; el.style.transform='translateX(0)'; }
-  });
-
-  // Nom prospect dans le tag
-  const nameTag=document.getElementById('vid-name-tag');
-  const nameEl=document.getElementById('vid-prospect-name');
-  if(nameEl && typeof prospectData!=='undefined' && prospectData && prospectData.prospect){
-    nameEl.textContent=`${prospectData.prospect.prenom||'Marc'} · ${prospectData.prospect.societe||'Votre entreprise'}`;
-  }
-  if(nameTag) setTimeout(()=>{ nameTag.style.opacity='1'; },400);
-
-  // Barre de progression vidéo (58 secondes simulées en 8s)
-  const bar=document.getElementById('vid-progress-bar');
-  const timeEl=document.getElementById('vid-time');
-  let prog=0; const dur=8000; const start=performance.now();
-  const vidInt=setInterval(()=>{
-    const t=Math.min(1,(performance.now()-start)/dur);
-    prog=t*100;
-    if(bar) bar.style.width=prog+'%';
-    const secs=Math.round(t*58);
-    if(timeEl) timeEl.textContent=`0:${String(secs).padStart(2,'0')} / 0:58`;
-    // Changer la couleur de fond pour simuler le contenu vidéo
-    const bg=document.getElementById('vid-bg');
-    if(bg){
-      const hue=220+t*60;
-      bg.style.background=`linear-gradient(135deg,hsl(${hue},60%,8%) 0%,hsl(${hue+20},50%,12%) 40%,hsl(${hue-10},70%,10%) 100%)`;
-    }
-    if(t>=1){
-      clearInterval(vidInt);
-      // Notification de réponse
-      const notif=document.getElementById('vid-notif');
-      if(nameTag) nameTag.style.opacity='0';
-      setTimeout(()=>{
-        if(notif){ notif.style.opacity='1'; notif.style.transform='translateY(0)'; }
-      },500);
-      // Re-loop après 3s
-      setTimeout(()=>{
-        if(notif){ notif.style.opacity='0'; notif.style.transform='translateY(-8px)'; }
-        setTimeout(()=>{ initVideoSlide(); },600);
-      },3500);
-    }
-  },50);
-}
-
-function resetVideoSlide(){
-  ['vsc1','vsc2','vsc3'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){ el.style.opacity='0'; el.style.transform='translateX(-16px)'; }
-  });
-  const bar=document.getElementById('vid-progress-bar');
-  if(bar) bar.style.width='0%';
-  const nameTag=document.getElementById('vid-name-tag');
-  if(nameTag) nameTag.style.opacity='0';
-  const notif=document.getElementById('vid-notif');
-  if(notif){ notif.style.opacity='0'; notif.style.transform='translateY(-8px)'; }
-}
-
-// ══ DÉMO MAC — animation canvas 3 formats ══════
-let demoAnimRunning = false;
-let demoAnimFrame  = null;
-
-function initVideoSlide(){
-  // Stats
-  ['vsc1','vsc2','vsc3'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){ el.style.opacity='1'; el.style.transform='translateX(0)'; }
-  });
-  startDemoCanvas();
-}
-
-function resetVideoSlide(){
-  ['vsc1','vsc2','vsc3'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el){ el.style.opacity='0'; el.style.transform='translateX(-16px)'; }
-  });
-  stopDemoCanvas();
-}
-
-function stopDemoCanvas(){
-  demoAnimRunning = false;
-  if(demoAnimFrame){ cancelAnimationFrame(demoAnimFrame); demoAnimFrame=null; }
-  const cv = document.getElementById('demo-canvas');
-  if(cv){ const ctx=cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height); }
-}
-
-function startDemoCanvas(){
-  stopDemoCanvas();
-  const cv = document.getElementById('demo-canvas');
-  if(!cv) return;
-
-  const rect = cv.getBoundingClientRect();
-  cv.width  = rect.width  || 480;
-  cv.height = rect.height || 270;
-  const W=cv.width, H=cv.height;
-  const ctx = cv.getContext('2d');
-
-  demoAnimRunning = true;
-  const startT = performance.now();
-
-  // 3 formats × ~5s chacun = ~15s total puis loop
-  const FORMATS = [
-    { name:'GIF EMAIL',    color:'#ff6b35', tag:'demo-dot-0', label:'GIF EMAIL',      draw: drawGifEmail },
-    { name:'FACE CAMÉRA',  color:'#ff3d8f', tag:'demo-dot-1', label:'FACE CAMÉRA',    draw: drawFaceCamera },
-    { name:'ÉCRAN PARTAGÉ',color:'#a78bfa', tag:'demo-dot-2', label:'ÉCRAN PARTAGÉ',  draw: drawScreenShare },
-  ];
-  const DUR_EACH = 5000; // ms par format
-  const TOTAL_DUR = DUR_EACH * FORMATS.length;
-
-  // Étoiles fond
-  const stars = Array.from({length:60},()=>({
-    x:Math.random()*W, y:Math.random()*H,
-    r:Math.random()<.1?1.5:.8, a:.1+Math.random()*.6,
-    tw:Math.random()*Math.PI*2, spd:.01+Math.random()*.02
-  }));
-
-  let frame=0;
-
-  // ── Format 1 : GIF Email ──────────────────────
-  function drawGifEmail(ctx,W,H,t,p){
-    // p = 0→1 sur la durée du format
-
-    // Fond email client
-    ctx.fillStyle='#0a0c18';
-    ctx.fillRect(0,0,W,H);
-
-    // Fenêtre email
-    const ex=W*.1, ey=H*.08, ew=W*.8, eh=H*.84;
-    ctx.fillStyle='#0e1020';
-    ctx.strokeStyle='rgba(100,120,255,.2)';
-    ctx.lineWidth=1;
-    roundRect(ctx,ex,ey,ew,eh,6,true,true);
-
-    // Barre titre email
-    ctx.fillStyle='#080a16';
-    roundRect(ctx,ex,ey,ew,24,{tl:6,tr:6},true,false);
-    ctx.fillStyle='rgba(255,255,255,.15)';
-    ctx.font='bold 8px monospace';
-    ctx.fillText('Nouveau message — Boîte de réception',ex+10,ey+15);
-
-    // Corps email
-    const lines = [
-      {w:.45,o:.35,y:0}, {w:.6,o:.25,y:1.3},
-      {w:.3,o:.2,y:2.6}, {w:.5,o:.18,y:3.9},
-    ];
-    lines.forEach(l=>{
-      ctx.fillStyle=`rgba(255,255,255,${l.o})`;
-      roundRect(ctx,ex+10,ey+36+l.y*12,ew*l.w,6,2,true,false);
-    });
-
-    // Zone GIF (s'anime)
-    const gx=ex+10, gy=ey+90, gw=ew-20, gh=H*.42;
-    ctx.fillStyle='#060810';
-    ctx.strokeStyle='rgba(255,107,53,.25)';
-    roundRect(ctx,gx,gy,gw,gh,6,true,true);
-
-    // Silhouette dans le GIF
-    const personX=gx+gw*.35, personY=gy+gh*.15;
-    const headR=gh*.12;
-    // Tête
-    ctx.fillStyle='#e8d4b8';
-    ctx.beginPath(); ctx.arc(personX,personY,headR,0,Math.PI*2); ctx.fill();
-    // Corps
-    ctx.fillStyle='#1a2744';
-    ctx.beginPath();
-    ctx.moveTo(personX-headR*.8,personY+headR);
-    ctx.lineTo(personX+headR*.8,personY+headR);
-    ctx.lineTo(personX+headR*.6,personY+gh*.6);
-    ctx.lineTo(personX-headR*.6,personY+gh*.6);
-    ctx.closePath(); ctx.fill();
-    // Bras animé
-    const armAngle=Math.sin(t*.003)*0.4;
-    ctx.strokeStyle='#1a2744'; ctx.lineWidth=headR*.5;
-    ctx.beginPath();
-    ctx.moveTo(personX-headR*.8,personY+headR*1.5);
-    ctx.lineTo(personX-headR*.8+Math.cos(armAngle+.5)*headR*1.4,personY+headR*1.5+Math.sin(armAngle+.5)*headR*1.4);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(personX+headR*.8,personY+headR*1.5);
-    ctx.lineTo(personX+headR*.8+Math.cos(-armAngle+2.5)*headR*1.4,personY+headR*1.5+Math.sin(-armAngle+2.5)*headR*1.4);
-    ctx.stroke();
-
-    // Barres équaliseur (talking)
-    const bx=gx+gw*.62, by=gy+gh*.5;
-    const barsH=[.5,.8,.4,.9,.6,.7,.3,.85];
-    barsH.forEach((h,i)=>{
-      const bh=(h+Math.sin(t*.006+i)*0.3)*gh*.35;
-      ctx.fillStyle=`rgba(255,107,53,${.4+h*.5})`;
-      ctx.fillRect(bx+i*8,by-bh,5,bh);
-    });
-
-    // Label GIF
-    ctx.fillStyle='rgba(255,107,53,.8)';
-    ctx.font='bold 9px monospace';
-    ctx.fillText('▶ GIF · Click to play',gx+8,gy+gh-8);
-
-    // Tag orange
-    drawTag(ctx,W-80,H-26,'GIF animé','rgba(255,107,53,.15)','rgba(255,107,53,.4)','#ff6b35');
-
-    // Cursor blink
-    if(Math.floor(t*.002)%2===0){
-      ctx.fillStyle='rgba(255,255,255,.6)';
-      ctx.fillRect(ex+10+ew*.45+2,ey+36,1.5,8);
-    }
-  }
-
-  // ── Format 2 : Face caméra ───────────────────
-  function drawFaceCamera(ctx,W,H,t,p){
-    // Fond sombre type Loom/Vidyard
-    ctx.fillStyle='#08060e';
-    ctx.fillRect(0,0,W,H);
-
-    // Cadre vidéo principal
-    const vx=W*.05,vy=H*.05,vw=W*.9,vh=H*.78;
-    const grad=ctx.createLinearGradient(vx,vy,vx,vy+vh);
-    grad.addColorStop(0,'#12102a'); grad.addColorStop(1,'#080618');
-    ctx.fillStyle=grad;
-    ctx.strokeStyle='rgba(255,61,143,.2)';
-    ctx.lineWidth=1.5;
-    roundRect(ctx,vx,vy,vw,vh,8,true,true);
-
-    // Silhouette présentateur (plus grande)
-    const cx=vx+vw*.5, cy=vy+vh*.42;
-    const headR=vh*.16;
-    // Lueur
-    const glow=ctx.createRadialGradient(cx,cy,0,cx,cy,headR*4);
-    glow.addColorStop(0,'rgba(255,61,143,.08)'); glow.addColorStop(1,'transparent');
-    ctx.fillStyle=glow; ctx.beginPath(); ctx.arc(cx,cy,headR*4,0,Math.PI*2); ctx.fill();
-    // Tête
-    ctx.fillStyle='#e8d4b8';
-    ctx.beginPath(); ctx.arc(cx,cy-headR*.2,headR,0,Math.PI*2); ctx.fill();
-    // Cou
-    ctx.fillStyle='#d4bea0';
-    ctx.fillRect(cx-headR*.25,cy+headR*.7,headR*.5,headR*.4);
-    // Épaules/corps
-    ctx.fillStyle='#1a2a4a';
-    ctx.beginPath();
-    ctx.moveTo(cx-headR*2,vy+vh);
-    ctx.quadraticCurveTo(cx-headR*1.2,cy+headR*1.2,cx-headR*.4,cy+headR*1.1);
-    ctx.lineTo(cx+headR*.4,cy+headR*1.1);
-    ctx.quadraticCurveTo(cx+headR*1.2,cy+headR*1.2,cx+headR*2,vy+vh);
-    ctx.closePath(); ctx.fill();
-    // Cravate Devoleads
-    ctx.fillStyle='#ff3d8f'; ctx.globalAlpha=.7;
-    ctx.fillRect(cx-headR*.08,cy+headR*1.12,headR*.16,headR*.9);
-    ctx.globalAlpha=1;
-    // Yeux (blink)
-    const blink=Math.sin(t*.0015)*Math.sin(t*.0023);
-    const eyeH=blink>0.97?1:headR*.12;
-    ctx.fillStyle='#2a1a3a';
-    ctx.fillRect(cx-headR*.35,cy-headR*.12-eyeH/2,headR*.22,eyeH);
-    ctx.fillRect(cx+headR*.13,cy-headR*.12-eyeH/2,headR*.22,eyeH);
-    // Bouche animée (parle)
-    const mouthH=Math.abs(Math.sin(t*.008))*headR*.12+headR*.04;
-    ctx.strokeStyle='#8a6a5a'; ctx.lineWidth=headR*.08;
-    ctx.beginPath();
-    ctx.arc(cx,cy+headR*.35,headR*.18,-0.2,Math.PI+.2);
-    ctx.stroke();
-
-    // Barre de progression vidéo
-    const barY=vy+vh+12;
-    ctx.fillStyle='rgba(255,255,255,.08)';
-    roundRect(ctx,vx,barY,vw,4,2,true,false);
-    ctx.fillStyle='var(--pink,#ff3d8f)';
-    const barFill=ctx.createLinearGradient(vx,barY,vx+vw,barY);
-    barFill.addColorStop(0,'#ff3d8f'); barFill.addColorStop(1,'#7c3aed');
-    ctx.fillStyle=barFill;
-    roundRect(ctx,vx,barY,vw*p,4,2,true,false);
-    // Curseur barre
-    ctx.fillStyle='#fff';
-    ctx.beginPath(); ctx.arc(vx+vw*p,barY+2,5,0,Math.PI*2); ctx.fill();
-
-    // Contrôles
-    ctx.fillStyle='rgba(255,255,255,.5)';
-    ctx.font='10px monospace';
-    const sec=Math.floor(p*58);
-    ctx.fillText(`0:${String(sec).padStart(2,'0')} / 0:58`,vx+2,barY+18);
-
-    // Badge nom
-    ctx.fillStyle='rgba(0,0,0,.6)';
-    roundRect(ctx,vx+4,vy+vh-22,120,16,4,true,false);
-    ctx.fillStyle='rgba(255,255,255,.7)'; ctx.font='8px sans-serif';
-    ctx.fillText('Stanislas · Devoleads',vx+10,vy+vh-12);
-
-    // Tag
-    drawTag(ctx,W-90,H-26,'Face caméra','rgba(255,61,143,.12)','rgba(255,61,143,.35)','#ff3d8f');
-  }
-
-  // ── Format 3 : Écran partagé ─────────────────
-  function drawScreenShare(ctx,W,H,t,p){
-    // Fond
-    ctx.fillStyle='#06080f';
-    ctx.fillRect(0,0,W,H);
-
-    // Fenêtre principale (dashboard prospect)
-    const wx=W*.04, wy=H*.04, ww=W*.68, wh=H*.88;
-    ctx.fillStyle='#0c0e1e';
-    ctx.strokeStyle='rgba(100,130,255,.18)';
-    ctx.lineWidth=1;
-    roundRect(ctx,wx,wy,ww,wh,6,true,true);
-    // Header dashboard
-    ctx.fillStyle='#080a18';
-    roundRect(ctx,wx,wy,ww,22,{tl:6,tr:6},true,false);
-    ctx.fillStyle='rgba(255,255,255,.12)'; ctx.font='8px monospace';
-    ctx.fillText('● Votre CRM — pipeline Q1 2025',wx+8,wy+14);
-
-    // Graphique barres animé
-    const bx=wx+16,by=wy+40,bw=ww-32,bh=wh*.44;
-    const barsData=[.55,.75,.4,.88,.62,.78,.5,.92,.68];
-    const barW=(bw/barsData.length)*.7;
-    const barGap=(bw/barsData.length);
-    barsData.forEach((h,i)=>{
-      const curH=Math.min(h,(p*barsData.length-i)*.8+.1)*bh;
-      const x=bx+i*barGap;
-      const barGrad=ctx.createLinearGradient(x,by+bh-curH,x,by+bh);
-      barGrad.addColorStop(0,'rgba(124,58,237,.9)');
-      barGrad.addColorStop(1,'rgba(124,58,237,.3)');
-      ctx.fillStyle=barGrad;
-      roundRect(ctx,x,by+bh-curH,barW,curH,{tl:2,tr:2},true,false);
-      // Label axe
-      ctx.fillStyle='rgba(255,255,255,.2)'; ctx.font='7px sans-serif';
-      ctx.fillText('S'+i,x+barW/2-4,by+bh+10);
-    });
-
-    // Stats mini
-    const stats=[
-      {label:'Leads',val:'142',col:'#a78bfa'},
-      {label:'RDV',  val:'38', col:'#ff3d8f'},
-      {label:'Signés',val:'12',col:'#4ade80'},
-    ];
-    stats.forEach((s,i)=>{
-      const sx=wx+16+i*(ww/3-8), sy=wy+wh*.56;
-      ctx.fillStyle='rgba(255,255,255,.04)';
-      ctx.strokeStyle=`${s.col}40`; ctx.lineWidth=1;
-      roundRect(ctx,sx,sy,ww/3-18,40,4,true,true);
-      ctx.fillStyle=s.col; ctx.font='bold 14px sans-serif';
-      ctx.fillText(s.val,sx+10,sy+22);
-      ctx.fillStyle='rgba(255,255,255,.3)'; ctx.font='7px sans-serif';
-      ctx.fillText(s.label,sx+10,sy+34);
-    });
-
-    // Mini webcam (présentateur en coin)
-    const cx2=wx+ww-70, cy2=wy+wh-70;
-    ctx.fillStyle='#0a0c1a';
-    ctx.strokeStyle='rgba(255,61,143,.5)';
-    ctx.lineWidth=2;
-    roundRect(ctx,cx2,cy2,60,50,6,true,true);
-    // Silhouette mini
-    const mhR=8;
-    ctx.fillStyle='#e8d4b8';
-    ctx.beginPath(); ctx.arc(cx2+30,cy2+14,mhR,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle='#1a2a4a';
-    ctx.fillRect(cx2+16,cy2+22,28,22);
-    // Indicateur micro actif
-    ctx.fillStyle=`rgba(255,61,143,${.5+Math.sin(t*.01)*.4})`;
-    ctx.beginPath(); ctx.arc(cx2+8,cy2+8,4,0,Math.PI*2); ctx.fill();
-
-    // Curseur souris animé
-    const mouseX=wx+ww*.3+Math.sin(t*.0015)*ww*.15;
-    const mouseY=wy+wh*.5+Math.cos(t*.001)*wh*.1;
-    ctx.fillStyle='rgba(255,255,255,.9)';
-    ctx.beginPath();
-    ctx.moveTo(mouseX,mouseY);
-    ctx.lineTo(mouseX+8,mouseY+14);
-    ctx.lineTo(mouseX+4,mouseY+12);
-    ctx.lineTo(mouseX+6,mouseY+18);
-    ctx.lineTo(mouseX+4,mouseY+18);
-    ctx.lineTo(mouseX+2,mouseY+12);
-    ctx.lineTo(mouseX-1,mouseY+15);
-    ctx.closePath(); ctx.fill();
-
-    // Tag
-    drawTag(ctx,W-100,H-26,'Écran partagé','rgba(124,58,237,.12)','rgba(124,58,237,.35)','#a78bfa');
-  }
-
-  // ── Helpers ───────────────────────────────────
-  function roundRect(ctx,x,y,w,h,r,fill,stroke){
-    if(typeof r==='number') r={tl:r,tr:r,br:r,bl:r};
-    else { r={tl:0,tr:0,br:0,bl:0,...r}; }
-    ctx.beginPath();
-    ctx.moveTo(x+r.tl,y);
-    ctx.lineTo(x+w-r.tr,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r.tr);
-    ctx.lineTo(x+w,y+h-r.br); ctx.quadraticCurveTo(x+w,y+h,x+w-r.br,y+h);
-    ctx.lineTo(x+r.bl,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r.bl);
-    ctx.lineTo(x,y+r.tl); ctx.quadraticCurveTo(x,y,x+r.tl,y);
-    ctx.closePath();
-    if(fill) ctx.fill();
-    if(stroke) ctx.stroke();
-  }
-  function drawTag(ctx,x,y,text,bg,border,col){
-    ctx.save();
-    ctx.fillStyle=bg;
-    ctx.strokeStyle=border; ctx.lineWidth=1;
-    const tw=ctx.measureText(text).width+16;
-    roundRect(ctx,x,y-10,tw,16,4,true,true);
-    ctx.fillStyle=col; ctx.font='bold 8px monospace';
-    ctx.fillText(text,x+8,y+1);
-    ctx.restore();
-  }
-
-  // ── Boucle principale ─────────────────────────
-  function loop(ts){
-    if(!demoAnimRunning) return;
-    frame++;
-    const elapsed=(ts-startT)%TOTAL_DUR;
-    const fmtIdx=Math.floor(elapsed/DUR_EACH);
-    const fmtP=(elapsed%DUR_EACH)/DUR_EACH;
-
-    ctx.clearRect(0,0,W,H);
-
-    // Fond étoiles
-    stars.forEach(s=>{
-      ctx.globalAlpha=s.a*(.3+.7*Math.sin(frame*s.spd+s.tw));
-      ctx.fillStyle='#fff';
-      ctx.fillRect(Math.round(s.x),Math.round(s.y),s.r,s.r);
-    });
-    ctx.globalAlpha=1;
-
-    // Transition douce entre formats
-    const transZone=.08;
-    let alpha=1;
-    if(fmtP<transZone) alpha=fmtP/transZone;
-    else if(fmtP>1-transZone) alpha=(1-fmtP)/transZone;
-    ctx.globalAlpha=alpha;
-
-    // Dessiner le format actuel
-    FORMATS[fmtIdx].draw(ctx,W,H,ts-startT,fmtP);
-    ctx.globalAlpha=1;
-
-    // Mise à jour UI
-    const prog=document.getElementById('demo-progress');
-    if(prog) prog.style.width=((elapsed/TOTAL_DUR)*100)+'%';
-
-    const tag=document.getElementById('demo-format-tag');
-    if(tag) tag.textContent=FORMATS[fmtIdx].label;
-
-    // Dots
-    FORMATS.forEach((_,i)=>{
-      const dot=document.getElementById('demo-dot-'+i);
-      if(dot) dot.style.opacity=i===fmtIdx?'1':'.25';
-    });
-
-    demoAnimFrame=requestAnimationFrame(loop);
-  }
-  demoAnimFrame=requestAnimationFrame(loop);
-}
 </script>
 <div id="cine-scene" style="display:none">
   <canvas id="cine-stars"></canvas>
@@ -5429,5 +4809,24 @@ function startDemoCanvas(){
   </div>
   <div id="cine-flash"></div>
 </div>
+<button id="share-btn" onclick="(async()=>{
+  try{
+    await navigator.clipboard.writeText(window.location.href);
+    this.textContent='✓ Lien copié !';
+    setTimeout(()=>this.textContent='🔗 Partager',2000);
+  }catch(e){
+    this.textContent='🔗 ' + window.location.href.slice(0,30)+'...';
+  }
+})()" style="
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;
+  background:rgba(6,7,20,.8);border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.4);font-size:10px;letter-spacing:1.5px;
+  padding:6px 14px;border-radius:100px;cursor:pointer;font-family:monospace;
+  transition:all .2s;backdrop-filter:blur(8px);
+  display:none;
+" onmouseover="this.style.color='#fff';this.style.borderColor='rgba(124,58,237,.5)'"
+   onmouseout="this.style.color='rgba(255,255,255,.4)';this.style.borderColor='rgba(255,255,255,.1)'">
+  🔗 Partager
+</button>
 </body>
 </html>
