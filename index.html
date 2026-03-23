@@ -1592,113 +1592,14 @@ body:has(a:hover,button:hover) #cur-r{width:48px;height:48px;border-color:rgba(v
 
 
 /* ════ DESKTOP RESET — empêche les règles mobile d'affecter desktop ════ */
-@media(min-width:769px){
-  /* Reset complet des slides pour desktop */
-  .slide{
-    padding:clamp(62px,7vh,100px) clamp(30px,5vw,90px) clamp(44px,5.5vh,80px) !important;
-    flex-direction:column !important;
-    align-items:center !important;
-    justify-content:center !important;
-    overflow:hidden !important;
-    overflow-y:hidden !important;
-    gap:0 !important;
-  }
-  .slide > .sg {
-    width:auto !important;
-    padding:unset !important;
-  }
-  /* Slides bi-colonnes */
-  #s3.slide{flex-direction:row !important;padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px) !important;align-items:stretch !important}
-  #s6.slide{flex-direction:row !important;padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px) !important;align-items:stretch !important}
-  #s7.slide{flex-direction:row !important;padding:clamp(60px,7vh,90px) 0 clamp(40px,5vh,70px) !important;align-items:center !important}
-  #s4.slide{padding:clamp(70px,8vh,100px) clamp(40px,6vw,90px) clamp(50px,6vh,80px) !important}
-  #s5.slide{padding:clamp(60px,7vh,88px) clamp(24px,4vw,56px) clamp(36px,4.5vh,64px) !important}
-  #s8.slide{padding:clamp(70px,8vh,100px) clamp(30px,5vw,60px) clamp(36px,4.5vh,60px) !important;justify-content:center !important}
-  /* Animations desktop */
-  .cin-plan{opacity:0}
-  .cin-plan.in{animation:card-flip .58s cubic-bezier(.16,1,.3,1) both}
-  .cin-svc-card{opacity:0}
-  .cin-svc-card.in{animation:cin-up .5s cubic-bezier(.16,1,.3,1) both}
-  #tc-stanis,#tc-amelie{opacity:0;transform:translateX(28px)}
-}
+
 
 /* ════ MOBILE RESPONSIVE COMPLET ════ */
 
 /* ── Navigation ── */
-@media(max-width:768px){
-  #nav{height:52px;padding:0 14px}
-  .logo-img{height:22px}
-  #pg,#dots,#share-btn{display:none!important}
-  #mode-toggle{top:6px!important;right:10px!important;z-index:999}
-  #toggle-deck,#toggle-web{padding:4px 10px!important;font-size:10px!important}
-  .arr{width:36px!important;height:36px!important;font-size:18px!important}
-  #hud-ambient,#cur,#cur-r{display:none!important}
 
-  /* ── Toutes les slides ── */
-  .slide{
-    padding: 52px 16px 80px !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch;
-    gap: 16px !important;
-  }
-  .slide > .sg { width: 100% !important; padding: 0 !important; }
-  .slide h1{font-size:clamp(32px,9vw,48px)!important;letter-spacing:-2px!important;line-height:1.05!important}
-  .slide h2{font-size:clamp(24px,7vw,36px)!important;letter-spacing:-1px!important}
 
-  /* ── S1 Cover ── */
-  .cin-hero-orb{width:260px!important;height:260px!important}
-  #s1 .sg{gap:16px!important}
-  .cin-stat-card{padding:10px 12px!important}
-  .cin-stat-val{font-size:clamp(22px,6vw,32px)!important}
-  .cin-ctas{flex-direction:column!important;width:100%!important;gap:8px!important}
-  .cin-ctas button,.cin-ctas a{width:100%!important;justify-content:center!important;padding:14px 20px!important}
 
-  /* ── S2 Icebreaker ── */
-  #s2{flex-direction:column!important}
-
-  /* ── S3 Services ── */
-  #s3{flex-direction:column!important}
-  #s3 .cin-svc-card{opacity:1!important;transform:none!important}
-
-  /* ── S4 Process ── */
-  .cin-timeline{flex-direction:column!important;max-width:100%!important}
-  .cin-timeline::before{display:none!important}
-  .cin-tstep{flex-direction:row!important;text-align:left!important;padding:12px 0!important;border-bottom:1px solid rgba(255,255,255,.06);gap:14px!important;align-items:flex-start!important;flex:none!important}
-  .cin-tstep:last-child{border-bottom:none}
-  .cin-tstep-num{width:40px!important;height:40px!important;font-size:13px!important;flex-shrink:0}
-
-  /* ── S5 Formules ── */
-  #s5 [style*="grid-template-columns:repeat(3"]{grid-template-columns:1fr!important}
-  .cin-plan.featured{transform:none!important}
-  .cin-plan{opacity:1!important}
-
-  /* ── S6 Équipe ── */
-  #s6{flex-direction:column!important}
-  #tc-stanis,#tc-amelie{opacity:1!important;transform:none!important;flex-direction:column!important}
-  #tc-stanis>div:first-child,#tc-amelie>div:first-child{align-self:center}
-
-  /* ── S7 Vidéo ── */
-  #s7{flex-direction:column!important}
-
-  /* ── S8 Closing ── */
-  #s8 > div{flex-direction:column!important;gap:16px!important}
-
-  /* ── vpcard S7 ── */
-  .vpcard{height:280px!important}
-  .vg3{gap:8px!important}
-}
-
-@media(max-width:480px){
-  .slide h1{font-size:clamp(26px,10vw,38px)!important}
-  .slide h2{font-size:clamp(22px,8vw,30px)!important}
-  #s5 [style*="grid-template-columns"]{gap:8px!important}
-  .cin-plan{padding:16px!important}
-  #tc-stanis,#tc-amelie{padding:12px!important}
-}
 
 
 /* ════ DASHBOARD PIPELINE CSS ════ */
@@ -1888,6 +1789,118 @@ body:has(a:hover,button:hover) #cur-r{width:48px;height:48px;border-color:rgba(v
   #dash-footer{flex-direction:column;align-items:flex-start}
 }
 
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — Desktop reset + Mobile complet (UNIQUE)
+═══════════════════════════════════════════════════════ */
+
+/* Colonnes gauches des slides bi-colonnes */
+.slide-col-left{width:clamp(200px,36%,420px);flex-shrink:0}
+#s6 .slide-col-left{width:clamp(200px,40%,480px)}
+
+/* ── DESKTOP (≥769px) : restaurer les layouts ── */
+@media(min-width:769px){
+  .slide{
+    padding:clamp(62px,7vh,100px) clamp(30px,5vw,90px) clamp(44px,5.5vh,80px) !important;
+    flex-direction:column !important;
+    align-items:center !important;
+    justify-content:center !important;
+    overflow:hidden !important;
+    gap:0 !important;
+  }
+  .slide>.sg,.slide>.slide-col-left{width:auto !important;padding:unset !important}
+  #s2.slide,#s3.slide,#s6.slide{
+    flex-direction:row !important;
+    padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px) !important;
+    align-items:stretch !important;
+  }
+  #s7.slide{
+    flex-direction:row !important;
+    padding:clamp(60px,7vh,90px) 0 clamp(40px,5vh,70px) !important;
+    align-items:center !important;
+  }
+  #s4.slide{padding:clamp(70px,8vh,100px) clamp(40px,6vw,90px) clamp(50px,6vh,80px) !important}
+  #s5.slide{padding:clamp(60px,7vh,88px) clamp(24px,4vw,56px) clamp(36px,4.5vh,64px) !important}
+  #s8.slide{padding:clamp(70px,8vh,100px) clamp(30px,5vw,60px) clamp(36px,4.5vh,60px) !important;justify-content:center !important}
+  #s2 .slide-col-left,#s3 .slide-col-left,#s6 .slide-col-left,#s7 .slide-col-left{
+    width:clamp(200px,36%,420px) !important;padding:unset !important;
+  }
+  #s6 .slide-col-left{width:clamp(200px,40%,480px) !important}
+  .cin-plan{opacity:0}
+  .cin-plan.in{animation:card-flip .58s cubic-bezier(.16,1,.3,1) both}
+  .cin-svc-card{opacity:0}
+  .cin-svc-card.in{animation:cin-up .5s cubic-bezier(.16,1,.3,1) both}
+  #tc-stanis,#tc-amelie{opacity:0;transform:translateX(28px)}
+}
+
+/* ── MOBILE (≤768px) ── */
+@media(max-width:768px){
+  #nav{height:50px !important;padding:0 12px !important}
+  .logo-img{height:20px !important}
+  #pg,#dots,#share-btn,#hud-ambient,#cur,#cur-r{display:none !important}
+  #mode-toggle{top:5px !important;right:8px !important}
+  #toggle-deck,#toggle-web{padding:4px 9px !important;font-size:9.5px !important}
+  .arr{width:34px !important;height:34px !important;bottom:16px !important}
+  #an{right:12px !important}#ap{left:12px !important}
+  #dash-btn{bottom:14px !important;right:14px !important;padding:8px 14px !important;font-size:11px !important}
+  .slide{
+    padding:50px 14px 68px !important;
+    flex-direction:column !important;
+    align-items:stretch !important;
+    justify-content:flex-start !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    -webkit-overflow-scrolling:touch;
+    gap:12px !important;
+  }
+  .slide-col-left{width:100% !important;padding:0 !important;flex-shrink:unset !important}
+  .slide>.sg{width:100% !important;padding:0 !important;flex-shrink:unset !important}
+  #s2,#s3,#s6,#s7{flex-direction:column !important}
+  .slide h1{font-size:clamp(28px,8vw,44px) !important;letter-spacing:-1.5px !important;line-height:1.08 !important;text-align:center !important}
+  .slide h2{font-size:clamp(20px,6vw,32px) !important;letter-spacing:-1px !important;line-height:1.1 !important}
+  .lead{font-size:13px !important}
+  .cin-hero-orb{width:220px !important;height:220px !important}
+  #s1{align-items:center !important;text-align:center !important}
+  .cin-stat-val{font-size:clamp(18px,5vw,26px) !important}
+  .cin-stat-card{padding:8px 10px !important}
+  .cin-ctas{flex-direction:column !important;width:100% !important;gap:8px !important}
+  .cin-ctas button,.cin-ctas a{width:100% !important;justify-content:center !important;padding:12px !important}
+  .cin-logos{display:none !important}
+  #s2 [style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important}
+  .cin-svc-card{opacity:1 !important;transform:none !important;padding:12px !important}
+  .cin-timeline{flex-direction:column !important}
+  .cin-timeline::before{display:none !important}
+  .cin-tstep{flex-direction:row !important;text-align:left !important;padding:10px 0 !important;border-bottom:1px solid rgba(255,255,255,.06) !important;gap:10px !important;align-items:flex-start !important;flex:none !important;width:100% !important}
+  .cin-tstep:last-child{border-bottom:none !important}
+  .cin-tstep-num{width:36px !important;height:36px !important;font-size:11px !important;flex-shrink:0 !important}
+  #s5 .sg[style*="grid-template-columns"]{grid-template-columns:1fr !important;gap:8px !important}
+  .cin-plan{opacity:1 !important;padding:16px !important;transform:none !important;animation:none !important}
+  #tc-stanis,#tc-amelie{opacity:1 !important;transform:none !important;padding:12px !important}
+  #s6 .cin-sub{display:none !important}
+  #s8 [style*="display:flex;align-items:flex-end"]{flex-direction:column !important;gap:14px !important}
+  #s8-terminal{display:none !important}
+  #dash-header{padding:10px 14px !important}
+  #dash-hero{padding:14px 14px 0 !important;flex-direction:column !important;align-items:stretch !important}
+  #dash-hero-left h1{font-size:clamp(18px,5.5vw,26px) !important}
+  #dash-inputs{padding:10px 14px !important;flex-wrap:wrap !important}
+  .dash-ig{flex:1 1 calc(50% - 5px) !important;min-width:120px !important}
+  #dash-metrics{grid-template-columns:1fr 1fr !important;gap:8px !important;padding:10px 14px !important}
+  .dash-mc{padding:10px 12px !important;border-radius:12px !important}
+  .dash-mc-val{font-size:clamp(18px,5vw,26px) !important}
+  #dash-charts{grid-template-columns:1fr !important;padding:0 14px !important;gap:8px !important}
+  #dash-footer{padding:10px 14px !important;flex-direction:column !important;align-items:stretch !important}
+  .dash-cta-xl{width:100% !important;justify-content:center !important;padding:13px !important}
+}
+
+@media(max-width:480px){
+  .slide{padding:48px 12px 64px !important;gap:10px !important}
+  .slide h1{font-size:clamp(24px,8.5vw,38px) !important}
+  .slide h2{font-size:clamp(18px,6.5vw,28px) !important}
+  .cin-plan{padding:12px !important}
+  #tc-stanis,#tc-amelie{padding:10px !important}
+  .dash-ig{flex:1 1 100% !important}
+}
+
 </style>
 <script>
 // THEME TOGGLE — défini tôt pour être disponible dès le chargement du DOM
@@ -1901,6 +1914,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 </script>
 
 </head>
+
 <body>
 <canvas id="space-canvas"></canvas>
 <div id="cur"></div>
@@ -2311,7 +2325,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <!-- S3 SERVICES -->
 <div class="slide" id="s3" style="flex-direction:row;padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);align-items:stretch">
   <div class="orb" style="width:400px;height:400px;background:var(--cyan);top:-100px;left:-80px;opacity:.07;animation-duration:22s"></div>
-  <div class="sg" style="width:36%;padding:0 clamp(14px,2vw,30px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:18px;flex-shrink:0">
+  <div class="sg" class="sg slide-col-left" style="padding:0 clamp(14px,2vw,30px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:18px">
     <div class="eyebrow cin-eyebrow">Services</div>
     <div class="text-reveal-wrap"><h2 class="text-reveal-inner" style="animation-delay:.2s;font-size:clamp(30px,4.2vw,54px)">De la data<br>à la <span class="g">signature.</span></h2></div>
     <p class="lead cin-sub" style="animation-delay:.38s">Nous gérons l'intégralité du tunnel commercial. Vous closez, on prospecte.</p>
@@ -2362,7 +2376,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
 <!-- S6 TEAM -->
 <div class="slide" id="s6" style="flex-direction:row;padding:clamp(70px,8vh,100px) 0 clamp(50px,6vh,80px);align-items:stretch">
   <div class="orb" style="width:380px;height:380px;background:var(--pink);bottom:-80px;right:-60px;opacity:.09;animation-delay:-4s"></div>
-  <div class="sg" style="width:40%;padding:0 clamp(14px,2vw,30px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:16px;flex-shrink:0">
+  <div class="sg" class="sg slide-col-left" style="padding:0 clamp(14px,2vw,30px) 0 clamp(40px,6vw,90px);display:flex;flex-direction:column;justify-content:center;gap:16px">
     <div class="eyebrow cin-eyebrow">L'équipe fondatrice</div>
     <div class="text-reveal-wrap"><h2 class="text-reveal-inner" style="animation-delay:.2s;font-size:clamp(34px,4.5vw,58px)">Fondateurs.<br>Pas des<br><span class="g">juniors.</span></h2></div>
     <p class="lead cin-sub" style="animation-delay:.38s;font-size:13px">Vous parlez directement aux créateurs du système. Pas d'intermédiaire.</p>
@@ -2390,7 +2404,7 @@ if(localStorage.getItem('dv-theme')==='light') document.documentElement.classLis
   <div class="orb" style="width:300px;height:300px;background:var(--purple);bottom:-80px;left:-40px;opacity:.06;animation-delay:-11s"></div>
 
   <!-- GAUCHE : Titre + stats -->
-  <div class="sg" style="width:36%;padding-left:clamp(40px,6vw,90px);display:flex;flex-direction:column;gap:20px">
+  <div class="sg" class="sg slide-col-left" style="padding-left:clamp(40px,6vw,90px);display:flex;flex-direction:column;gap:20px">
     <div>
       <div class="eyebrow"><span class="blink"></span>Service additionnel</div>
       <h2 style="font-size:clamp(26px,3vw,42px);margin-top:10px">Prospection<br><span class="g">en Vidéo.</span></h2>
